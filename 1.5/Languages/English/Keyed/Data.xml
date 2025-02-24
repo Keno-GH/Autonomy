@@ -1,0 +1,11 @@
+<LanguageData>
+    <AutonomyInfoButton>Autonomy Info</AutonomyInfoButton>
+    <AutonomyWindowTitle>Hello world from Language Key!</AutonomyWindowTitle>
+    <AutonomyPawnCount>Current map has {0} pawns.</AutonomyPawnCount>
+    <AutonomyColonistCount>Current map has {0} colonist human pawns.</AutonomyColonistCount>
+    <AutonomyPetCount>Current map has {0} pets.</AutonomyPetCount>
+    <AutonomyEnemyCount>Current map has {0} enemy pawns.</AutonomyEnemyCount>
+    <AutonomyFilthInHome>Current map has {0} filth in home area.</AutonomyFilthInHome>
+    <thingsDeteriorating>Current map has {0} deteriorating things.</thingsDeteriorating>
+    <AutonomyNoMap>No map loaded.</AutonomyNoMap>
+</LanguageData>

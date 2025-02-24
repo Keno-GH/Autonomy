@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Defs>
+    <Autonomy.WorkdrivePreferenceAxisDef>
+        <defName>SocialPreference</defName>
+        <label>Social Preference</label>
+        <description>Represents the drive this person has to work for the community or for themselves.</description>
+        <workDrivesStepLabels>
+            <li>Individualistic</li>
+            <li>Independent</li>
+            <li>Cooperative</li>
+            <li>Communal</li>
+        </workDrivesStepLabels>
+    </Autonomy.WorkdrivePreferenceAxisDef>
+    <Autonomy.WorkdrivePreferenceAxisDef>
+        <defName>WorkApproach</defName>
+        <label>Work Approach</label>
+        <description>Represents the person's approach to their work balance between disciplined structure and relaxed flexibility.</description>
+        <workDrivesStepLabels>
+            <li>Disciplined</li>
+            <li>Structured</li>
+            <li>Flexible</li>
+            <li>Casual</li>
+        </workDrivesStepLabels>
+    </Autonomy.WorkdrivePreferenceAxisDef>
+    <Autonomy.WorkdrivePreferenceAxisDef>
+        <defName>WorkEnvironmentAesthetic</defName>
+        <label>Work Environment Aesthetic</label>
+        <description>Represents the preference for work environments, ranging from organic, nature-infused settings to mechanized, industrial ones.</description>
+        <workDrivesStepLabels>
+            <li>Naturalistic</li>
+            <li>Rustic</li>
+            <li>Mechanized</li>
+            <li>Industrial</li>
+        </workDrivesStepLabels>
+    </Autonomy.WorkdrivePreferenceAxisDef>
+    <Autonomy.WorkdrivePreferenceAxisDef>
+        <defName>CognitiveOrientation</defName>
+        <label>Cognitive Orientation</label>
+        <description>Represents the person's approach to thinking and problem solving.</description>
+        <workDrivesStepLabels>
+            <li>Analytical</li>
+            <li>Methodical</li>
+            <li>Inventive</li>
+            <li>Creative</li>
+        </workDrivesStepLabels>
+    </Autonomy.WorkdrivePreferenceAxisDef>
+</Defs>

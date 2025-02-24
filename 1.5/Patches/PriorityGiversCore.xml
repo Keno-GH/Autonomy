@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Patch>
+
+    <Operation Class="XmlExtensions.PatchOperationSafeAdd">
+        <xpath>Defs/WorkTypeDef</xpath>
+        <value>
+            <modExtensions>
+                <li Class="Autonomy.PriorityGiverExtension">
+                    <priorityGivers>
+                    </priorityGivers>
+                </li>
+            </modExtensions>
+        </value>
+    </Operation>
+
+    <Operation Class="XmlExtensions.ForEach"> <!-- Give skill related priority givers to work types with skills -->
+        <xpath>Defs/WorkTypeDef[relevantSkills]</xpath>
+        <storeIn>SkilledWorkTypeDef</storeIn>
+        <apply> 
+            <Operation Class="XmlExtensions.ForEach">
+                <xpath>{SkilledWorkTypeDef}/relevantSkills/li</xpath>
+                <storeIn>SkillLi</storeIn>
+                <prefixLength>4</prefixLength>
+                <apply>
+                    <Operation Class="XmlExtensions.AggregateValues">
+                        <valueOperations>
+                            <Operation Class="XmlExtensions.CreateVariable">
+                                <storeIn>Skill</storeIn>
+                                <value>{SkillLi}</value>
+                                <fromXml>true</fromXml>
+                            </Operation>
+                            <Operation Class="XmlExtensions.CreateVariable">
+                                <storeIn>SkillLabel</storeIn>
+                                <value>Defs/SkillDef[defName="{Skill}"]/skillLabel</value>
+                                <fromXml>true</fromXml>
+                            </Operation>
+                        </valueOperations>
+                        <apply>
+                            <Operation Class="PatchOperationAdd">
+                                <xpath>{SkilledWorkTypeDef}/modExtensions/li[@Class="Autonomy.PriorityGiverExtension"]/priorityGivers</xpath>
+                                <value>
+                                    <li Class="Autonomy.PriorityGiver">
+                                        <condition>SkillAffinity</condition>
+                                        <skill>{Skill}</skill>
+                                        <rangeDatas>
+                                            <li>
+                                                <validRange>0~3</validRange>
+                                                <priority>-5~-1</priority>
+                                                <description>I know almost nothing about {SkillLabel}</description>
+                                            </li>
+                                            <li>
+                                                <validRange>5~10</validRange>
+                                                <priority>1~5</priority>
+                                                <description>I know about {SkillLabel}</description>
+                                            </li>
+                                            <li>
+                                                <validRange>11~20</validRange>
+                                                <priority>6~10</priority>
+                                                <description>I know a lot about {SkillLabel}</description>
+                                            </li>
+                                        </rangeDatas>
+                                    </li>
+                                    <li Class="Autonomy.PriorityGiver">
+                                        <condition>MinorPassion</condition>
+                                        <type>SocialPreference</type> 
+                                        <workPreferenceScoreRange>-10~10</workPreferenceScoreRange> <!-- The whole spectrum -->
+                                        <typeMultiplier>2~0.5</typeMultiplier> <!-- The more independent the stronger the effect -->
+                                        <skill>{Skill}</skill>
+                                        <priority>3</priority>
+                                        <description>I am passionate about {SkillLabel}</description>
+                                    </li>
+                                    <li Class="Autonomy.PriorityGiver">
+                                        <condition>MajorPassion</condition>
+                                        <type>SocialPreference</type>
+                                        <workPreferenceScoreRange>-10~10</workPreferenceScoreRange> <!-- The whole spectrum -->
+                                        <typeMultiplier>2~0.5</typeMultiplier> <!-- The more independent the stronger the effect -->
+                                        <skill>{Skill}</skill>
+                                        <priority>5</priority>
+                                        <description>I am very passionate about {SkillLabel}</description>
+                                    </li>
+                                </value>
+                            </Operation>
+                        </apply>
+                    </Operation>
+                </apply>
+            </Operation>
+        </apply>
+    </Operation>
+    
+    <Operation Class="PatchOperationAdd">
+        <xpath>Defs/WorkTypeDef[defName="Hauling"]/modExtensions/li[@Class="Autonomy.PriorityGiverExtension"]/priorityGivers</xpath>
+        <value>
+            <li Class="Autonomy.PriorityGiver">
+                <condition>ThingsDeteriorating</condition>
+                <type>WorkApproach</type>
+                <workPreferenceScoreRange>-10~5</workPreferenceScoreRange>
+                <typeMultiplier>3~0.5</typeMultiplier> <!-- The more strict the stronger the effect -->
+                <priority>0~20</priority> <!-- Range depends on the amount of deteriorating things -->
+                <description>Things are deteriorating</description>
+            </li>
+            <li Class="Autonomy.PriorityGiver">
+                <condition>ThingsNeedRefueling</condition>
+                <type>WorkApproach</type>
+                <workPreferenceScoreRange>-10~5</workPreferenceScoreRange>
+                <typeMultiplier>2~0.5</typeMultiplier> <!-- The more strict the stronger the effect -->
+                <priority>0~20</priority> <!-- Range depends on the amount of deteriorating things -->
+                <description>Things need refueling</description>
+            </li>
+            <li Class="Autonomy.PriorityGiver">
+                <condition>ComparedStats</condition>
+                <type>SocialPreference</type>
+                <stat>MoveSpeed</stat>
+                <useAverage>true</useAverage>
+                <workPreferenceScoreRange>-10~10</workPreferenceScoreRange>
+                <typeMultiplier>0.5~2</typeMultiplier> <!-- The more cooperative the stronger the effect -->
+                <rangeDatas>
+                    <li>
+                        <validRange>-10~-3.99</validRange>
+                        <priority>-10~-4</priority>
+                        <description>I am much slower than average</description>
+                    </li>
+                    <li>
+                        <validRange>-4~-1</validRange>
+                        <priority>-4~-1</priority>
+                        <description>I am slower than average</description>
+                    </li>
+                    <li>
+                        <validRange>-0.99~0.99</validRange>
+                        <priority>1~2</priority>
+                        <description>I am average speed</description>
+                    </li>
+                    <li>
+                        <validRange>1~20</validRange>
+                        <priority>3~12</priority>
+                        <description>I am faster than average</description>
+                    </li>
+                    <li>
+                        <validRange>20.01~1000</validRange>
+                        <priority>12~12</priority>
+                        <description>I am faster than average</description>
+                    </li>
+                </rangeDatas>
+            </li>
+        </value>
+    </Operation>
+
+    <Operation Class="PatchOperationAdd">
+        <xpath>Defs/WorkTypeDef[defName="Cleaning"]/modExtensions/li[@Class="Autonomy.PriorityGiverExtension"]/priorityGivers</xpath>
+        <value>
+            <li Class="Autonomy.PriorityGiver">
+                <condition>MapFilthy</condition>
+                <type>SocialPreference</type>
+                <workPreferenceScoreRange>1~10</workPreferenceScoreRange>
+                <typeMultiplier>1~1.5</typeMultiplier> <!-- The more cooperative the stronger the effect -->
+                <priority>0~10</priority> <!-- Range depends on the level of filth in home -->
+                <description>Our home is filthy</description>
+            </li>
+            <li Class="Autonomy.PriorityGiver">
+                <condition>SurroundingsFilthy</condition>
+                <type>SocialPreference</type>
+                <workPreferenceScoreRange>-10~10</workPreferenceScoreRange> <!-- Even communal people care about their surroundings, though in decreasing intensity -->
+                <typeMultiplier>2~0.2</typeMultiplier> <!-- The more independent the stronger the effect -->
+                <priority>0~10</priority> <!-- Range depends on the level of filth seen by pawn -->
+                <description>My space is filthy</description>
+            </li>
+            <li Class="Autonomy.PriorityGiver">
+                <condition>BaseType</condition>
+                <type>CognitiveOrientation</type>
+                <workPreferenceScoreRange>-10~-1</workPreferenceScoreRange>
+                <typeMultiplier>1~0.1</typeMultiplier> <!-- The more logical the stronger the effect -->
+                <priority>7</priority>
+                <description>I enjoy cleaning</description>
+            </li>
+            <li Class="Autonomy.PriorityGiver">
+                <condition>BaseType</condition>
+                <type>WorkApproach</type>
+                <workPreferenceScoreRange>1~10</workPreferenceScoreRange>
+                <typeMultiplier>0.1~1</typeMultiplier> <!-- The more casual the stronger the effect -->
+                <priority>-5</priority>
+                <description>Cleaning is not that important</description>
+            </li>
+            <li Class="Autonomy.PriorityGiver">
+                <condition>BaseType</condition>
+                <type>WorkApproach</type>
+                <workPreferenceScoreRange>-10~-1</workPreferenceScoreRange>
+                <typeMultiplier>1~0.1</typeMultiplier> <!-- The more disciplined the stronger the effect -->
+                <priority>5</priority>
+                <description>Cleaning is important</description>
+            </li>
+        </value>
+    </Operation>
+
+    <Operation Class="PatchOperationAdd">
+        <xpath>Defs/WorkTypeDef[defName="Research"]/modExtensions/li[@Class="Autonomy.PriorityGiverExtension"]/priorityGivers</xpath>
+        <value>
+            <li Class="Autonomy.PriorityGiver">
+                <condition>SurroundingsFilthy</condition>
+                <priority>-10~0</priority> <!-- Range depends on the level of filth seen by pawn -->
+                <description>It's hard to do this in a dirty space</description>
+            </li>
+            <li Class="Autonomy.PriorityGiver">
+                <condition>BaseType</condition>
+                <type>CognitiveOrientation</type>
+                <workPreferenceScoreRange>-10~-1</workPreferenceScoreRange>
+                <typeMultiplier>1~0.1</typeMultiplier> <!-- The more logical the stronger the effect -->
+                <priority>15</priority>
+                <description>I enjoy logical tasks</description>
+            </li>
+            <li Class="Autonomy.PriorityGiver">
+                <condition>BaseType</condition>
+                <type>WorkEnvironmentAesthetic</type>
+                <workPreferenceScoreRange>-10~-1</workPreferenceScoreRange>
+                <typeMultiplier>0.1~1</typeMultiplier>
+                <priority>-5</priority>
+                <description>I prefer outdoors jobs</description>
+            </li>
+            <li Class="Autonomy.PriorityGiver">
+                <condition>ComparedStats</condition>
+                <type>SocialPreference</type>
+                <workPreferenceScoreRange>0~10</workPreferenceScoreRange> <!-- The more cooperative the stronger the effect -->
+                <typeMultiplier>0~2</typeMultiplier>
+                <stat>ResearchSpeed</stat>
+                <priority>0~10</priority> <!-- Range depends on how much better this pawn is than others -->
+                <description>I am the best at this around</description>
+            </li>
+        </value>
+    </Operation>
+</Patch>

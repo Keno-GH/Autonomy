@@ -1,0 +1,758 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Patch>
+
+    <Operation Class="XmlExtensions.CreateDocument">
+        <docName>TraitsDefs</docName>
+        <xpath>Defs/TraitDef</xpath>
+    </Operation>
+
+    <Operation Class="XmlExtensions.PatchOperationAddModExtension">
+        <xmlDoc>TraitsDefs</xmlDoc>
+        <xpath>TraitsDefs/TraitDef[defName="Nudist"]</xpath>
+        <value>
+            <li Class="Autonomy.WorkDriveGiverExtension">
+                <workDriveGivers>
+                    <li Class="Autonomy.workDriveGiver">
+                        <workDrivePreferenceAxis>WorkEnvironmentAesthetic</workDrivePreferenceAxis>
+                        <value>-5</value> <!-- Rustic -->
+                    </li>
+                    <li Class="Autonomy.workDriveGiver">
+                        <workDrivePreferenceAxis>WorkApproach</workDrivePreferenceAxis>
+                        <value>5</value> <!-- Flexible -->
+                    </li>
+                </workDriveGivers>
+            </li>
+        </value>
+    </Operation>
+
+    <Operation Class="XmlExtensions.PatchOperationAddModExtension">
+        <xmlDoc>TraitsDefs</xmlDoc>
+        <xpath>TraitsDefs/TraitDef[defName="Bloodlust"]</xpath>
+        <value>
+            <li Class="Autonomy.WorkDriveGiverExtension">
+                <workDriveGivers>
+                    <li Class="Autonomy.workDriveGiver">
+                        <workDrivePreferenceAxis>SocialPreference</workDrivePreferenceAxis>
+                        <value>-7</value> <!-- Solitary -->
+                    </li>
+                </workDriveGivers>
+            </li>
+        </value>
+    </Operation>
+
+    <Operation Class="XmlExtensions.PatchOperationAddModExtension">
+        <xmlDoc>TraitsDefs</xmlDoc>
+        <xpath>TraitsDefs/TraitDef[defName="Kind"]</xpath>
+        <value>
+            <li Class="Autonomy.WorkDriveGiverExtension">
+                <workDriveGivers>
+                    <li Class="Autonomy.workDriveGiver">
+                        <workDrivePreferenceAxis>SocialPreference</workDrivePreferenceAxis>
+                        <value>8</value> <!-- Communal -->
+                    </li>
+                </workDriveGivers>
+            </li>
+        </value>
+    </Operation>
+
+    <Operation Class="XmlExtensions.PatchOperationAddModExtension">
+        <xmlDoc>TraitsDefs</xmlDoc>
+        <xpath>TraitsDefs/TraitDef[defName="Psychopath"]</xpath>
+        <value>
+            <li Class="Autonomy.WorkDriveGiverExtension">
+                <workDriveGivers>
+                    <li Class="Autonomy.workDriveGiver">
+                        <workDrivePreferenceAxis>SocialPreference</workDrivePreferenceAxis>
+                        <value>-9</value> <!-- Solitary -->
+                    </li>
+                </workDriveGivers>
+            </li>
+        </value>
+    </Operation>
+
+    <Operation Class="XmlExtensions.PatchOperationAddModExtension">
+        <xmlDoc>TraitsDefs</xmlDoc>
+        <xpath>TraitsDefs/TraitDef[defName="Cannibal"]</xpath>
+        <value>
+            <li Class="Autonomy.WorkDriveGiverExtension">
+                <workDriveGivers>
+                    <li Class="Autonomy.workDriveGiver">
+                        <workDrivePreferenceAxis>SocialPreference</workDrivePreferenceAxis>
+                        <value>-4</value> <!-- Solitary -->
+                    </li>
+                    <li Class="Autonomy.workDriveGiver">
+                        <workDrivePreferenceAxis>WorkEnvironmentAesthetic</workDrivePreferenceAxis>
+                        <value>-2</value> <!-- Rustic -->
+                    </li>
+                </workDriveGivers>
+            </li>
+        </value>
+    </Operation>
+
+    <Operation Class="XmlExtensions.PatchOperationAddModExtension">
+        <xmlDoc>TraitsDefs</xmlDoc>
+        <xpath>TraitsDefs/TraitDef[defName="Abrasive"]</xpath>
+        <value>
+            <li Class="Autonomy.WorkDriveGiverExtension">
+                <workDriveGivers>
+                    <li Class="Autonomy.workDriveGiver">
+                        <workDrivePreferenceAxis>SocialPreference</workDrivePreferenceAxis>
+                        <value>-6</value> <!-- Solitary -->
+                    </li>
+                </workDriveGivers>
+            </li>
+        </value>
+    </Operation>
+
+    <Operation Class="XmlExtensions.PatchOperationAddModExtension">
+        <xmlDoc>TraitsDefs</xmlDoc>
+        <xpath>TraitsDefs/TraitDef[defName="TooSmart"]</xpath>
+        <value>
+            <li Class="Autonomy.WorkDriveGiverExtension">
+                <workDriveGivers>
+                    <li Class="Autonomy.workDriveGiver">
+                        <workDrivePreferenceAxis>SocialPreference</workDrivePreferenceAxis>
+                        <value>-2</value> <!-- Independent -->
+                    </li>
+                    <li Class="Autonomy.workDriveGiver">
+                        <workDrivePreferenceAxis>WorkApproach</workDrivePreferenceAxis>
+                        <value>2</value> <!-- Structured -->
+                    </li>
+                    <li Class="Autonomy.workDriveGiver">
+                        <workDrivePreferenceAxis>CognitiveOrientation</workDrivePreferenceAxis>
+                        <value>-8</value> <!-- Analytical -->
+                    </li>
+                </workDriveGivers>
+            </li>
+        </value>
+    </Operation>
+
+    <Operation Class="XmlExtensions.PatchOperationAddModExtension">
+        <xmlDoc>TraitsDefs</xmlDoc>
+        <xpath>TraitsDefs/TraitDef[defName="Brawler"]</xpath>
+        <value>
+            <li Class="Autonomy.WorkDriveGiverExtension">
+                <workDriveGivers>
+                    <li Class="Autonomy.workDriveGiver">
+                        <workDrivePreferenceAxis>SocialPreference</workDrivePreferenceAxis>
+                        <value>-1</value> <!-- Independent -->
+                    </li>
+                    <li Class="Autonomy.workDriveGiver">
+                        <workDrivePreferenceAxis>WorkApproach</workDrivePreferenceAxis>
+                        <value>-2</value> <!-- Relaxed -->
+                    </li>
+                </workDriveGivers>
+            </li>
+        </value>
+    </Operation>
+
+    <Operation Class="XmlExtensions.PatchOperationAddModExtension">
+        <xmlDoc>TraitsDefs</xmlDoc>
+        <xpath>TraitsDefs/TraitDef[defName="Masochist"]</xpath>
+        <value>
+            <li Class="Autonomy.WorkDriveGiverExtension">
+                <workDriveGivers>
+                    <li Class="Autonomy.workDriveGiver">
+                        <workDrivePreferenceAxis>SocialPreference</workDrivePreferenceAxis>
+                        <value>5</value> <!-- Cooperative -->
+                    </li>
+                    <li Class="Autonomy.workDriveGiver">
+                        <workDrivePreferenceAxis>WorkApproach</workDrivePreferenceAxis>
+                        <value>-4</value> <!-- Relaxed -->
+                    </li>
+                </workDriveGivers>
+            </li>
+        </value>
+    </Operation>
+
+    <Operation Class="XmlExtensions.PatchOperationAddModExtension">
+        <xmlDoc>TraitsDefs</xmlDoc>
+        <xpath>TraitsDefs/TraitDef[defName="NightOwl"]</xpath>
+        <value>
+            <li Class="Autonomy.WorkDriveGiverExtension">
+                <workDriveGivers>
+                    <li Class="Autonomy.workDriveGiver">
+                        <workDrivePreferenceAxis>SocialPreference</workDrivePreferenceAxis>
+                        <value>-5</value> <!-- Independent -->
+                    </li>
+                    <li Class="Autonomy.workDriveGiver">
+                        <workDrivePreferenceAxis>WorkApproach</workDrivePreferenceAxis>
+                        <value>-3</value> <!-- Relaxed -->
+                    </li>
+                </workDriveGivers>
+            </li>
+        </value>
+    </Operation>
+
+    <Operation Class="XmlExtensions.PatchOperationAddModExtension">
+        <xmlDoc>TraitsDefs</xmlDoc>
+        <xpath>TraitsDefs/TraitDef[defName="Greedy"]</xpath>
+        <value>
+            <li Class="Autonomy.WorkDriveGiverExtension">
+                <workDriveGivers>
+                    <li Class="Autonomy.workDriveGiver">
+                        <workDrivePreferenceAxis>SocialPreference</workDrivePreferenceAxis>
+                        <value>-9</value> <!-- Individualistic -->
+                    </li>
+                </workDriveGivers>
+            </li>
+        </value>
+    </Operation>
+
+    <Operation Class="XmlExtensions.PatchOperationAddModExtension">
+        <xmlDoc>TraitsDefs</xmlDoc>
+        <xpath>TraitsDefs/TraitDef[defName="Jealous"]</xpath>
+        <value>
+            <li Class="Autonomy.WorkDriveGiverExtension">
+                <workDriveGivers>
+                    <li Class="Autonomy.workDriveGiver">
+                        <workDrivePreferenceAxis>SocialPreference</workDrivePreferenceAxis>
+                        <value>-8</value> <!-- Individualistic -->
+                    </li>
+                </workDriveGivers>
+            </li>
+        </value>
+    </Operation>
+
+    <Operation Class="XmlExtensions.PatchOperationAddModExtension">
+        <xmlDoc>TraitsDefs</xmlDoc>
+        <xpath>TraitsDefs/TraitDef[defName="Ascetic"]</xpath>
+        <value>
+            <li Class="Autonomy.WorkDriveGiverExtension">
+                <workDriveGivers>
+                    <li Class="Autonomy.workDriveGiver">
+                        <workDrivePreferenceAxis>SocialPreference</workDrivePreferenceAxis>
+                        <value>-8</value> <!-- Individualistic -->
+                    </li>
+                </workDriveGivers>
+            </li>
+        </value>
+    </Operation>
+
+    <Operation Class="XmlExtensions.PatchOperationAddModExtension">
+        <xmlDoc>TraitsDefs</xmlDoc>
+        <xpath>TraitsDefs/TraitDef[defName="AnnoyingVoice"]</xpath>
+        <value>
+            <li Class="Autonomy.WorkDriveGiverExtension">
+                <workDriveGivers>
+                    <li Class="Autonomy.workDriveGiver">
+                        <workDrivePreferenceAxis>SocialPreference</workDrivePreferenceAxis>
+                        <value>-4</value> <!-- Individualistic -->
+                    </li>
+                </workDriveGivers>
+            </li>
+        </value>
+    </Operation>
+
+    <Operation Class="XmlExtensions.PatchOperationAddModExtension">
+        <xmlDoc>TraitsDefs</xmlDoc>
+        <xpath>TraitsDefs/TraitDef[defName="CreepyBreathing"]</xpath>
+        <value>
+            <li Class="Autonomy.WorkDriveGiverExtension">
+                <workDriveGivers>
+                    <li Class="Autonomy.workDriveGiver">
+                        <workDrivePreferenceAxis>SocialPreference</workDrivePreferenceAxis>
+                        <value>-3</value> <!-- Individualistic -->
+                    </li>
+                </workDriveGivers>
+            </li>
+        </value>
+    </Operation>
+
+    <Operation Class="XmlExtensions.PatchOperationAddModExtension">
+        <xmlDoc>TraitsDefs</xmlDoc>
+        <xpath>TraitsDefs/TraitDef[defName="Pyromaniac"]</xpath>
+        <value>
+            <li Class="Autonomy.WorkDriveGiverExtension">
+                <workDriveGivers>
+                    <li Class="Autonomy.workDriveGiver">
+                        <workDrivePreferenceAxis>SocialPreference</workDrivePreferenceAxis>
+                        <value>-3</value> <!-- Individualistic -->
+                    </li>
+                    <li Class="Autonomy.workDriveGiver">
+                        <workDrivePreferenceAxis>WorkEnvironmentAesthetic</workDrivePreferenceAxis>
+                        <value>-4</value> <!-- Rustic -->
+                    </li>
+                    <li Class="Autonomy.workDriveGiver">
+                        <workDrivePreferenceAxis>WorkApproach</workDrivePreferenceAxis>
+                        <value>4</value> <!-- Relaxed -->
+                    </li>
+                </workDriveGivers>
+            </li>
+        </value>
+    </Operation>
+
+    <Operation Class="XmlExtensions.PatchOperationAddModExtension">
+        <xmlDoc>TraitsDefs</xmlDoc>
+        <xpath>TraitsDefs/TraitDef[defName="Wimp"]</xpath>
+        <value>
+            <li Class="Autonomy.WorkDriveGiverExtension">
+                <workDriveGivers>
+                    <li Class="Autonomy.workDriveGiver">
+                        <workDrivePreferenceAxis>SocialPreference</workDrivePreferenceAxis>
+                        <value>-4</value> <!-- Individualistic -->
+                    </li>
+                    <li Class="Autonomy.workDriveGiver">
+                        <workDrivePreferenceAxis>WorkEnvironmentAesthetic</workDrivePreferenceAxis>
+                        <value>5</value> <!-- Mechanized -->
+                    </li>
+                </workDriveGivers>
+            </li>
+        </value>
+    </Operation>
+
+    <Operation Class="XmlExtensions.PatchOperationAddModExtension">
+        <xmlDoc>TraitsDefs</xmlDoc>
+        <xpath>TraitsDefs/TraitDef[defName="Nimble"]</xpath>
+        <value>
+            <li Class="Autonomy.WorkDriveGiverExtension">
+                <workDriveGivers>
+                    <li Class="Autonomy.workDriveGiver">
+                        <workDrivePreferenceAxis>CognitiveOrientation</workDrivePreferenceAxis>
+                        <value>4</value> <!-- Creative -->
+                    </li>
+                </workDriveGivers>
+            </li>
+        </value>
+    </Operation>
+
+    <Operation Class="XmlExtensions.PatchOperationAddModExtension">
+        <xmlDoc>TraitsDefs</xmlDoc>
+        <xpath>TraitsDefs/TraitDef[defName="FastLearner"]</xpath>
+        <value>
+            <li Class="Autonomy.WorkDriveGiverExtension">
+                <workDriveGivers>
+                    <li Class="Autonomy.workDriveGiver">
+                        <workDrivePreferenceAxis>CognitiveOrientation</workDrivePreferenceAxis>
+                        <value>5</value> <!-- Creative -->
+                    </li>
+                </workDriveGivers>
+            </li>
+        </value>
+    </Operation>
+
+    <Operation Class="XmlExtensions.PatchOperationAddModExtension">
+        <xmlDoc>TraitsDefs</xmlDoc>
+        <xpath>TraitsDefs/TraitDef[defName="SlowLearner"]</xpath>
+        <value>
+            <li Class="Autonomy.WorkDriveGiverExtension">
+                <workDriveGivers>
+                    <li Class="Autonomy.workDriveGiver">
+                        <workDrivePreferenceAxis>SocialPreference</workDrivePreferenceAxis>
+                        <value>3</value> <!-- Cooperative -->
+                    </li>
+                </workDriveGivers>
+            </li>
+        </value>
+    </Operation>
+
+    <Operation Class="XmlExtensions.PatchOperationAddModExtension">
+        <xmlDoc>TraitsDefs</xmlDoc>
+        <xpath>TraitsDefs/TraitDef[defName="Undergrounder"]</xpath>
+        <value>
+            <li Class="Autonomy.WorkDriveGiverExtension">
+                <workDriveGivers>
+                    <li Class="Autonomy.workDriveGiver">
+                        <workDrivePreferenceAxis>WorkEnvironmentAesthetic</workDrivePreferenceAxis>
+                        <value>9</value> <!-- Industrial -->
+                    </li>
+                </workDriveGivers>
+            </li>
+        </value>
+    </Operation>
+
+    <Operation Class="XmlExtensions.PatchOperationAddModExtension">
+        <xmlDoc>TraitsDefs</xmlDoc>
+        <xpath>TraitsDefs/TraitDef[defName="Transhumanist"]</xpath>
+        <value>
+            <li Class="Autonomy.WorkDriveGiverExtension">
+                <workDriveGivers>
+                    <li Class="Autonomy.workDriveGiver">
+                        <workDrivePreferenceAxis>WorkEnvironmentAesthetic</workDrivePreferenceAxis>
+                        <value>10</value> <!-- Industrial -->
+                    </li>
+                    <li Class="Autonomy.workDriveGiver">
+                        <workDrivePreferenceAxis>SocialPreference</workDrivePreferenceAxis>
+                        <value>-3</value> <!-- Individualistic -->
+                    </li>
+                </workDriveGivers>
+            </li>
+        </value>
+    </Operation>
+
+    <Operation Class="XmlExtensions.PatchOperationAddModExtension">
+        <xmlDoc>TraitsDefs</xmlDoc>
+        <xpath>TraitsDefs/TraitDef[defName="BodyPurist"]</xpath>
+        <value>
+            <li Class="Autonomy.WorkDriveGiverExtension">
+                <workDriveGivers>
+                    <li Class="Autonomy.workDriveGiver">
+                        <workDrivePreferenceAxis>WorkEnvironmentAesthetic</workDrivePreferenceAxis>
+                        <value>-5</value> <!-- Rustic -->
+                    </li>
+                    <li Class="Autonomy.workDriveGiver">
+                        <workDrivePreferenceAxis>SocialPreference</workDrivePreferenceAxis>
+                        <value>-3</value> <!-- Individualistic -->
+                    </li>
+                </workDriveGivers>
+            </li>
+        </value>
+    </Operation>
+
+    <Operation Class="XmlExtensions.PatchOperationAddModExtension">
+        <xmlDoc>TraitsDefs</xmlDoc>
+        <xpath>TraitsDefs/TraitDef[defName="DislikesMen"]</xpath>
+        <value>
+            <li Class="Autonomy.WorkDriveGiverExtension">
+                <workDriveGivers>
+                    <li Class="Autonomy.workDriveGiver">
+                        <workDrivePreferenceAxis>SocialPreference</workDrivePreferenceAxis>
+                        <value>-3</value> <!-- Individualistic -->
+                    </li>
+                </workDriveGivers>
+            </li>
+        </value>
+    </Operation>
+
+    <Operation Class="XmlExtensions.PatchOperationAddModExtension">
+        <xmlDoc>TraitsDefs</xmlDoc>
+        <xpath>TraitsDefs/TraitDef[defName="DislikesWomen"]</xpath>
+        <value>
+            <li Class="Autonomy.WorkDriveGiverExtension">
+                <workDriveGivers>
+                    <li Class="Autonomy.workDriveGiver">
+                        <workDrivePreferenceAxis>SocialPreference</workDrivePreferenceAxis>
+                        <value>-3</value> <!-- Individualistic -->
+                    </li>
+                </workDriveGivers>
+            </li>
+        </value>
+    </Operation>
+
+    <Operation Class="XmlExtensions.PatchOperationAddModExtension">
+        <xmlDoc>TraitsDefs</xmlDoc>
+        <xpath>TraitsDefs/TraitDef[defName="GreatMemory"]</xpath>
+        <value>
+            <li Class="Autonomy.WorkDriveGiverExtension">
+                <workDriveGivers>
+                    <li Class="Autonomy.workDriveGiver">
+                        <workDrivePreferenceAxis>CognitiveOrientation</workDrivePreferenceAxis>
+                        <value>-5</value> <!-- Methodical -->
+                    </li>
+                </workDriveGivers>
+            </li>
+        </value>
+    </Operation>
+
+    <Operation Class="XmlExtensions.PatchOperationAddModExtension">
+        <xmlDoc>TraitsDefs</xmlDoc>
+        <xpath>TraitsDefs/TraitDef[defName="TorturedArtist"]</xpath>
+        <value>
+            <li Class="Autonomy.WorkDriveGiverExtension">
+                <workDriveGivers>
+                    <li Class="Autonomy.workDriveGiver">
+                        <workDrivePreferenceAxis>CognitiveOrientation</workDrivePreferenceAxis>
+                        <value>5</value> <!-- Creative -->
+                    </li>
+                    <li Class="Autonomy.workDriveGiver">
+                        <workDrivePreferenceAxis>SocialPreference</workDrivePreferenceAxis>
+                        <value>-7</value> <!-- Solitary -->
+                    </li>
+                    <li Class="Autonomy.workDriveGiver">
+                        <workDrivePreferenceAxis>WorkApproach</workDrivePreferenceAxis>
+                        <value>4</value> <!-- Flexible -->
+                    </li>
+                </workDriveGivers>
+            </li>
+        </value>
+    </Operation>
+
+    <Operation Class="XmlExtensions.PatchOperationAddModExtension">
+        <xmlDoc>TraitsDefs</xmlDoc>
+        <xpath>TraitsDefs/TraitDef[defName="Gourmand"]</xpath>
+        <value>
+            <li Class="Autonomy.WorkDriveGiverExtension">
+                <workDriveGivers>
+                    <li Class="Autonomy.workDriveGiver">
+                        <workDrivePreferenceAxis>WorkApproach</workDrivePreferenceAxis>
+                        <value>4</value> <!-- Flexible -->
+                    </li>
+                </workDriveGivers>
+            </li>
+        </value>
+    </Operation>
+
+    <Operation Class="XmlExtensions.PatchOperationAddModExtension">
+        <xmlDoc>TraitsDefs</xmlDoc>
+        <xpath>TraitsDefs/TraitDef[defName="QuickSleeper"]</xpath>
+        <value>
+            <li Class="Autonomy.WorkDriveGiverExtension">
+                <workDriveGivers>
+                    <li Class="Autonomy.workDriveGiver">
+                        <workDrivePreferenceAxis>WorkApproach</workDrivePreferenceAxis>
+                        <value>5</value> <!-- Flexible -->
+                    </li>
+                </workDriveGivers>
+            </li>
+        </value>
+    </Operation>
+
+    <!-- Spectrum Traits -->
+
+    <Operation Class="XmlExtensions.PatchOperationAddModExtension">
+        <xmlDoc>TraitsDefs</xmlDoc>
+        <xpath>TraitsDefs/TraitDef[defName="DrugDesire"]</xpath>
+        <value>
+            <li Class="Autonomy.WorkDriveGiverExtension">
+                <degreeDatas>
+                    <li> 
+                        <degree>2</degree> <!-- chemical fascination -->
+                        <workDriveGivers>
+                            <li Class="Autonomy.workDriveGiver">
+                                <workDrivePreferenceAxis>WorkApproach</workDrivePreferenceAxis>
+                                <value>7</value> <!-- Casual -->
+                            </li>
+                            <li Class="Autonomy.workDriveGiver">
+                                <workDrivePreferenceAxis>SocialPreference</workDrivePreferenceAxis>
+                                <value>-3</value> <!-- Independent -->
+                            </li>
+                        </workDriveGivers>
+                    </li>
+                    <li> 
+                        <degree>1</degree>
+                        <workDriveGivers>
+                            <li Class="Autonomy.workDriveGiver">
+                                <workDrivePreferenceAxis>WorkApproach</workDrivePreferenceAxis>
+                                <value>3</value> <!-- Casual -->
+                            </li>
+                            <li Class="Autonomy.workDriveGiver">
+                                <workDrivePreferenceAxis>SocialPreference</workDrivePreferenceAxis>
+                                <value>-2</value> <!-- Independent -->
+                            </li>
+                        </workDriveGivers>
+                    </li>
+                    <li> 
+                        <degree>0</degree>
+                        <workDriveGivers>
+                            <li Class="Autonomy.workDriveGiver">
+                                <workDrivePreferenceAxis>WorkApproach</workDrivePreferenceAxis>
+                                <value>-3</value> <!-- Structured -->
+                            </li>
+                            <li Class="Autonomy.workDriveGiver">
+                                <workDrivePreferenceAxis>SocialPreference</workDrivePreferenceAxis>
+                                <value>-2</value> <!-- Independent -->
+                            </li>
+                        </workDriveGivers>
+                    </li>                            
+                </degreeDatas>
+            </li>
+        </value>
+    </Operation>
+
+    <Operation Class="XmlExtensions.PatchOperationAddModExtension">
+        <xmlDoc>TraitsDefs</xmlDoc>
+        <xpath>TraitsDefs/TraitDef[defName="NaturalMood"]</xpath>
+        <value>
+            <li Class="Autonomy.WorkDriveGiverExtension">
+                <degreeDatas>
+                    <li> 
+                        <degree>2</degree> <!-- sanguine -->
+                        <workDriveGivers>
+                            <li Class="Autonomy.workDriveGiver">
+                                <workDrivePreferenceAxis>WorkApproach</workDrivePreferenceAxis>
+                                <value>4</value> <!-- Flexible -->
+                            </li>
+                            <li Class="Autonomy.workDriveGiver">
+                                <workDrivePreferenceAxis>CognitiveOrientation</workDrivePreferenceAxis>
+                                <value>4</value> <!-- Inventive -->
+                            </li>
+                        </workDriveGivers>
+                    </li>
+                    <li> 
+                        <degree>1</degree> <!-- optimist -->
+                        <workDriveGivers>
+                            <li Class="Autonomy.workDriveGiver">
+                                <workDrivePreferenceAxis>WorkApproach</workDrivePreferenceAxis>
+                                <value>2</value> <!-- Flexible -->
+                            </li>
+                            <li Class="Autonomy.workDriveGiver">
+                                <workDrivePreferenceAxis>CognitiveOrientation</workDrivePreferenceAxis>
+                                <value>2</value> <!-- Inventive -->
+                            </li>
+                        </workDriveGivers>
+                    </li>
+                    <li> 
+                        <degree>-1</degree> <!-- pessimist -->
+                        <workDriveGivers>
+                            <li Class="Autonomy.workDriveGiver">
+                                <workDrivePreferenceAxis>WorkApproach</workDrivePreferenceAxis>
+                                <value>-2</value> <!-- Structured -->
+                            </li>
+                            <li Class="Autonomy.workDriveGiver">
+                                <workDrivePreferenceAxis>CognitiveOrientation</workDrivePreferenceAxis>
+                                <value>-2</value> <!-- Methodical -->
+                            </li>
+                        </workDriveGivers>
+                    </li>
+                    <li> 
+                        <degree>-2</degree> <!-- depressive -->
+                        <workDriveGivers>
+                            <li Class="Autonomy.workDriveGiver">
+                                <workDrivePreferenceAxis>WorkApproach</workDrivePreferenceAxis>
+                                <value>-4</value> <!-- Structured -->
+                            </li>
+                            <li Class="Autonomy.workDriveGiver">
+                                <workDrivePreferenceAxis>CognitiveOrientation</workDrivePreferenceAxis>
+                                <value>-4</value> <!-- Methodical -->
+                            </li>
+                        </workDriveGivers>
+                    </li>
+                </degreeDatas>
+            </li>
+        </value>
+    </Operation>
+
+    <Operation Class="XmlExtensions.PatchOperationAddModExtension">
+        <xmlDoc>TraitsDefs</xmlDoc>
+        <xpath>TraitsDefs/TraitDef[defName="Nerves"]</xpath>
+        <value>
+            <li Class="Autonomy.WorkDriveGiverExtension">
+                <degreeDatas>
+                    <li> 
+                        <degree>2</degree> <!-- iron-willed -->
+                        <workDriveGivers>
+                            <li Class="Autonomy.workDriveGiver">
+                                <workDrivePreferenceAxis>CognitiveOrientation</workDrivePreferenceAxis>
+                                <value>-3</value> <!-- Methodical -->
+                            </li>
+                            <li Class="Autonomy.workDriveGiver">
+                                <workDrivePreferenceAxis>WorkApproach</workDrivePreferenceAxis>
+                                <value>-6</value> <!-- Structured -->
+                            </li>
+                        </workDriveGivers>
+                    </li>
+                    <li> 
+                        <degree>1</degree> <!-- steadfast -->
+                        <workDriveGivers>
+                            <li Class="Autonomy.workDriveGiver">
+                                <workDrivePreferenceAxis>CognitiveOrientation</workDrivePreferenceAxis>
+                                <value>-1</value> <!-- Methodical -->
+                            </li>
+                            <li Class="Autonomy.workDriveGiver">
+                                <workDrivePreferenceAxis>WorkApproach</workDrivePreferenceAxis>
+                                <value>-3</value> <!-- Structured -->
+                            </li>
+                        </workDriveGivers>
+                    </li>
+                    <li> 
+                        <degree>-1</degree> <!-- nervous -->
+                        <workDriveGivers>
+                            <li Class="Autonomy.workDriveGiver">
+                                <workDrivePreferenceAxis>CognitiveOrientation</workDrivePreferenceAxis>
+                                <value>1</value> <!-- Inventive -->
+                            </li>
+                            <li Class="Autonomy.workDriveGiver">
+                                <workDrivePreferenceAxis>WorkApproach</workDrivePreferenceAxis>
+                                <value>-3</value> <!-- Structured -->
+                            </li>
+                        </workDriveGivers>
+                    </li>
+                    <li> 
+                        <degree>-2</degree> <!-- volatile -->
+                        <workDriveGivers>
+                            <li class="Autonomy.workDriveGiver">
+                                <workDrivePreferenceAxis>CognitiveOrientation</workDrivePreferenceAxis>
+                                <value>3</value> <!-- Inventive -->
+                            </li>
+                            <li class="Autonomy.workDriveGiver">
+                                <workDrivePreferenceAxis>WorkApproach</workDrivePreferenceAxis>
+                                <value>-6</value> <!-- Structured -->
+                            </li>
+                        </workDriveGivers>
+                    </li>
+                </degreeDatas>
+            </li>
+        </value>
+    </Operation>
+
+    <Operation Class="XmlExtensions.PatchOperationAddModExtension">
+        <xmlDoc>TraitsDefs</xmlDoc>
+        <xpath>TraitsDefs/TraitDef[defName="Neurotic"]</xpath>
+        <value>
+            <li Class="Autonomy.WorkDriveGiverExtension">
+                <degreeDatas>
+                    <li> 
+                        <degree>1</degree> <!-- neurotic -->
+                        <workDriveGivers>
+                            <li Class="Autonomy.workDriveGiver">
+                                <workDrivePreferenceAxis>WorkApproach</workDrivePreferenceAxis>
+                                <value>5</value> <!-- Structured -->
+                            </li>
+                        </workDriveGivers>
+                    </li>
+                    <li> 
+                        <degree>2</degree> <!-- very neurotic -->
+                        <workDriveGivers>
+                            <li Class="Autonomy.workDriveGiver">
+                                <workDrivePreferenceAxis>WorkApproach</workDrivePreferenceAxis>
+                                <value>10</value> <!-- Disciplined -->
+                            </li>
+                        </workDriveGivers>
+                    </li>
+                </degreeDatas>
+            </li>
+        </value>
+    </Operation>
+
+    <Operation Class="XmlExtensions.PatchOperationAddModExtension">
+        <xmlDoc>TraitsDefs</xmlDoc>
+        <xpath>TraitsDefs/TraitDef[defName="Industriousness"]</xpath>
+        <value>
+            <li Class="Autonomy.WorkDriveGiverExtension">
+                <degreeDatas>
+                    <li> 
+                        <degree>2</degree> <!-- very industrious -->
+                        <workDriveGivers>
+                            <li Class="Autonomy.workDriveGiver">
+                                <workDrivePreferenceAxis>WorkApproach</workDrivePreferenceAxis>
+                                <value>-5</value> <!-- Structured -->
+                            </li>
+                        </workDriveGivers>
+                    </li>
+                    <li> 
+                        <degree>1</degree> <!-- industrious -->
+                        <workDriveGivers>
+                            <li Class="Autonomy.workDriveGiver">
+                                <workDrivePreferenceAxis>WorkApproach</workDrivePreferenceAxis>
+                                <value>-2</value> <!-- Structured -->
+                            </li>
+                        </workDriveGivers>
+                    </li>
+                    <li> 
+                        <degree>-1</degree> <!-- lazy -->
+                        <workDriveGivers>
+                            <li Class="Autonomy.workDriveGiver">
+                                <workDrivePreferenceAxis>WorkApproach</workDrivePreferenceAxis>
+                                <value>3</value> <!-- Casual -->
+                            </li>
+                        </workDriveGivers>
+                    </li>
+                    <li> 
+                        <degree>-2</degree> <!-- very lazy -->
+                        <workDriveGivers>
+                            <li Class="Autonomy.workDriveGiver">
+                                <workDrivePreferenceAxis>WorkApproach</workDrivePreferenceAxis>
+                                <value>7</value> <!-- Casual -->
+                            </li>
+                        </workDriveGivers>
+                    </li>
+                </degreeDatas>
+            </li>
+        </value>
+    </Operation>
+
+    <Operation Class="XmlExtensions.MergeDocument">
+        <docName>TraitsDefs</docName>
+    </Operation>
+
+</Patch>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Defs>
+    <Autonomy.PriorityGiverDef>
+        <defName>BaseType</defName>
+        <giver>HandleBaseType</giver>
+    </Autonomy.PriorityGiverDef>
+    <Autonomy.PriorityGiverDef>
+        <defName>MapFilthy</defName>
+        <giver>HandleMapFilthy</giver>
+    </Autonomy.PriorityGiverDef>
+    <Autonomy.PriorityGiverDef>
+        <defName>ThingsDeteriorating</defName>
+        <giver>HandleThingsDeteriorating</giver>
+    </Autonomy.PriorityGiverDef>
+    <Autonomy.PriorityGiverDef>
+        <defName>ThingsNeedRefueling</defName>
+        <giver>HandleThingsNeedRefueling</giver>
+    </Autonomy.PriorityGiverDef>
+    <Autonomy.PriorityGiverDef>
+        <defName>SurroundingsFilthy</defName>
+        <giver>HandleSurroundingsFilthy</giver>
+    </Autonomy.PriorityGiverDef>
+    <Autonomy.PriorityGiverDef>
+        <defName>SkillAffinity</defName>
+        <giver>HandleSkillAffinity</giver>
+    </Autonomy.PriorityGiverDef>
+    <Autonomy.PriorityGiverDef>
+        <defName>MinorPassion</defName>
+        <giver>HandlePassion</giver>
+    </Autonomy.PriorityGiverDef>
+    <Autonomy.PriorityGiverDef>
+        <defName>MajorPassion</defName>
+        <giver>HandlePassion</giver>
+    </Autonomy.PriorityGiverDef>
+    <Autonomy.PriorityGiverDef>
+        <defName>ComparedStats</defName>
+        <giver>HandleComparedStats</giver>
+    </Autonomy.PriorityGiverDef>
+</Defs>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+	<packageId>keno.autonomy</packageId>
+	<name>Autonomy</name>
+	<author>Keno</author>
+	<supportedVersions>
+		<li>1.5</li>
+	</supportedVersions>
+
+	<modDependencies>
+		<li>
+			<packageId>imranfish.xmlextensions</packageId>
+			<displayName>XML Extensions</displayName>
+			<steamWorkshopUrl>steam://url/CommunityFilePage/2574315206</steamWorkshopUrl>
+			<downloadUrl>https://steamcommunity.com/sharedfiles/filedetails/?id=2574315206</downloadUrl>
+		</li>
+		<li>
+			<packageId>brrainz.harmony</packageId>
+			<displayName>Harmony</displayName>
+			<steamWorkshopUrl>steam://url/CommunityFilePage/2009463077</steamWorkshopUrl>
+			<downloadUrl>https://steamcommunity.com/sharedfiles/filedetails/?id=2009463077</downloadUrl>
+		</li>
+<!-- 		<li>
+			<packageId>ferny.replacelib</packageId>
+			<displayName>ReplaceLib</displayName>
+			<steamWorkshopUrl>steam://url/CommunityFilePage/3417393194</steamWorkshopUrl>
+			<downloadUrl>https://steamcommunity.com/sharedfiles/filedetails/?id=3417393194</downloadUrl>
+		</li> -->
+	</modDependencies>
+
+	<incompatibleWith>
+		<!-- <li>username.modname</li> -->
+	</incompatibleWith>
+
+	<description>Autonomy is a mod that allows pawns to choose their own work priorities based on their personalities and surroundings.</description>
+</ModMetaData>

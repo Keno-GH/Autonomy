@@ -1,0 +1,397 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Patch>
+
+    <Operation Class="XmlExtensions.CreateDocument">
+        <docName>BackstoryDefs</docName>
+        <xpath>Defs/BackstoryDef</xpath>
+    </Operation>
+
+    <Operation Class="XmlExtensions.PatchOperationAddModExtension">
+        <xmlDoc>BackstoryDefs</xmlDoc>
+        <xpath>BackstoryDefs/BackstoryDef[defName="SewerKid57"]</xpath>
+        <!--[PAWN_nameDef] grew up in the sludge-smeared sewers of a polluted industrial world. [PAWN_pronoun] befriended the strange insects in the darkness and learned to love them.-->
+        <value>
+            <li Class="Autonomy.WorkDriveGiverExtension">
+                <workDriveGivers>
+                    <li Class="Autonomy.workDriveGiver">
+                        <workDrivePreferenceAxis>WorkEnvironmentAesthetic</workDrivePreferenceAxis>
+                        <value>10</value> <!-- Industrial -->
+                    </li>
+                    <li Class="Autonomy.workDriveGiver">
+                        <workDrivePreferenceAxis>SocialPreference</workDrivePreferenceAxis>
+                        <value>5</value> <!-- Communal -->
+                    </li>
+                </workDriveGivers>
+            </li>
+        </value>
+    </Operation>
+
+    <Operation Class="XmlExtensions.PatchOperationAddModExtension">
+        <xmlDoc>BackstoryDefs</xmlDoc>
+        <xpath>BackstoryDefs/BackstoryDef[defName="MadScientist22"]</xpath>
+        <!--Stripped of [PAWN_possessive] life's work and exiled after [PAWN_possessive] unethical experiments on the survivors of the Callos IX incident were published, [PAWN_nameDef] learned the skills necessary to survive in the outer rim.\n\nContinuing [PAWN_possessive] research with nothing left to lose, [PAWN_pronoun] made minions to carry out the tasks that bored him.-->
+        <value>
+            <li Class="Autonomy.WorkDriveGiverExtension">
+                <workDriveGivers>
+                    <li Class="Autonomy.workDriveGiver">
+                        <workDrivePreferenceAxis>WorkEnvironmentAesthetic</workDrivePreferenceAxis>
+                        <value>15</value> <!-- Industrial -->
+                    </li>
+                    <li Class="Autonomy.workDriveGiver">
+                        <workDrivePreferenceAxis>SocialPreference</workDrivePreferenceAxis>
+                        <value>-15</value> <!-- Individualistic -->
+                    </li>
+                    <li Class="Autonomy.workDriveGiver">
+                        <workDrivePreferenceAxis>CognitiveOrientation</workDrivePreferenceAxis>
+                        <value>5</value> <!-- Creative -->
+                    </li>
+                </workDriveGivers>
+            </li>
+        </value>
+    </Operation>
+
+    <Operation Class="XmlExtensions.PatchOperationAddModExtension">
+        <xmlDoc>BackstoryDefs</xmlDoc>
+        <xpath>BackstoryDefs/BackstoryDef[defName="ArmyCook0"]</xpath>
+        <!--[PAWN_nameDef] joined the army as a worker and spent most of [PAWN_possessive] time cooking and repairing. While [PAWN_pronoun] was stationed on a dangerous planet, [PAWN_pronoun] underwent basic shooting and survival training.-->
+        <value>
+            <li Class="Autonomy.WorkDriveGiverExtension">
+                <workDriveGivers>
+                    <li Class="Autonomy.workDriveGiver">
+                        <workDrivePreferenceAxis>WorkEnvironmentAesthetic</workDrivePreferenceAxis>
+                        <value>5</value> <!-- Industrial -->
+                    </li>
+                    <li Class="Autonomy.workDriveGiver">
+                        <workDrivePreferenceAxis>SocialPreference</workDrivePreferenceAxis>
+                        <value>5</value> <!-- Communal -->
+                    </li>
+                    <li Class="Autonomy.workDriveGiver">
+                        <workDrivePreferenceAxis>CognitiveOrientation</workDrivePreferenceAxis>
+                        <value>-5</value> <!-- Logical -->
+                    </li>
+                    <li Class="Autonomy.workDriveGiver">
+                        <workDrivePreferenceAxis>WorkApproach</workDrivePreferenceAxis>
+                        <value>-5</value> <!-- Strict -->
+                    </li>
+                </workDriveGivers>
+            </li>
+        </value>
+    </Operation>
+
+    <Operation Class="XmlExtensions.PatchOperationAddModExtension">
+        <xmlDoc>BackstoryDefs</xmlDoc>
+        <xpath>BackstoryDefs/BackstoryDef[defName="CivilEngineer2"]</xpath>
+        <!--[PAWN_nameDef] was a well-known civil engineer. [PAWN_possessive] job involved designing and maintaining rock fortification structures. [PAWN_pronoun] did enough statistical analysis to keep [PAWN_possessive] mind sharp.-->
+        <value>
+            <li Class="Autonomy.WorkDriveGiverExtension">
+                <workDriveGivers>
+                    <li Class="Autonomy.workDriveGiver">
+                        <workDrivePreferenceAxis>WorkEnvironmentAesthetic</workDrivePreferenceAxis>
+                        <value>5</value> <!-- Industrial -->
+                    </li>
+                    <li Class="Autonomy.workDriveGiver">
+                        <workDrivePreferenceAxis>CognitiveOrientation</workDrivePreferenceAxis>
+                        <value>-5</value> <!-- Logical -->
+                    </li>
+                </workDriveGivers>
+            </li>
+        </value>
+    </Operation>
+
+    <Operation Class="XmlExtensions.PatchOperationAddModExtension">
+        <xmlDoc>BackstoryDefs</xmlDoc>
+        <xpath>BackstoryDefs/BackstoryDef[defName="UrbworldPolitican92"]</xpath>
+        <!--It's no secret that the Companies own much of the urbworlds, but someone has to take the bribes. [PAWN_nameDef] was one such figurehead.\n\n[PAWN_pronoun] learned how to manipulate the hopes and dreams of the people while living comfortably in a penthouse.-->
+        <value>
+            <li Class="Autonomy.WorkDriveGiverExtension">
+                <workDriveGivers>
+                    <li Class="Autonomy.workDriveGiver">
+                        <workDrivePreferenceAxis>WorkEnvironmentAesthetic</workDrivePreferenceAxis>
+                        <value>5</value> <!-- Industrial -->
+                    </li>
+                    <li Class="Autonomy.workDriveGiver">
+                        <workDrivePreferenceAxis>SocialPreference</workDrivePreferenceAxis>
+                        <value>-10</value> <!-- Individualistic -->
+                    </li>
+                    <li Class="Autonomy.workDriveGiver">
+                        <workDrivePreferenceAxis>WorkApproach</workDrivePreferenceAxis>
+                        <value>10</value> <!-- Relaxed -->
+                    </li>
+                </workDriveGivers>
+            </li>
+        </value>
+    </Operation>
+
+    <Operation Class="XmlExtensions.PatchOperationAddModExtension">
+        <xmlDoc>BackstoryDefs</xmlDoc>
+        <xpath>BackstoryDefs/BackstoryDef[defName="GraphicDesigner33"]</xpath>
+        <!--[PAWN_nameDef]' interest in artistic expression led [PAWN_objective] to become a designer. [PAWN_possessive] eye for detail made [PAWN_objective] a reasonably well-known artist on [PAWN_possessive] planet, though [PAWN_possessive] meticulousness often led [PAWN_objective] to spend too much time perfecting a single project.-->
+        <value>
+            <li Class="Autonomy.WorkDriveGiverExtension">
+                <workDriveGivers>
+                    <li Class="Autonomy.workDriveGiver">
+                        <workDrivePreferenceAxis>CognitiveOrientation</workDrivePreferenceAxis>
+                        <value>10</value> <!-- Creative -->
+                    </li>
+                </workDriveGivers>
+            </li>
+        </value>
+    </Operation>
+
+    <Operation Class="XmlExtensions.PatchOperationAddModExtension">
+        <xmlDoc>BackstoryDefs</xmlDoc>
+        <xpath>BackstoryDefs/BackstoryDef[defName="SpaceTechnician29"]</xpath>
+        <!--[PAWN_nameDef] finally managed to flee [PAWN_possessive] criminal life by getting a maintenance job on a nearby space station. [PAWN_pronoun] performed multiple repairing and building operations. [PAWN_pronoun] also used to participate in basic research activities and often defused co-workers' arguments. [PAWN_pronoun] never liked doing art.-->
+        <value>
+            <li Class="Autonomy.WorkDriveGiverExtension">
+                <workDriveGivers>
+                    <li Class="Autonomy.workDriveGiver">
+                        <workDrivePreferenceAxis>WorkEnvironmentAesthetic</workDrivePreferenceAxis>
+                        <value>10</value> <!-- Industrial -->
+                    </li>
+                    <li Class="Autonomy.workDriveGiver">
+                        <workDrivePreferenceAxis>SocialPreference</workDrivePreferenceAxis>
+                        <value>5</value> <!-- Communal -->
+                    </li>
+                    <li Class="Autonomy.workDriveGiver">
+                        <workDrivePreferenceAxis>CognitiveOrientation</workDrivePreferenceAxis>
+                        <value>-10</value> <!-- Logical -->
+                    </li>
+                </workDriveGivers>
+            </li>
+        </value>
+    </Operation>
+
+    <Operation Class="XmlExtensions.PatchOperationAddModExtension">
+        <xmlDoc>BackstoryDefs</xmlDoc>
+        <xpath>BackstoryDefs/BackstoryDef[defName="DoomsdayPariah18"]</xpath>
+        <!--[PAWN_nameDef] managed to open a vault of otherworldly technology while scavenging a dig site. [PAWN_pronoun] unwittingly triggered a doomsday device that cleansed the planet of all life. More interested in the tech than human life, [PAWN_pronoun] boarded the vault's spacecraft and departed to find more relics to abuse. -->
+        <value>
+            <li Class="Autonomy.WorkDriveGiverExtension">
+                <workDriveGivers>
+                    <li Class="Autonomy.workDriveGiver">
+                        <workDrivePreferenceAxis>WorkEnvironmentAesthetic</workDrivePreferenceAxis>
+                        <value>10</value> <!-- Strong Industrial preference due to obsession with technology -->
+                    </li>
+                    <li Class="Autonomy.workDriveGiver">
+                        <workDrivePreferenceAxis>SocialPreference</workDrivePreferenceAxis>
+                        <value>-10</value> <!-- Extremely solitary, no regard for human life -->
+                    </li>
+                    <li Class="Autonomy.workDriveGiver">
+                        <workDrivePreferenceAxis>CognitiveOrientation</workDrivePreferenceAxis>
+                        <value>-10</value> <!-- Highly analytical, driven by technology and efficiency -->
+                    </li>
+                </workDriveGivers>
+            </li>
+        </value>
+    </Operation>
+
+    <Operation Class="XmlExtensions.PatchOperationAddModExtension">
+        <xmlDoc>BackstoryDefs</xmlDoc>
+        <xpath>BackstoryDefs/BackstoryDef[defName="CombatEngineer30"]</xpath>
+        <!--[PAWN_nameDef] was recruited by the military as an engineer and set to work improving the navy's space shuttles. The harsh training taught [PAWN_objective] how to build and repair military vehicles and structures. One mission left [PAWN_nameDef] with pyrophobia and a strong desire to avoid plants. -->
+        <value>
+            <li Class="Autonomy.WorkDriveGiverExtension">
+                <workDriveGivers>
+                    <li Class="Autonomy.workDriveGiver">
+                        <workDrivePreferenceAxis>WorkEnvironmentAesthetic</workDrivePreferenceAxis>
+                        <value>10</value> <!-- Strong Industrial preference due to military engineering -->
+                    </li>
+                    <li Class="Autonomy.workDriveGiver">
+                        <workDrivePreferenceAxis>WorkApproach</workDrivePreferenceAxis>
+                        <value>-5</value> <!-- Disciplined due to military training -->
+                    </li>
+                </workDriveGivers>
+            </li>
+        </value>
+    </Operation>
+
+    <Operation Class="XmlExtensions.PatchOperationAddModExtension">
+        <xmlDoc>BackstoryDefs</xmlDoc>
+        <xpath>BackstoryDefs/BackstoryDef[defName="MilitaryEngineer45"]</xpath>
+        <!--[PAWN_nameDef] worked as an engineer for a colonial military. [PAWN_pronoun] got to play with weapons, murder-drones, and other 'fun' stuff. [PAWN_pronoun] specialized in repairing and modifying mechanoids' tools. Sometimes [PAWN_pronoun] tested them [PAWN_objective]self. -->
+        <value>
+            <li Class="Autonomy.WorkDriveGiverExtension">
+                <workDriveGivers>
+                    <li Class="Autonomy.workDriveGiver">
+                        <workDrivePreferenceAxis>WorkEnvironmentAesthetic</workDrivePreferenceAxis>
+                        <value>10</value> <!-- Highly industrial due to mechanoid work -->
+                    </li>
+                    <li Class="Autonomy.workDriveGiver">
+                        <workDrivePreferenceAxis>CognitiveOrientation</workDrivePreferenceAxis>
+                        <value>-5</value> <!-- Analytical, focused on engineering -->
+                    </li>
+                </workDriveGivers>
+            </li>
+        </value>
+    </Operation>
+
+    <Operation Class="XmlExtensions.PatchOperationAddModExtension">
+        <xmlDoc>BackstoryDefs</xmlDoc>
+        <xpath>BackstoryDefs/BackstoryDef[defName="ColiseumFighter22"]</xpath>
+        <!--Applying the knowledge that [PAWN_pronoun] gained from years around fighters, [PAWN_pronoun] became a successful gladiator in the coliseum that [PAWN_pronoun] once cleaned. -->
+        <value>
+            <li Class="Autonomy.WorkDriveGiverExtension">
+                <workDriveGivers>
+                    <li Class="Autonomy.workDriveGiver">
+                        <workDrivePreferenceAxis>WorkApproach</workDrivePreferenceAxis>
+                        <value>5</value> <!-- More casual, improvisational fighter -->
+                    </li>
+                </workDriveGivers>
+            </li>
+        </value>
+    </Operation>
+
+    <Operation Class="XmlExtensions.PatchOperationAddModExtension">
+        <xmlDoc>BackstoryDefs</xmlDoc>
+        <xpath>BackstoryDefs/BackstoryDef[defName="FighterController67"]</xpath>
+        <!--During the Zartha crisis, [PAWN_nameDef] fought across many worlds, providing the vital link between the ground and the air as a fighter controller. During the campaign, [PAWN_pronoun] saw friends injured and killed. This mental trauma haunts [PAWN_possessive] dreams to this day, but [PAWN_possessive] aim remains sharp. -->
+        <value>
+            <li Class="Autonomy.WorkDriveGiverExtension">
+                <workDriveGivers>
+                    <li Class="Autonomy.workDriveGiver">
+                        <workDrivePreferenceAxis>WorkApproach</workDrivePreferenceAxis>
+                        <value>-5</value> <!-- Disciplined due to military role -->
+                    </li>
+                </workDriveGivers>
+            </li>
+        </value>
+    </Operation>
+
+    <Operation Class="XmlExtensions.PatchOperationAddModExtension">
+        <xmlDoc>BackstoryDefs</xmlDoc>
+        <xpath>BackstoryDefs/BackstoryDef[defName="FerventResearcher72"]</xpath>
+        <!--As a young adult, [PAWN_nameDef] was sure that [PAWN_possessive] planet and its people were nearing their time of transcendence. A firm belief that [PAWN_possessive] research would be the catalyst drove [PAWN_objective] to increasingly alarming acts as bureaucrats and bioethics committees worked to stall [PAWN_possessive] progress. -->
+        <value>
+            <li Class="Autonomy.WorkDriveGiverExtension">
+                <workDriveGivers>
+                    <li Class="Autonomy.workDriveGiver">
+                        <workDrivePreferenceAxis>CognitiveOrientation</workDrivePreferenceAxis>
+                        <value>10</value> <!-- Highly creative, driven by visionary research -->
+                    </li>
+                </workDriveGivers>
+            </li>
+        </value>
+    </Operation>
+
+    <Operation Class="XmlExtensions.PatchOperationAddModExtension">
+        <xmlDoc>BackstoryDefs</xmlDoc>
+        <xpath>BackstoryDefs/BackstoryDef[defName="VengefulExplorer54"]</xpath>
+        <!-- A violent drifter without a home, [PAWN_nameDef] and [PAWN_possessive] father fought many battles across hundreds of years. [PAWN_pronoun] became a grizzled fighter and crack shot. After [PAWN_possessive] father's death in battle, [PAWN_nameDef] began exploring the stars alone, seeking [PAWN_possessive] father's killer, on the hunt for revenge. -->
+        <value>
+            <li Class="Autonomy.WorkDriveGiverExtension">
+                <workDriveGivers>
+                    <li Class="Autonomy.workDriveGiver">
+                        <workDrivePreferenceAxis>SocialPreference</workDrivePreferenceAxis>
+                        <value>-8</value> <!-- Mostly solitary due to life as a drifter and lone hunter -->
+                    </li>
+                    <li Class="Autonomy.workDriveGiver">
+                        <workDrivePreferenceAxis>WorkApproach</workDrivePreferenceAxis>
+                        <value>-6</value> <!-- Disciplined due to years of battle experience and vengeance-driven focus -->
+                    </li>
+                </workDriveGivers>
+            </li>
+        </value>
+    </Operation>
+
+    <Operation Class="XmlExtensions.PatchOperationAddModExtension">
+        <xmlDoc>BackstoryDefs</xmlDoc>
+        <xpath>BackstoryDefs/BackstoryDef[defName="BanishedSoldier85"]</xpath>
+        <!-- [PAWN_nameDef] became the most physically intimidating of the slaves, spending [PAWN_possessive] little free time obsessively sculpting [PAWN_possessive] body. 
+        [PAWN_possessive] efforts eventually paid off when the lord offered [PAWN_objective] a job as a personal bodyguard.
+
+        Later, when [PAWN_pronoun] plotted to use [PAWN_possessive] position to kill the lord and free the slaves, [PAWN_pronoun] was discovered and barely escaped with [PAWN_possessive] life. -->
+        <value>
+            <li Class="Autonomy.WorkDriveGiverExtension">
+                <workDriveGivers>
+                    <li Class="Autonomy.workDriveGiver">
+                        <workDrivePreferenceAxis>SocialPreference</workDrivePreferenceAxis>
+                        <value>-5</value> <!-- Likely distrustful and independent after betrayal -->
+                    </li>
+                    <li Class="Autonomy.workDriveGiver">
+                        <workDrivePreferenceAxis>WorkApproach</workDrivePreferenceAxis>
+                        <value>-7</value> <!-- Extremely disciplined due to physical training and survival -->
+                    </li>
+                </workDriveGivers>
+            </li>
+        </value>
+    </Operation>
+
+    <Operation Class="XmlExtensions.PatchOperationAddModExtension">
+        <xmlDoc>BackstoryDefs</xmlDoc>
+        <xpath>BackstoryDefs/BackstoryDef[defName="StalwartFarmer21"]</xpath>
+        <!-- With the farm under constant threat from brigands, [PAWN_nameDef] learned to defend [PAWN_objective]self with [PAWN_possessive] father's hunting rifle. 
+        [PAWN_pronoun] also mastered how to construct fences to keep livestock in and the local wildlife out. 
+        [PAWN_nameDef] tried to paint a picture of [PAWN_possessive] home and learned [PAWN_pronoun] can only draw scribbles and ducks. -->
+        <value>
+            <li Class="Autonomy.WorkDriveGiverExtension">
+                <workDriveGivers>
+                    <li Class="Autonomy.workDriveGiver">
+                        <workDrivePreferenceAxis>WorkEnvironmentAesthetic</workDrivePreferenceAxis>
+                        <value>-7</value> <!-- Strong preference for natural environments due to farming -->
+                    </li>
+                    <li Class="Autonomy.workDriveGiver">
+                        <workDrivePreferenceAxis>CognitiveOrientation</workDrivePreferenceAxis>
+                        <value>-7</value> <!-- Not creative; only capable of drawing scribbles -->
+                    </li>
+                </workDriveGivers>
+            </li>
+        </value>
+    </Operation>
+
+    <Operation Class="XmlExtensions.PatchOperationAddModExtension">
+        <xmlDoc>BackstoryDefs</xmlDoc>
+        <xpath>BackstoryDefs/BackstoryDef[defName="SpaceResearcher25"]</xpath>
+        <!-- [PAWN_nameDef] inherited [PAWN_possessive] parents' ship and carried on their research.
+
+        [PAWN_possessive] childhood experiences with diverse cultures allowed [PAWN_objective] to preserve [PAWN_possessive] caring nature despite spending most of [PAWN_possessive] life isolated in space. -->
+        <value>
+            <li Class="Autonomy.WorkDriveGiverExtension">
+                <workDriveGivers>
+                    <li Class="Autonomy.workDriveGiver">
+                        <workDrivePreferenceAxis>SocialPreference</workDrivePreferenceAxis>
+                        <value>5</value> <!-- Still values human connection despite isolation -->
+                    </li>
+                    <li Class="Autonomy.workDriveGiver">
+                        <workDrivePreferenceAxis>CognitiveOrientation</workDrivePreferenceAxis>
+                        <value>-5</value> <!-- Likely analytical due to scientific research -->
+                    </li>
+                </workDriveGivers>
+            </li>
+        </value>
+    </Operation>
+
+    <Operation Class="XmlExtensions.PatchOperationAddModExtension">
+        <xmlDoc>BackstoryDefs</xmlDoc>
+        <xpath>BackstoryDefs/BackstoryDef[defName="GeneticScientist66"]</xpath>
+        <!-- After the war [PAWN_pronoun] joined a genetic engineering firm. 
+        [PAWN_pronoun] worked on enhancements for humans and livestock. 
+        [PAWN_possessive] experience in inflicting and healing wounds was very beneficial to [PAWN_possessive] work, but [PAWN_pronoun] developed a black sense of humor. 
+        This made social gatherings awkward. -->
+        <value>
+            <li Class="Autonomy.WorkDriveGiverExtension">
+                <workDriveGivers>
+                    <li Class="Autonomy.workDriveGiver">
+                        <workDrivePreferenceAxis>WorkEnvironmentAesthetic</workDrivePreferenceAxis>
+                        <value>8</value> <!-- Strongly industrial due to genetic engineering -->
+                    </li>
+                    <li Class="Autonomy.workDriveGiver">
+                        <workDrivePreferenceAxis>CognitiveOrientation</workDrivePreferenceAxis>
+                        <value>-8</value> <!-- Highly analytical due to scientific research -->
+                    </li>
+                    <li Class="Autonomy.workDriveGiver">
+                        <workDrivePreferenceAxis>SocialPreference</workDrivePreferenceAxis>
+                        <value>-5</value> <!-- Awkward in social situations due to dark humor -->
+                    </li>
+                </workDriveGivers>
+            </li>
+        </value>
+    </Operation>
+
+
+
+    <Operation Class="XmlExtensions.MergeDocument">
+        <docName>BackstoryDefs</docName>
+    </Operation>
+
+</Patch>

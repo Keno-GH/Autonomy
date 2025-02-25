@@ -290,11 +290,13 @@ namespace Autonomy
             string[] priorityParts = giver.priority.Split('~');
             int minPriority = int.Parse(priorityParts[0]);
             int maxPriority = int.Parse(priorityParts[1]);
+            int maxCalc = 4;
+            int minCalc = 0;
 
             int calculatedPriority = 
-                needsTending > 10 ? maxPriority
-                : needsTending < 0 ? minPriority
-                : minPriority + ((int)(needsTending - 0) * (maxPriority - minPriority) / 10);
+                needsTending > maxCalc ? maxPriority
+                : needsTending < minCalc ? minPriority
+                : minPriority + ((int)(needsTending - minCalc) * (maxPriority - minPriority) / (maxCalc - minCalc));
 
             return calculatedPriority;
         }

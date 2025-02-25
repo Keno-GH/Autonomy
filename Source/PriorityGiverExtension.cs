@@ -44,12 +44,13 @@ namespace Autonomy
             Dictionary<WorkTypeDef, int> workPriorities = new Dictionary<WorkTypeDef, int>();
             var workDrivePreferences = WorkDriveCalculator.CalculateWorkDrivePreferences(pawn);
             var workTypePriorities = new Dictionary<WorkTypeDef, (int priority, List<string> descriptions)>();
+            Dictionary<string, float> pawnInfo = InfoProvider.GetPawnInfo(pawn);
 
             foreach (var workTypeDef in DefDatabase<WorkTypeDef>.AllDefs)
             {
                 if (pawn.WorkTypeIsDisabled(workTypeDef))
                     continue;
-                var (priority, descriptions) = PriorityCalculator.GetPriority(workTypeDef, pawn.Map, pawn, workDrivePreferences);
+                var (priority, descriptions) = PriorityCalculator.GetPriority(workTypeDef, pawn.Map, pawn, workDrivePreferences, pawnInfo);
                 workPriorities[workTypeDef] = priority;
                 workTypePriorities[workTypeDef] = (priority, descriptions);
             }

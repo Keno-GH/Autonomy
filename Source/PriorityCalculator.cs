@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using Verse;
 using RimWorld;
+using System.Runtime.InteropServices;
 
 namespace Autonomy
 {
@@ -42,7 +43,7 @@ namespace Autonomy
             }
         }
 
-        public static (int priority, List<string> descriptions) GetPriority(WorkTypeDef workTypeDef, Map map, Pawn pawn, Dictionary<string, int> workDrivePreferences)
+        public static (int priority, List<string> descriptions) GetPriority(WorkTypeDef workTypeDef, Map map, Pawn pawn, Dictionary<string, int> workDrivePreferences, Dictionary<string, float> pawnInfo)
         {
             var extension = workTypeDef.GetModExtension<PriorityGiverExtension>();
             if (extension == null)
@@ -51,7 +52,6 @@ namespace Autonomy
             }
 
             var mapInfo = InfoProvider.GetMapInfo(map, extension.priorityGivers);
-            var pawnInfo = InfoProvider.GetPawnInfo(pawn);
             if (mapInfo.ContainsKey("noMap"))
             {
                 return (0, new List<string>());
@@ -277,6 +277,27 @@ namespace Autonomy
             finalPriority = Math.Max(minPriority, Math.Min(finalPriority, maxPriority));
 
             return finalPriority;
+        }
+
+        private static int HandleTending(PriorityGiver giver, PriorityCalculationContext context)
+        {
+            var pawnInfo = context.PawnInfo;
+
+            if (!pawnInfo.TryGetValue("injuriesCount", out float needsTending) || needsTending <= 0)
+            {
+                return 0;
+            }
+
+            string[] priorityParts = giver.priority.Split('~');
+            int minPriority = int.Parse(priorityParts[0]);
+            int maxPriority = int.Parse(priorityParts[1]);
+
+            int calculatedPriority = 
+                needsTending > 10 ? maxPriority
+                : needsTending < 0 ? minPriority
+                : minPriority + ((int)(needsTending - 0) * (maxPriority - minPriority) / 10);
+
+            return calculatedPriority;
         }
 
         private static int HandleSkillAffinity(PriorityGiver giver, PriorityCalculationContext context)

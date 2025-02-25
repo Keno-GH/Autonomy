@@ -36,4 +36,8 @@
         <defName>ComparedStats</defName>
         <giver>HandleComparedStats</giver>
     </Autonomy.PriorityGiverDef>
+    <Autonomy.PriorityGiverDef>
+        <defName>NeedsTending</defName>
+        <giver>HandleTending</giver>
+    </Autonomy.PriorityGiverDef>
 </Defs>

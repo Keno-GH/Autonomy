@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Patch>
 
-    <Operation Class="XmlExtensions.PatchOperationSafeAdd">
+    <Operation Class="XmlExtensions.PatchOperationSafeAdd"> <!-- Add the PriorityGiverExtension to all work types, to make patching easier -->
         <xpath>Defs/WorkTypeDef</xpath>
         <value>
             <modExtensions>
@@ -12,6 +12,17 @@
             </modExtensions>
         </value>
     </Operation>
+
+     <Operation Class="PatchOperationAdd">
+        <xpath>Defs/WorkTypeDef[defName="Patient"]/modExtensions/li[@Class="Autonomy.PriorityGiverExtension"]/priorityGivers</xpath>
+        <value>
+            <li Class="Autonomy.PriorityGiver">
+                <condition>NeedsTending</condition>
+                <priority>0~100</priority>
+                <description>I need tending</description>
+            </li>
+        </value>
+    </Operation>   
 
     <Operation Class="XmlExtensions.ForEach"> <!-- Give skill related priority givers to work types with skills -->
         <xpath>Defs/WorkTypeDef[relevantSkills]</xpath>

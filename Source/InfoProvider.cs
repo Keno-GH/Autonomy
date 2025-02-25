@@ -50,6 +50,11 @@ namespace Autonomy
                         if (statValue <= 0f)
                             continue;
 
+                        if (pawn.InBed())
+                        {
+                            continue; // Skip colonists who are in bed to account for injuries and varying schedules
+                        }
+
                         sum += statValue;
                         count++;
 
@@ -79,6 +84,32 @@ namespace Autonomy
             {
                 float cleanliness = CleanlinessUtility.CalculateCleanliness(pawn);
                 pawnInfo["cleanlinessSurroundingMe"] = cleanliness;
+
+                int injuriesCount = pawn.health.hediffSet.GetHediffsTendable().Count();
+                float bleedingRate = pawn.health.hediffSet.BleedRateTotal;
+                bool needsTending = pawn.health.hediffSet.HasTendableHediff();
+                float immunityGainSpeed = pawn.health.hediffSet
+                    .hediffs
+                    .Select(h => h as HediffWithComps)
+                    .Where(h => h != null && h.comps.Any(c => c is HediffComp_Immunizable))
+                    .Select(h => h.TryGetComp<HediffComp_Immunizable>())
+                    .Where(c => c != null)
+                    .Sum(c => c.Props.immunityPerDaySick);
+                float severityGainSpeed = pawn.health.hediffSet
+                    .hediffs
+                    .Select(h => h as HediffWithComps)
+                    .Where(h => h != null && h.comps.Any(c => c is HediffComp_Immunizable))
+                    .Select(h => h.TryGetComp<HediffComp_Immunizable>())
+                    .Where(c => c != null)
+                    .Sum(c => c.Props.severityPerDayNotImmune);    
+                
+                pawnInfo["injuriesCount"] = injuriesCount;
+                pawnInfo["bleedingRate"] = bleedingRate;
+                pawnInfo["needsTending"] = needsTending ? 1 : 0;
+                pawnInfo["immunityGainSpeed"] = immunityGainSpeed;
+                pawnInfo["severityGainSpeed"] = severityGainSpeed;
+
+                Log.Message($"Pawn {pawn.Name} has {injuriesCount} injuries, bleeding rate: {bleedingRate}, needs tending: {needsTending}, immunity gain speed: {immunityGainSpeed}, severity gain speed: {severityGainSpeed}");
 
                 foreach (var skill in pawn.skills.skills)
                 {

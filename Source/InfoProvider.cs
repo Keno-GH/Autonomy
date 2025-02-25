@@ -86,28 +86,33 @@ namespace Autonomy
                 int injuriesCount = pawn.health.hediffSet.GetHediffsTendable().Count();
                 float bleedingRate = pawn.health.hediffSet.BleedRateTotal;
                 bool needsTending = pawn.health.hediffSet.HasTendableHediff();
-                float immunityGainSpeed = pawn.health.hediffSet
-                    .hediffs
+                var immunizableHeddifs = pawn.health.hediffSet.hediffs
                     .Select(h => h as HediffWithComps)
-                    .Where(h => h != null && h.comps.Any(c => c is HediffComp_Immunizable))
-                    .Select(h => h.TryGetComp<HediffComp_Immunizable>())
-                    .Where(c => c != null)
-                    .Sum(c => c.Props.immunityPerDaySick);
+                    .Where(h => h != null && h.comps.Any(c => c is HediffComp_Immunizable));
+                float immunityGainSpeed = immunizableHeddifs.Sum(h => pawn.health.immunity.GetImmunityRecord(h.def).ImmunityChangePerTick(pawn, true, h) * 60000f);
                 float severityGainSpeed = pawn.health.hediffSet
                     .hediffs
                     .Select(h => h as HediffWithComps)
                     .Where(h => h != null && h.comps.Any(c => c is HediffComp_Immunizable))
                     .Select(h => h.TryGetComp<HediffComp_Immunizable>())
                     .Where(c => c != null)
-                    .Sum(c => c.Props.severityPerDayNotImmune);    
+                    .Sum(c => c.Props.severityPerDayNotImmune);
+                float severityTendedSpeed = pawn.health.hediffSet
+                    .hediffs
+                    .Select(h => h as HediffWithComps)
+                    .Where(h => h != null && h.comps.Any(c => c is HediffComp_TendDuration))
+                    .Select(h => h.TryGetComp<HediffComp_TendDuration>())
+                    .Where(c => c != null)
+                    .Sum(c => c.TProps.severityPerDayTended * c.tendQuality);
                 
                 pawnInfo["injuriesCount"] = injuriesCount;
                 pawnInfo["bleedingRate"] = bleedingRate;
                 pawnInfo["needsTending"] = needsTending ? 1 : 0;
                 pawnInfo["immunityGainSpeed"] = immunityGainSpeed;
                 pawnInfo["severityGainSpeed"] = severityGainSpeed;
+                pawnInfo["severityTendedSpeed"] = severityTendedSpeed;
 
-                Log.Message($"Pawn {pawn.Name} has {injuriesCount} injuries, bleeding rate: {bleedingRate}, needs tending: {needsTending}, immunity gain speed: {immunityGainSpeed}, severity gain speed: {severityGainSpeed}");
+                // Log.Message($"Pawn {pawn.Name} has {injuriesCount} injuries, bleeding rate: {bleedingRate}, needs tending: {needsTending}, immunity gain speed: {immunityGainSpeed}, severity gain speed: {severityGainSpeed}, severity tended speed: {severityTendedSpeed}, true severity gained: {severityGainSpeed + severityTendedSpeed}, immunity rate - true severity gained: {immunityGainSpeed - (severityGainSpeed + severityTendedSpeed)}. Pawn Immunity Stat Value: {pawn.GetStatValue(StatDefOf.ImmunityGainSpeed, applyPostProcess: true)}");
 
                 foreach (var skill in pawn.skills.skills)
                 {

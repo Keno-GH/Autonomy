@@ -207,9 +207,9 @@ namespace Autonomy
             int maxPriority = int.Parse(giver.priority.Split('~')[1]);
 
             int basePriority = 
-            refuelableThingsNeedingRefuel > 10 ? maxPriority
-            : refuelableThingsNeedingRefuel < 0 ? minPriority
-            : minPriority + ((int)(refuelableThingsNeedingRefuel - 0) * (maxPriority - minPriority) / 10);
+                refuelableThingsNeedingRefuel > 10 ? maxPriority
+                : refuelableThingsNeedingRefuel < 0 ? minPriority
+                : minPriority + ((int)(refuelableThingsNeedingRefuel - 0) * (maxPriority - minPriority) / 10);
 
             float ratio = (workDrivePreference - minScore) / (maxScore - minScore);
             float multiplier = minMultiplier + ratio * (maxMultiplier - minMultiplier);
@@ -297,6 +297,42 @@ namespace Autonomy
                 needsTending > maxCalc ? maxPriority
                 : needsTending < minCalc ? minPriority
                 : minPriority + ((int)(needsTending - minCalc) * (maxPriority - minPriority) / (maxCalc - minCalc));
+
+            return calculatedPriority;
+        }
+
+        private static int HandleImmunity(PriorityGiver giver, PriorityCalculationContext context)
+        {
+            var pawnInfo = context.PawnInfo;
+
+            if (!pawnInfo.TryGetValue("immunityGainSpeed", out float immunityGainSpeed) || 
+            !pawnInfo.TryGetValue("severityGainSpeed", out float severityGainSpeed) || 
+            !pawnInfo.TryGetValue("severityTendedSpeed", out float severityTendedSpeed))
+            {
+                return 0;
+            }
+
+            if (severityGainSpeed == 0)
+            {
+                return 0;
+            }
+
+            float calculatedSeverityGainSpeed = severityGainSpeed + severityTendedSpeed; // SeverityTendedSpeed is negative
+
+            float adjustedImmunityGainSpeed = context.Pawn.InBed() ? immunityGainSpeed * 0.8f : immunityGainSpeed; // Assume we get immunity 20% slower when out of bed
+
+            string[] priorityParts = giver.priority.Split('~');
+            int minPriority = int.Parse(priorityParts[0]);
+            int maxPriority = int.Parse(priorityParts[1]);
+
+            if (adjustedImmunityGainSpeed < calculatedSeverityGainSpeed)
+            {
+                return maxPriority;
+            }
+
+            float difference = adjustedImmunityGainSpeed - calculatedSeverityGainSpeed;
+            float ratio = Math.Min(difference / 0.5f, 1.0f);
+            int calculatedPriority = (int)(minPriority + (1 - ratio) * (maxPriority - minPriority));
 
             return calculatedPriority;
         }

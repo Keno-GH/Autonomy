@@ -40,4 +40,8 @@
         <defName>NeedsTending</defName>
         <giver>HandleTending</giver>
     </Autonomy.PriorityGiverDef>
+    <Autonomy.PriorityGiverDef>
+        <defName>BuildingImmunity</defName>
+        <giver>HandleImmunity</giver>
+    </Autonomy.PriorityGiverDef>
 </Defs>

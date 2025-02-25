@@ -44,4 +44,8 @@
         <defName>BuildingImmunity</defName>
         <giver>HandleImmunity</giver>
     </Autonomy.PriorityGiverDef>
+    <Autonomy.PriorityGiverDef>
+        <defName>Bleeding</defName>
+        <giver>HandleBleeding</giver>
+    </Autonomy.PriorityGiverDef>
 </Defs>

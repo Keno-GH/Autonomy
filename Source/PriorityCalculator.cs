@@ -403,6 +403,26 @@ namespace Autonomy
             return 0;
         }
 
+        private static int HandleBleeding(PriorityGiver giver, PriorityCalculationContext context)
+        {
+            var pawnInfo = context.PawnInfo;
+
+            if (!pawnInfo.TryGetValue("bleedingRate", out float bleedingRate) || bleedingRate <= 0) return 0;
+
+            string[] priorityParts = giver.priority.Split('~');
+            int minPriority = int.Parse(priorityParts[0]);
+            int maxPriority = int.Parse(priorityParts[1]);
+            float maxCalc = 0.5f;
+            float minCalc = 0.01f;
+
+            int calculatedPriority = 
+                bleedingRate > maxCalc ? maxPriority
+                : bleedingRate < minCalc ? minPriority
+                : minPriority + (int)((bleedingRate - minCalc) * (maxPriority - minPriority) / maxCalc - minCalc);
+
+            return calculatedPriority;
+        }
+
         private static int HandleComparedStats(PriorityGiver giver, PriorityCalculationContext context)
         {
             var workDrivePreferences = context.WorkDrivePreferences;

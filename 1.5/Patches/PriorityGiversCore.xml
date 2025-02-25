@@ -21,6 +21,11 @@
                 <priority>0~100</priority>
                 <description>I need tending</description>
             </li>
+            <li Class="Autonomy.PriorityGiver">
+                <condition>Bleeding</condition>
+                <priority>0~100</priority>
+                <description>I am bleeding out</description>
+            </li>
         </value>
     </Operation>
 

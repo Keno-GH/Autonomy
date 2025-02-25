@@ -48,4 +48,12 @@
         <defName>Bleeding</defName>
         <giver>HandleBleeding</giver>
     </Autonomy.PriorityGiverDef>
+    <Autonomy.PriorityGiverDef>
+        <defName>ColonyNeedsTending</defName>
+        <giver>HandleColonyTending</giver>
+    </Autonomy.PriorityGiverDef>
+    <Autonomy.PriorityGiverDef>
+        <defName>ColonyBleeding</defName>
+        <giver>HandleColonyBleeding</giver>
+    </Autonomy.PriorityGiverDef>
 </Defs>

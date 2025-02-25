@@ -14,6 +14,28 @@
     </Operation>
 
      <Operation Class="PatchOperationAdd">
+        <xpath>Defs/WorkTypeDef[defName="Doctor"]/modExtensions/li[@Class="Autonomy.PriorityGiverExtension"]/priorityGivers</xpath>
+        <value>
+            <li Class="Autonomy.PriorityGiver">
+                <condition>ColonyNeedsTending</condition>
+                <type>SocialPreference</type>
+                <workPreferenceScoreRange>-10~10</workPreferenceScoreRange>
+                <typeMultiplier>0.8~2</typeMultiplier> <!-- The more cooperative the stronger the effect -->
+                <priority>0~20</priority>
+                <description>People need tending</description>
+            </li>
+            <li Class="Autonomy.PriorityGiver">
+                <condition>ColonyBleeding</condition>
+                <type>SocialPreference</type>
+                <workPreferenceScoreRange>-10~10</workPreferenceScoreRange>
+                <typeMultiplier>0.8~2</typeMultiplier> <!-- The more cooperative the stronger the effect -->
+                <priority>0~20</priority>
+                <description>People are bleeding out</description>
+            </li>
+        </value>
+    </Operation>
+
+     <Operation Class="PatchOperationAdd">
         <xpath>Defs/WorkTypeDef[defName="Patient"]/modExtensions/li[@Class="Autonomy.PriorityGiverExtension"]/priorityGivers</xpath>
         <value>
             <li Class="Autonomy.PriorityGiver">

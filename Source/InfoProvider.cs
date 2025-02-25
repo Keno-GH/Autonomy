@@ -23,6 +23,9 @@ namespace Autonomy
                 int filthInHome = map.listerFilthInHomeArea.FilthInHomeArea.Count;
                 int thingsDeteriorating = map.listerHaulables.ThingsPotentiallyNeedingHauling().Count(t => t.def.useHitPoints && t.IsOutside() && !t.IsForbidden(Faction.OfPlayer) && t.def.CanEverDeteriorate);
                 int refuelableThingsNeedingRefuel = map.listerThings.ThingsInGroup(ThingRequestGroup.Refuelable).Count(t => t.TryGetComp<CompRefuelable>() is CompRefuelable compRefuelable && compRefuelable.ShouldAutoRefuelNowIgnoringFuelPct && compRefuelable.Fuel < compRefuelable.Props.fuelCapacity * 0.25f);
+                int colonistsNeedingTending = map.mapPawns.FreeColonists.Count(p => p.health.hediffSet.HasTendableHediff());
+                float colonistsBloodLoss = map.mapPawns.FreeColonists.Sum(p => p.health.hediffSet.BleedRateTotal);
+
 
                 mapInfo["pawnCount"] = pawnCount;
                 mapInfo["colonistCount"] = colonistCount;
@@ -31,6 +34,8 @@ namespace Autonomy
                 mapInfo["filthInHome"] = filthInHome;
                 mapInfo["thingsDeteriorating"] = thingsDeteriorating;
                 mapInfo["refuelableThingsNeedingRefuel"] = refuelableThingsNeedingRefuel;
+                mapInfo["colonistsNeedingTending"] = colonistsNeedingTending;
+                mapInfo["colonistsBloodLoss"] = colonistsBloodLoss;
 
                 var statDefsToCheck = priorityGivers
                     .Where(g => !string.IsNullOrEmpty(g.stat))

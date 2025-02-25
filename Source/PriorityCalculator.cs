@@ -423,6 +423,76 @@ namespace Autonomy
             return calculatedPriority;
         }
 
+        private static int HandleColonyTending(PriorityGiver giver, PriorityCalculationContext context)
+        {
+            var mapInfo = context.MapInfo;
+
+            if (!mapInfo.TryGetValue("colonistsNeedingTending", out float colonistsNeedingTending) || colonistsNeedingTending <= 0) return 0;
+
+            if (!context.WorkDrivePreferences.TryGetValue(giver.type, out int workDrivePreference)) return 0;
+
+            float minScore = float.Parse(giver.workPreferenceScoreRange.Split('~')[0]);
+            float maxScore = float.Parse(giver.workPreferenceScoreRange.Split('~')[1]);
+
+            if (workDrivePreference < minScore || workDrivePreference > maxScore) return 0;
+
+            float minMultiplier = float.Parse(giver.typeMultiplier.Split('~')[0]);
+            float maxMultiplier = float.Parse(giver.typeMultiplier.Split('~')[1]);
+            int minPriority = int.Parse(giver.priority.Split('~')[0]);
+            int maxPriority = int.Parse(giver.priority.Split('~')[1]);
+            int maxCalc = 5;
+            int minCalc = 1;
+
+            int basePriority = 
+                colonistsNeedingTending > maxCalc ? maxPriority
+                : colonistsNeedingTending < minCalc ? minPriority
+                : minPriority + ((int)(colonistsNeedingTending - minCalc) * (maxPriority - minPriority) / (maxCalc - minCalc));
+
+            float ratio = (workDrivePreference - minScore) / (maxScore - minScore);
+            float multiplier = minMultiplier + ratio * (maxMultiplier - minMultiplier);
+            basePriority = (int)(basePriority * multiplier);
+
+            if (basePriority < minPriority) basePriority = minPriority;
+            else if (basePriority > maxPriority) basePriority = maxPriority;
+
+            return basePriority;
+        }
+
+        private static int HandleColonyBleeding(PriorityGiver giver, PriorityCalculationContext context)
+        {
+            var mapInfo = context.MapInfo;
+
+            if (!mapInfo.TryGetValue("colonistsBloodLoss", out float colonistsBloodLoss) || colonistsBloodLoss <= 0) return 0;
+
+            if (!context.WorkDrivePreferences.TryGetValue(giver.type, out int workDrivePreference)) return 0;
+
+            float minScore = float.Parse(giver.workPreferenceScoreRange.Split('~')[0]);
+            float maxScore = float.Parse(giver.workPreferenceScoreRange.Split('~')[1]);
+
+            if (workDrivePreference < minScore || workDrivePreference > maxScore) return 0;
+
+            float minMultiplier = float.Parse(giver.typeMultiplier.Split('~')[0]);
+            float maxMultiplier = float.Parse(giver.typeMultiplier.Split('~')[1]);
+            int minPriority = int.Parse(giver.priority.Split('~')[0]);
+            int maxPriority = int.Parse(giver.priority.Split('~')[1]);
+            float maxCalc = 5f;
+            float minCalc = 0.5f;
+
+            int basePriority = 
+                colonistsBloodLoss > maxCalc ? maxPriority
+                : colonistsBloodLoss < minCalc ? minPriority
+                : minPriority + (int)((colonistsBloodLoss - minCalc) * (maxPriority - minPriority) / maxCalc - minCalc);
+
+            float ratio = (workDrivePreference - minScore) / (maxScore - minScore);
+            float multiplier = minMultiplier + ratio * (maxMultiplier - minMultiplier);
+            basePriority = (int)(basePriority * multiplier);
+
+            if (basePriority < minPriority) basePriority = minPriority;
+            else if (basePriority > maxPriority) basePriority = maxPriority;
+
+            return basePriority;
+        }
+
         private static int HandleComparedStats(PriorityGiver giver, PriorityCalculationContext context)
         {
             var workDrivePreferences = context.WorkDrivePreferences;

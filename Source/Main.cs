@@ -45,9 +45,13 @@ namespace Autonomy
 
                 // Collect the pawns in a separate list to avoid modifying the collection while iterating
                 List<Pawn> colonists = map.mapPawns.FreeColonists.ToList();
+                
+                var priorityGivers = DefDatabase<WorkTypeDef>.AllDefs.SelectMany(w => w.GetModExtension<PriorityGiverExtension>()?.priorityGivers ?? new List<PriorityGiver>()).ToList();
+                Dictionary<string, float> mapInfo = InfoProvider.GetMapInfo(map, priorityGivers);
+
                 foreach (var pawn in colonists)
                 {
-                    PriorityGiverUtility.SetWorkPriorities(pawn);
+                    PriorityGiverUtility.SetWorkPriorities(pawn, mapInfo);
                 }
 
                 tickCounter = 0;

@@ -43,7 +43,7 @@ namespace Autonomy
             }
         }
 
-        public static (int priority, List<string> descriptions) GetPriority(WorkTypeDef workTypeDef, Map map, Pawn pawn, Dictionary<string, int> workDrivePreferences, Dictionary<string, float> pawnInfo)
+        public static (int priority, List<string> descriptions) GetPriority(WorkTypeDef workTypeDef, Map map, Pawn pawn, Dictionary<string, int> workDrivePreferences, Dictionary<string, float> pawnInfo, Dictionary<string, float> mapInfo)
         {
             var extension = workTypeDef.GetModExtension<PriorityGiverExtension>();
             if (extension == null)
@@ -51,7 +51,6 @@ namespace Autonomy
                 return (0, new List<string>());
             }
 
-            var mapInfo = InfoProvider.GetMapInfo(map, extension.priorityGivers);
             if (mapInfo.ContainsKey("noMap"))
             {
                 return (0, new List<string>());

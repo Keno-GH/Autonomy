@@ -36,7 +36,7 @@ namespace Autonomy
     {
         private static Dictionary<Pawn, Dictionary<WorkTypeDef, (int priority, List<string> descriptions)>> pawnWorkPriorities = new Dictionary<Pawn, Dictionary<WorkTypeDef, (int priority, List<string> descriptions)>>();
 
-        public static void SetWorkPriorities(Pawn pawn)
+        public static void SetWorkPriorities(Pawn pawn, Dictionary<string, float> mapInfo)
         {
             if (pawn.workSettings == null || !pawn.workSettings.EverWork)
                 return;
@@ -50,7 +50,7 @@ namespace Autonomy
             {
                 if (pawn.WorkTypeIsDisabled(workTypeDef))
                     continue;
-                var (priority, descriptions) = PriorityCalculator.GetPriority(workTypeDef, pawn.Map, pawn, workDrivePreferences, pawnInfo);
+                var (priority, descriptions) = PriorityCalculator.GetPriority(workTypeDef, pawn.Map, pawn, workDrivePreferences, pawnInfo, mapInfo);
                 workPriorities[workTypeDef] = priority;
                 workTypePriorities[workTypeDef] = (priority, descriptions);
             }

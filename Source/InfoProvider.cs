@@ -66,8 +66,6 @@ namespace Autonomy
                     }
                     mapInfo[$"bestAt_{statDef.defName}"] = maxStatValue;
                     mapInfo[$"average_{statDef.defName}"] = count > 0 ? sum / count : 0;
-                    // Optionally log the result
-                    // Log.Message($"Best colonist at {statDef.defName}: {bestColonist.Name}, Average: {sum / count}");
                 }
             }
             return mapInfo;

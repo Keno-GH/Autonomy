@@ -61,7 +61,7 @@
                 <priority>0~10</priority>
                 <description>I the best at this around</description>
             </li>
-            <li Class="Autonomy.PriorityGiver">
+            <li Class="Autonomy.PriorityGiver" Name="ColonyNeedsTending">
                 <condition>ColonyNeedsTending</condition>
                 <type>SocialPreference</type>
                 <workPreferenceScoreRange>-10~10</workPreferenceScoreRange>
@@ -69,7 +69,7 @@
                 <priority>0~20</priority>
                 <description>People need tending</description>
             </li>
-            <li Class="Autonomy.PriorityGiver">
+            <li Class="Autonomy.PriorityGiver" Name="ColonyBleeding">
                 <condition>ColonyBleeding</condition>
                 <type>SocialPreference</type>
                 <workPreferenceScoreRange>-10~10</workPreferenceScoreRange>
@@ -83,12 +83,12 @@
      <Operation Class="PatchOperationAdd">
         <xpath>Defs/WorkTypeDef[defName="Patient"]/modExtensions/li[@Class="Autonomy.PriorityGiverExtension"]/priorityGivers</xpath>
         <value>
-            <li Class="Autonomy.PriorityGiver">
+            <li Class="Autonomy.PriorityGiver" Name="NeedsTending">
                 <condition>NeedsTending</condition>
                 <priority>0~100</priority>
                 <description>I need tending</description>
             </li>
-            <li Class="Autonomy.PriorityGiver">
+            <li Class="Autonomy.PriorityGiver" Name="Bleeding">
                 <condition>Bleeding</condition>
                 <priority>0~100</priority>
                 <description>I am bleeding out</description>
@@ -99,7 +99,10 @@
      <Operation Class="PatchOperationAdd">
         <xpath>Defs/WorkTypeDef[defName="PatientBedRest"]/modExtensions/li[@Class="Autonomy.PriorityGiverExtension"]/priorityGivers</xpath>
         <value>
-            <li Class="Autonomy.PriorityGiver">
+            <li Class="Autonomy.PriorityGiver" Name="BuildingImmunity">
+            <!-- Pawns will almost always bedrest when they need to buildup immunity. 
+            If they could fend of the disease without resting, they may choose to
+            keep working instead of resting --> 
                 <condition>BuildingImmunity</condition>
                 <type>WorkApproach</type>
                 <workPreferenceScoreRange>-10~10</workPreferenceScoreRange>
@@ -187,7 +190,7 @@
     <Operation Class="PatchOperationAdd">
         <xpath>Defs/WorkTypeDef[defName="Hauling"]/modExtensions/li[@Class="Autonomy.PriorityGiverExtension"]/priorityGivers</xpath>
         <value>
-            <li Class="Autonomy.PriorityGiver">
+            <li Class="Autonomy.PriorityGiver" Name="ThingsDeteriorating">
                 <condition>ThingsDeteriorating</condition>
                 <type>WorkApproach</type>
                 <workPreferenceScoreRange>-10~5</workPreferenceScoreRange>
@@ -195,7 +198,7 @@
                 <priority>0~20</priority> <!-- Range depends on the amount of deteriorating things -->
                 <description>Things are deteriorating</description>
             </li>
-            <li Class="Autonomy.PriorityGiver">
+            <li Class="Autonomy.PriorityGiver" Name="ThingsNeedRefueling">
                 <condition>ThingsNeedRefueling</condition>
                 <type>WorkApproach</type>
                 <workPreferenceScoreRange>-10~5</workPreferenceScoreRange>
@@ -203,7 +206,7 @@
                 <priority>0~20</priority> <!-- Range depends on the amount of deteriorating things -->
                 <description>Things need refueling</description>
             </li>
-            <li Class="Autonomy.PriorityGiver">
+            <li Class="Autonomy.PriorityGiver" Name="AverageMoveSpeed">
                 <condition>ComparedStats</condition>
                 <type>SocialPreference</type>
                 <stat>MoveSpeed</stat>
@@ -244,7 +247,7 @@
     <Operation Class="PatchOperationAdd">
         <xpath>Defs/WorkTypeDef[defName="Cleaning"]/modExtensions/li[@Class="Autonomy.PriorityGiverExtension"]/priorityGivers</xpath>
         <value>
-            <li Class="Autonomy.PriorityGiver">
+            <li Class="Autonomy.PriorityGiver" Name="MapFilthy">
                 <condition>MapFilthy</condition>
                 <type>SocialPreference</type>
                 <workPreferenceScoreRange>1~10</workPreferenceScoreRange>
@@ -252,7 +255,7 @@
                 <priority>0~10</priority> <!-- Range depends on the level of filth in home -->
                 <description>Our home is filthy</description>
             </li>
-            <li Class="Autonomy.PriorityGiver">
+            <li Class="Autonomy.PriorityGiver" Name="SurroundingsFilthy">
                 <condition>SurroundingsFilthy</condition>
                 <type>SocialPreference</type>
                 <workPreferenceScoreRange>-10~10</workPreferenceScoreRange> <!-- Even communal people care about their surroundings, though in decreasing intensity -->
@@ -260,7 +263,7 @@
                 <priority>0~10</priority> <!-- Range depends on the level of filth seen by pawn -->
                 <description>My space is filthy</description>
             </li>
-            <li Class="Autonomy.PriorityGiver">
+            <li Class="Autonomy.PriorityGiver" Name="LogicalEnjoy">
                 <condition>BaseType</condition>
                 <type>CognitiveOrientation</type>
                 <workPreferenceScoreRange>-10~-1</workPreferenceScoreRange>
@@ -268,7 +271,7 @@
                 <priority>7</priority>
                 <description>I enjoy cleaning</description>
             </li>
-            <li Class="Autonomy.PriorityGiver">
+            <li Class="Autonomy.PriorityGiver" Name="CasualEnjoy">
                 <condition>BaseType</condition>
                 <type>WorkApproach</type>
                 <workPreferenceScoreRange>1~10</workPreferenceScoreRange>
@@ -276,7 +279,7 @@
                 <priority>-5</priority>
                 <description>Cleaning is not that important</description>
             </li>
-            <li Class="Autonomy.PriorityGiver">
+            <li Class="Autonomy.PriorityGiver" Name="StrictEnjoy">
                 <condition>BaseType</condition>
                 <type>WorkApproach</type>
                 <workPreferenceScoreRange>-10~-1</workPreferenceScoreRange>
@@ -290,12 +293,12 @@
     <Operation Class="PatchOperationAdd">
         <xpath>Defs/WorkTypeDef[defName="Research"]/modExtensions/li[@Class="Autonomy.PriorityGiverExtension"]/priorityGivers</xpath>
         <value>
-            <li Class="Autonomy.PriorityGiver">
+            <li Class="Autonomy.PriorityGiver" Name="SurroundingsFilthy">
                 <condition>SurroundingsFilthy</condition>
                 <priority>-10~0</priority> <!-- Range depends on the level of filth seen by pawn -->
                 <description>It's hard to do this in a dirty space</description>
             </li>
-            <li Class="Autonomy.PriorityGiver">
+            <li Class="Autonomy.PriorityGiver" Name="LogicalEnjoy">
                 <condition>BaseType</condition>
                 <type>CognitiveOrientation</type>
                 <workPreferenceScoreRange>-10~-1</workPreferenceScoreRange>
@@ -303,7 +306,7 @@
                 <priority>15</priority>
                 <description>I enjoy logical tasks</description>
             </li>
-            <li Class="Autonomy.PriorityGiver">
+            <li Class="Autonomy.PriorityGiver" Name="CasualEnjoy">
                 <condition>BaseType</condition>
                 <type>WorkEnvironmentAesthetic</type>
                 <workPreferenceScoreRange>-10~-1</workPreferenceScoreRange>
@@ -311,7 +314,7 @@
                 <priority>-5</priority>
                 <description>I prefer outdoors jobs</description>
             </li>
-            <li Class="Autonomy.PriorityGiver">
+            <li Class="Autonomy.PriorityGiver" Name="StrictEnjoy">
                 <condition>ComparedStats</condition>
                 <type>SocialPreference</type>
                 <workPreferenceScoreRange>0~10</workPreferenceScoreRange> <!-- The more cooperative the stronger the effect -->

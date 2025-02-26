@@ -58,7 +58,7 @@
                 <condition>BuildingImmunity</condition>
                 <type>WorkApproach</type>
                 <workPreferenceScoreRange>-10~10</workPreferenceScoreRange>
-                <typeMultiplier>1~2</typeMultiplier> <!-- Relaxed pawns will tend to bedrest more -->
+                <typeMultiplier>1~2</typeMultiplier> <!-- Relaxed approach pawns will tend to bedrest more -->
                 <priority>10~100</priority>
                 <description>I feel sick</description>
             </li>

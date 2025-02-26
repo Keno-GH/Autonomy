@@ -16,6 +16,51 @@
      <Operation Class="PatchOperationAdd">
         <xpath>Defs/WorkTypeDef[defName="Doctor"]/modExtensions/li[@Class="Autonomy.PriorityGiverExtension"]/priorityGivers</xpath>
         <value>
+            <li Class="Autonomy.PriorityGiver" Name="AverageTendQuality">
+                <condition>ComparedStats</condition>
+                <stat>MedicalTendQuality</stat>
+                <useAverage>true</useAverage>
+                <type>SocialPreference</type>
+                <workPreferenceScoreRange>-10~10</workPreferenceScoreRange>
+                <typeMultiplier>0.5~1.5</typeMultiplier> <!-- The more cooperative the stronger the effect -->
+                <rangeDatas>
+                    <li>
+                        <validRange>-999~-0.81</validRange>
+                        <priority>-10~-10</priority>
+                        <description>There are better people for this</description>
+                    </li>
+                    <li>
+                        <validRange>-0.8~0</validRange>
+                        <priority>-10~0</priority>
+                        <description>There are better people for this</description>
+                    </li>
+                    <li>
+                        <validRange>0.01~0.3</validRange>
+                        <priority>1~2</priority>
+                        <description>I am average at this</description>
+                    </li>
+                    <li>
+                        <validRange>0.31~0.8</validRange>
+                        <priority>2~10</priority>
+                        <description>I am better at this than most</description>
+                    </li>
+                    <li>
+                        <validRange>0.81~999</validRange>
+                        <priority>10~10</priority>
+                        <description>I am better at this than most</description>
+                    </li>
+                </rangeDatas>
+            </li>
+            <li Class="Autonomy.PriorityGiver" Name="BestTendQuality">
+                <condition>ComparedStats</condition>
+                <stat>MedicalTendQuality</stat>
+                <useAverage>false</useAverage>
+                <type>SocialPreference</type>
+                <workPreferenceScoreRange>-10~10</workPreferenceScoreRange>
+                <typeMultiplier>0.5~1.5</typeMultiplier> <!-- The more cooperative the stronger the effect -->
+                <priority>0~10</priority>
+                <description>I the best at this around</description>
+            </li>
             <li Class="Autonomy.PriorityGiver">
                 <condition>ColonyNeedsTending</condition>
                 <type>SocialPreference</type>

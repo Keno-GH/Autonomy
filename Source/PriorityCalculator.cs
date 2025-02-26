@@ -105,6 +105,7 @@ namespace Autonomy
             return (priority, descriptions);
         }
 
+
         private static int HandleBaseType(PriorityGiver giver, PriorityCalculationContext context)
         {
             var workDrivePreferences = context.WorkDrivePreferences;
@@ -126,99 +127,17 @@ namespace Autonomy
 
         private static int HandleMapFilthy(PriorityGiver giver, PriorityCalculationContext context)
         {
-            var workDrivePreferences = context.WorkDrivePreferences;
-            var mapInfo = context.MapInfo;
-
-            if (!IsMapFilthy(mapInfo)) return 0;
-
-            if (!workDrivePreferences.TryGetValue(giver.type, out int workDrivePreference)) return 0;
-
-            float minScore = float.Parse(giver.workPreferenceScoreRange.Split('~')[0]);
-            float maxScore = float.Parse(giver.workPreferenceScoreRange.Split('~')[1]);
-            if (workDrivePreference < minScore || workDrivePreference > maxScore) return 0;
-
-            float minMultiplier = float.Parse(giver.typeMultiplier.Split('~')[0]);
-            float maxMultiplier = float.Parse(giver.typeMultiplier.Split('~')[1]);
-            int minPriority = int.Parse(giver.priority.Split('~')[0]);
-            int maxPriority = int.Parse(giver.priority.Split('~')[1]);
-            int filthAmount = (int)MapFilthAmount(mapInfo);
-            int basePriority =
-                filthAmount > 200 ? maxPriority
-                : filthAmount < 10 ? minPriority
-                : minPriority + ((filthAmount - 10) * (maxPriority - minPriority) / 190);
-            float ratio = (workDrivePreference - minScore) / (maxScore - minScore);
-            float multiplier = minMultiplier + ratio * (maxMultiplier - minMultiplier);
-            basePriority = (int)(basePriority * multiplier);
-            if (basePriority < minPriority) basePriority = minPriority;
-            else if (basePriority > maxPriority) basePriority = maxPriority;
-
-            return basePriority;
+            return CalculateFromInfoRange("filthInHome", true, 10, 200, giver, context);
         }
 
         private static int HandleThingsDeteriorating(PriorityGiver giver, PriorityCalculationContext context)
         {
-            var workDrivePreferences = context.WorkDrivePreferences;
-            var mapInfo = context.MapInfo;
-
-            if (!mapInfo.TryGetValue("thingsDeteriorating", out float thingsDeteriorating) || thingsDeteriorating <= 0) return 0;
-
-            if (!workDrivePreferences.TryGetValue(giver.type, out int workDrivePreference)) return 0;
-
-            float minScore = float.Parse(giver.workPreferenceScoreRange.Split('~')[0]);
-            float maxScore = float.Parse(giver.workPreferenceScoreRange.Split('~')[1]);
-            if (workDrivePreference < minScore || workDrivePreference > maxScore) return 0;
-
-            float minMultiplier = float.Parse(giver.typeMultiplier.Split('~')[0]);
-            float maxMultiplier = float.Parse(giver.typeMultiplier.Split('~')[1]);
-            int minPriority = int.Parse(giver.priority.Split('~')[0]);
-            int maxPriority = int.Parse(giver.priority.Split('~')[1]);
-
-            int basePriority = 
-                (int)thingsDeteriorating > 25 ? maxPriority
-                : (int)thingsDeteriorating < 1 ? minPriority
-                : minPriority + (((int)thingsDeteriorating - 1) * (maxPriority - minPriority) / 24);
-
-            float ratio = (workDrivePreference - minScore) / (maxScore - minScore);
-            float multiplier = minMultiplier + ratio * (maxMultiplier - minMultiplier);
-            basePriority = (int)(basePriority * multiplier);
-
-            if (basePriority < minPriority) basePriority = minPriority;
-            else if (basePriority > maxPriority) basePriority = maxPriority;
-
-            return basePriority;
+            return CalculateFromInfoRange("thingsDeteriorating", true, 1, 25, giver, context);
         }
 
         private static int HandleThingsNeedRefueling(PriorityGiver giver, PriorityCalculationContext context)
         {
-            var workDrivePreferences = context.WorkDrivePreferences;
-            var mapInfo = context.MapInfo;
-
-            if (!mapInfo.TryGetValue("refuelableThingsNeedingRefuel", out float refuelableThingsNeedingRefuel) || refuelableThingsNeedingRefuel <= 0) return 0;
-
-            if (!workDrivePreferences.TryGetValue(giver.type, out int workDrivePreference)) return 0;
-
-            float minScore = float.Parse(giver.workPreferenceScoreRange.Split('~')[0]);
-            float maxScore = float.Parse(giver.workPreferenceScoreRange.Split('~')[1]);
-            if (workDrivePreference < minScore || workDrivePreference > maxScore) return 0;
-
-            float minMultiplier = float.Parse(giver.typeMultiplier.Split('~')[0]);
-            float maxMultiplier = float.Parse(giver.typeMultiplier.Split('~')[1]);
-            int minPriority = int.Parse(giver.priority.Split('~')[0]);
-            int maxPriority = int.Parse(giver.priority.Split('~')[1]);
-
-            int basePriority = 
-                refuelableThingsNeedingRefuel > 10 ? maxPriority
-                : refuelableThingsNeedingRefuel < 0 ? minPriority
-                : minPriority + ((int)(refuelableThingsNeedingRefuel - 0) * (maxPriority - minPriority) / 10);
-
-            float ratio = (workDrivePreference - minScore) / (maxScore - minScore);
-            float multiplier = minMultiplier + ratio * (maxMultiplier - minMultiplier);
-            basePriority = (int)(basePriority * multiplier);
-
-            if (basePriority < minPriority) basePriority = minPriority;
-            else if (basePriority > maxPriority) basePriority = maxPriority;
-
-            return basePriority;
+            return CalculateFromInfoRange("refuelableThingsNeedingRefuel", true, 0, 10, giver, context);
         }
 
         private static int HandleSurroundingsFilthy(PriorityGiver giver, PriorityCalculationContext context)
@@ -280,25 +199,7 @@ namespace Autonomy
 
         private static int HandleTending(PriorityGiver giver, PriorityCalculationContext context)
         {
-            var pawnInfo = context.PawnInfo;
-
-            if (!pawnInfo.TryGetValue("injuriesCount", out float needsTending) || needsTending <= 0)
-            {
-                return 0;
-            }
-
-            string[] priorityParts = giver.priority.Split('~');
-            int minPriority = int.Parse(priorityParts[0]);
-            int maxPriority = int.Parse(priorityParts[1]);
-            int maxCalc = 4;
-            int minCalc = 0;
-
-            int calculatedPriority = 
-                needsTending > maxCalc ? maxPriority
-                : needsTending < minCalc ? minPriority
-                : minPriority + ((int)(needsTending - minCalc) * (maxPriority - minPriority) / (maxCalc - minCalc));
-
-            return calculatedPriority;
+            return CalculateFromInfoRange("injuriesCount", false, 0, 4, giver, context);
         }
 
         private static int HandleImmunity(PriorityGiver giver, PriorityCalculationContext context)
@@ -331,7 +232,7 @@ namespace Autonomy
             }
 
             float difference = adjustedImmunityGainSpeed - calculatedSeverityGainSpeed;
-            float ratio = Math.Min(difference / 0.5f, 1.0f);
+            float ratio = difference / calculatedSeverityGainSpeed;
             int calculatedPriority = (int)(minPriority + (1 - ratio) * (maxPriority - minPriority));
 
             return calculatedPriority;
@@ -405,92 +306,17 @@ namespace Autonomy
 
         private static int HandleBleeding(PriorityGiver giver, PriorityCalculationContext context)
         {
-            var pawnInfo = context.PawnInfo;
-
-            if (!pawnInfo.TryGetValue("bleedingRate", out float bleedingRate) || bleedingRate <= 0) return 0;
-
-            string[] priorityParts = giver.priority.Split('~');
-            int minPriority = int.Parse(priorityParts[0]);
-            int maxPriority = int.Parse(priorityParts[1]);
-            float maxCalc = 0.5f;
-            float minCalc = 0.01f;
-
-            int calculatedPriority = 
-                bleedingRate > maxCalc ? maxPriority
-                : bleedingRate < minCalc ? minPriority
-                : minPriority + (int)((bleedingRate - minCalc) * (maxPriority - minPriority) / maxCalc - minCalc);
-
-            return calculatedPriority;
+            return CalculateFromInfoRange("bleedingRate", false, 0.01f, 0.5f, giver, context);
         }
 
         private static int HandleColonyTending(PriorityGiver giver, PriorityCalculationContext context)
         {
-            var mapInfo = context.MapInfo;
-
-            if (!mapInfo.TryGetValue("colonistsNeedingTending", out float colonistsNeedingTending) || colonistsNeedingTending <= 0) return 0;
-
-            if (!context.WorkDrivePreferences.TryGetValue(giver.type, out int workDrivePreference)) return 0;
-
-            float minScore = float.Parse(giver.workPreferenceScoreRange.Split('~')[0]);
-            float maxScore = float.Parse(giver.workPreferenceScoreRange.Split('~')[1]);
-
-            if (workDrivePreference < minScore || workDrivePreference > maxScore) return 0;
-
-            float minMultiplier = float.Parse(giver.typeMultiplier.Split('~')[0]);
-            float maxMultiplier = float.Parse(giver.typeMultiplier.Split('~')[1]);
-            int minPriority = int.Parse(giver.priority.Split('~')[0]);
-            int maxPriority = int.Parse(giver.priority.Split('~')[1]);
-            int maxCalc = 5;
-            int minCalc = 1;
-
-            int basePriority = 
-                colonistsNeedingTending > maxCalc ? maxPriority
-                : colonistsNeedingTending < minCalc ? minPriority
-                : minPriority + ((int)(colonistsNeedingTending - minCalc) * (maxPriority - minPriority) / (maxCalc - minCalc));
-
-            float ratio = (workDrivePreference - minScore) / (maxScore - minScore);
-            float multiplier = minMultiplier + ratio * (maxMultiplier - minMultiplier);
-            basePriority = (int)(basePriority * multiplier);
-
-            if (basePriority < minPriority) basePriority = minPriority;
-            else if (basePriority > maxPriority) basePriority = maxPriority;
-
-            return basePriority;
+            return CalculateFromInfoRange("colonistsNeedingTending", true, 1, 5, giver, context);
         }
 
         private static int HandleColonyBleeding(PriorityGiver giver, PriorityCalculationContext context)
         {
-            var mapInfo = context.MapInfo;
-
-            if (!mapInfo.TryGetValue("colonistsBloodLoss", out float colonistsBloodLoss) || colonistsBloodLoss <= 0) return 0;
-
-            if (!context.WorkDrivePreferences.TryGetValue(giver.type, out int workDrivePreference)) return 0;
-
-            float minScore = float.Parse(giver.workPreferenceScoreRange.Split('~')[0]);
-            float maxScore = float.Parse(giver.workPreferenceScoreRange.Split('~')[1]);
-
-            if (workDrivePreference < minScore || workDrivePreference > maxScore) return 0;
-
-            float minMultiplier = float.Parse(giver.typeMultiplier.Split('~')[0]);
-            float maxMultiplier = float.Parse(giver.typeMultiplier.Split('~')[1]);
-            int minPriority = int.Parse(giver.priority.Split('~')[0]);
-            int maxPriority = int.Parse(giver.priority.Split('~')[1]);
-            float maxCalc = 5f;
-            float minCalc = 0.5f;
-
-            int basePriority = 
-                colonistsBloodLoss > maxCalc ? maxPriority
-                : colonistsBloodLoss < minCalc ? minPriority
-                : minPriority + (int)((colonistsBloodLoss - minCalc) * (maxPriority - minPriority) / maxCalc - minCalc);
-
-            float ratio = (workDrivePreference - minScore) / (maxScore - minScore);
-            float multiplier = minMultiplier + ratio * (maxMultiplier - minMultiplier);
-            basePriority = (int)(basePriority * multiplier);
-
-            if (basePriority < minPriority) basePriority = minPriority;
-            else if (basePriority > maxPriority) basePriority = maxPriority;
-
-            return basePriority;
+            return CalculateFromInfoRange("colonistsBloodLoss", true, 0.5f, 5f, giver, context);
         }
 
         private static int HandleComparedStats(PriorityGiver giver, PriorityCalculationContext context)
@@ -564,15 +390,91 @@ namespace Autonomy
 
             return calculatedPriority;
         }
-
-        private static bool IsMapFilthy(Dictionary<string, float> mapInfo)
+        private static int CalculateFromInfoRange(string infoKey, bool fromMap, float minCalc, float maxCalc, PriorityGiver giver, PriorityCalculationContext context)
         {
-            return mapInfo.ContainsKey("filthInHome") && mapInfo["filthInHome"] > 10;
-        }
+            if (giver == null)
+            {
+                Log.Error("CalculateFromInfoRange: giver is null");
+                return 0;
+            }
 
-        private static float MapFilthAmount(Dictionary<string, float> mapInfo)
-        {
-            return mapInfo.ContainsKey("filthInHome") ? mapInfo["filthInHome"] : 0;
+            var info = fromMap ? context.MapInfo : context.PawnInfo;
+            if (info == null)
+            {
+                Log.Error($"CalculateFromInfoRange: info dictionary is null for infoKey {infoKey}");
+                return 0;
+            }
+
+            if (!info.TryGetValue(infoKey, out float value))
+            {
+                Log.Warning($"CalculateFromInfoRange: infoKey {infoKey} not found");
+                return 0;
+            }
+
+            float minScore = 0, maxScore = 0, minMultiplier = 0, maxMultiplier = 0;
+
+            bool hasWorkDrivePreference;
+            int workDrivePreference = 0;
+            if (string.IsNullOrEmpty(giver.type))
+            {
+                hasWorkDrivePreference = false;
+            }
+            else
+            {
+                hasWorkDrivePreference = context.WorkDrivePreferences.TryGetValue(giver.type, out workDrivePreference);
+                if (!hasWorkDrivePreference)
+                {
+                    Log.Error($"CalculateFromInfoRange: Work drive preference not found for type {giver.type}");
+                    return 0;
+                }
+            }
+
+            if (hasWorkDrivePreference)
+            {
+                try
+                {
+                    minScore = float.Parse(giver.workPreferenceScoreRange.Split('~')[0]);
+                    maxScore = float.Parse(giver.workPreferenceScoreRange.Split('~')[1]);
+                    if (workDrivePreference < minScore || workDrivePreference > maxScore) hasWorkDrivePreference = false;
+
+                    minMultiplier = float.Parse(giver.typeMultiplier.Split('~')[0]);
+                    maxMultiplier = float.Parse(giver.typeMultiplier.Split('~')[1]);
+                }
+                catch (Exception ex)
+                {
+                    Log.Error($"CalculateFromInfoRange: Error parsing work preference score range or type multiplier for giver {giver.type}: {ex.Message}");
+                    return 0;
+                }
+            }
+
+            int minPriority, maxPriority;
+            try
+            {
+                minPriority = int.Parse(giver.priority.Split('~')[0]);
+                maxPriority = int.Parse(giver.priority.Split('~')[1]);
+            }
+            catch (Exception ex)
+            {
+                Log.Error($"CalculateFromInfoRange: Error parsing priority range for giver {giver.type}: {ex.Message}");
+                return 0;
+            }
+
+            int basePriority = 
+            value > maxCalc ? maxPriority
+            : value < minCalc ? minPriority
+            : minPriority + (int)((value - minCalc) * (maxPriority - minPriority) / (maxCalc - minCalc));
+
+            if (hasWorkDrivePreference)
+            {
+                float ratio = (workDrivePreference - minScore) / (maxScore - minScore);
+                float multiplier = minMultiplier + ratio * (maxMultiplier - minMultiplier);
+                basePriority = (int)(basePriority * multiplier);
+            }
+
+            if (basePriority < minPriority) basePriority = minPriority;
+            else if (basePriority > maxPriority) basePriority = maxPriority;
+
+            return basePriority;
         }
     }
 

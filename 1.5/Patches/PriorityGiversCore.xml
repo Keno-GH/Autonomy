@@ -351,7 +351,7 @@
                 <workPreferenceScoreRange>-10~10</workPreferenceScoreRange>
                 <typeMultiplier>0.5~2</typeMultiplier> <!-- More cooperative pawns will listen to other's requests more -->
                 <priority>0~100</priority>
-                <description>People are asking me to deathcare</description>
+                <description>I can handle deathcare better</description>
             </li>
             <li Class="Autonomy.PriorityGiver" Name="corpsesNeedBurial">
                 <condition>BasedOnInfoRange</condition>

@@ -263,6 +263,25 @@
         </apply>
     </Operation>
     
+    <Operation Class="PatchOperationAdd" Name="CookingPriorityGivers">
+        <xpath>Defs/WorkTypeDef[defName="Cooking"]/modExtensions/li[@Class="Autonomy.PriorityGiverExtension"]/priorityGivers</xpath>
+        <value>
+            <li Class="Autonomy.PriorityGiver" Name="colonistsAverageFoodLevel">
+                <condition>BasedOnInfoRange</condition>
+                <infoRange>
+                    <infoKey>colonistsFoodLevelAverage</infoKey>
+                    <fromMap>true</fromMap>
+                    <range>0.75~0</range>
+                </infoRange>
+                <type>SocialPreference</type>
+                <workPreferenceScoreRange>-10~10</workPreferenceScoreRange>
+                <typeMultiplier>0.5~2</typeMultiplier> <!-- The more cooperative the stronger the effect -->
+                <priority>0~20</priority>
+                <description>People are hungry</description>
+            </li>
+        </value>
+    </Operation>
+
     <Operation Class="PatchOperationAdd" Name="HaulingPriorityGivers">
         <xpath>Defs/WorkTypeDef[defName="Hauling"]/modExtensions/li[@Class="Autonomy.PriorityGiverExtension"]/priorityGivers</xpath>
         <value>

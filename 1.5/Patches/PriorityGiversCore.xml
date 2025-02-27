@@ -13,8 +13,12 @@
         </value>
     </Operation>
 
-     <Operation Class="PatchOperationAdd">
-        <xpath>Defs/WorkTypeDef[defName="Doctor"]/modExtensions/li[@Class="Autonomy.PriorityGiverExtension"]/priorityGivers</xpath>
+     <Operation Class="PatchOperationAdd" Name="GeneralTendingPriorityGivers">
+        <xpath>Defs/WorkTypeDef[
+        defName="Doctor" or
+        defName="AutonomyEmergencyTending" or
+        defName="AutonomyVeterinary"
+        ]/modExtensions/li[@Class="Autonomy.PriorityGiverExtension"]/priorityGivers</xpath>
         <value>
             <li Class="Autonomy.PriorityGiver" Name="AverageTendQuality">
                 <condition>ComparedStats</condition>
@@ -51,6 +55,12 @@
                     </li>
                 </rangeDatas>
             </li>
+        </value>
+    </Operation>
+
+    <Operation Class="PatchOperationAdd" Name="DoctorPriorityGivers">
+        <xpath>Defs/WorkTypeDef[defName="Doctor"]/modExtensions/li[@Class="Autonomy.PriorityGiverExtension"]/priorityGivers</xpath>
+        <value>
             <li Class="Autonomy.PriorityGiver" Name="BestTendQuality">
                 <condition>ComparedStats</condition>
                 <stat>MedicalTendQuality</stat>
@@ -61,6 +71,12 @@
                 <priority>0~10</priority>
                 <description>I the best at this around</description>
             </li>
+        </value>
+    </Operation>
+
+    <Operation Class="PatchOperationAdd" Name="AutonomyEmergencyTendingPriorityGivers">
+        <xpath>Defs/WorkTypeDef[defName="AutonomyEmergencyTending"]/modExtensions/li[@Class="Autonomy.PriorityGiverExtension"]/priorityGivers</xpath>
+        <value>
             <li Class="Autonomy.PriorityGiver" Name="ColonyNeedsTending">
                 <condition>BasedOnInfoRange</condition>
                 <infoRange>
@@ -90,7 +106,47 @@
         </value>
     </Operation>
 
-    <Operation Class="PatchOperationAdd">
+    <Operation Class="PatchOperationAdd" Name="AutonomyVeterinaryPriorityGivers">
+        <xpath>Defs/WorkTypeDef[defName="AutonomyVeterinary"]/modExtensions/li[@Class="Autonomy.PriorityGiverExtension"]/priorityGivers</xpath>
+        <value>
+            <li Class="Autonomy.PriorityGiver" Name="AnimalNeedsTending">
+                <condition>BasedOnInfoRange</condition>
+                <infoRange>
+                    <infoKey>animalsNeedingTending</infoKey>
+                    <fromMap>true</fromMap>
+                    <range>1~5</range>
+                </infoRange>
+                <type>SocialPreference</type>
+                <workPreferenceScoreRange>-10~10</workPreferenceScoreRange>
+                <typeMultiplier>0.8~2</typeMultiplier> <!-- The more cooperative the stronger the effect -->
+                <priority>0~20</priority>
+                <description>Animals need tending</description>
+            </li>
+            <li Class="Autonomy.PriorityGiver" Name="AnimalBleeding">
+                <condition>BasedOnInfoRange</condition>
+                <infoRange>
+                    <infoKey>animalsBloodLoss</infoKey>
+                    <fromMap>true</fromMap>
+                    <range>0.5~5</range>
+                </infoRange>
+                <type>SocialPreference</type>
+                <workPreferenceScoreRange>-10~10</workPreferenceScoreRange>
+                <typeMultiplier>0.8~2</typeMultiplier> <!-- The more cooperative the stronger the effect -->
+                <priority>0~20</priority>
+                <description>Animals are bleeding out</description>
+            </li>
+            <li Class="Autonomy.PriorityGiver" Name="OrganicEnjoy">
+                <condition>BaseType</condition>
+                <type>WorkEnvironmentAesthetic</type>
+                <workPreferenceScoreRange>-10~0</workPreferenceScoreRange> <!-- Rustic side -->
+                <typeMultiplier>1~0.1</typeMultiplier> <!-- The more organic  the stronger the effect -->
+                <priority>15</priority>
+                <description>I enjoy animal related work</description>
+            </li>
+        </value>
+    </Operation>
+
+    <Operation Class="PatchOperationAdd" Name="PatientPriorityGivers">
         <xpath>Defs/WorkTypeDef[defName="Patient"]/modExtensions/li[@Class="Autonomy.PriorityGiverExtension"]/priorityGivers</xpath>
         <value>
             <li Class="Autonomy.PriorityGiver" Name="NeedsTending">
@@ -116,7 +172,7 @@
         </value>
     </Operation>
 
-     <Operation Class="PatchOperationAdd">
+     <Operation Class="PatchOperationAdd" Name="PatientBedRestPriorityGivers">
         <xpath>Defs/WorkTypeDef[defName="PatientBedRest"]/modExtensions/li[@Class="Autonomy.PriorityGiverExtension"]/priorityGivers</xpath>
         <value>
             <li Class="Autonomy.PriorityGiver" Name="BuildingImmunity">

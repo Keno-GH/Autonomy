@@ -1,0 +1,315 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Patch>
+<Operation Class="XmlExtensions.UseSettings">
+    <modId>Autonomy</modId>
+    <keys>
+        <li>EnableAutonomyEmergencyTending</li>
+        <li>EnableAutonomyNursery</li>
+        <li>EnableAutonomyVeterinary</li>
+        <li>EnableAutonomyTaming</li>
+        <li>EnableAutonomyButchering</li>
+        <li>EnableAutonomyBrewing</li>
+        <li>EnableAutonomyDrilling</li>
+        <li>EnableAutonomyPruning</li>
+        <li>EnableAutonomyDrugs</li>
+        <li>EnableAutonomyRefueling</li>
+        <li>EnableAutonomyDeathcare</li>
+    </keys>
+    <defaultValues>
+        <li>true</li>
+        <li>true</li>
+        <li>true</li>
+        <li>true</li>
+        <li>true</li>
+        <li>true</li>
+        <li>true</li>
+        <li>true</li>
+        <li>true</li>
+        <li>true</li>
+        <li>true</li>
+    </defaultValues> 
+    <apply>
+
+        <Operation Class="XmlExtensions.IfStatement" Name="Emergency Tending">
+        <condition Class="XmlExtensions.Boolean.Comparison">
+            <value1>{EnableAutonomyEmergencyTending}</value1>
+            <value2>true</value2>
+            <nonNumeric>true</nonNumeric>
+        </condition>
+        <caseTrue>
+            <Operation Class="XmlExtensions.PatchOperationAddOrReplace">
+                <xpath>/Defs/WorkGiverDef[defName="DoctorTendEmergency" or defName="DoctorTendToSelfEmergency"]</xpath>
+                <value>
+                    <workType>AutonomyEmergencyTending</workType>
+                </value>
+            </Operation>
+        </caseTrue>
+        <caseFalse>
+            <Operation Class="XmlExtensions.PatchOperationAttributeSet">
+                <xpath>/Defs/WorkTypeDef[defName="AutonomyEmergencyTending"]</xpath>
+                <attribute>Abstract</attribute>
+                <value>true</value>
+            </Operation>
+        </caseFalse>
+        </Operation>
+
+        <Operation Class="XmlExtensions.IfStatement" Name="Nursery">
+        <condition Class="XmlExtensions.Boolean.Comparison">
+            <value1>{EnableAutonomyNursery}</value1>
+            <value2>true</value2>
+            <nonNumeric>true</nonNumeric>
+        </condition>
+        <caseTrue>
+            <Operation Class="XmlExtensions.PatchOperationReplace">
+                <xpath>/Defs/WorkGiverDef[defName="DoctorFeedHumanlikes" 
+                or defName="DoctorRescue"
+                or defName="TakeToBedToOperate"
+                or defName="VisitSickPawn"]
+                /workType</xpath>
+                <value>
+                    <workType>AutonomyNursery</workType>
+                </value>
+            </Operation>
+        </caseTrue>
+        <caseFalse>
+            <Operation Class="XmlExtensions.PatchOperationAttributeSet">
+                <xpath>/Defs/WorkTypeDef[defName="AutonomyNursery"]</xpath>
+                <attribute>Abstract</attribute>
+                <value>true</value>
+            </Operation>
+        </caseFalse>
+        </Operation>
+
+        <Operation Class="XmlExtensions.IfStatement" Name="Veterinary">
+        <condition Class="XmlExtensions.Boolean.Comparison">
+            <value1>{EnableAutonomyVeterinary}</value1>
+            <value2>true</value2>
+            <nonNumeric>true</nonNumeric>
+        </condition>
+        <caseTrue>
+            <Operation Class="XmlExtensions.PatchOperationReplace">
+                <xpath>/Defs/WorkGiverDef[defName="DoctorTendToAnimals" 
+                or defName="DoctorFeedAnimals"
+                or defName="DoBillsMedicalAnimalOperation"]
+                /workType</xpath>
+                <value>
+                    <workType>AutonomyVeterinary</workType>
+                </value>
+            </Operation>
+        </caseTrue>
+        <caseFalse>
+            <Operation Class="XmlExtensions.PatchOperationAttributeSet">
+                <xpath>/Defs/WorkTypeDef[defName="AutonomyVeterinary"]</xpath>
+                <attribute>Abstract</attribute>
+                <value>true</value>
+            </Operation>
+            <Operation Class="XmlExtensions.IfStatement">
+            <condition Class="XmlExtensions.Boolean.Comparison">
+                <value1>{EnableAutonomyNursery}</value1>
+                <value2>true</value2>
+                <nonNumeric>true</nonNumeric>
+            </condition>
+            <caseTrue>
+                <Operation Class="XmlExtensions.PatchOperationReplace">
+                    <xpath>/Defs/WorkGiverDef[defName="DoctorFeedAnimals"]/workType</xpath>
+                    <value>
+                        <workType>AutonomyNursery</workType>
+                    </value>
+                </Operation>
+            </caseTrue>
+            </Operation>
+        </caseFalse>
+        </Operation>
+
+        <Operation Class="XmlExtensions.IfStatement" Name="Taming">
+        <condition Class="XmlExtensions.Boolean.Comparison">
+            <value1>{EnableAutonomyTaming}</value1>
+            <value2>true</value2>
+            <nonNumeric>true</nonNumeric>
+        </condition>
+        <caseTrue>
+            <Operation Class="XmlExtensions.PatchOperationReplace">
+                <xpath>/Defs/WorkGiverDef[defName="Tame"]/workType</xpath>
+                <value>
+                    <workType>AutonomyTaming</workType>
+                </value>
+            </Operation>
+        </caseTrue>
+        <caseFalse>
+            <Operation Class="XmlExtensions.PatchOperationAttributeSet">
+                <xpath>/Defs/WorkTypeDef[defName="AutonomyTaming"]</xpath>
+                <attribute>Abstract</attribute>
+                <value>true</value>
+            </Operation>
+        </caseFalse>
+        </Operation>
+
+        <Operation Class="XmlExtensions.IfStatement" Name="Butchering">
+        <condition Class="XmlExtensions.Boolean.Comparison">
+            <value1>{EnableAutonomyButchering}</value1>
+            <value2>true</value2>
+            <nonNumeric>true</nonNumeric>
+        </condition>
+        <caseTrue>
+            <Operation Class="XmlExtensions.PatchOperationReplace">
+                <xpath>/Defs/WorkGiverDef[defName="DoBillsButcherFlesh"]/workType</xpath>
+                <value>
+                    <workType>AutonomyButchering</workType>
+                </value>
+            </Operation>
+        </caseTrue>
+        <caseFalse>
+            <Operation Class="XmlExtensions.PatchOperationAttributeSet">
+                <xpath>/Defs/WorkTypeDef[defName="AutonomyButchering"]</xpath>
+                <attribute>Abstract</attribute>
+                <value>true</value>
+            </Operation>
+        </caseFalse>
+        </Operation>
+
+        <Operation Class="XmlExtensions.IfStatement" Name="Brewing">
+        <condition Class="XmlExtensions.Boolean.Comparison">
+            <value1>{EnableAutonomyBrewing}</value1>
+            <value2>true</value2>
+            <nonNumeric>true</nonNumeric>
+        </condition>
+        <caseTrue>
+            <Operation Class="XmlExtensions.PatchOperationReplace">
+                <xpath>/Defs/WorkGiverDef[defName="DoBillsBrew"
+                or defName="FillFermentingBarrel"
+                or defName="TakeBeerOutOfFermentingBarrel"]/workType</xpath>
+                <value>
+                    <workType>AutonomyBrewing</workType>
+                </value>
+            </Operation>
+        </caseTrue>
+        <caseFalse>
+            <Operation Class="XmlExtensions.PatchOperationAttributeSet">
+                <xpath>/Defs/WorkTypeDef[defName="AutonomyBrewing"]</xpath>
+                <attribute>Abstract</attribute>
+                <value>true</value>
+            </Operation>
+        </caseFalse>
+        </Operation>
+
+        <Operation Class="XmlExtensions.IfStatement" Name="Drilling">
+        <condition Class="XmlExtensions.Boolean.Comparison">
+            <value1>{EnableAutonomyDrilling}</value1>
+            <value2>true</value2>
+            <nonNumeric>true</nonNumeric>
+        </condition>
+        <caseTrue>
+            <Operation Class="XmlExtensions.PatchOperationReplace">
+                <xpath>/Defs/WorkGiverDef[defName="Drill"]/workType</xpath>
+                <value>
+                    <workType>AutonomyDrilling</workType>
+                </value>
+            </Operation>
+        </caseTrue>
+        <caseFalse>
+            <Operation Class="XmlExtensions.PatchOperationAttributeSet">
+                <xpath>/Defs/WorkTypeDef[defName="AutonomyDrilling"]</xpath>
+                <attribute>Abstract</attribute>
+                <value>true</value>
+            </Operation>
+        </caseFalse>
+        </Operation>
+
+        <Operation Class="XmlExtensions.IfStatement" Name="Pruning">
+        <condition Class="XmlExtensions.Boolean.Comparison">
+            <value1>{EnableAutonomyPruning}</value1>
+            <value2>true</value2>
+            <nonNumeric>true</nonNumeric>
+        </condition>
+        <caseTrue>
+            <Operation Class="XmlExtensions.PatchOperationReplace">
+                <xpath>/Defs/WorkGiverDef[defName="PruneGauranlenTree"]/workType</xpath>
+                <value>
+                    <workType>AutonomyPruning</workType>
+                </value>
+            </Operation>
+        </caseTrue>
+        <caseFalse>
+            <Operation Class="XmlExtensions.PatchOperationAttributeSet">
+                <xpath>/Defs/WorkTypeDef[defName="AutonomyPruning"]</xpath>
+                <attribute>Abstract</attribute>
+                <value>true</value>
+            </Operation>
+        </caseFalse>
+        </Operation>
+
+        <Operation Class="XmlExtensions.IfStatement" Name="Drugs">
+        <condition Class="XmlExtensions.Boolean.Comparison">
+            <value1>{EnableAutonomyDrugs}</value1>
+            <value2>true</value2>
+            <nonNumeric>true</nonNumeric>
+        </condition>
+        <caseTrue>
+            <Operation Class="XmlExtensions.PatchOperationReplace">
+                <xpath>/Defs/WorkGiverDef[defName="DoBillsProduceDrugs"]/workType</xpath>
+                <value>
+                    <workType>AutonomyDrugs</workType>
+                </value>
+            </Operation>
+        </caseTrue>
+        <caseFalse>
+            <Operation Class="XmlExtensions.PatchOperationAttributeSet">
+                <xpath>/Defs/WorkTypeDef[defName="AutonomyDrugs"]</xpath>
+                <attribute>Abstract</attribute>
+                <value>true</value>
+            </Operation>
+        </caseFalse>
+        </Operation>
+
+        <Operation Class="XmlExtensions.IfStatement" Name="Refueling">
+        <condition Class="XmlExtensions.Boolean.Comparison">
+            <value1>{EnableAutonomyRefueling}</value1>
+            <value2>true</value2>
+            <nonNumeric>true</nonNumeric>
+        </condition>
+        <caseTrue>
+            <Operation Class="XmlExtensions.PatchOperationReplace">
+                <xpath>/Defs/WorkGiverDef[defName="Refuel" or
+                defName="RearmTurrets"]/workType</xpath>
+                <value>
+                    <workType>AutonomyRefueling</workType>
+                </value>
+            </Operation>
+        </caseTrue>
+        <caseFalse>
+            <Operation Class="XmlExtensions.PatchOperationAttributeSet">
+                <xpath>/Defs/WorkTypeDef[defName="AutonomyRefueling"]</xpath>
+                <attribute>Abstract</attribute>
+                <value>true</value>
+            </Operation>
+        </caseFalse>
+        </Operation>
+
+        <Operation Class="XmlExtensions.IfStatement" Name="Deathcare">
+        <condition Class="XmlExtensions.Boolean.Comparison">
+            <value1>{EnableAutonomyDeathcare}</value1>
+            <value2>true</value2>
+            <nonNumeric>true</nonNumeric>
+        </condition>
+        <caseTrue>
+            <Operation Class="XmlExtensions.PatchOperationReplace">
+                <xpath>/Defs/WorkGiverDef[defName="Strip"
+                or defName="HaulCorpses"
+                or defName="DoBillsCremate"]/workType</xpath>
+                <value>
+                    <workType>AutonomyDeathcare</workType>
+                </value>
+            </Operation>
+        </caseTrue>
+        <caseFalse>
+            <Operation Class="XmlExtensions.PatchOperationAttributeSet">
+                <xpath>/Defs/WorkTypeDef[defName="AutonomyDeathcare"]</xpath>
+                <attribute>Abstract</attribute>
+                <value>true</value>
+            </Operation>
+        </caseFalse>
+        </Operation>
+
+    </apply>
+</Operation>
+</Patch>

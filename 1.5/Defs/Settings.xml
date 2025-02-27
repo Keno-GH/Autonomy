@@ -1,0 +1,75 @@
+<Defs>
+<XmlExtensions.SettingsMenuDef>
+    <defName>Autonomy</defName>
+    <modId>Autonomy</modId>
+    <label>Autonomy</label>
+    <settings>
+        <li Class="XmlExtensions.Setting.Checkbox">
+            <key>EnableAutonomyEmergencyTending</key>
+            <label>Enable Emergency Tending</label>
+            <defaultValue>true</defaultValue>
+            <tooltip>A worktype about tending emergency wounds. Allows colonists to react to emergencies better.</tooltip>
+        </li>
+        <li Class="XmlExtensions.Setting.Checkbox">
+            <key>EnableAutonomyNursery</key>
+            <label>Enable Nursery</label>
+            <defaultValue>true</defaultValue>
+            <tooltip>A worktype about providing basic care to recovering colonists. Allows social pawns to care for the sick and wounded instead of medical ones.</tooltip>
+        </li>
+        <li Class="XmlExtensions.Setting.Checkbox">
+            <key>EnableAutonomyVeterinary</key>
+            <label>Enable Veterinary</label>
+            <defaultValue>true</defaultValue>
+            <tooltip>A worktype about providing medical care to animals. Allows better individuality and to react to sick or wounded animals.</tooltip>
+        </li>
+        <li Class="XmlExtensions.Setting.Checkbox">
+            <key>EnableAutonomyTaming</key>
+            <label>Enable Taming</label>
+            <defaultValue>true</defaultValue>
+            <tooltip>A worktype about taming wild animals. Much riskier than other handling jobs.</tooltip>
+        </li>
+        <li Class="XmlExtensions.Setting.Checkbox">
+            <key>EnableAutonomyButchering</key>
+            <label>Enable Butchering</label>
+            <defaultValue>true</defaultValue>
+            <tooltip>A worktype about butchering animals for meat and leather. Allows colonist to react to low meat in storage.</tooltip>
+        </li>
+        <li Class="XmlExtensions.Setting.Checkbox">
+            <key>EnableAutonomyBrewing</key>
+            <label>Enable Brewing</label>
+            <defaultValue>true</defaultValue>
+            <tooltip>A worktype about brewing beer and other alcoholic beverages. Allows colonist to react to fermenting related events and low alcohol stock.</tooltip>
+        </li>
+        <li Class="XmlExtensions.Setting.Checkbox">
+            <key>EnableAutonomyDrilling</key>
+            <label>Enable Drilling</label>
+            <defaultValue>true</defaultValue>
+            <tooltip>A worktype about drilling for resources deep underground. Is set at a lower natural priority to not consume every waking moment of miner colonists.</tooltip>
+        </li>
+        <li Class="XmlExtensions.Setting.Checkbox">
+            <key>EnableAutonomyPruning</key>
+            <label>Enable Pruning</label>
+            <defaultValue>true</defaultValue>
+            <tooltip>A worktype about pruning gauranlen trees.</tooltip>
+        </li>
+        <li Class="XmlExtensions.Setting.Checkbox">
+            <key>EnableAutonomyDrugs</key>
+            <label>Enable Drug Production</label>
+            <defaultValue>true</defaultValue>
+            <tooltip>A worktype about producing drugs and medicine. Allows intellectual skill to affect its priority.</tooltip>
+        </li>
+        <li Class="XmlExtensions.Setting.Checkbox">
+            <key>EnableAutonomyRefueling</key>
+            <label>Enable Refueling</label>
+            <defaultValue>true</defaultValue>
+            <tooltip>A worktype about refueling campfires and other fuel-consuming devices. Is set at a much higher natural priority than normal hauling jobs.</tooltip>
+        </li>
+        <li Class="XmlExtensions.Setting.Checkbox">
+            <key>EnableAutonomyDeathcare</key>
+            <label>Enable Deathcare</label>
+            <defaultValue>true</defaultValue>
+            <tooltip>A worktype about disposing of the dead. Allows colonists that don't mind corpses to prioritize this job. Also allows colonist to react to death in their yard.</tooltip>
+        </li>
+    </settings>
+</XmlExtensions.SettingsMenuDef>
+</Defs>

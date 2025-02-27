@@ -90,7 +90,7 @@
         </value>
     </Operation>
 
-     <Operation Class="PatchOperationAdd">
+    <Operation Class="PatchOperationAdd">
         <xpath>Defs/WorkTypeDef[defName="Patient"]/modExtensions/li[@Class="Autonomy.PriorityGiverExtension"]/priorityGivers</xpath>
         <value>
             <li Class="Autonomy.PriorityGiver" Name="NeedsTending">

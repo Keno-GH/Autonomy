@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Defs>
+    <WorkTypeDef> <!-- Subdivided from Doctoring -->
+        <defName>AutonomyEmergencyTending</defName>
+        <labelShort>(E) Tend</labelShort>
+        <pawnLabel>tending</pawnLabel>
+        <gerundLabel>tending</gerundLabel>
+        <description>Tend wounds in emergency situations.</description>
+        <verb>emergency tend</verb>
+        <naturalPriority>1360</naturalPriority>
+        <relevantSkills>
+            <li>Medicine</li>
+        </relevantSkills>
+        <alwaysStartActive>true</alwaysStartActive>
+        <requireCapableColonist>true</requireCapableColonist>
+        <workTags>
+            <li>Commoner</li>
+            <li>AllWork</li>
+        </workTags>
+    </WorkTypeDef>
+
+    <WorkTypeDef> <!-- Subdivided from Doctoring -->
+        <defName>AutonomyNursery</defName>
+        <labelShort>Care</labelShort>
+        <pawnLabel>caring</pawnLabel>
+        <gerundLabel>caring</gerundLabel>
+        <description>Visit sick colonists and provide basic care.</description>
+        <verb>care</verb>
+        <naturalPriority>1110</naturalPriority>
+        <relevantSkills>
+            <li>Social</li>
+        </relevantSkills>
+        <alwaysStartActive>true</alwaysStartActive>
+        <requireCapableColonist>true</requireCapableColonist>
+        <workTags>
+            <li>Caring</li>
+            <li>Commoner</li>
+            <li>AllWork</li>
+        </workTags>
+    </WorkTypeDef>
+
+    <WorkTypeDef> <!-- Subdivided from Doctoring -->
+        <defName>AutonomyVeterinary</defName>
+        <labelShort>Vet</labelShort>
+        <pawnLabel>veterinary</pawnLabel>   
+        <gerundLabel>veterinary</gerundLabel>
+        <description>Provide medical care to animals.</description>
+        <verb>veterinary</verb>
+        <naturalPriority>1120</naturalPriority>
+        <alwaysStartActive>true</alwaysStartActive>
+        <requireCapableColonist>true</requireCapableColonist>
+        <workTags>
+            <li>Animals</li>
+            <li>Commoner</li>
+            <li>AllWork</li>
+        </workTags>
+    </WorkTypeDef>
+
+    <WorkTypeDef> <!-- Subdivided from Handling -->
+        <defName>AutonomyTaming</defName>
+        <labelShort>tame</labelShort>
+        <pawnLabel>taming</pawnLabel>
+        <gerundLabel>taming</gerundLabel>
+        <description>Tame wild animals to be obedient. A risky job.</description>
+        <verb>tame</verb>
+        <naturalPriority>1040</naturalPriority>
+        <relevantSkills>
+            <li>Animals</li>
+        </relevantSkills>
+        <workTags>
+            <li>Animals</li>
+            <li>Commoner</li>
+            <li>AllWork</li>
+        </workTags>
+    </WorkTypeDef>
+
+    <WorkTypeDef> <!-- Subdivided from Cooking -->
+        <defName>AutonomyButchering</defName>
+        <labelShort>Butcher</labelShort>
+        <pawnLabel>butchering</pawnLabel>
+        <gerundLabel>butchering</gerundLabel>
+        <description>Butcher animals for meat and leather.</description>
+        <verb>butcher</verb>
+        <naturalPriority>990</naturalPriority>
+        <relevantSkills>
+            <li>Cooking</li>
+        </relevantSkills>
+        <workTags>
+            <li>Cooking</li>
+            <li>ManualSkilled</li>
+            <li>Commoner</li>
+            <li>AllWork</li>
+        </workTags>
+    </WorkTypeDef>
+
+    <WorkTypeDef> <!-- Subdivided from Cooking -->
+        <defName>AutonomyBrewing</defName>
+        <labelShort>Brew</labelShort>
+        <pawnLabel>brewing</pawnLabel>
+        <gerundLabel>brewing</gerundLabel>
+        <description>Brew beer and other alcoholic beverages.</description>
+        <verb>brew</verb>
+        <naturalPriority>980</naturalPriority>
+        <relevantSkills>
+            <li>Cooking</li>
+        </relevantSkills>
+        <workTags>
+            <li>Cooking</li>
+            <li>ManualSkilled</li>
+            <li>Commoner</li>
+            <li>AllWork</li>
+        </workTags>
+    </WorkTypeDef>
+
+    <WorkTypeDef> <!-- Subdivided from Mining -->
+        <defName>AutonomyDrilling</defName>
+        <labelShort>Drill</labelShort>
+        <pawnLabel>drilling</pawnLabel>
+        <gerundLabel>drilling</gerundLabel>
+        <description>Drill for resources deep underground.</description>
+        <verb>drill</verb>
+        <naturalPriority>310</naturalPriority> <!-- Just above Hauling, as this is an endlessish job unlike crafting-->
+        <requireCapableColonist>true</requireCapableColonist>
+        <relevantSkills>
+            <li>Mining</li>
+        </relevantSkills>
+        <workTags>
+            <li>ManualSkilled</li>
+            <li>Mining</li>
+            <li>Commoner</li>
+            <li>AllWork</li>
+        </workTags>
+    </WorkTypeDef>
+
+    <WorkTypeDef> <!-- Subdivided from PlantCutting -->
+        <defName>AutonomyPruning</defName>
+        <labelShort>Prune</labelShort>
+        <pawnLabel>pruning</pawnLabel>
+        <gerundLabel>pruning</gerundLabel>
+        <description>Prune gauranlen trees</description>
+        <verb>prune</verb>
+        <naturalPriority>490</naturalPriority>
+        <requireCapableColonist>true</requireCapableColonist>
+        <relevantSkills>
+            <li>Plants</li>
+        </relevantSkills>
+        <workTags>
+            <li>ManualSkilled</li>
+            <li>PlantWork</li>
+            <li>Commoner</li>
+            <li>AllWork</li>
+        </workTags>
+    </WorkTypeDef>
+
+    <WorkTypeDef> <!-- Subdivided from Crafting -->
+        <defName>AutonomyDrugs</defName>
+        <labelShort>drug</labelShort>
+        <pawnLabel>drug production</pawnLabel>
+        <gerundLabel>drug production</gerundLabel>
+        <description>Produce drugs and medicine.</description>
+        <verb>produce drugs</verb>
+        <naturalPriority>390</naturalPriority>
+        <relevantSkills>
+            <li>Crafting</li>
+            <li>Intellectual</li>
+        </relevantSkills>
+        <requireCapableColonist>true</requireCapableColonist>
+        <workTags>
+            <li>Crafting</li>
+            <li>ManualSkilled</li>
+            <li>Commoner</li>
+            <li>AllWork</li>
+        </workTags>
+    </WorkTypeDef>
+
+    <WorkTypeDef> <!-- Subdivided from Hauling -->
+        <defName>AutonomyRefueling</defName>
+        <labelShort>Refuel</labelShort>
+        <pawnLabel>refueling</pawnLabel>
+        <gerundLabel>refueling</gerundLabel>
+        <description>Refuel campfires and other fuel-consuming devices.</description>
+        <verb>refuel</verb>
+        <naturalPriority>1160</naturalPriority> <!-- Just above Basic, much more important than other hauling jobs -->
+        <alwaysStartActive>true</alwaysStartActive>
+        <requireCapableColonist>true</requireCapableColonist>
+        <workTags>
+            <li>ManualDumb</li>
+            <li>Hauling</li>
+            <li>Commoner</li>
+            <li>AllWork</li>
+        </workTags>
+    </WorkTypeDef>
+
+    <WorkTypeDef> <!-- Subdivided from Hauling -->
+        <defName>AutonomyDeathcare</defName>
+        <labelShort>Deathcare</labelShort>
+        <pawnLabel>deathcare</pawnLabel>
+        <gerundLabel>deathcare</gerundLabel>
+        <description>Cremate, bury, or otherwise dispose of the dead.</description>
+        <verb>deathcare</verb>
+        <naturalPriority>305</naturalPriority>
+        <alwaysStartActive>true</alwaysStartActive>
+        <requireCapableColonist>true</requireCapableColonist>
+        <workTags>
+            <li>ManualDumb</li>
+            <li>Hauling</li>
+            <li>Commoner</li>
+            <li>AllWork</li>
+        </workTags>
+    </WorkTypeDef>
+
+
+
+</Defs>

@@ -22,24 +22,24 @@ namespace Autonomy
             conditionHandlers = new Dictionary<string, Func<PriorityGiver, PriorityCalculationContext, int>>();
             foreach (var def in DefDatabase<PriorityGiverDef>.AllDefs)
             {
-                var method = typeof(PriorityCalculator).GetMethod(def.giver, BindingFlags.NonPublic | BindingFlags.Static);
-                if (method != null)
-                {
-                    var parameters = method.GetParameters();
-                    if (parameters.Length == 2 && parameters[0].ParameterType == typeof(PriorityGiver) && parameters[1].ParameterType == typeof(PriorityCalculationContext))
-                    {
-                        var handler = (Func<PriorityGiver, PriorityCalculationContext, int>)Delegate.CreateDelegate(typeof(Func<PriorityGiver, PriorityCalculationContext, int>), method);
-                        conditionHandlers[def.defName] = handler;
-                    }
-                    else
-                    {
-                        Log.Error($"PriorityCalculator: Method {def.giver} parameter count or types do not match for PriorityGiverDef {def.defName}");
-                    }
-                }
-                else
+                MethodInfo method = typeof(PriorityCalculator).GetMethod(def.giver, BindingFlags.NonPublic | BindingFlags.Static);
+                if (method == null)
                 {
                     Log.Error($"PriorityCalculator: Method {def.giver} not found for PriorityGiverDef {def.defName}");
+                    continue;
                 }
+
+                ParameterInfo[] parameters = method.GetParameters();
+                if (parameters.Length != 2 || parameters[0].ParameterType != typeof(PriorityGiver) || parameters[1].ParameterType != typeof(PriorityCalculationContext))
+                {
+                    Log.Error($"PriorityCalculator: Method {def.giver} parameter count or types do not match for PriorityGiverDef {def.defName}");
+                    continue;
+                }
+                
+                var handler = (Func<PriorityGiver, PriorityCalculationContext, int>)Delegate.CreateDelegate(typeof(Func<PriorityGiver, PriorityCalculationContext, int>), method);
+                conditionHandlers[def.defName] = handler;
+                
+                
             }
         }
 
@@ -71,40 +71,42 @@ namespace Autonomy
 
             foreach (var giver in extension.priorityGivers)
             {
-                if (conditionHandlers.TryGetValue(giver.condition, out var handler))
+                if (!conditionHandlers.TryGetValue(giver.condition, out var handler))
                 {
-                    int giverPriority = handler(giver, context);
-                    if (giverPriority != 0)
-                    {
-                        priority += giverPriority;
-                        if (giver.rangeDatas == null)
-                        {
-                            descriptions.Add($"{giver.description} : {giverPriority}");
-                        }
-                        else
-                        {
-                            foreach (var rangeData in giver.rangeDatas)
-                            {
-                                int minPriority = int.Parse(rangeData.priority.Split('~')[0]);
-                                int maxPriority = int.Parse(rangeData.priority.Split('~')[1]);
-                                if (giverPriority >= minPriority && giverPriority <= maxPriority)
-                                {
-                                    descriptions.Add($"{rangeData.description} : {giverPriority}");
-                                    break;
-                                }
-                            }
-                        }
-                    }
+                    Log.Error($"PriorityCalculator: No handler found for condition {giver.condition}");
+                    continue;
+                }
+
+                int giverPriority = handler(giver, context);
+                
+                if (giverPriority == 0)
+                {
+                    continue;
+                }
+                priority += giverPriority;
+
+                if (giver.rangeDatas == null)
+                {
+                    descriptions.Add($"{giver.description} : {giverPriority}");
                 }
                 else
                 {
-                    Log.Error($"PriorityCalculator: No handler found for condition {giver.condition}");
+                    foreach (var rangeData in giver.rangeDatas)
+                    {
+                        int minPriority = int.Parse(rangeData.priority.Split('~')[0]);
+                        int maxPriority = int.Parse(rangeData.priority.Split('~')[1]);
+                        if (giverPriority >= minPriority && giverPriority <= maxPriority)
+                        {
+                            descriptions.Add($"{rangeData.description} : {giverPriority}");
+                            break;
+                        }
+                    }
                 }
+                
             }
 
             return (priority, descriptions);
         }
-
 
         private static int HandleBaseType(PriorityGiver giver, PriorityCalculationContext context)
         {
@@ -124,7 +126,6 @@ namespace Autonomy
 
             return (int)(basePriority * multiplier);
         }
-
 
         private static int HandleSurroundingsFilthy(PriorityGiver giver, PriorityCalculationContext context)
         {
@@ -182,7 +183,6 @@ namespace Autonomy
 
             return finalPriority;
         }
-
 
         private static int HandleImmunity(PriorityGiver giver, PriorityCalculationContext context)
         {

@@ -27,8 +27,8 @@ namespace Autonomy
                 float colonistsBloodLoss = map.mapPawns.FreeColonists.Sum(p => p.health.hediffSet.BleedRateTotal);
                 int animalsNeedingTending = map.mapPawns.SpawnedColonyAnimals.Count(p => p.health.hediffSet.HasTendableHediff());
                 float animalsBloodLoss = map.mapPawns.SpawnedColonyAnimals.Sum(p => p.health.hediffSet.BleedRateTotal);
-
-
+                int corpsesNeedingBurial = map.listerThings.ThingsInGroup(ThingRequestGroup.Corpse).Count(t => !t.IsForbidden(Faction.OfPlayer) && (t.GetRotStage() == RotStage.Fresh || t.GetRotStage() == RotStage.Rotting || t.GetRotStage() == RotStage.Dessicated) && t.def.race.Humanlike);
+                
                 mapInfo["pawnCount"] = pawnCount;
                 mapInfo["colonistCount"] = colonistCount;
                 mapInfo["petCount"] = petCount;
@@ -40,6 +40,7 @@ namespace Autonomy
                 mapInfo["colonistsBloodLoss"] = colonistsBloodLoss;
                 mapInfo["animalsNeedingTending"] = animalsNeedingTending;
                 mapInfo["animalsBloodLoss"] = animalsBloodLoss;
+                mapInfo["corpsesNeedingBurial"] = corpsesNeedingBurial;
 
                 var statDefsToCheck = priorityGivers
                     .Where(g => !string.IsNullOrEmpty(g.stat))

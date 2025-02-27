@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Defs>
-    <WorkTypeDef> <!-- Subdivided from Doctoring -->
+    <WorkTypeDef ParentName="Doctor"> <!-- Subdivided from Doctoring -->
         <defName>AutonomyEmergencyTending</defName>
         <labelShort>(E) Tend</labelShort>
         <pawnLabel>tending</pawnLabel>
@@ -19,7 +19,7 @@
         </workTags>
     </WorkTypeDef>
 
-    <WorkTypeDef> <!-- Subdivided from Doctoring -->
+    <WorkTypeDef ParentName="Doctor"> <!-- Subdivided from Doctoring -->
         <defName>AutonomyNursery</defName>
         <labelShort>Care</labelShort>
         <pawnLabel>caring</pawnLabel>
@@ -39,7 +39,7 @@
         </workTags>
     </WorkTypeDef>
 
-    <WorkTypeDef> <!-- Subdivided from Doctoring -->
+    <WorkTypeDef ParentName="Doctor"> <!-- Subdivided from Doctoring -->
         <defName>AutonomyVeterinary</defName>
         <labelShort>Vet</labelShort>
         <pawnLabel>veterinary</pawnLabel>   
@@ -56,7 +56,7 @@
         </workTags>
     </WorkTypeDef>
 
-    <WorkTypeDef> <!-- Subdivided from Handling -->
+    <WorkTypeDef ParentName="Handling"> <!-- Subdivided from Handling -->
         <defName>AutonomyTaming</defName>
         <labelShort>tame</labelShort>
         <pawnLabel>taming</pawnLabel>
@@ -74,7 +74,7 @@
         </workTags>
     </WorkTypeDef>
 
-    <WorkTypeDef> <!-- Subdivided from Cooking -->
+    <WorkTypeDef ParentName="Cook"> <!-- Subdivided from Cooking -->
         <defName>AutonomyButchering</defName>
         <labelShort>Butcher</labelShort>
         <pawnLabel>butchering</pawnLabel>
@@ -93,7 +93,7 @@
         </workTags>
     </WorkTypeDef>
 
-    <WorkTypeDef> <!-- Subdivided from Cooking -->
+    <WorkTypeDef ParentName="Cook"> <!-- Subdivided from Cooking -->
         <defName>AutonomyBrewing</defName>
         <labelShort>Brew</labelShort>
         <pawnLabel>brewing</pawnLabel>
@@ -112,7 +112,7 @@
         </workTags>
     </WorkTypeDef>
 
-    <WorkTypeDef> <!-- Subdivided from Mining -->
+    <WorkTypeDef ParentName="Mining"> <!-- Subdivided from Mining -->
         <defName>AutonomyDrilling</defName>
         <labelShort>Drill</labelShort>
         <pawnLabel>drilling</pawnLabel>
@@ -132,7 +132,7 @@
         </workTags>
     </WorkTypeDef>
 
-    <WorkTypeDef> <!-- Subdivided from PlantCutting -->
+    <WorkTypeDef ParentName="PlantCutting"> <!-- Subdivided from PlantCutting -->
         <defName>AutonomyPruning</defName>
         <labelShort>Prune</labelShort>
         <pawnLabel>pruning</pawnLabel>
@@ -152,7 +152,7 @@
         </workTags>
     </WorkTypeDef>
 
-    <WorkTypeDef> <!-- Subdivided from Crafting -->
+    <WorkTypeDef ParentName="Crafting"> <!-- Subdivided from Crafting -->
         <defName>AutonomyDrugs</defName>
         <labelShort>drug</labelShort>
         <pawnLabel>drug production</pawnLabel>
@@ -173,7 +173,7 @@
         </workTags>
     </WorkTypeDef>
 
-    <WorkTypeDef> <!-- Subdivided from Hauling -->
+    <WorkTypeDef ParentName="Hauling"> <!-- Subdivided from Hauling -->
         <defName>AutonomyRefueling</defName>
         <labelShort>Refuel</labelShort>
         <pawnLabel>refueling</pawnLabel>
@@ -191,7 +191,7 @@
         </workTags>
     </WorkTypeDef>
 
-    <WorkTypeDef> <!-- Subdivided from Hauling -->
+    <WorkTypeDef ParentName="Hauling"> <!-- Subdivided from Hauling -->
         <defName>AutonomyDeathcare</defName>
         <labelShort>Deathcare</labelShort>
         <pawnLabel>deathcare</pawnLabel>

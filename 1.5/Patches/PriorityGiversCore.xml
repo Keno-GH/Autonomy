@@ -336,6 +336,26 @@
         </value>
     </Operation>
 
+    <Operation Class="PatchOperationAdd" Name="AutonomyDeathcarePriorityGivers">
+        <xpath>Defs/WorkTypeDef[defName="AutonomyDeathcare"]/modExtensions/li[@Class="Autonomy.PriorityGiverExtension"]/priorityGivers</xpath>
+        <value>
+            <li Class="Autonomy.PriorityGiver" Name="corpsesNeedBurial">
+                <condition>BasedOnInfoRange</condition>
+                <infoRange>
+                    <infoKey>corpsesNeedingBurial</infoKey>
+                    <fromMap>true</fromMap>
+                    <range>0~10</range>
+                </infoRange>
+                <exclusiveTo>ignoresDeath</exclusiveTo>
+                <type>WorkApproach</type>
+                <workPreferenceScoreRange>-10~5</workPreferenceScoreRange>
+                <typeMultiplier>2~0.5</typeMultiplier> <!-- The more strict the stronger the effect -->
+                <priority>0~100</priority> <!-- Range depends on the amount of deteriorating things -->
+                <description>Corpses need burying</description>
+            </li>
+        </value>
+    </Operation>
+
     <Operation Class="PatchOperationAdd">
         <xpath>Defs/WorkTypeDef[defName="Cleaning"]/modExtensions/li[@Class="Autonomy.PriorityGiverExtension"]/priorityGivers</xpath>
         <value>

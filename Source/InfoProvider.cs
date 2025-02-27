@@ -92,6 +92,50 @@ namespace Autonomy
                 float cleanliness = CleanlinessUtility.CalculateCleanliness(pawn);
                 pawnInfo["cleanlinessSurroundingMe"] = cleanliness;
 
+                List<TraitDef> traitsThatNullifyObservedLayingCorpse = ThoughtDef.Named("ObservedLayingCorpse").nullifyingTraits;
+                List<HediffDef> hediffsThatNullifyObservedLayingCorpse = ThoughtDef.Named("ObservedLayingCorpse").nullifyingHediffs;
+                List<PreceptDef> preceptsThatNullifyObservedLayingCorpse = ThoughtDef.Named("ObservedLayingCorpse").nullifyingPrecepts;
+
+                bool caresAboutDeaths = true;
+
+                // Check traits
+                foreach (Trait trait in pawn.story.traits.allTraits)
+                {
+                    if (traitsThatNullifyObservedLayingCorpse.Contains(trait.def))
+                    {
+                        caresAboutDeaths = false;
+                        break;
+                    }
+                }
+
+                // Check hediffs if Anomaly DLC is enabled
+                if (caresAboutDeaths && ModsConfig.AnomalyActive)
+                {
+                    foreach (Hediff hediff in pawn.health.hediffSet.hediffs)
+                    {
+                        if (hediffsThatNullifyObservedLayingCorpse.Contains(hediff.def))
+                        {
+                            caresAboutDeaths = false;
+                            break;
+                        }
+                    }
+                }
+
+                // Check precepts if Ideology DLC is enabled
+                if (caresAboutDeaths && ModsConfig.IdeologyActive)
+                {
+                    foreach (Precept precept in pawn.Ideo?.PreceptsListForReading)
+                    {
+                        if (preceptsThatNullifyObservedLayingCorpse.Contains(precept.def))
+                        {
+                            caresAboutDeaths = false;
+                            break;
+                        }
+                    }
+                }
+
+                pawnInfo["ignoresDeath"] = caresAboutDeaths ? 0 : 1;
+
                 int injuriesCount = pawn.health.hediffSet.GetHediffsTendable().Count();
                 float bleedingRate = pawn.health.hediffSet.BleedRateTotal;
                 bool needsTending = pawn.health.hediffSet.HasTendableHediff();

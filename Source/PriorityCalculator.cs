@@ -289,8 +289,6 @@ namespace Autonomy
         private static int HandleInfoRange(PriorityGiver giver, PriorityCalculationContext context)
         {
 
-            
-
             if (giver.infoRange == null)
             {
                 Log.Error($"HandleInfoRange: giver.infoRange is null. A giver with infoRange condition must have an infoRange with infoKey, fromMap and range defined.");
@@ -397,6 +395,17 @@ namespace Autonomy
             {
                 Log.Error("CalculateFromInfoRange: giver is null");
                 return 0;
+            }
+
+            if (giver.exclusiveTo != null)
+            {
+                if (context.PawnInfo.TryGetValue(giver.exclusiveTo, out float exclusiveValue))
+                {
+                    if (exclusiveValue == 0)
+                    {
+                        return 0;
+                    }
+                }
             }
 
             var info = fromMap ? context.MapInfo : context.PawnInfo;

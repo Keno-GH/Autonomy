@@ -22,6 +22,7 @@ namespace Autonomy
         public string workPreferenceScoreRange;
         public string validRange;
         public bool useAverage;
+        public string exclusiveTo;
         public List<RangeData> rangeDatas;
         public InfoRange infoRange;
     }

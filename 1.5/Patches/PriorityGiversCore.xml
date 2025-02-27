@@ -189,7 +189,7 @@
         </value>
     </Operation>   
 
-    <Operation Class="XmlExtensions.ForEach"> <!-- Give skill related priority givers to work types with skills -->
+    <Operation Class="XmlExtensions.ForEach" Name="AllSkilledWorktypesGivers"> <!-- Give skill related priority givers to work types with skills -->
         <xpath>Defs/WorkTypeDef[relevantSkills]</xpath>
         <storeIn>SkilledWorkTypeDef</storeIn>
         <apply> 
@@ -263,7 +263,7 @@
         </apply>
     </Operation>
     
-    <Operation Class="PatchOperationAdd">
+    <Operation Class="PatchOperationAdd" Name="HaulingPriorityGivers">
         <xpath>Defs/WorkTypeDef[defName="Hauling"]/modExtensions/li[@Class="Autonomy.PriorityGiverExtension"]/priorityGivers</xpath>
         <value>
             <li Class="Autonomy.PriorityGiver" Name="ThingsDeteriorating">
@@ -278,19 +278,6 @@
                 <typeMultiplier>3~0.5</typeMultiplier> <!-- The more strict the stronger the effect -->
                 <priority>1~20</priority> <!-- Range depends on the amount of deteriorating things -->
                 <description>Things are deteriorating</description>
-            </li>
-            <li Class="Autonomy.PriorityGiver" Name="ThingsNeedRefueling">
-                <condition>BasedOnInfoRange</condition>
-                <infoRange>
-                    <infoKey>refuelableThingsNeedingRefuel</infoKey>
-                    <fromMap>true</fromMap>
-                    <range>0~10</range>
-                </infoRange>
-                <type>WorkApproach</type>
-                <workPreferenceScoreRange>-10~5</workPreferenceScoreRange>
-                <typeMultiplier>2~0.5</typeMultiplier> <!-- The more strict the stronger the effect -->
-                <priority>0~20</priority> <!-- Range depends on the amount of deteriorating things -->
-                <description>Things need refueling</description>
             </li>
             <li Class="Autonomy.PriorityGiver" Name="AverageMoveSpeed">
                 <condition>ComparedStats</condition>
@@ -326,6 +313,25 @@
                         <description>I am faster than average</description>
                     </li>
                 </rangeDatas>
+            </li>
+        </value>
+    </Operation>
+    
+    <Operation Class="PatchOperationAdd" Name="AutonomyRefuelingPriorityGivers">
+        <xpath>Defs/WorkTypeDef[defName="AutonomyRefueling"]/modExtensions/li[@Class="Autonomy.PriorityGiverExtension"]/priorityGivers</xpath>
+        <value>
+            <li Class="Autonomy.PriorityGiver" Name="ThingsNeedRefueling">
+                <condition>BasedOnInfoRange</condition>
+                <infoRange>
+                    <infoKey>refuelableThingsNeedingRefuel</infoKey>
+                    <fromMap>true</fromMap>
+                    <range>0~10</range>
+                </infoRange>
+                <type>WorkApproach</type>
+                <workPreferenceScoreRange>-10~5</workPreferenceScoreRange>
+                <typeMultiplier>2~0.5</typeMultiplier> <!-- The more strict the stronger the effect -->
+                <priority>0~20</priority> <!-- Range depends on the amount of deteriorating things -->
+                <description>Things need refueling</description>
             </li>
         </value>
     </Operation>

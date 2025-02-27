@@ -125,20 +125,6 @@ namespace Autonomy
             return (int)(basePriority * multiplier);
         }
 
-        private static int HandleMapFilthy(PriorityGiver giver, PriorityCalculationContext context)
-        {
-            return CalculateFromInfoRange("filthInHome", true, 10, 200, giver, context);
-        }
-
-        private static int HandleThingsDeteriorating(PriorityGiver giver, PriorityCalculationContext context)
-        {
-            return CalculateFromInfoRange("thingsDeteriorating", true, 1, 25, giver, context);
-        }
-
-        private static int HandleThingsNeedRefueling(PriorityGiver giver, PriorityCalculationContext context)
-        {
-            return CalculateFromInfoRange("refuelableThingsNeedingRefuel", true, 0, 10, giver, context);
-        }
 
         private static int HandleSurroundingsFilthy(PriorityGiver giver, PriorityCalculationContext context)
         {
@@ -197,10 +183,6 @@ namespace Autonomy
             return finalPriority;
         }
 
-        private static int HandleTending(PriorityGiver giver, PriorityCalculationContext context)
-        {
-            return CalculateFromInfoRange("injuriesCount", false, 0, 4, giver, context);
-        }
 
         private static int HandleImmunity(PriorityGiver giver, PriorityCalculationContext context)
         {
@@ -304,19 +286,38 @@ namespace Autonomy
             return 0;
         }
 
-        private static int HandleBleeding(PriorityGiver giver, PriorityCalculationContext context)
+        private static int HandleInfoRange(PriorityGiver giver, PriorityCalculationContext context)
         {
-            return CalculateFromInfoRange("bleedingRate", false, 0.01f, 0.5f, giver, context);
-        }
 
-        private static int HandleColonyTending(PriorityGiver giver, PriorityCalculationContext context)
-        {
-            return CalculateFromInfoRange("colonistsNeedingTending", true, 1, 5, giver, context);
-        }
+            
 
-        private static int HandleColonyBleeding(PriorityGiver giver, PriorityCalculationContext context)
-        {
-            return CalculateFromInfoRange("colonistsBloodLoss", true, 0.5f, 5f, giver, context);
+            if (giver.infoRange == null)
+            {
+                Log.Error($"HandleInfoRange: giver.infoRange is null. A giver with infoRange condition must have an infoRange with infoKey, fromMap and range defined.");
+                return 0;
+            }
+
+            if (string.IsNullOrEmpty(giver.infoRange.infoKey))
+            {
+                Log.Error($"HandleInfoRange: giver.infoRange.infoKey is null or empty. A giver with infoRange condition must have an infoKey defined.");
+                return 0;
+            }
+
+            if (string.IsNullOrEmpty(giver.infoRange.range))
+            {
+                Log.Error($"HandleInfoRange: giver.infoRange.range is null or empty. A giver with infoRange condition must have a range defined.");
+                return 0;
+            }
+
+            if (!giver.infoRange.fromMap && context.PawnInfo.ContainsKey("noPawn"))
+            {
+                return 0;
+            }
+
+            string[] rangeParts = giver.infoRange.range.Split('~');
+            float minValue = float.Parse(rangeParts[0]);
+            float maxValue = float.Parse(rangeParts[1]);
+            return CalculateFromInfoRange(giver.infoRange.infoKey, giver.infoRange.fromMap, minValue, maxValue, giver, context);
         }
 
         private static int HandleComparedStats(PriorityGiver giver, PriorityCalculationContext context)

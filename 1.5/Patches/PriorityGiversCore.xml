@@ -62,7 +62,12 @@
                 <description>I the best at this around</description>
             </li>
             <li Class="Autonomy.PriorityGiver" Name="ColonyNeedsTending">
-                <condition>ColonyNeedsTending</condition>
+                <condition>BasedOnInfoRange</condition>
+                <infoRange>
+                    <infoKey>colonistsNeedingTending</infoKey>
+                    <fromMap>true</fromMap>
+                    <range>1~5</range>
+                </infoRange>
                 <type>SocialPreference</type>
                 <workPreferenceScoreRange>-10~10</workPreferenceScoreRange>
                 <typeMultiplier>0.8~2</typeMultiplier> <!-- The more cooperative the stronger the effect -->
@@ -70,7 +75,12 @@
                 <description>People need tending</description>
             </li>
             <li Class="Autonomy.PriorityGiver" Name="ColonyBleeding">
-                <condition>ColonyBleeding</condition>
+                <condition>BasedOnInfoRange</condition>
+                <infoRange>
+                    <infoKey>colonistsBloodLoss</infoKey>
+                    <fromMap>true</fromMap>
+                    <range>0.5~5</range>
+                </infoRange>
                 <type>SocialPreference</type>
                 <workPreferenceScoreRange>-10~10</workPreferenceScoreRange>
                 <typeMultiplier>0.8~2</typeMultiplier> <!-- The more cooperative the stronger the effect -->
@@ -84,12 +94,22 @@
         <xpath>Defs/WorkTypeDef[defName="Patient"]/modExtensions/li[@Class="Autonomy.PriorityGiverExtension"]/priorityGivers</xpath>
         <value>
             <li Class="Autonomy.PriorityGiver" Name="NeedsTending">
-                <condition>NeedsTending</condition>
+                <condition>BasedOnInfoRange</condition>
+                <infoRange>
+                    <infoKey>injuriesCount</infoKey>
+                    <fromMap>false</fromMap>
+                    <range>0~4</range>
+                </infoRange>
                 <priority>0~100</priority>
                 <description>I need tending</description>
             </li>
             <li Class="Autonomy.PriorityGiver" Name="Bleeding">
-                <condition>Bleeding</condition>
+                <condition>BasedOnInfoRange</condition>
+                <infoRange>
+                    <infoKey>bleedingRate</infoKey>
+                    <fromMap>false</fromMap>
+                    <range>0.00~0.5</range>
+                </infoRange>
                 <priority>0~100</priority>
                 <description>I am bleeding out</description>
             </li>
@@ -191,15 +211,25 @@
         <xpath>Defs/WorkTypeDef[defName="Hauling"]/modExtensions/li[@Class="Autonomy.PriorityGiverExtension"]/priorityGivers</xpath>
         <value>
             <li Class="Autonomy.PriorityGiver" Name="ThingsDeteriorating">
-                <condition>ThingsDeteriorating</condition>
+                <condition>BasedOnInfoRange</condition>
+                <infoRange>
+                    <infoKey>thingsDeteriorating</infoKey>
+                    <fromMap>true</fromMap>
+                    <range>1~25</range>
+                </infoRange>
                 <type>WorkApproach</type>
                 <workPreferenceScoreRange>-10~5</workPreferenceScoreRange>
                 <typeMultiplier>3~0.5</typeMultiplier> <!-- The more strict the stronger the effect -->
-                <priority>0~20</priority> <!-- Range depends on the amount of deteriorating things -->
+                <priority>1~20</priority> <!-- Range depends on the amount of deteriorating things -->
                 <description>Things are deteriorating</description>
             </li>
             <li Class="Autonomy.PriorityGiver" Name="ThingsNeedRefueling">
-                <condition>ThingsNeedRefueling</condition>
+                <condition>BasedOnInfoRange</condition>
+                <infoRange>
+                    <infoKey>refuelableThingsNeedingRefuel</infoKey>
+                    <fromMap>true</fromMap>
+                    <range>0~10</range>
+                </infoRange>
                 <type>WorkApproach</type>
                 <workPreferenceScoreRange>-10~5</workPreferenceScoreRange>
                 <typeMultiplier>2~0.5</typeMultiplier> <!-- The more strict the stronger the effect -->
@@ -248,7 +278,12 @@
         <xpath>Defs/WorkTypeDef[defName="Cleaning"]/modExtensions/li[@Class="Autonomy.PriorityGiverExtension"]/priorityGivers</xpath>
         <value>
             <li Class="Autonomy.PriorityGiver" Name="MapFilthy">
-                <condition>MapFilthy</condition>
+                <condition>BasedOnInfoRange</condition>
+                <infoRange>
+                    <infoKey>filthInHome</infoKey>
+                    <fromMap>true</fromMap>
+                    <range>10~200</range>
+                </infoRange>
                 <type>SocialPreference</type>
                 <workPreferenceScoreRange>1~10</workPreferenceScoreRange>
                 <typeMultiplier>1~1.5</typeMultiplier> <!-- The more cooperative the stronger the effect -->

@@ -23,6 +23,7 @@ namespace Autonomy
         public string validRange;
         public bool useAverage;
         public List<RangeData> rangeDatas;
+        public InfoRange infoRange;
     }
 
     public class RangeData
@@ -30,6 +31,12 @@ namespace Autonomy
         public string validRange;
         public string priority;
         public string description;
+    }
+    public class InfoRange
+    {
+        public string infoKey;
+        public bool fromMap;
+        public string range;
     }
 
     public static class PriorityGiverUtility

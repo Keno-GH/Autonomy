@@ -5,18 +5,6 @@
         <giver>HandleBaseType</giver>
     </Autonomy.PriorityGiverDef>
     <Autonomy.PriorityGiverDef>
-        <defName>MapFilthy</defName>
-        <giver>HandleMapFilthy</giver>
-    </Autonomy.PriorityGiverDef>
-    <Autonomy.PriorityGiverDef>
-        <defName>ThingsDeteriorating</defName>
-        <giver>HandleThingsDeteriorating</giver>
-    </Autonomy.PriorityGiverDef>
-    <Autonomy.PriorityGiverDef>
-        <defName>ThingsNeedRefueling</defName>
-        <giver>HandleThingsNeedRefueling</giver>
-    </Autonomy.PriorityGiverDef>
-    <Autonomy.PriorityGiverDef>
         <defName>SurroundingsFilthy</defName>
         <giver>HandleSurroundingsFilthy</giver>
     </Autonomy.PriorityGiverDef>
@@ -37,23 +25,11 @@
         <giver>HandleComparedStats</giver>
     </Autonomy.PriorityGiverDef>
     <Autonomy.PriorityGiverDef>
-        <defName>NeedsTending</defName>
-        <giver>HandleTending</giver>
-    </Autonomy.PriorityGiverDef>
-    <Autonomy.PriorityGiverDef>
         <defName>BuildingImmunity</defName>
         <giver>HandleImmunity</giver>
     </Autonomy.PriorityGiverDef>
     <Autonomy.PriorityGiverDef>
-        <defName>Bleeding</defName>
-        <giver>HandleBleeding</giver>
-    </Autonomy.PriorityGiverDef>
-    <Autonomy.PriorityGiverDef>
-        <defName>ColonyNeedsTending</defName>
-        <giver>HandleColonyTending</giver>
-    </Autonomy.PriorityGiverDef>
-    <Autonomy.PriorityGiverDef>
-        <defName>ColonyBleeding</defName>
-        <giver>HandleColonyBleeding</giver>
+        <defName>BasedOnInfoRange</defName>
+        <giver>HandleInfoRange</giver>
     </Autonomy.PriorityGiverDef>
 </Defs>

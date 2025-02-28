@@ -313,7 +313,7 @@
                     <fromMap>true</fromMap>
                     <range>0~100</range>
                 </infoRange>
-                <type>WorkApprach</type>
+                <type>WorkApproach</type>
                 <workPreferenceScoreRange>-10~10</workPreferenceScoreRange>
                 <typeMultiplier>2~1</typeMultiplier>
                 <priority>0~20</priority>

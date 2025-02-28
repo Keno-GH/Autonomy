@@ -33,7 +33,7 @@
         <Operation Class="XmlExtensions.IfStatement" Name="Emergency Tending">
         <condition Class="XmlExtensions.Boolean.Comparison">
             <value1>{EnableAutonomyEmergencyTending}</value1>
-            <value2>true</value2>
+            <value2>True</value2>
             <nonNumeric>true</nonNumeric>
         </condition>
         <caseTrue>
@@ -56,7 +56,7 @@
         <Operation Class="XmlExtensions.IfStatement" Name="Nursery">
         <condition Class="XmlExtensions.Boolean.Comparison">
             <value1>{EnableAutonomyNursery}</value1>
-            <value2>true</value2>
+            <value2>True</value2>
             <nonNumeric>true</nonNumeric>
         </condition>
         <caseTrue>
@@ -83,7 +83,7 @@
         <Operation Class="XmlExtensions.IfStatement" Name="Veterinary">
         <condition Class="XmlExtensions.Boolean.Comparison">
             <value1>{EnableAutonomyVeterinary}</value1>
-            <value2>true</value2>
+            <value2>True</value2>
             <nonNumeric>true</nonNumeric>
         </condition>
         <caseTrue>
@@ -106,7 +106,7 @@
             <Operation Class="XmlExtensions.IfStatement">
             <condition Class="XmlExtensions.Boolean.Comparison">
                 <value1>{EnableAutonomyNursery}</value1>
-                <value2>true</value2>
+                <value2>True</value2>
                 <nonNumeric>true</nonNumeric>
             </condition>
             <caseTrue>
@@ -124,7 +124,7 @@
         <Operation Class="XmlExtensions.IfStatement" Name="Taming">
         <condition Class="XmlExtensions.Boolean.Comparison">
             <value1>{EnableAutonomyTaming}</value1>
-            <value2>true</value2>
+            <value2>True</value2>
             <nonNumeric>true</nonNumeric>
         </condition>
         <caseTrue>
@@ -147,7 +147,7 @@
         <Operation Class="XmlExtensions.IfStatement" Name="Butchering">
         <condition Class="XmlExtensions.Boolean.Comparison">
             <value1>{EnableAutonomyButchering}</value1>
-            <value2>true</value2>
+            <value2>True</value2>
             <nonNumeric>true</nonNumeric>
         </condition>
         <caseTrue>
@@ -170,7 +170,7 @@
         <Operation Class="XmlExtensions.IfStatement" Name="Brewing">
         <condition Class="XmlExtensions.Boolean.Comparison">
             <value1>{EnableAutonomyBrewing}</value1>
-            <value2>true</value2>
+            <value2>True</value2>
             <nonNumeric>true</nonNumeric>
         </condition>
         <caseTrue>
@@ -195,7 +195,7 @@
         <Operation Class="XmlExtensions.IfStatement" Name="Drilling">
         <condition Class="XmlExtensions.Boolean.Comparison">
             <value1>{EnableAutonomyDrilling}</value1>
-            <value2>true</value2>
+            <value2>True</value2>
             <nonNumeric>true</nonNumeric>
         </condition>
         <caseTrue>
@@ -218,7 +218,7 @@
         <Operation Class="XmlExtensions.IfStatement" Name="Pruning">
         <condition Class="XmlExtensions.Boolean.Comparison">
             <value1>{EnableAutonomyPruning}</value1>
-            <value2>true</value2>
+            <value2>True</value2>
             <nonNumeric>true</nonNumeric>
         </condition>
         <caseTrue>
@@ -241,7 +241,7 @@
         <Operation Class="XmlExtensions.IfStatement" Name="Drugs">
         <condition Class="XmlExtensions.Boolean.Comparison">
             <value1>{EnableAutonomyDrugs}</value1>
-            <value2>true</value2>
+            <value2>True</value2>
             <nonNumeric>true</nonNumeric>
         </condition>
         <caseTrue>
@@ -264,7 +264,7 @@
         <Operation Class="XmlExtensions.IfStatement" Name="Refueling">
         <condition Class="XmlExtensions.Boolean.Comparison">
             <value1>{EnableAutonomyRefueling}</value1>
-            <value2>true</value2>
+            <value2>True</value2>
             <nonNumeric>true</nonNumeric>
         </condition>
         <caseTrue>
@@ -288,7 +288,7 @@
         <Operation Class="XmlExtensions.IfStatement" Name="Deathcare">
         <condition Class="XmlExtensions.Boolean.Comparison">
             <value1>{EnableAutonomyDeathcare}</value1>
-            <value2>true</value2>
+            <value2>True</value2>
             <nonNumeric>true</nonNumeric>
         </condition>
         <caseTrue>

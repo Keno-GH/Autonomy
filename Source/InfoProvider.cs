@@ -168,6 +168,9 @@ namespace Autonomy
                 pawnInfo["severityGainSpeed"] = severityGainSpeed;
                 pawnInfo["severityTendedSpeed"] = severityTendedSpeed;
 
+                float foodLevel = pawn.needs.food.CurLevelPercentage;
+                pawnInfo["foodLevel"] = foodLevel;
+
                 // Log.Message($"Pawn {pawn.Name} has {injuriesCount} injuries, bleeding rate: {bleedingRate}, needs tending: {needsTending}, immunity gain speed: {immunityGainSpeed}, severity gain speed: {severityGainSpeed}, severity tended speed: {severityTendedSpeed}, true severity gained: {severityGainSpeed + severityTendedSpeed}, immunity rate - true severity gained: {immunityGainSpeed - (severityGainSpeed + severityTendedSpeed)}. Pawn Immunity Stat Value: {pawn.GetStatValue(StatDefOf.ImmunityGainSpeed, applyPostProcess: true)}");
 
                 foreach (var skill in pawn.skills.skills)

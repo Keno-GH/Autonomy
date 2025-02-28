@@ -279,8 +279,31 @@
                 <priority>0~20</priority>
                 <description>People are hungry</description>
             </li>
+            <li Class="Autonomy.PriorityGiver" Name="MyFoodLevel">
+                <condition>BasedOnInfoRange</condition>
+                <infoRange>
+                    <infoKey>foodLevel</infoKey>
+                    <fromMap>false</fromMap>
+                    <range>0.75~0</range>
+                </infoRange>
+                <type>SocialPreference</type>
+                <workPreferenceScoreRange>-10~10</workPreferenceScoreRange>
+                <typeMultiplier>2~0.5</typeMultiplier>
+                <priority>0~20</priority>
+                <description>I am hungry</description>
+            </li>
+            <li Class="Autonomy.PriorityGiver" Name="CreativeEnjoy">
+                <condition>BaseType</condition>
+                <type>CognitiveOrientation</type>
+                <workPreferenceScoreRange>0~10</workPreferenceScoreRange> <!-- Creative side -->
+                <typeMultiplier>0.1~1</typeMultiplier> <!-- The more organic  the stronger the effect -->
+                <priority>15</priority>
+                <description>I enjoy cooking</description>
+            </li>
         </value>
     </Operation>
+
+
 
     <Operation Class="PatchOperationAdd" Name="HaulingPriorityGivers">
         <xpath>Defs/WorkTypeDef[defName="Hauling"]/modExtensions/li[@Class="Autonomy.PriorityGiverExtension"]/priorityGivers</xpath>

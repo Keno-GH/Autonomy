@@ -29,6 +29,7 @@ namespace Autonomy
                 float animalsBloodLoss = map.mapPawns.SpawnedColonyAnimals.Sum(p => p.health.hediffSet.BleedRateTotal);
                 int corpsesNeedingBurial = map.listerThings.ThingsInGroup(ThingRequestGroup.Corpse).Count(t => !t.IsForbidden(Faction.OfPlayer) && (t.GetRotStage() == RotStage.Fresh || t.GetRotStage() == RotStage.Rotting || t.GetRotStage() == RotStage.Dessicated) && t.def.race.Humanlike);
                 float colonistsFoodLevelAverage = map.mapPawns.FreeColonists.Average(p => p.needs.food.CurLevelPercentage);
+                int meatInHome = map.resourceCounter.GetCountIn(ThingCategoryDefOf.MeatRaw);
 
                 mapInfo["pawnCount"] = pawnCount;
                 mapInfo["colonistCount"] = colonistCount;
@@ -43,6 +44,7 @@ namespace Autonomy
                 mapInfo["animalsBloodLoss"] = animalsBloodLoss;
                 mapInfo["corpsesNeedingBurial"] = corpsesNeedingBurial;
                 mapInfo["colonistsFoodLevelAverage"] = colonistsFoodLevelAverage;
+                mapInfo["meatInHome"] = meatInHome;
 
                 var statDefsToCheck = priorityGivers
                     .Where(g => !string.IsNullOrEmpty(g.stat))

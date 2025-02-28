@@ -303,7 +303,59 @@
         </value>
     </Operation>
 
-
+    <Operation Class="PatchOperationAdd" Name="AutonomyButcheringPriorityGivers">
+        <xpath>Defs/WorkTypeDef[defName="AutonomyButchering"]/modExtensions/li[@Class="Autonomy.PriorityGiverExtension"]/priorityGivers</xpath>
+        <value>
+            <li Class="Autonomy.PriorityGiver" Name="ColonyLowOnMeat">
+                <condition>BasedOnInfoRange</condition>
+                <infoRange>
+                    <infoKey>meatInHome</infoKey>
+                    <fromMap>true</fromMap>
+                    <range>0~100</range>
+                </infoRange>
+                <type>WorkApprach</type>
+                <workPreferenceScoreRange>-10~10</workPreferenceScoreRange>
+                <typeMultiplier>2~1</typeMultiplier>
+                <priority>0~20</priority>
+                <description>We are low on meat</description>
+            </li>
+            <li Class="Autonomy.PriorityGiver" Name="AverageButcheryFleshEfficiency">
+                <condition>ComparedStats</condition>
+                <stat>ButcheryFleshEfficiency</stat>
+                <useAverage>true</useAverage>
+                <type>SocialPreference</type>
+                <workPreferenceScoreRange>-10~10</workPreferenceScoreRange>
+                <typeMultiplier>0.5~2</typeMultiplier> <!-- The more cooperative the stronger the effect -->
+                <rangeDatas>
+                    <li>
+                        <validRange>-999~-0.41</validRange>
+                        <priority>-10~-10</priority>
+                        <description>There are better people for this</description>
+                    </li>
+                    <li>
+                        <validRange>-0.4~0</validRange>
+                        <priority>-10~0</priority>
+                        <description>There are better people for this</description>
+                    </li>
+                    <li>
+                        <validRange>0.01~0.1</validRange>
+                        <priority>1~2</priority>
+                        <description>I am average at this</description>
+                    </li>
+                    <li>
+                        <validRange>0.11~0.4</validRange>
+                        <priority>2~15</priority>
+                        <description>I am better at this than most</description>
+                    </li>
+                    <li>
+                        <validRange>0.41~999</validRange>
+                        <priority>15~15</priority>
+                        <description>I am better at this than most</description>
+                    </li>
+                </rangeDatas>
+            </li>
+        </value>
+    </Operation>
 
     <Operation Class="PatchOperationAdd" Name="HaulingPriorityGivers">
         <xpath>Defs/WorkTypeDef[defName="Hauling"]/modExtensions/li[@Class="Autonomy.PriorityGiverExtension"]/priorityGivers</xpath>

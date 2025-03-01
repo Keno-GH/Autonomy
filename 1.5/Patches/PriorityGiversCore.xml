@@ -357,6 +357,25 @@
         </value>
     </Operation>
 
+    <Operation Class="PatchOperationAdd" Name="AutonomyBrewingPriorityGivers">
+        <xpath>Defs/WorkTypeDef[defName="AutonomyBrewing"]/modExtensions/li[@Class="Autonomy.PriorityGiverExtension"]/priorityGivers</xpath>
+        <value>
+            <li Class="Autonomy.PriorityGiver" Name="LowOnSocialDrugs">
+                <condition>BasedOnInfoRange</condition>
+                <infoRange>
+                    <infoKey>socialDrugsInHome</infoKey>
+                    <fromMap>true</fromMap>
+                    <range>25~0</range>
+                </infoRange>
+                <type>WorkApproach</type>
+                <workPreferenceScoreRange>-10~10</workPreferenceScoreRange>
+                <typeMultiplier>1~2</typeMultiplier>
+                <priority>0~20</priority>
+                <description>We are running low on alcohol</description>
+            </li>
+        </value>
+    </Operation>
+
     <Operation Class="PatchOperationAdd" Name="HaulingPriorityGivers">
         <xpath>Defs/WorkTypeDef[defName="Hauling"]/modExtensions/li[@Class="Autonomy.PriorityGiverExtension"]/priorityGivers</xpath>
         <value>

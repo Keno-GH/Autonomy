@@ -371,7 +371,7 @@
                 <workPreferenceScoreRange>-10~10</workPreferenceScoreRange>
                 <typeMultiplier>1~2</typeMultiplier>
                 <priority>0~20</priority>
-                <description>We are running low on alcohol</description>
+                <description>We are running low on social drugs</description>
             </li>
         </value>
     </Operation>

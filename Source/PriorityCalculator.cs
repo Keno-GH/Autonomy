@@ -320,9 +320,9 @@ namespace Autonomy
                 return 0;
             }
 
-            float minValue = float.Parse(rangeParts[0]);
-            float maxValue = float.Parse(rangeParts[1]);
-            return CalculateFromInfoRange(giver.infoRange.infoKey, giver.infoRange.fromMap, minValue, maxValue, giver, context);
+            float leftLimit = float.Parse(rangeParts[0]);
+            float rightLimit = float.Parse(rangeParts[1]);
+            return CalculateFromInfoRange(giver.infoRange.infoKey, giver.infoRange.fromMap, leftLimit, rightLimit, giver, context);
         }
 
         private static int HandleComparedStats(PriorityGiver giver, PriorityCalculationContext context)
@@ -396,7 +396,7 @@ namespace Autonomy
 
             return calculatedPriority;
         }
-        private static int CalculateFromInfoRange(string infoKey, bool fromMap, float minCalc, float maxCalc, PriorityGiver giver, PriorityCalculationContext context)
+        private static int CalculateFromInfoRange(string infoKey, bool fromMap, float leftLimit, float rightLimit, PriorityGiver giver, PriorityCalculationContext context)
         {
             if (giver == null)
             {
@@ -476,22 +476,22 @@ namespace Autonomy
                 return 0;
             }
 
-            bool reverseOrder = minCalc > maxCalc;
+            bool isDecreasingValue = leftLimit > rightLimit;
             int basePriority;
 
-            if (reverseOrder)
+            if (isDecreasingValue)
             {
                 basePriority =
-                value > maxCalc ? minPriority
-                : value < minCalc ? maxPriority
-                : maxPriority - (int)((value - minCalc) * (maxPriority - minPriority) / (maxCalc - minCalc));
+                value < rightLimit ? maxPriority
+                : value > leftLimit ? minPriority
+                : maxPriority - (int)((value - rightLimit) * (maxPriority - minPriority) / (leftLimit - rightLimit));
             }
             else
-            {
-            basePriority = 
-            value > maxCalc ? maxPriority
-            : value < minCalc ? minPriority
-            : minPriority + (int)((value - minCalc) * (maxPriority - minPriority) / (maxCalc - minCalc));
+            {   
+                basePriority = 
+                value > rightLimit ? maxPriority
+                : value < leftLimit ? minPriority
+                : minPriority + (int)((value - leftLimit) * (maxPriority - minPriority) / (rightLimit - leftLimit));
             }
 
             if (hasWorkDrivePreference)

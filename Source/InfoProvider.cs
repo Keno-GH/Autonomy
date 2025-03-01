@@ -31,6 +31,12 @@ namespace Autonomy
                 float colonistsFoodLevelAverage = map.mapPawns.FreeColonists.Average(p => p.needs.food.CurLevelPercentage);
                 int meatInHome = map.resourceCounter.GetCountIn(ThingCategoryDefOf.MeatRaw);
                 int socialDrugsInHome = map.resourceCounter.AllCountedAmounts.Where(kvp => kvp.Key.IsIngestible && kvp.Key.ingestible.drugCategory == DrugCategory.Social).Sum(kvp => kvp.Value);
+                int preparedMealsInHome = map.resourceCounter.AllCountedAmounts.Where(
+                    kvp => kvp.Key.IsIngestible && (
+                        kvp.Key.ingestible.preferability == FoodPreferability.MealAwful || kvp.Key.ingestible.preferability == FoodPreferability.MealSimple || kvp.Key.ingestible.preferability == FoodPreferability.MealFine || kvp.Key.ingestible.preferability == FoodPreferability.MealLavish
+                        )
+                    ).Sum(kvp => kvp.Value);
+                int preparedMealsInHomePerColonist = colonistCount > 0 ? preparedMealsInHome / colonistCount : 0;
 
                 mapInfo["pawnCount"] = pawnCount;
                 mapInfo["colonistCount"] = colonistCount;
@@ -47,6 +53,7 @@ namespace Autonomy
                 mapInfo["colonistsFoodLevelAverage"] = colonistsFoodLevelAverage;
                 mapInfo["meatInHome"] = meatInHome;
                 mapInfo["socialDrugsInHome"] = socialDrugsInHome;
+                mapInfo["preparedMealsInHomePerColonist"] = preparedMealsInHomePerColonist;
 
                 var statDefsToCheck = priorityGivers
                     .Where(g => !string.IsNullOrEmpty(g.stat))

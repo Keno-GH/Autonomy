@@ -292,6 +292,19 @@
                 <priority>0~20</priority>
                 <description>I am hungry</description>
             </li>
+            <li Class="Autonomy.PriorityGiver" Name="preparedMealsInHomePerColonist">
+                <condition>BasedOnInfoRange</condition>
+                <infoRange>
+                    <infoKey>preparedMealsInHomePerColonist</infoKey>
+                    <fromMap>true</fromMap>
+                    <range>4~0</range>
+                </infoRange>
+                <type>WorkApproach</type>
+                <workPreferenceScoreRange>-10~10</workPreferenceScoreRange>
+                <typeMultiplier>1.5~0.5</typeMultiplier>
+                <priority>0~10</priority>
+                <description>We need more meals</description>
+            </li>
             <li Class="Autonomy.PriorityGiver" Name="CreativeEnjoy">
                 <condition>BaseType</condition>
                 <type>CognitiveOrientation</type>

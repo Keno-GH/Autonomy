@@ -313,6 +313,13 @@ namespace Autonomy
             }
 
             string[] rangeParts = giver.infoRange.range.Split('~');
+
+            if (rangeParts.Length != 2)
+            {
+                Log.Error($"HandleInfoRange: giver.infoRange.range is invalid. A giver with infoRange condition must have a range defined as 'min~max'.");
+                return 0;
+            }
+
             float minValue = float.Parse(rangeParts[0]);
             float maxValue = float.Parse(rangeParts[1]);
             return CalculateFromInfoRange(giver.infoRange.infoKey, giver.infoRange.fromMap, minValue, maxValue, giver, context);
@@ -469,10 +476,23 @@ namespace Autonomy
                 return 0;
             }
 
-            int basePriority = 
+            bool reverseOrder = minCalc > maxCalc;
+            int basePriority;
+
+            if (reverseOrder)
+            {
+                basePriority =
+                value > maxCalc ? minPriority
+                : value < minCalc ? maxPriority
+                : maxPriority - (int)((value - minCalc) * (maxPriority - minPriority) / (maxCalc - minCalc));
+            }
+            else
+            {
+            basePriority = 
             value > maxCalc ? maxPriority
             : value < minCalc ? minPriority
             : minPriority + (int)((value - minCalc) * (maxPriority - minPriority) / (maxCalc - minCalc));
+            }
 
             if (hasWorkDrivePreference)
             {

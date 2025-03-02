@@ -1025,10 +1025,10 @@
                     <range>10~200</range>
                 </infoRange>
                 <type>SocialPreference</type>
-                <workPreferenceScoreRange>1~10</workPreferenceScoreRange>
-                <typeMultiplier>1~1.5</typeMultiplier> <!-- The more cooperative the stronger the effect -->
-                <priority>0~10</priority> <!-- Range depends on the level of filth in home -->
-                <description>Our home is filthy</description>
+                <workPreferenceScoreRange>-10~10</workPreferenceScoreRange>
+                <typeMultiplier>0.1~1.5</typeMultiplier> <!-- The more cooperative the stronger the effect -->
+                <priority>0~30</priority> <!-- Range depends on the level of filth in home -->
+                <description>The colony is filthy</description>
             </li>
             <li Class="Autonomy.PriorityGiver" Name="SurroundingsFilthy">
                 <condition>SurroundingsFilthy</condition>

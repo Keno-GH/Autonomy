@@ -21,7 +21,15 @@ namespace Autonomy
                 int petCount = map.mapPawns.SpawnedColonyAnimals.Count;
                 int enemyCount = map.mapPawns.AllHumanlikeSpawned.Where(p => p.Faction != null && p.Faction.HostileTo(Faction.OfPlayer)).Count();
                 int filthInHome = map.listerFilthInHomeArea.FilthInHomeArea.Count;
-                int thingsDeteriorating = map.listerHaulables.ThingsPotentiallyNeedingHauling().Count(t => t.def.useHitPoints && t.IsOutside() && !t.IsForbidden(Faction.OfPlayer) && t.def.CanEverDeteriorate);
+                int thingsDeteriorating = map.listerHaulables.ThingsPotentiallyNeedingHauling().Count(t => 
+                {
+                    bool isDeteriorating = t.def.useHitPoints && t.IsOutside() && !t.IsForbidden(Faction.OfPlayer) && t.def.CanEverDeteriorate && t.GetStatValue(StatDefOf.DeteriorationRate, true) > 0f;
+                    if (isDeteriorating)
+                    {
+                        Log.Message($"Thing deteriorating: {t.LabelCap} at {t.Position}");
+                    }
+                    return isDeteriorating;
+                });
                 int refuelableThingsNeedingRefuel = map.listerThings.ThingsInGroup(ThingRequestGroup.Refuelable).Count(t => t.TryGetComp<CompRefuelable>() is CompRefuelable compRefuelable && compRefuelable.ShouldAutoRefuelNowIgnoringFuelPct && compRefuelable.Fuel < compRefuelable.Props.fuelCapacity * 0.25f);
                 int colonistsNeedingTending = map.mapPawns.FreeColonists.Count(p => p.health.hediffSet.HasTendableHediff());
                 float colonistsBloodLoss = map.mapPawns.FreeColonists.Sum(p => p.health.hediffSet.BleedRateTotal);

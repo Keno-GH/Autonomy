@@ -74,6 +74,24 @@
         </workTags>
     </WorkTypeDef>
 
+    <WorkTypeDef OriginalName="Handling"> <!-- Subdivided from Handling -->
+        <defName>AutonomySlaughtering</defName>
+        <labelShort>Slaughter</labelShort>
+        <pawnLabel>slaughtering</pawnLabel>
+        <gerundLabel>slaughtering</gerundLabel>
+        <description>Slaughter animals for meat and leather.</description>
+        <verb>slaughter</verb>
+        <naturalPriority>1055</naturalPriority>
+        <relevantSkills>
+            <li>Animals</li>
+        </relevantSkills>
+        <workTags>
+            <li>Animals</li>
+            <li>Commoner</li>
+            <li>AllWork</li>
+        </workTags>
+    </WorkTypeDef>
+
     <WorkTypeDef OriginalName="Cook"> <!-- Subdivided from Cooking -->
         <defName>AutonomyButchering</defName>
         <labelShort>Butcher</labelShort>

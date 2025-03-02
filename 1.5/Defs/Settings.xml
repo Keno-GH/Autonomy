@@ -23,6 +23,12 @@
             <tooltip>A worktype about providing medical care to animals. Allows better individuality and to react to sick or wounded animals.</tooltip>
         </li>
         <li Class="XmlExtensions.Setting.Checkbox">
+            <key>EnableAutonomySlaughtering</key>
+            <label>Enable Slaughtering</label>
+            <defaultValue>true</defaultValue>
+            <tooltip>A worktype about slaughtering animals for meat and leather. Allows colonist to react to low meat in storage.</tooltip>
+        </li>
+        <li Class="XmlExtensions.Setting.Checkbox">
             <key>EnableAutonomyTaming</key>
             <label>Enable Taming</label>
             <defaultValue>true</defaultValue>

@@ -6,6 +6,7 @@
         <li>EnableAutonomyEmergencyTending</li>
         <li>EnableAutonomyNursery</li>
         <li>EnableAutonomyVeterinary</li>
+        <li>EnableAutonomySlaughtering</li>
         <li>EnableAutonomyTaming</li>
         <li>EnableAutonomyButchering</li>
         <li>EnableAutonomyBrewing</li>
@@ -16,6 +17,7 @@
         <li>EnableAutonomyDeathcare</li>
     </keys>
     <defaultValues>
+        <li>true</li>
         <li>true</li>
         <li>true</li>
         <li>true</li>
@@ -117,6 +119,29 @@
                     </value>
                 </Operation>
             </caseTrue>
+            </Operation>
+        </caseFalse>
+        </Operation>
+
+        <Operation Class="XmlExtensions.IfStatement" Name="Slaughtering">
+        <condition Class="XmlExtensions.Boolean.Comparison">
+            <value1>{EnableAutonomySlaughtering}</value1>
+            <value2>True</value2>
+            <nonNumeric>true</nonNumeric>
+        </condition>
+        <caseTrue>
+            <Operation Class="XmlExtensions.PatchOperationReplace">
+                <xpath>/Defs/WorkGiverDef[defName="Slaughter"]/workType</xpath>
+                <value>
+                    <workType>AutonomySlaughtering</workType>
+                </value>
+            </Operation>
+        </caseTrue>
+        <caseFalse>
+            <Operation Class="XmlExtensions.PatchOperationAttributeSet">
+                <xpath>/Defs/WorkTypeDef[defName="AutonomySlaughtering"]</xpath>
+                <attribute>Abstract</attribute>
+                <value>true</value>
             </Operation>
         </caseFalse>
         </Operation>

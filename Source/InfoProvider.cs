@@ -24,10 +24,10 @@ namespace Autonomy
                 int thingsDeteriorating = map.listerHaulables.ThingsPotentiallyNeedingHauling().Count(t => 
                 {
                     bool isDeteriorating = t.def.useHitPoints && t.IsOutside() && !t.IsForbidden(Faction.OfPlayer) && t.def.CanEverDeteriorate && t.GetStatValue(StatDefOf.DeteriorationRate, true) > 0f;
-                    if (isDeteriorating)
+                    /* if (isDeteriorating)
                     {
                         Log.Message($"Thing deteriorating: {t.LabelCap} at {t.Position}");
-                    }
+                    } */
                     return isDeteriorating;
                 });
                 int refuelableThingsNeedingRefuel = map.listerThings.ThingsInGroup(ThingRequestGroup.Refuelable).Count(t => t.TryGetComp<CompRefuelable>() is CompRefuelable compRefuelable && compRefuelable.ShouldAutoRefuelNowIgnoringFuelPct && compRefuelable.Fuel < compRefuelable.Props.fuelCapacity * 0.25f);

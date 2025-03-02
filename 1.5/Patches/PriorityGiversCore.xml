@@ -1001,6 +1001,16 @@
                 <priority>0~100</priority> <!-- Range depends on the amount of deteriorating things -->
                 <description>Corpses need burying</description>
             </li>
+            <li Class="Autonomy.PriorityGiver" Name="noCorpsesToBury">
+                <condition>BasedOnInfoRange</condition>
+                <infoRange>
+                    <infoKey>corpsesNeedingBurial</infoKey>
+                    <fromMap>true</fromMap>
+                    <range>0~1</range>
+                </infoRange>
+                <priority>-5~0</priority>
+                <description>There are no corpses to handle</description>
+            </li>
         </value>
     </Operation>
 

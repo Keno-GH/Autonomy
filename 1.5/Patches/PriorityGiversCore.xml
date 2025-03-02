@@ -627,12 +627,47 @@
                 <priority>0~10</priority> <!-- Range depends on the level of filth seen by pawn -->
                 <description>My space is filthy</description>
             </li>
+            <li Class="Autonomy.PriorityGiver" Name="AverageCleaningSpeed">
+                <condition>ComparedStats</condition>
+                <stat>CleaningSpeed</stat>
+                <useAverage>true</useAverage>
+                <type>SocialPreference</type>
+                <workPreferenceScoreRange>-10~10</workPreferenceScoreRange>
+                <typeMultiplier>0.5~2</typeMultiplier> <!-- The more cooperative the stronger the effect -->
+                <rangeDatas>
+                    <li>
+                        <validRange>-999~-0.21</validRange>
+                        <priority>-10~-10</priority>
+                        <description>There are better people for this</description>
+                    </li>
+                    <li>
+                        <validRange>-0.1~0</validRange>
+                        <priority>-10~0</priority>
+                        <description>There are better people for this</description>
+                    </li>
+                    <li>
+                        <validRange>0.01~0.1</validRange>
+                        <priority>1~2</priority>
+                        <description>I am average at this</description>
+                    </li>
+                    <li>
+                        <validRange>0.11~0.4</validRange>
+                        <priority>2~5</priority>
+                        <description>I am better at this than most</description>
+                    </li>
+                    <li>
+                        <validRange>0.41~999</validRange>
+                        <priority>5~5</priority>
+                        <description>I am better at this than most</description>
+                    </li>
+                </rangeDatas>
+            </li>
             <li Class="Autonomy.PriorityGiver" Name="LogicalEnjoy">
                 <condition>BaseType</condition>
                 <type>CognitiveOrientation</type>
                 <workPreferenceScoreRange>-10~-1</workPreferenceScoreRange>
                 <typeMultiplier>1~0.1</typeMultiplier> <!-- The more logical the stronger the effect -->
-                <priority>7</priority>
+                <priority>5</priority>
                 <description>I enjoy cleaning</description>
             </li>
             <li Class="Autonomy.PriorityGiver" Name="CasualEnjoy">

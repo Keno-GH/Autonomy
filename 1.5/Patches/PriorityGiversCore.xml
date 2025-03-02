@@ -873,6 +873,16 @@
                 <priority>0~20</priority> <!-- Range depends on the amount of deteriorating things -->
                 <description>Things need refueling</description>
             </li>
+            <li Class="Autonomy.PriorityGiver" Name="NoThingsNeedRefueling">
+                <condition>BasedOnInfoRange</condition>
+                <infoRange>
+                    <infoKey>refuelableThingsNeedingRefuel</infoKey>
+                    <fromMap>true</fromMap>
+                    <range>0~1</range>
+                </infoRange>
+                <priority>-5~0</priority>
+                <description>Nothing needs refueling</description>
+            </li>
         </value>
     </Operation>
 

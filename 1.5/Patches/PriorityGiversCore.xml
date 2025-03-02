@@ -577,6 +577,27 @@
                     </li>
                 </rangeDatas>
             </li>
+            <li Class="Autonomy.PriorityGiver" Name="OrganicEnjoy">
+                <condition>BaseType</condition>
+                <type>WorkEnvironmentAesthetic</type>
+                <workPreferenceScoreRange>-10~0</workPreferenceScoreRange> <!-- Organic side -->
+                <typeMultiplier>1~0.1</typeMultiplier> <!-- The more organic the stronger the effect -->
+                <priority>5</priority>
+                <description>I enjoy growing plants</description>
+            </li>
+            <li Class="Autonomy.PriorityGiver" Name="LowVegetablesPerColonist">
+                <condition>BasedOnInfoRange</condition>
+                <infoRange>
+                    <infoKey>vegetablesInHomePerColonist</infoKey>
+                    <fromMap>true</fromMap>
+                    <range>20~0</range>
+                </infoRange>
+                <type>WorkApproach</type>
+                <workPreferenceScoreRange>-10~10</workPreferenceScoreRange>
+                <typeMultiplier>2~1</typeMultiplier>
+                <priority>0~15</priority>
+                <description>We are low on vegetables</description>
+            </li>
         </value>
     </Operation>
 

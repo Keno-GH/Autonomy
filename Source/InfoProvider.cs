@@ -29,6 +29,8 @@ namespace Autonomy
                 float animalsBloodLoss = map.mapPawns.SpawnedColonyAnimals.Sum(p => p.health.hediffSet.BleedRateTotal);
                 int corpsesNeedingBurial = map.listerThings.ThingsInGroup(ThingRequestGroup.Corpse).Count(t => !t.IsForbidden(Faction.OfPlayer) && (t.GetRotStage() == RotStage.Fresh || t.GetRotStage() == RotStage.Rotting || t.GetRotStage() == RotStage.Dessicated) && t.def.race.Humanlike);
                 float colonistsFoodLevelAverage = map.mapPawns.FreeColonists.Average(p => p.needs.food.CurLevelPercentage);
+                int vegetablesInHome = map.resourceCounter.GetCountIn(ThingCategoryDefOf.PlantFoodRaw);
+                int vegetablesInHomePerColonist = colonistCount > 0 ? vegetablesInHome / colonistCount : 0;
                 int meatInHome = map.resourceCounter.GetCountIn(ThingCategoryDefOf.MeatRaw);
                 int meatInHomePerColonist = colonistCount > 0 ? meatInHome / colonistCount : 0;
                 int socialDrugsInHome = map.resourceCounter.AllCountedAmounts.Where(kvp => kvp.Key.IsIngestible && kvp.Key.ingestible.drugCategory == DrugCategory.Social).Sum(kvp => kvp.Value);
@@ -52,6 +54,8 @@ namespace Autonomy
                 mapInfo["animalsBloodLoss"] = animalsBloodLoss;
                 mapInfo["corpsesNeedingBurial"] = corpsesNeedingBurial;
                 mapInfo["colonistsFoodLevelAverage"] = colonistsFoodLevelAverage;
+                mapInfo["vegetablesInHome"] = vegetablesInHome;
+                mapInfo["vegetablesInHomePerColonist"] = vegetablesInHomePerColonist;
                 mapInfo["meatInHome"] = meatInHome;
                 mapInfo["meatInHomePerColonist"] = meatInHomePerColonist;
                 mapInfo["socialDrugsInHome"] = socialDrugsInHome;

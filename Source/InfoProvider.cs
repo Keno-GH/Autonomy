@@ -74,8 +74,6 @@ namespace Autonomy
                     })
                     .Distinct();
 
-
-
                 foreach (StatDef statDef in statDefsToCheck)
                 {
 
@@ -84,15 +82,19 @@ namespace Autonomy
                     int count = 0;
                     Pawn bestColonist = null;
                     float maxStatValue = float.MinValue;
+                    float statValue = 0f;
 
                     foreach (Pawn pawn in map.mapPawns.FreeColonists)
                     {
-                        if (!pawn.def.statBases.StatListContains(statDef))
+                        try 
+                        {
+                            statValue = pawn.GetStatValue(statDef, true);
+                        }
+                        catch
+                        {
+                            Log.Warning($"Pawn {pawn.Name} does not have stat {statDef.defName}.");
                             continue;
-
-                        float statValue = pawn.GetStatValue(statDef, true);
-                        if (statValue <= 0f)
-                            continue;
+                        }
 
                         if (pawn.InBed())
                             continue; // Skip colonists who are in bed to account for injuries and varying schedules

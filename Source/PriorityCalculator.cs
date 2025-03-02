@@ -332,7 +332,7 @@ namespace Autonomy
             var pawn = context.Pawn;
 
             float comparisonStatValue;
-            float pawnStatValue = pawn.GetStatValue(StatDef.Named(giver.stat));
+            float pawnStatValue = pawn.GetStatValue(StatDef.Named(giver.stat), true);
             if (giver.useAverage)
             {
                 if (!mapInfo.TryGetValue($"average_{giver.stat}", out comparisonStatValue)) return 0;
@@ -393,6 +393,8 @@ namespace Autonomy
                     break;
                 }
             }
+
+            // Log.Message($"HandleComparedStats: Calculated priority for pawn {pawn.Name} with stat {giver.stat} is {calculatedPriority}, after comparing with his {pawnStatValue} to {comparisonStatValue} using {giver.useAverage} average, with a difference of {statDifference}");
 
             return calculatedPriority;
         }

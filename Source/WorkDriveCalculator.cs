@@ -68,11 +68,11 @@ namespace Autonomy
             }
 
             // Debug print the work drive results
-            Log.Message($"Work drive preferences for {pawn.Name}:");
+            /* Log.Message($"Work drive preferences for {pawn.Name}:");
             foreach (var kvp in workDrivePreferences)
             {
                 Log.Message($"{kvp.Key}: {kvp.Value}");
-            }
+            } */
 
             return workDrivePreferences;
         }

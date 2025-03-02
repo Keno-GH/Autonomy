@@ -36,14 +36,6 @@ namespace Autonomy
                 var babies = map.mapPawns.FreeColonists.Where(p => p.ageTracker.CurLifeStage.defName == "HumanlikeBaby").ToList();
                 if (children.Any())
                 {
-                    foreach (var child in children)
-                    {
-                        Log.Message($"Child {child.Name} has the following active learning desires:");
-                        foreach (var desire in child.learning.ActiveLearningDesires)
-                        {
-                            Log.Message($"- {desire.defName}");
-                        }
-                    }
                     childrenWantingTeacher = children.Count(p => p.learning.ActiveLearningDesires.Any(d => d.defName == "Lessontaking"));
                     childrenInColony = children.Count;
                 }
@@ -64,6 +56,10 @@ namespace Autonomy
                     ).Sum(kvp => kvp.Value);
                 int preparedMealsInHomePerColonist = colonistCount > 0 ? preparedMealsInHome / colonistCount : 0;
                 int firesInHomeArea = map.listerThings.ThingsInGroup(ThingRequestGroup.Fire).Count;
+                var colonistRecoveringInBed = map.mapPawns.FreeColonists.Where(p => p.CurJob.def == JobDefOf.LayDown && p.CurJob.jobGiver.Isnt<JobGiver_GetRest>()).ToList();
+                float patientsAverageFoodLevel = colonistRecoveringInBed.Any() ? colonistRecoveringInBed.Average(p => p.needs.food.CurLevelPercentage) : 1f;
+                int colonistsNeedRescuing = map.mapPawns.FreeColonists.Count(p => p.CurJob.def == JobDefOf.Wait_Downed);
+                float patientsAverageRecreation = colonistRecoveringInBed.Any() ? colonistRecoveringInBed.Average(p => p.needs.joy.CurLevelPercentage) : 1f; 
 
                 mapInfo["pawnCount"] = pawnCount;
                 mapInfo["colonistCount"] = colonistCount;
@@ -88,6 +84,9 @@ namespace Autonomy
                 mapInfo["preparedMealsInHomePerColonist"] = preparedMealsInHomePerColonist;
                 mapInfo["firesInHomeArea"] = firesInHomeArea;
                 mapInfo["childrenInColony"] = childrenInColony;
+                mapInfo["patientsAverageFoodLevel"] = patientsAverageFoodLevel;
+                mapInfo["colonistsNeedRescuing"] = colonistsNeedRescuing;
+                mapInfo["patientsAverageRecreation"] = patientsAverageRecreation;
 
                 var statDefsToCheck = priorityGivers
                     .Where(g => !string.IsNullOrEmpty(g.stat))

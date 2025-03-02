@@ -280,6 +280,75 @@
         </value>
     </Operation>
 
+    <Operation Class="PatchOperationAdd" Name="AutonomyNurseryPriorityGivers">
+        <xpath>Defs/WorkTypeDef[defName="AutonomyNursery"]/modExtensions/li[@Class="Autonomy.PriorityGiverExtension"]/priorityGivers</xpath>
+        <value>
+            <li Class="Autonomy.PriorityGiver" Name="patientsAverageFoodLevel">
+                <condition>BasedOnInfoRange</condition>
+                <infoRange>
+                    <infoKey>patientsAverageFoodLevel</infoKey>
+                    <fromMap>true</fromMap>
+                    <range>0.75~0</range>
+                </infoRange>
+                <type>SocialPreference</type>
+                <workPreferenceScoreRange>-10~10</workPreferenceScoreRange>
+                <typeMultiplier>0.5~3</typeMultiplier> <!-- The more cooperative the stronger the effect -->
+                <priority>0~20</priority>
+                <description>Patients need food</description>
+            </li>
+            <li Class="Autonomy.PriorityGiver" Name="ColonistsNeedRescuing">
+                <condition>BasedOnInfoRange</condition>
+                <infoRange>
+                    <infoKey>colonistsNeedRescuing</infoKey>
+                    <fromMap>true</fromMap>
+                    <range>0~10</range>
+                </infoRange>
+                <type>SocialPreference</type>
+                <workPreferenceScoreRange>-10~10</workPreferenceScoreRange>
+                <typeMultiplier>0.5~2</typeMultiplier> <!-- The more cooperative the stronger the effect -->
+                <priority>0~40</priority>
+                <description>Colonists need rescuing</description>
+            </li>
+            <li Class="Autonomy.PriorityGiver" Name="patientsAverageRecreation">
+                <condition>BasedOnInfoRange</condition>
+                <infoRange>
+                    <infoKey>patientsAverageRecreation</infoKey>
+                    <fromMap>true</fromMap>
+                    <range>0.5~0</range>
+                </infoRange>
+                <type>SocialPreference</type>
+                <workPreferenceScoreRange>-10~10</workPreferenceScoreRange>
+                <typeMultiplier>0.5~1.5</typeMultiplier> <!-- The more cooperative the stronger the effect -->
+                <priority>0~10</priority>
+                <description>Patients are bored</description>
+            </li>
+            <li Class="Autonomy.PriorityGiver" Name="CommunalEnjoy">
+                <condition>BaseType</condition>
+                <type>SocialPreference</type>
+                <workPreferenceScoreRange>0~10</workPreferenceScoreRange> <!-- Communal side -->
+                <typeMultiplier>0.1~2</typeMultiplier> <!-- The more communal the stronger the effect -->
+                <priority>10</priority>
+                <description>I enjoy caring for patients</description>
+            </li>
+            <li Class="Autonomy.PriorityGiver" Name="IndividualisticDislike">
+                <condition>BaseType</condition>
+                <type>SocialPreference</type>
+                <workPreferenceScoreRange>-10~0</workPreferenceScoreRange> <!-- Individualistic side -->
+                <typeMultiplier>1~0.1</typeMultiplier> <!-- The more individualistic the stronger the effect -->
+                <priority>-5</priority>
+                <description>I dislike caring for patients</description>
+            </li>
+            <li Class="Autonomy.PriorityGiver" Name="IndustrialEnjoy">
+                <condition>BaseType</condition>
+                <type>WorkEnvironmentAesthetic</type>
+                <workPreferenceScoreRange>0~10</workPreferenceScoreRange> <!-- Industrial side -->
+                <typeMultiplier>0.1~1</typeMultiplier> <!-- The more industrial the stronger the effect -->
+                <priority>5</priority>
+                <description>I like working under roofs</description>
+            </li>
+        </value>
+    </Operation>
+
     <Operation Class="PatchOperationAdd" Name="HandlingPriorityGivers">
         <xpath>Defs/WorkTypeDef[defName="Handling"]/modExtensions/li[@Class="Autonomy.PriorityGiverExtension"]/priorityGivers</xpath>
         <value>

@@ -13,6 +13,35 @@
         </value>
     </Operation>
 
+    <Operation Class="PatchOperationAdd" Name="FirefighterPriorityGivers">
+        <xpath>Defs/WorkTypeDef[defName="Firefighter"]/modExtensions/li[@Class="Autonomy.PriorityGiverExtension"]/priorityGivers</xpath>
+        <value>
+            <li Class="Autonomy.PriorityGiver" Name="FiresInHomeArea">
+                <condition>BasedOnInfoRange</condition>
+                <infoRange>
+                    <infoKey>firesInHomeArea</infoKey>
+                    <fromMap>true</fromMap>
+                    <range>0~100</range>
+                </infoRange>
+                <type>WorkApproach</type>
+                <workPreferenceScoreRange>-10~10</workPreferenceScoreRange>
+                <typeMultiplier>2~1</typeMultiplier> <!-- The more strict the stronger the effect -->
+                <priority>0~300</priority> <!-- Range depends on the number of fires -->
+                <description>There are fires in the map</description>
+            </li>
+            <li Class="Autonomy.PriorityGiver" Name="NoFiresInHomeArea">
+                <condition>BasedOnInfoRange</condition>
+                <infoRange>
+                    <infoKey>firesInHomeArea</infoKey>
+                    <fromMap>true</fromMap>
+                    <range>0~1</range>
+                </infoRange>
+                <priority>-5~0</priority> <!-- Range depends on the number of fires -->
+                <description>There are no fires</description>
+            </li>
+        </value>
+    </Operation>
+
      <Operation Class="PatchOperationAdd" Name="GeneralTendingPriorityGivers">
         <xpath>Defs/WorkTypeDef[
         defName="Doctor" or

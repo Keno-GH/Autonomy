@@ -40,6 +40,7 @@ namespace Autonomy
                         )
                     ).Sum(kvp => kvp.Value);
                 int preparedMealsInHomePerColonist = colonistCount > 0 ? preparedMealsInHome / colonistCount : 0;
+                int firesInHomeArea = map.listerThings.ThingsInGroup(ThingRequestGroup.Fire).Count;
 
                 mapInfo["pawnCount"] = pawnCount;
                 mapInfo["colonistCount"] = colonistCount;
@@ -60,6 +61,7 @@ namespace Autonomy
                 mapInfo["meatInHomePerColonist"] = meatInHomePerColonist;
                 mapInfo["socialDrugsInHome"] = socialDrugsInHome;
                 mapInfo["preparedMealsInHomePerColonist"] = preparedMealsInHomePerColonist;
+                mapInfo["firesInHomeArea"] = firesInHomeArea;
 
                 var statDefsToCheck = priorityGivers
                     .Where(g => !string.IsNullOrEmpty(g.stat))

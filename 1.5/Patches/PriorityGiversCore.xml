@@ -238,6 +238,65 @@
         </value>
     </Operation>
 
+    <Operation Class="PatchOperationAdd" Name="HuntingPriorityGivers">
+        <xpath>Defs/WorkTypeDef[defName="Hunting"]/modExtensions/li[@Class="Autonomy.PriorityGiverExtension"]/priorityGivers</xpath>
+        <value>
+            <li Class="Autonomy.PriorityGiver" Name="BestHuntingStealth">
+                <condition>ComparedStats</condition>
+                <stat>HuntingStealth</stat>
+                <useAverage>false</useAverage>
+                <type>SocialPreference</type>
+                <workPreferenceScoreRange>-10~10</workPreferenceScoreRange>
+                <typeMultiplier>0.5~1.5</typeMultiplier> <!-- The more cooperative the stronger the effect -->
+                <priority>0~10</priority>
+                <description>I am the best at hunting stealthily</description>
+            </li>
+            <li Class="Autonomy.PriorityGiver" Name="AverageMoveSpeed">
+                <condition>ComparedStats</condition>
+                <stat>MoveSpeed</stat>
+                <useAverage>true</useAverage>
+                <type>SocialPreference</type>
+                <workPreferenceScoreRange>-10~10</workPreferenceScoreRange>
+                <typeMultiplier>0.5~1.5</typeMultiplier> <!-- The more cooperative the stronger the effect -->
+                <rangeDatas>
+                    <li>
+                        <validRange>-999~-0.21</validRange>
+                        <priority>-10~-10</priority>
+                        <description>I am much slower than average</description>
+                    </li>
+                    <li>
+                        <validRange>-0.2~0</validRange>
+                        <priority>-10~0</priority>
+                        <description>I am slower than average</description>
+                    </li>
+                    <li>
+                        <validRange>0.01~0.04</validRange>
+                        <priority>0~0</priority>
+                        <description>I am average speed</description>
+                    </li>
+                    <li>
+                        <validRange>0.05~0.2</validRange>
+                        <priority>2~5</priority>
+                        <description>I am faster than average</description>
+                    </li>
+                    <li>
+                        <validRange>0.2~999</validRange>
+                        <priority>5~5</priority>
+                        <description>I am faster than average</description>
+                    </li>
+                </rangeDatas>
+            </li>
+            <li Class="Autonomy.PriorityGiver" Name="OrganicEnjoy">
+                <condition>BaseType</condition>
+                <type>WorkEnvironmentAesthetic</type>
+                <workPreferenceScoreRange>-10~0</workPreferenceScoreRange> <!-- Organic side -->
+                <typeMultiplier>1~0.1</typeMultiplier> <!-- The more organic the stronger the effect -->
+                <priority>5</priority>
+                <description>I enjoy hunting</description>
+            </li>
+        </value>
+    </Operation>
+
     <Operation Class="XmlExtensions.ForEach" Name="AllSkilledWorktypesGivers"> <!-- Give skill related priority givers to work types with skills -->
         <xpath>Defs/WorkTypeDef[relevantSkills]</xpath>
         <storeIn>SkilledWorkTypeDef</storeIn>

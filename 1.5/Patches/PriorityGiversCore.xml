@@ -294,6 +294,19 @@
                 <priority>5</priority>
                 <description>I enjoy hunting</description>
             </li>
+            <li Class="Autonomy.PriorityGiver" Name="LowMeatPerColonist">
+                <condition>BasedOnInfoRange</condition>
+                <infoRange>
+                    <infoKey>meatInHomePerColonist</infoKey>
+                    <fromMap>true</fromMap>
+                    <range>30~0</range>
+                </infoRange>
+                <type>WorkApproach</type>
+                <workPreferenceScoreRange>-10~10</workPreferenceScoreRange>
+                <typeMultiplier>2~1</typeMultiplier>
+                <priority>0~20</priority>
+                <description>We are low on meat</description>
+            </li>
         </value>
     </Operation>
 
@@ -430,9 +443,9 @@
             <li Class="Autonomy.PriorityGiver" Name="ColonyLowOnMeat">
                 <condition>BasedOnInfoRange</condition>
                 <infoRange>
-                    <infoKey>meatInHome</infoKey>
+                    <infoKey>meatInHomePerColonist</infoKey>
                     <fromMap>true</fromMap>
-                    <range>0~100</range>
+                    <range>50~0</range>
                 </infoRange>
                 <type>WorkApproach</type>
                 <workPreferenceScoreRange>-10~10</workPreferenceScoreRange>

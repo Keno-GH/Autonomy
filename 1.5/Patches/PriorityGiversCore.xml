@@ -42,6 +42,68 @@
         </value>
     </Operation>
 
+    <Operation Class="PatchOperationAdd" Name="ChildcarePriorityGivers">
+        <xpath>Defs/WorkTypeDef[defName="Childcare"]/modExtensions/li[@Class="Autonomy.PriorityGiverExtension"]/priorityGivers</xpath>
+        <value>
+            <li Class="Autonomy.PriorityGiver" Name="NoChildrenInMap">
+                <condition>BasedOnInfoRange</condition>
+                <infoRange>
+                    <infoKey>childrenInColony</infoKey>
+                    <fromMap>true</fromMap>
+                    <range>0~1</range>
+                </infoRange>
+                <priority>-50~0</priority>
+                <description>There are no children in the map</description>
+            </li>
+            <li Class="Autonomy.PriorityGiver" Name="childrenFoodLevelAverage">
+                <condition>BasedOnInfoRange</condition>
+                <infoRange>
+                    <infoKey>childrenFoodLevelAverage</infoKey>
+                    <fromMap>true</fromMap>
+                    <range>0.75~0</range>
+                </infoRange>
+                <type>WorkApproach</type>
+                <workPreferenceScoreRange>-10~10</workPreferenceScoreRange>
+                <typeMultiplier>1.5~1</typeMultiplier> <!-- The more strict the stronger the effect -->
+                <priority>0~20</priority>
+                <description>Children are hungry</description>
+            </li>
+            <li Class="Autonomy.PriorityGiver" Name="childrenWantingTeacher">
+                <condition>BasedOnInfoRange</condition>
+                <infoRange>
+                    <infoKey>childrenWantingTeacher</infoKey>
+                    <fromMap>true</fromMap>
+                    <range>0~3</range>
+                </infoRange>
+                <type>SocialPreference</type>
+                <workPreferenceScoreRange>-10~10</workPreferenceScoreRange>
+                <typeMultiplier>0.5~2</typeMultiplier> <!-- The more cooperative the stronger the effect -->
+                <priority>0~15</priority>
+                <description>Children want a teacher</description>
+            </li>
+            <li Class="Autonomy.PriorityGiver" Name="CommunalEnjoy">
+                <condition>BaseType</condition>
+                <type>SocialPreference</type>
+                <workPreferenceScoreRange>0~10</workPreferenceScoreRange> <!-- Communal side -->
+                <typeMultiplier>0.1~2</typeMultiplier> <!-- The more communal the stronger the effect -->
+                <priority>10</priority>
+                <description>I enjoy caring for children</description>
+            </li>
+            <li Class="Autonomy.PriorityGiver" Name="childrenCount">
+                <condition>BasedOnInfoRange</condition>
+                <infoRange>
+                    <infoKey>childrenCount</infoKey>
+                    <fromMap>false</fromMap>
+                    <range>0~10</range>
+                </infoRange>
+                <workPreferenceScoreRange>-10~10</workPreferenceScoreRange>
+                <typeMultiplier>0.5~1</typeMultiplier> <!-- The more communal the stronger the effect -->
+                <priority>0~400</priority>
+                <description>I am a parent</description>
+            </li>
+        </value>
+    </Operation>
+
      <Operation Class="PatchOperationAdd" Name="GeneralTendingPriorityGivers">
         <xpath>Defs/WorkTypeDef[
         defName="Doctor" or

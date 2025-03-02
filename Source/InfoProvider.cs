@@ -7,7 +7,7 @@ namespace Autonomy
 {
     public static class InfoProvider
     {
-        public static Dictionary<string, float> GetMapInfo(Map map, List<PriorityGiver> priorityGivers)
+        public static Dictionary<string, float> GetMapInfo(Map map, List<PriorityGiver> priorityGivers, List<Pawn> workingColonists)
         {
             Dictionary<string, float> mapInfo = new Dictionary<string, float>();
             if (map == null)
@@ -29,6 +29,29 @@ namespace Autonomy
                 float animalsBloodLoss = map.mapPawns.SpawnedColonyAnimals.Sum(p => p.health.hediffSet.BleedRateTotal);
                 int corpsesNeedingBurial = map.listerThings.ThingsInGroup(ThingRequestGroup.Corpse).Count(t => !t.IsForbidden(Faction.OfPlayer) && (t.GetRotStage() == RotStage.Fresh || t.GetRotStage() == RotStage.Rotting || t.GetRotStage() == RotStage.Dessicated) && t.def.race.Humanlike);
                 float colonistsFoodLevelAverage = map.mapPawns.FreeColonists.Average(p => p.needs.food.CurLevelPercentage);
+                float childrenFoodLevelAverage = 1f;
+                int childrenWantingTeacher = 0;
+                int childrenInColony = 0;
+                var children = map.mapPawns.FreeColonists.Where(p => p.ageTracker.CurLifeStage.defName == "HumanlikeChild" || p.ageTracker.CurLifeStage.defName == "HumanlikePreTeenager" ).ToList();
+                var babies = map.mapPawns.FreeColonists.Where(p => p.ageTracker.CurLifeStage.defName == "HumanlikeBaby").ToList();
+                if (children.Any())
+                {
+                    foreach (var child in children)
+                    {
+                        Log.Message($"Child {child.Name} has the following active learning desires:");
+                        foreach (var desire in child.learning.ActiveLearningDesires)
+                        {
+                            Log.Message($"- {desire.defName}");
+                        }
+                    }
+                    childrenWantingTeacher = children.Count(p => p.learning.ActiveLearningDesires.Any(d => d.defName == "Lessontaking"));
+                    childrenInColony = children.Count;
+                }
+                if (babies.Any())
+                {
+                    childrenFoodLevelAverage = babies.Average(p => p.needs.food.CurLevelPercentage);
+                    childrenInColony += babies.Count;
+                }
                 int vegetablesInHome = map.resourceCounter.GetCountIn(ThingCategoryDefOf.PlantFoodRaw);
                 int vegetablesInHomePerColonist = colonistCount > 0 ? vegetablesInHome / colonistCount : 0;
                 int meatInHome = map.resourceCounter.GetCountIn(ThingCategoryDefOf.MeatRaw);
@@ -55,6 +78,8 @@ namespace Autonomy
                 mapInfo["animalsBloodLoss"] = animalsBloodLoss;
                 mapInfo["corpsesNeedingBurial"] = corpsesNeedingBurial;
                 mapInfo["colonistsFoodLevelAverage"] = colonistsFoodLevelAverage;
+                mapInfo["childrenFoodLevelAverage"] = childrenFoodLevelAverage;
+                mapInfo["childrenWantingTeacher"] = childrenWantingTeacher;
                 mapInfo["vegetablesInHome"] = vegetablesInHome;
                 mapInfo["vegetablesInHomePerColonist"] = vegetablesInHomePerColonist;
                 mapInfo["meatInHome"] = meatInHome;
@@ -62,6 +87,7 @@ namespace Autonomy
                 mapInfo["socialDrugsInHome"] = socialDrugsInHome;
                 mapInfo["preparedMealsInHomePerColonist"] = preparedMealsInHomePerColonist;
                 mapInfo["firesInHomeArea"] = firesInHomeArea;
+                mapInfo["childrenInColony"] = childrenInColony;
 
                 var statDefsToCheck = priorityGivers
                     .Where(g => !string.IsNullOrEmpty(g.stat))
@@ -79,14 +105,13 @@ namespace Autonomy
                 foreach (StatDef statDef in statDefsToCheck)
                 {
 
-
                     float sum = 0f;
                     int count = 0;
                     Pawn bestColonist = null;
                     float maxStatValue = float.MinValue;
                     float statValue = 0f;
 
-                    foreach (Pawn pawn in map.mapPawns.FreeColonists)
+                    foreach (Pawn pawn in workingColonists)
                     {
                         try 
                         {
@@ -212,6 +237,20 @@ namespace Autonomy
                     pawnInfo[skill.def.defName] = skill.Level;
                     pawnInfo[$"{skill.def.defName}_passion"] = (float)skill.passion;
                 }
+
+                int childrenCount = 0;
+                if (pawn.relations != null)
+                {
+                    childrenCount = pawn.relations.Children
+                    .Where(
+                        p => p.ageTracker.CurLifeStage.defName == "HumanlikeChild" 
+                        || p.ageTracker.CurLifeStage.defName == "HumanlikePreTeenager"
+                        || p.ageTracker.CurLifeStage.defName == "HumanlikeBaby"
+                        )
+                    .Count();
+                }
+
+                pawnInfo["childrenCount"] = childrenCount;
             }
             return pawnInfo;
         }

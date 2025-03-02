@@ -67,7 +67,7 @@ namespace Autonomy
                 }
             }
 
-            Dictionary<string, float> info = InfoProvider.GetMapInfo(map, priorityGivers);
+            Dictionary<string, float> info = InfoProvider.GetMapInfo(map, priorityGivers, map.mapPawns.FreeColonistsSpawned);
             List<string> translatedInfo = new List<string>();
 
             foreach (var kvp in info)

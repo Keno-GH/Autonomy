@@ -44,12 +44,16 @@ namespace Autonomy
                 Log.Message("Hello world every " + tickInterval + " ticks!");
 
                 // Collect the pawns in a separate list to avoid modifying the collection while iterating
-                List<Pawn> colonists = map.mapPawns.FreeColonists.ToList();
+                List<Pawn> workingColonists = map.mapPawns.FreeColonists
+                .Where(p => p.workSettings != null && p.workSettings.EverWork && p.ageTracker.CurLifeStage != null && p.ageTracker.CurLifeStage.defName != "HumanlikeBaby")
+                .ToList();
+
+                Log.Message("Colonists: " + workingColonists.Count);
                 
                 var priorityGivers = DefDatabase<WorkTypeDef>.AllDefs.SelectMany(w => w.GetModExtension<PriorityGiverExtension>()?.priorityGivers ?? new List<PriorityGiver>()).ToList();
-                Dictionary<string, float> mapInfo = InfoProvider.GetMapInfo(map, priorityGivers);
+                Dictionary<string, float> mapInfo = InfoProvider.GetMapInfo(map, priorityGivers, workingColonists);
 
-                foreach (var pawn in colonists)
+                foreach (var pawn in workingColonists)
                 {
                     PriorityGiverUtility.SetWorkPriorities(pawn, mapInfo);
                 }

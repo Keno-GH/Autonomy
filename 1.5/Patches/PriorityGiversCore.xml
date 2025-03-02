@@ -447,6 +447,14 @@
                 <priority>15</priority>
                 <description>I enjoy cooking</description>
             </li>
+            <li Class="Autonomy.PriorityGiver" Name="IndustrialEnjoy">
+                <condition>BaseType</condition>
+                <type>WorkEnvironmentAesthetic</type>
+                <workPreferenceScoreRange>0~10</workPreferenceScoreRange> <!-- Industrial side -->
+                <typeMultiplier>0.1~1</typeMultiplier> <!-- The more industrial the stronger the effect -->
+                <priority>5</priority>
+                <description>I enjoy working under a roof</description>
+            </li>
         </value>
     </Operation>
 
@@ -519,6 +527,55 @@
                 <typeMultiplier>1~2</typeMultiplier>
                 <priority>0~20</priority>
                 <description>We are running low on social drugs</description>
+            </li>
+            <li Class="Autonomy.PriorityGiver" Name="IndustrialEnjoy">
+                <condition>BaseType</condition>
+                <type>WorkEnvironmentAesthetic</type>
+                <workPreferenceScoreRange>0~10</workPreferenceScoreRange> <!-- Industrial side -->
+                <typeMultiplier>0.1~1</typeMultiplier> <!-- The more industrial the stronger the effect -->
+                <priority>5</priority>
+                <description>I enjoy working under a roof</description>
+            </li>
+        </value>
+    </Operation>
+
+    <Operation Class="PatchOperationAdd" Name="GrowingPriorityGivers">
+        <xpath>Defs/WorkTypeDef[defName="Growing"]/modExtensions/li[@Class="Autonomy.PriorityGiverExtension"]/priorityGivers</xpath>
+        <value>
+            <li Class="Autonomy.PriorityGiver" Name="AveragePlantHarvestYield">
+                <condition>ComparedStats</condition>
+                <stat>PlantHarvestYield</stat>
+                <useAverage>true</useAverage>
+                <type>SocialPreference</type>
+                <workPreferenceScoreRange>-10~10</workPreferenceScoreRange>
+                <typeMultiplier>0.5~2</typeMultiplier> <!-- The more cooperative the stronger the effect -->
+                <rangeDatas>
+                    <li>
+                        <validRange>-999~-0.21</validRange>
+                        <priority>-10~-10</priority>
+                        <description>There are better people for this</description>
+                    </li>
+                    <li>
+                        <validRange>-0.2~0</validRange>
+                        <priority>-10~0</priority>
+                        <description>There are better people for this</description>
+                    </li>
+                    <li>
+                        <validRange>0.01~0.1</validRange>
+                        <priority>1~2</priority>
+                        <description>I am average at this</description>
+                    </li>
+                    <li>
+                        <validRange>0.11~0.4</validRange>
+                        <priority>2~5</priority>
+                        <description>I am better at this than most</description>
+                    </li>
+                    <li>
+                        <validRange>0.41~999</validRange>
+                        <priority>5~5</priority>
+                        <description>I am better at this than most</description>
+                    </li>
+                </rangeDatas>
             </li>
         </value>
     </Operation>

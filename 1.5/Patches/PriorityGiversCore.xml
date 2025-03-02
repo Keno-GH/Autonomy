@@ -648,12 +648,12 @@
                 <typeMultiplier>0.5~2</typeMultiplier> <!-- The more cooperative the stronger the effect -->
                 <rangeDatas>
                     <li>
-                        <validRange>-999~-0.21</validRange>
+                        <validRange>-999~-0.41</validRange>
                         <priority>-10~-10</priority>
                         <description>I am much slower than average</description>
                     </li>
                     <li>
-                        <validRange>-0.2~0</validRange>
+                        <validRange>-0.4~0</validRange>
                         <priority>-10~0</priority>
                         <description>I am slower than average</description>
                     </li>

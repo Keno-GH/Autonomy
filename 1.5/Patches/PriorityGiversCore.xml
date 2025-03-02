@@ -409,7 +409,7 @@
                 <workPreferenceScoreRange>-10~0</workPreferenceScoreRange> <!-- Organic side -->
                 <typeMultiplier>1~0.1</typeMultiplier> <!-- The more organic the stronger the effect -->
                 <priority>5</priority>
-                <description>I enjoy handling animals</description>
+                <description>I like working with animals</description>
             </li>
         </value>
     </Operation>
@@ -436,7 +436,7 @@
                 <workPreferenceScoreRange>-10~0</workPreferenceScoreRange> <!-- Organic side -->
                 <typeMultiplier>1~0.1</typeMultiplier> <!-- The more organic the stronger the effect -->
                 <priority>5</priority>
-                <description>I enjoy handling animals</description>
+                <description>I like working with animals</description>
             </li>
         </value>
     </Operation>

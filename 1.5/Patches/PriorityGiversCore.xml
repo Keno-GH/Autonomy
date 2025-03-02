@@ -611,14 +611,40 @@
                 <priority>-5</priority>
                 <description>I prefer outdoors jobs</description>
             </li>
-            <li Class="Autonomy.PriorityGiver" Name="StrictEnjoy">
+            <li Class="Autonomy.PriorityGiver" Name="AverageResearchSpeed">
                 <condition>ComparedStats</condition>
+                <stat>ResearchSpeed</stat>
                 <type>SocialPreference</type>
+                <useAverage>true</useAverage>
                 <workPreferenceScoreRange>0~10</workPreferenceScoreRange> <!-- The more cooperative the stronger the effect -->
                 <typeMultiplier>0~2</typeMultiplier>
-                <stat>ResearchSpeed</stat>
-                <priority>0~10</priority> <!-- Range depends on how much better this pawn is than others -->
-                <description>I am the best at this around</description>
+                <rangeDatas>
+                    <li>
+                        <validRange>-999~-0.21</validRange>
+                        <priority>-10~-10</priority>
+                        <description>There are better people for this</description>
+                    </li>
+                    <li>
+                        <validRange>-0.2~0</validRange>
+                        <priority>-10~0</priority>
+                        <description>There are better people for this</description>
+                    </li>
+                    <li>
+                        <validRange>0.01~0.1</validRange>
+                        <priority>1~2</priority>
+                        <description>I am average at this</description>
+                    </li>
+                    <li>
+                        <validRange>0.11~0.4</validRange>
+                        <priority>2~5</priority>
+                        <description>I am better at this than most</description>
+                    </li>
+                    <li>
+                        <validRange>0.41~999</validRange>
+                        <priority>5~5</priority>
+                        <description>I am better at this than most</description>
+                    </li>
+                </rangeDatas>
             </li>
         </value>
     </Operation>

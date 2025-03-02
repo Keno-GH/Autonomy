@@ -146,6 +146,14 @@
                     </li>
                 </rangeDatas>
             </li>
+            <li Class="Autonomy.PriorityGiver" Name="LogicalEnjoy">
+                <condition>BaseType</condition>
+                <type>CognitiveOrientation</type>
+                <workPreferenceScoreRange>-10~-1</workPreferenceScoreRange>
+                <typeMultiplier>1~0.1</typeMultiplier> <!-- The more logical the stronger the effect -->
+                <priority>5</priority>
+                <description>I enjoy logical tasks</description>
+            </li>
         </value>
     </Operation>
 
@@ -161,6 +169,14 @@
                 <typeMultiplier>0.5~1.5</typeMultiplier> <!-- The more cooperative the stronger the effect -->
                 <priority>0~10</priority>
                 <description>I the best at this around</description>
+            </li>
+            <li Class="Autonomy.PriorityGiver" Name="IndustrialEnjoy">
+                <condition>BaseType</condition>
+                <type>WorkEnvironmentAesthetic</type>
+                <workPreferenceScoreRange>0~10</workPreferenceScoreRange> <!-- Industrial side -->
+                <typeMultiplier>0.1~1</typeMultiplier> <!-- The more industrial the stronger the effect -->
+                <priority>5</priority>
+                <description>I enjoy working under a roof</description>
             </li>
         </value>
     </Operation>

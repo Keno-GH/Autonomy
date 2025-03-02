@@ -63,11 +63,23 @@ namespace Autonomy
 
                 var statDefsToCheck = priorityGivers
                     .Where(g => !string.IsNullOrEmpty(g.stat))
-                    .Select(g => StatDef.Named(g.stat))
+                    .Select(g => 
+                    {
+                        var statDef = DefDatabase<StatDef>.GetNamed(g.stat, errorOnFail: false);
+                        if (statDef == null)
+                        {
+                            throw new KeyNotFoundException($"StatDef named '{g.stat}' not found.");
+                        }
+                        return statDef;
+                    })
                     .Distinct();
+
+
 
                 foreach (StatDef statDef in statDefsToCheck)
                 {
+
+
                     float sum = 0f;
                     int count = 0;
                     Pawn bestColonist = null;
@@ -75,14 +87,15 @@ namespace Autonomy
 
                     foreach (Pawn pawn in map.mapPawns.FreeColonists)
                     {
-                        float statValue = pawn.GetStatValue(statDef, false);
+                        if (!pawn.def.statBases.StatListContains(statDef))
+                            continue;
+
+                        float statValue = pawn.GetStatValue(statDef, true);
                         if (statValue <= 0f)
                             continue;
 
                         if (pawn.InBed())
-                        {
                             continue; // Skip colonists who are in bed to account for injuries and varying schedules
-                        }
 
                         sum += statValue;
                         count++;

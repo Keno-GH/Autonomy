@@ -1004,7 +1004,7 @@
         </value>
     </Operation>
 
-    <Operation Class="PatchOperationAdd">
+    <Operation Class="PatchOperationAdd" Name="CleaningPriorityGivers">
         <xpath>Defs/WorkTypeDef[defName="Cleaning"]/modExtensions/li[@Class="Autonomy.PriorityGiverExtension"]/priorityGivers</xpath>
         <value>
             <li Class="Autonomy.PriorityGiver" Name="MapFilthy">
@@ -1090,7 +1090,7 @@
         </value>
     </Operation>
 
-    <Operation Class="PatchOperationAdd">
+    <Operation Class="PatchOperationAdd" Name="ResearchPriorityGivers">
         <xpath>Defs/WorkTypeDef[defName="Research"]/modExtensions/li[@Class="Autonomy.PriorityGiverExtension"]/priorityGivers</xpath>
         <value>
             <li Class="Autonomy.PriorityGiver" Name="SurroundingsFilthy">

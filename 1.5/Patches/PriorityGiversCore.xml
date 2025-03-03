@@ -726,6 +726,32 @@
                 <priority>5</priority>
                 <description>I enjoy working under a roof</description>
             </li>
+            <li Class="Autonomy.PriorityGiver" Name="AverageChemicalNeedLevel">
+                <condition>BasedOnInfoRange</condition>
+                <infoRange>
+                    <infoKey>colonistsChemicalNeedLevelAverage</infoKey>
+                    <fromMap>true</fromMap>
+                    <range>0.75~0</range>
+                </infoRange>
+                <type>SocialPreference</type>
+                <workPreferenceScoreRange>-10~10</workPreferenceScoreRange>
+                <typeMultiplier>0.5~2</typeMultiplier> <!-- The more cooperative the stronger the effect -->
+                <priority>0~20</priority>
+                <description>Colonists need social drugs</description>
+            </li>
+            <li Class="Autonomy.PriorityGiver" Name="MyChemicalLevel">
+                <condition>BasedOnInfoRange</condition>
+                <infoRange>
+                    <infoKey>chemicalLevel</infoKey>
+                    <fromMap>false</fromMap>
+                    <range>0.75~0</range>
+                </infoRange>
+                <type>SocialPreference</type>
+                <workPreferenceScoreRange>-10~10</workPreferenceScoreRange>
+                <typeMultiplier>2~0.5</typeMultiplier>
+                <priority>0~20</priority>
+                <description>I need some drugs</description>
+            </li>
         </value>
     </Operation>
 
@@ -896,12 +922,12 @@
                 <infoRange>
                     <infoKey>thingsDeteriorating</infoKey>
                     <fromMap>true</fromMap>
-                    <range>1~25</range>
+                    <range>0~25</range>
                 </infoRange>
                 <type>WorkApproach</type>
                 <workPreferenceScoreRange>-10~5</workPreferenceScoreRange>
                 <typeMultiplier>3~0.5</typeMultiplier> <!-- The more strict the stronger the effect -->
-                <priority>1~20</priority> <!-- Range depends on the amount of deteriorating things -->
+                <priority>0~20</priority> <!-- Range depends on the amount of deteriorating things -->
                 <description>Things are deteriorating</description>
             </li>
             <li Class="Autonomy.PriorityGiver" Name="AverageMoveSpeed">

@@ -16,14 +16,24 @@ namespace Autonomy
             }
             else
             {
+                // Basic information
                 int pawnCount = map.mapPawns.AllPawns.Count;
                 int colonistCount = map.mapPawns.FreeColonists.Count;
                 int petCount = map.mapPawns.SpawnedColonyAnimals.Count;
                 int enemyCount = map.mapPawns.AllHumanlikeSpawned.Where(p => p.Faction != null && p.Faction.HostileTo(Faction.OfPlayer)).Count();
+                int firesInHomeArea = map.listerThings.ThingsInGroup(ThingRequestGroup.Fire).Count;
+
+                mapInfo["pawnCount"] = pawnCount;
+                mapInfo["colonistCount"] = colonistCount;
+                mapInfo["petCount"] = petCount;
+                mapInfo["enemyCount"] = enemyCount;
+                mapInfo["firesInHomeArea"] = firesInHomeArea;
+
+                // Things information
                 int filthInHome = map.listerFilthInHomeArea.FilthInHomeArea.Count;
                 int thingsDeteriorating = map.listerHaulables.ThingsPotentiallyNeedingHauling().Count(t => 
                 {
-                    bool isDeteriorating = t.def.useHitPoints && t.IsOutside() && !t.IsForbidden(Faction.OfPlayer) && t.def.CanEverDeteriorate && t.GetStatValue(StatDefOf.DeteriorationRate, true) > 0f;
+                    bool isDeteriorating = t.def.useHitPoints && !t.IsForbidden(Faction.OfPlayer) && t.def.CanEverDeteriorate && t.GetStatValue(StatDefOf.DeteriorationRate, true) > 0f;
                     /* if (isDeteriorating)
                     {
                         Log.Message($"Thing deteriorating: {t.LabelCap} at {t.Position}");
@@ -31,12 +41,60 @@ namespace Autonomy
                     return isDeteriorating;
                 });
                 int refuelableThingsNeedingRefuel = map.listerThings.ThingsInGroup(ThingRequestGroup.Refuelable).Count(t => t.TryGetComp<CompRefuelable>() is CompRefuelable compRefuelable && compRefuelable.ShouldAutoRefuelNowIgnoringFuelPct && compRefuelable.Fuel < compRefuelable.Props.fuelCapacity * 0.25f);
+                int corpsesNeedingBurial = map.listerThings.ThingsInGroup(ThingRequestGroup.Corpse).Count(t => !t.IsForbidden(Faction.OfPlayer) && (t.GetRotStage() == RotStage.Fresh || t.GetRotStage() == RotStage.Rotting || t.GetRotStage() == RotStage.Dessicated) && t.def.race.Humanlike);
+                int vegetablesInHome = map.resourceCounter.GetCountIn(ThingCategoryDefOf.PlantFoodRaw);
+                int vegetablesInHomePerColonist = colonistCount > 0 ? vegetablesInHome / colonistCount : 0;
+                int meatInHome = map.resourceCounter.GetCountIn(ThingCategoryDefOf.MeatRaw);
+                int meatInHomePerColonist = colonistCount > 0 ? meatInHome / colonistCount : 0;
+                int socialDrugsInHome = map.resourceCounter.AllCountedAmounts.Where(kvp => kvp.Key.IsIngestible && kvp.Key.ingestible.drugCategory == DrugCategory.Social).Sum(kvp => kvp.Value);
+                int preparedMealsInHome = map.resourceCounter.AllCountedAmounts.Where(
+                    kvp => kvp.Key.IsIngestible && (
+                        kvp.Key.ingestible.preferability == FoodPreferability.MealAwful || kvp.Key.ingestible.preferability == FoodPreferability.MealSimple || kvp.Key.ingestible.preferability == FoodPreferability.MealFine || kvp.Key.ingestible.preferability == FoodPreferability.MealLavish
+                        )
+                    ).Sum(kvp => kvp.Value);
+                int preparedMealsInHomePerColonist = colonistCount > 0 ? preparedMealsInHome / colonistCount : 0;
+
+                mapInfo["filthInHome"] = filthInHome;
+                mapInfo["thingsDeteriorating"] = thingsDeteriorating;
+                mapInfo["refuelableThingsNeedingRefuel"] = refuelableThingsNeedingRefuel;
+                mapInfo["corpsesNeedingBurial"] = corpsesNeedingBurial;
+                mapInfo["vegetablesInHome"] = vegetablesInHome;
+                mapInfo["vegetablesInHomePerColonist"] = vegetablesInHomePerColonist;
+                mapInfo["meatInHome"] = meatInHome;
+                mapInfo["meatInHomePerColonist"] = meatInHomePerColonist;
+                mapInfo["socialDrugsInHome"] = socialDrugsInHome;
+                mapInfo["preparedMealsInHomePerColonist"] = preparedMealsInHomePerColonist;
+
+                // Health information
                 int colonistsNeedingTending = map.mapPawns.FreeColonists.Count(p => p.health.hediffSet.HasTendableHediff());
                 float colonistsBloodLoss = map.mapPawns.FreeColonists.Sum(p => p.health.hediffSet.BleedRateTotal);
                 int animalsNeedingTending = map.mapPawns.SpawnedColonyAnimals.Count(p => p.health.hediffSet.HasTendableHediff());
                 float animalsBloodLoss = map.mapPawns.SpawnedColonyAnimals.Sum(p => p.health.hediffSet.BleedRateTotal);
-                int corpsesNeedingBurial = map.listerThings.ThingsInGroup(ThingRequestGroup.Corpse).Count(t => !t.IsForbidden(Faction.OfPlayer) && (t.GetRotStage() == RotStage.Fresh || t.GetRotStage() == RotStage.Rotting || t.GetRotStage() == RotStage.Dessicated) && t.def.race.Humanlike);
+                int colonistsNeedRescuing = map.mapPawns.FreeColonists.Count(p => p.CurJob.def == JobDefOf.Wait_Downed);
+
+                mapInfo["colonistsNeedingTending"] = colonistsNeedingTending;
+                mapInfo["colonistsBloodLoss"] = colonistsBloodLoss;
+                mapInfo["animalsNeedingTending"] = animalsNeedingTending;
+                mapInfo["animalsBloodLoss"] = animalsBloodLoss;
+                mapInfo["colonistsNeedRescuing"] = colonistsNeedRescuing;
+
+                // Needs information
                 float colonistsFoodLevelAverage = map.mapPawns.FreeColonists.Average(p => p.needs.food.CurLevelPercentage);
+                float colonistsChemicalNeedLevelAverage = map.mapPawns.FreeColonists.Average(p => 
+                {
+                    var drugDesireNeed = p.needs.TryGetNeed<Need_Chemical>();
+                    return drugDesireNeed != null ? drugDesireNeed.CurLevelPercentage : 1f;
+                });
+                var colonistRecoveringInBed = map.mapPawns.FreeColonists.Where(p => p.CurJob.def == JobDefOf.LayDown && p.CurJob.jobGiver.Isnt<JobGiver_GetRest>()).ToList();
+                float patientsAverageFoodLevel = colonistRecoveringInBed.Any() ? colonistRecoveringInBed.Average(p => p.needs.food.CurLevelPercentage) : 1f;
+                float patientsAverageRecreation = colonistRecoveringInBed.Any() ? colonistRecoveringInBed.Average(p => p.needs.joy.CurLevelPercentage) : 1f; 
+
+                mapInfo["colonistsFoodLevelAverage"] = colonistsFoodLevelAverage;
+                mapInfo["colonistsChemicalNeedLevelAverage"] = colonistsChemicalNeedLevelAverage;
+                mapInfo["patientsAverageFoodLevel"] = patientsAverageFoodLevel;
+                mapInfo["patientsAverageRecreation"] = patientsAverageRecreation;
+
+                // Children information
                 float childrenFoodLevelAverage = 1f;
                 int childrenWantingTeacher = 0;
                 int childrenInColony = 0;
@@ -52,49 +110,10 @@ namespace Autonomy
                     childrenFoodLevelAverage = babies.Average(p => p.needs.food.CurLevelPercentage);
                     childrenInColony += babies.Count;
                 }
-                int vegetablesInHome = map.resourceCounter.GetCountIn(ThingCategoryDefOf.PlantFoodRaw);
-                int vegetablesInHomePerColonist = colonistCount > 0 ? vegetablesInHome / colonistCount : 0;
-                int meatInHome = map.resourceCounter.GetCountIn(ThingCategoryDefOf.MeatRaw);
-                int meatInHomePerColonist = colonistCount > 0 ? meatInHome / colonistCount : 0;
-                int socialDrugsInHome = map.resourceCounter.AllCountedAmounts.Where(kvp => kvp.Key.IsIngestible && kvp.Key.ingestible.drugCategory == DrugCategory.Social).Sum(kvp => kvp.Value);
-                int preparedMealsInHome = map.resourceCounter.AllCountedAmounts.Where(
-                    kvp => kvp.Key.IsIngestible && (
-                        kvp.Key.ingestible.preferability == FoodPreferability.MealAwful || kvp.Key.ingestible.preferability == FoodPreferability.MealSimple || kvp.Key.ingestible.preferability == FoodPreferability.MealFine || kvp.Key.ingestible.preferability == FoodPreferability.MealLavish
-                        )
-                    ).Sum(kvp => kvp.Value);
-                int preparedMealsInHomePerColonist = colonistCount > 0 ? preparedMealsInHome / colonistCount : 0;
-                int firesInHomeArea = map.listerThings.ThingsInGroup(ThingRequestGroup.Fire).Count;
-                var colonistRecoveringInBed = map.mapPawns.FreeColonists.Where(p => p.CurJob.def == JobDefOf.LayDown && p.CurJob.jobGiver.Isnt<JobGiver_GetRest>()).ToList();
-                float patientsAverageFoodLevel = colonistRecoveringInBed.Any() ? colonistRecoveringInBed.Average(p => p.needs.food.CurLevelPercentage) : 1f;
-                int colonistsNeedRescuing = map.mapPawns.FreeColonists.Count(p => p.CurJob.def == JobDefOf.Wait_Downed);
-                float patientsAverageRecreation = colonistRecoveringInBed.Any() ? colonistRecoveringInBed.Average(p => p.needs.joy.CurLevelPercentage) : 1f; 
 
-                mapInfo["pawnCount"] = pawnCount;
-                mapInfo["colonistCount"] = colonistCount;
-                mapInfo["petCount"] = petCount;
-                mapInfo["enemyCount"] = enemyCount;
-                mapInfo["filthInHome"] = filthInHome;
-                mapInfo["thingsDeteriorating"] = thingsDeteriorating;
-                mapInfo["refuelableThingsNeedingRefuel"] = refuelableThingsNeedingRefuel;
-                mapInfo["colonistsNeedingTending"] = colonistsNeedingTending;
-                mapInfo["colonistsBloodLoss"] = colonistsBloodLoss;
-                mapInfo["animalsNeedingTending"] = animalsNeedingTending;
-                mapInfo["animalsBloodLoss"] = animalsBloodLoss;
-                mapInfo["corpsesNeedingBurial"] = corpsesNeedingBurial;
-                mapInfo["colonistsFoodLevelAverage"] = colonistsFoodLevelAverage;
                 mapInfo["childrenFoodLevelAverage"] = childrenFoodLevelAverage;
                 mapInfo["childrenWantingTeacher"] = childrenWantingTeacher;
-                mapInfo["vegetablesInHome"] = vegetablesInHome;
-                mapInfo["vegetablesInHomePerColonist"] = vegetablesInHomePerColonist;
-                mapInfo["meatInHome"] = meatInHome;
-                mapInfo["meatInHomePerColonist"] = meatInHomePerColonist;
-                mapInfo["socialDrugsInHome"] = socialDrugsInHome;
-                mapInfo["preparedMealsInHomePerColonist"] = preparedMealsInHomePerColonist;
-                mapInfo["firesInHomeArea"] = firesInHomeArea;
                 mapInfo["childrenInColony"] = childrenInColony;
-                mapInfo["patientsAverageFoodLevel"] = patientsAverageFoodLevel;
-                mapInfo["colonistsNeedRescuing"] = colonistsNeedRescuing;
-                mapInfo["patientsAverageRecreation"] = patientsAverageRecreation;
 
                 var statDefsToCheck = priorityGivers
                     .Where(g => !string.IsNullOrEmpty(g.stat))

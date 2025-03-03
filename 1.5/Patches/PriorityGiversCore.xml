@@ -801,6 +801,19 @@
                 <priority>5</priority>
                 <description>I enjoy growing plants</description>
             </li>
+            <li Class="Autonomy.PriorityGiver" Name="LowOnMedicinePerColonist">
+                <condition>BasedOnInfoRange</condition>
+                <infoRange>
+                    <infoKey>medicineInHomePerColonist</infoKey>
+                    <fromMap>true</fromMap>
+                    <range>5~0</range>
+                </infoRange>
+                <type>SocialPreference</type>
+                <workPreferenceScoreRange>-10~10</workPreferenceScoreRange>
+                <typeMultiplier>1~2</typeMultiplier>
+                <priority>0~10</priority>
+                <description>We are low on medicine</description>
+            </li>
             <li Class="Autonomy.PriorityGiver" Name="LowVegetablesPerColonist">
                 <condition>BasedOnInfoRange</condition>
                 <infoRange>
@@ -898,6 +911,19 @@
                 <priority>6</priority>
                 <description>I enjoy working outside</description>
             </li>
+            <li Class="Autonomy.PriorityGiver" Name="LowOnMedicinePerColonist">
+                <condition>BasedOnInfoRange</condition>
+                <infoRange>
+                    <infoKey>medicineInHomePerColonist</infoKey>
+                    <fromMap>true</fromMap>
+                    <range>5~0</range>
+                </infoRange>
+                <type>SocialPreference</type>
+                <workPreferenceScoreRange>-10~10</workPreferenceScoreRange>
+                <typeMultiplier>1~2</typeMultiplier>
+                <priority>0~10</priority>
+                <description>We are low on medicine</description>
+            </li>
             <li Class="Autonomy.PriorityGiver" Name="LowVegetablesPerColonist">
                 <condition>BasedOnInfoRange</condition>
                 <infoRange>
@@ -908,7 +934,7 @@
                 <type>WorkApproach</type>
                 <workPreferenceScoreRange>-10~10</workPreferenceScoreRange>
                 <typeMultiplier>2~1</typeMultiplier>
-                <priority>0~15</priority>
+                <priority>0~10</priority>
                 <description>We are low on vegetables</description>
             </li>
         </value>

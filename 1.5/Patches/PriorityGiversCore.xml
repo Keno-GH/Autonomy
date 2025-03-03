@@ -422,7 +422,7 @@
                 <infoRange>
                     <infoKey>meatInHomePerColonist</infoKey>
                     <fromMap>true</fromMap>
-                    <range>20~0</range>
+                    <range>15~0</range>
                 </infoRange>
                 <type>WorkApproach</type>
                 <workPreferenceScoreRange>-10~10</workPreferenceScoreRange>
@@ -502,12 +502,12 @@
                 <infoRange>
                     <infoKey>meatInHomePerColonist</infoKey>
                     <fromMap>true</fromMap>
-                    <range>30~0</range>
+                    <range>15~0</range>
                 </infoRange>
                 <type>WorkApproach</type>
                 <workPreferenceScoreRange>-10~10</workPreferenceScoreRange>
                 <typeMultiplier>2~1</typeMultiplier>
-                <priority>0~20</priority>
+                <priority>0~15</priority>
                 <description>We are low on meat</description>
             </li>
         </value>

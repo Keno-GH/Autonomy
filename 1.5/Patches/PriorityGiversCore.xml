@@ -914,6 +914,67 @@
         </value>
     </Operation>
 
+    <Operation Class="PatchOperationAdd" Name="AutonomyDrugsPriorityGivers">
+        <xpath>Defs/WorkTypeDef[defName="AutonomyDrugs"]/modExtensions/li[@Class="Autonomy.PriorityGiverExtension"]/priorityGivers</xpath>
+        <value>
+            <li Class="Autonomy.PriorityGiver" Name="AverageChemicalNeedLevel">
+                <condition>BasedOnInfoRange</condition>
+                <infoRange>
+                    <infoKey>colonistsChemicalNeedLevelAverage</infoKey>
+                    <fromMap>true</fromMap>
+                    <range>0.75~0</range>
+                </infoRange>
+                <type>SocialPreference</type>
+                <workPreferenceScoreRange>-10~10</workPreferenceScoreRange>
+                <typeMultiplier>0.5~2</typeMultiplier> <!-- The more cooperative the stronger the effect -->
+                <priority>0~20</priority>
+                <description>Colonists need drugs</description>
+            </li>
+            <li Class="Autonomy.PriorityGiver" Name="MyChemicalLevel">
+                <condition>BasedOnInfoRange</condition>
+                <infoRange>
+                    <infoKey>chemicalLevel</infoKey>
+                    <fromMap>false</fromMap>
+                    <range>0.75~0</range>
+                </infoRange>
+                <type>SocialPreference</type>
+                <workPreferenceScoreRange>-10~10</workPreferenceScoreRange>
+                <typeMultiplier>2~0.5</typeMultiplier>
+                <priority>0~20</priority>
+                <description>I want drugs</description>
+            </li>
+            <li Class="Autonomy.PriorityGiver" Name="LowOnMedicinePerColonist">
+                <condition>BasedOnInfoRange</condition>
+                <infoRange>
+                    <infoKey>medicineInHomePerColonist</infoKey>
+                    <fromMap>true</fromMap>
+                    <range>5~0</range>
+                </infoRange>
+                <type>SocialPreference</type>
+                <workPreferenceScoreRange>-10~10</workPreferenceScoreRange>
+                <typeMultiplier>1~2</typeMultiplier>
+                <priority>0~20</priority>
+                <description>We are low on medicine</description>
+            </li>
+            <li Class="Autonomy.PriorityGiver" Name="IndustrialEnjoy">
+                <condition>BaseType</condition>
+                <type>WorkEnvironmentAesthetic</type>
+                <workPreferenceScoreRange>0~10</workPreferenceScoreRange> <!-- Industrial side -->
+                <typeMultiplier>0.1~1</typeMultiplier> <!-- The more industrial the stronger the effect -->
+                <priority>10</priority>
+                <description>I like working under roofs at workbenches</description>
+            </li>
+            <li Class="Autonomy.PriorityGiver" Name="LogicalEnjoy">
+                <condition>BaseType</condition>
+                <type>CognitiveOrientation</type>
+                <workPreferenceScoreRange>-10~-1</workPreferenceScoreRange>
+                <typeMultiplier>1~0.1</typeMultiplier> <!-- The more logical the stronger the effect -->
+                <priority>5</priority>
+                <description>I like intellectual jobs</description>
+            </li>
+        </value>
+    </Operation>
+
     <Operation Class="PatchOperationAdd" Name="HaulingPriorityGivers">
         <xpath>Defs/WorkTypeDef[defName="Hauling"]/modExtensions/li[@Class="Autonomy.PriorityGiverExtension"]/priorityGivers</xpath>
         <value>

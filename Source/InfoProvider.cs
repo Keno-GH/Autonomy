@@ -53,6 +53,7 @@ namespace Autonomy
                         )
                     ).Sum(kvp => kvp.Value);
                 int preparedMealsInHomePerColonist = colonistCount > 0 ? preparedMealsInHome / colonistCount : 0;
+                int medicineInHomePerColonist = colonistCount > 0 ? map.resourceCounter.GetCountIn(ThingCategoryDefOf.Medicine) / colonistCount : 0;
 
                 mapInfo["filthInHome"] = filthInHome;
                 mapInfo["thingsDeteriorating"] = thingsDeteriorating;
@@ -64,6 +65,7 @@ namespace Autonomy
                 mapInfo["meatInHomePerColonist"] = meatInHomePerColonist;
                 mapInfo["socialDrugsInHome"] = socialDrugsInHome;
                 mapInfo["preparedMealsInHomePerColonist"] = preparedMealsInHomePerColonist;
+                mapInfo["medicineInHomePerColonist"] = medicineInHomePerColonist;
 
                 // Health information
                 int colonistsNeedingTending = map.mapPawns.FreeColonists.Count(p => p.health.hediffSet.HasTendableHediff());
@@ -80,11 +82,11 @@ namespace Autonomy
 
                 // Needs information
                 float colonistsFoodLevelAverage = map.mapPawns.FreeColonists.Average(p => p.needs.food.CurLevelPercentage);
-                float colonistsChemicalNeedLevelAverage = map.mapPawns.FreeColonists.Average(p => 
-                {
-                    var drugDesireNeed = p.needs.TryGetNeed<Need_Chemical>();
-                    return drugDesireNeed != null ? drugDesireNeed.CurLevelPercentage : 1f;
-                });
+                float colonistsChemicalNeedLevelAverage = map.mapPawns.FreeColonists
+                    .Where(p => p.needs.TryGetNeed<Need_Chemical>() != null)
+                    .Select(p => p.needs.TryGetNeed<Need_Chemical>().CurLevelPercentage)
+                    .DefaultIfEmpty(1f)
+                    .Average();
                 var colonistRecoveringInBed = map.mapPawns.FreeColonists.Where(p => p.CurJob.def == JobDefOf.LayDown && p.CurJob.jobGiver.Isnt<JobGiver_GetRest>()).ToList();
                 float patientsAverageFoodLevel = colonistRecoveringInBed.Any() ? colonistRecoveringInBed.Average(p => p.needs.food.CurLevelPercentage) : 1f;
                 float patientsAverageRecreation = colonistRecoveringInBed.Any() ? colonistRecoveringInBed.Average(p => p.needs.joy.CurLevelPercentage) : 1f; 

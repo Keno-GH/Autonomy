@@ -83,8 +83,8 @@ namespace Autonomy
                 // Needs information
                 float colonistsFoodLevelAverage = map.mapPawns.FreeColonists.Average(p => p.needs.food.CurLevelPercentage);
                 float colonistsChemicalNeedLevelAverage = map.mapPawns.FreeColonists
-                    .Where(p => p.needs.TryGetNeed<Need_Chemical>() != null)
-                    .Select(p => p.needs.TryGetNeed<Need_Chemical>().CurLevelPercentage)
+                    .Where(p => p.story.traits.GetTrait(TraitDefOf.DrugDesire) != null)
+                    .Select(p => p.needs.TryGetNeed<Need_Chemical_Any>().CurLevelPercentage)
                     .DefaultIfEmpty(1f)
                     .Average();
                 var colonistRecoveringInBed = map.mapPawns.FreeColonists.Where(p => p.CurJob.def == JobDefOf.LayDown && p.CurJob.jobGiver.Isnt<JobGiver_GetRest>()).ToList();
@@ -258,12 +258,7 @@ namespace Autonomy
                 float foodLevel = pawn.needs.food.CurLevelPercentage;
                 pawnInfo["foodLevel"] = foodLevel;
 
-                float chemicalLevel = 1f;
-                var drugDesireNeed = pawn.needs.TryGetNeed<Need_Chemical>();
-                if (drugDesireNeed != null)
-                {
-                    chemicalLevel = drugDesireNeed.CurLevelPercentage;
-                }
+                float chemicalLevel = pawn.story.traits.HasTrait(TraitDefOf.DrugDesire) ? pawn.needs.TryGetNeed<Need_Chemical_Any>().CurLevelPercentage : 1f;
                 pawnInfo["chemicalLevel"] = chemicalLevel;
 
                 // Log.Message($"Pawn {pawn.Name} has {injuriesCount} injuries, bleeding rate: {bleedingRate}, needs tending: {needsTending}, immunity gain speed: {immunityGainSpeed}, severity gain speed: {severityGainSpeed}, severity tended speed: {severityTendedSpeed}, true severity gained: {severityGainSpeed + severityTendedSpeed}, immunity rate - true severity gained: {immunityGainSpeed - (severityGainSpeed + severityTendedSpeed)}. Pawn Immunity Stat Value: {pawn.GetStatValue(StatDefOf.ImmunityGainSpeed, applyPostProcess: true)}");

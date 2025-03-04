@@ -61,7 +61,7 @@
                             <key>EnableAutonomyPruning</key>
                             <label>Enable Pruning</label>
                             <defaultValue>true</defaultValue>
-                            <tooltip>A worktype about pruning gauranlen trees.</tooltip>
+                            <tooltip>A worktype about pruning gauranlen trees. Requires Ideology</tooltip>
                         </li>
                         <li Class="XmlExtensions.Setting.Checkbox">
                             <key>EnableAutonomyDrugs</key>

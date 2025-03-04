@@ -181,11 +181,25 @@
     <key>EnableAutonomyPruning</key>
     <defaultValue>true</defaultValue>
     <caseTrue>
-        <Operation Class="XmlExtensions.PatchOperationAddOrReplace">
-            <xpath>/Defs/WorkGiverDef[defName="PruneGauranlenTree"]</xpath>
-            <value>
-                <workType>AutonomyPruning</workType>
-            </value>
+        <Operation Class="XmlExtensions.FindMod">
+            <mods>
+                <li>Ideology</li>
+            </mods>
+            <caseTrue> 
+                <Operation Class="XmlExtensions.PatchOperationAddOrReplace">
+                    <xpath>/Defs/WorkGiverDef[defName="PruneGauranlenTree"]</xpath>
+                    <value>
+                        <workType>AutonomyPruning</workType>
+                    </value>
+                </Operation>
+            </caseTrue>
+            <caseFalse>
+                <Operation Class="XmlExtensions.PatchOperationAttributeSet">
+                    <xpath>/Defs/WorkTypeDef[defName="AutonomyPruning"]</xpath>
+                    <attribute>Abstract</attribute>
+                    <value>true</value>
+                </Operation>
+            </caseFalse>
         </Operation>
     </caseTrue>
     <caseFalse>

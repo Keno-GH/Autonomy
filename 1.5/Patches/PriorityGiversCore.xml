@@ -499,6 +499,16 @@
                                         </rangeDatas>
                                     </li>
                                     <li Class="Autonomy.PriorityGiver">
+                                        <mayRequire>Vanilla Skills Expanded</mayRequire>
+                                        <condition>ApathyPassion</condition>
+                                        <type>SocialPreference</type>
+                                        <workPreferenceScoreRange>-10~10</workPreferenceScoreRange> <!-- The whole spectrum -->
+                                        <typeMultiplier>2~0.5</typeMultiplier> <!-- The more independent the stronger the effect -->
+                                        <skill>{Skill}</skill>
+                                        <priority>-5</priority>
+                                        <description>I really don't care about {SkillLabel}</description>
+                                    </li>
+                                    <li Class="Autonomy.PriorityGiver">
                                         <condition>MinorPassion</condition>
                                         <type>SocialPreference</type> 
                                         <workPreferenceScoreRange>-10~10</workPreferenceScoreRange> <!-- The whole spectrum -->
@@ -515,6 +525,26 @@
                                         <skill>{Skill}</skill>
                                         <priority>5</priority>
                                         <description>I am very passionate about {SkillLabel}</description>
+                                    </li>
+                                    <li Class="Autonomy.PriorityGiver">
+                                        <mayRequire>Vanilla Skills Expanded</mayRequire>
+                                        <condition>NaturalPassion</condition>
+                                        <type>SocialPreference</type>
+                                        <workPreferenceScoreRange>-10~10</workPreferenceScoreRange> <!-- The whole spectrum -->
+                                        <typeMultiplier>2~0.5</typeMultiplier> <!-- The more independent the stronger the effect -->
+                                        <skill>{Skill}</skill>
+                                        <priority>10</priority>
+                                        <description>I am a natural at {SkillLabel}</description>
+                                    </li>
+                                    <li Class="Autonomy.PriorityGiver">
+                                        <mayRequire>Vanilla Skills Expanded</mayRequire>
+                                        <condition>CriticalPassion</condition>
+                                        <type>SocialPreference</type>
+                                        <workPreferenceScoreRange>-10~10</workPreferenceScoreRange> <!-- The whole spectrum -->
+                                        <typeMultiplier>2~0.5</typeMultiplier> <!-- The more independent the stronger the effect -->
+                                        <skill>{Skill}</skill>
+                                        <priority>20</priority>
+                                        <description>I live for {SkillLabel} work</description>
                                     </li>
                                 </value>
                             </Operation>

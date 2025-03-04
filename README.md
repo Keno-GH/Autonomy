@@ -23,6 +23,5 @@ Free Will is an excellent mod that heavily inspired Autonomy. The key motivation
 * Add mod compatibility to Vanilla Skills Expanded
 * Add mod compatibility to Colony Manager
 * Add many WorkdriveGivers to precepts, traits, backstories, and genes
-* Add DLC checks for patches
 * (Maybe) add a PriorityGiver patch maker for simple conditions
 * Optimize infoProviders to use already created lists instead of creating new ones

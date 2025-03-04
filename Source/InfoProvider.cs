@@ -266,7 +266,13 @@ namespace Autonomy
                 foreach (var skill in pawn.skills.skills)
                 {
                     pawnInfo[skill.def.defName] = skill.Level;
-                    pawnInfo[$"{skill.def.defName}_passion"] = (float)skill.passion;
+                    pawnInfo[$"{skill.def.defName}_passion"] = (int)skill.passion;
+
+                    // Vanilla Skills Expanded
+                    pawnInfo[$"has_{skill.def.defName}_apathyPassion"] = skill.passion.GetLabel() == "Apathy" ? 1 : 0;
+                    pawnInfo[$"has_{skill.def.defName}_criticalPassion"] = skill.passion.GetLabel() == "Critical" ? 1 : 0;
+                    pawnInfo[$"has_{skill.def.defName}_naturalPassion"] = skill.passion.GetLabel() == "Natural" ? 1 : 0;
+
                 }
 
                 int childrenCount = 0;

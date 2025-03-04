@@ -25,6 +25,7 @@ namespace Autonomy
         public string exclusiveTo;
         public List<RangeData> rangeDatas;
         public InfoRange infoRange;
+        public string mayRequire; // New property for optional mod requirement
     }
 
     public class RangeData

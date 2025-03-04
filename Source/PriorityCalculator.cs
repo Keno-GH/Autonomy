@@ -71,6 +71,15 @@ namespace Autonomy
 
             foreach (var giver in extension.priorityGivers)
             {
+
+                if (!string.IsNullOrEmpty(giver.mayRequire))
+                {
+                    if (!ModsConfig.IsActive(giver.mayRequire) && !ModsConfig.ActiveModsInLoadOrder.Any(mod => mod.Name == giver.mayRequire))
+                    {
+                        continue;
+                    }
+                }
+
                 if (!conditionHandlers.TryGetValue(giver.condition, out var handler))
                 {
                     Log.Error($"PriorityCalculator: No handler found for condition {giver.condition}");
@@ -254,8 +263,19 @@ namespace Autonomy
 
             bool isMajorPassion = skillPassion == (float)Passion.Major;
             bool isMinorPassion = skillPassion == (float)Passion.Minor;
+            // Vanilla Skills Expanded
+            bool isApathyPassion = pawnInfo.TryGetValue($"has_{giver.skill}_apathyPassion", out float hasApathyPassion) && hasApathyPassion == 1;
+            bool isNaturalPassion = pawnInfo.TryGetValue($"has_{giver.skill}_naturalPassion", out float hasNaturalPassion) && hasNaturalPassion == 1;
+            bool isCriticalPassion = pawnInfo.TryGetValue($"has_{giver.skill}_criticalPassion", out float hasCriticalPassion) && hasCriticalPassion == 1;
+            
 
-            if ((giver.condition == "MinorPassion" && isMinorPassion) || (giver.condition == "MajorPassion" && isMajorPassion))
+            if (
+            (giver.condition == "MinorPassion" && isMinorPassion) 
+            || (giver.condition == "MajorPassion" && isMajorPassion)
+            || (giver.condition == "ApathyPassion" && isApathyPassion)
+            || (giver.condition == "NaturalPassion" && isNaturalPassion)
+            || (giver.condition == "CriticalPassion" && isCriticalPassion)
+            )
             {
                 if (!workDrivePreferences.TryGetValue(giver.type, out int workDrivePreference)) return 0;
 
@@ -271,12 +291,27 @@ namespace Autonomy
                 basePriority = (int)(basePriority * multiplier);
 
                 if (basePriority == 0) return 0;
-
-                if (giver.condition == "MajorPassion" && conditionPriorities.ContainsKey("MinorPassion"))
+                
+                // This attemmpts to avoid over prioritizing the same worktype when it has multiple passions, but currently
+                // is not working and I am too tired to fix it.
+                var conditionChecks = new Dictionary<string, string[]>
                 {
-                    int minorPassionPriority = conditionPriorities["MinorPassion"];
-                    conditionPriorities.Remove("MinorPassion");
-                    return basePriority - minorPassionPriority;
+                    { "MinorPassion", new[] { "ApathyPassion" } },
+                    { "MajorPassion", new[] { "MinorPassion", "ApathyPassion" } },
+                    { "NaturalPassion", new[] { "MajorPassion", "MinorPassion", "ApathyPassion" } },
+                    { "CriticalPassion", new[] { "NaturalPassion", "MajorPassion", "MinorPassion", "ApathyPassion" } },
+                };
+
+                if (conditionChecks.TryGetValue(giver.condition, out var prioritiesToCheck))
+                {
+                    foreach (var condition in prioritiesToCheck)
+                    {
+                        if (conditionPriorities.TryGetValue(condition, out int conditionPriority))
+                        {
+                            conditionPriorities.Remove(condition);
+                            return basePriority - conditionPriority;
+                        }
+                    }
                 }
 
                 conditionPriorities[giver.condition] = basePriority;

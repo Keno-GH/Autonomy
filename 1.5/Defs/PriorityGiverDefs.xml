@@ -32,4 +32,19 @@
         <defName>BasedOnInfoRange</defName>
         <giver>HandleInfoRange</giver>
     </Autonomy.PriorityGiverDef>
+
+    <!-- Vanilla Skills Expanded -->
+
+    <Autonomy.PriorityGiverDef>
+        <defName>NaturalPassion</defName>
+        <giver>HandlePassion</giver>
+    </Autonomy.PriorityGiverDef>
+    <Autonomy.PriorityGiverDef>
+        <defName>CriticalPassion</defName>
+        <giver>HandlePassion</giver>
+    </Autonomy.PriorityGiverDef>
+    <Autonomy.PriorityGiverDef>
+        <defName>ApathyPassion</defName>
+        <giver>HandlePassion</giver>
+    </Autonomy.PriorityGiverDef>
 </Defs>

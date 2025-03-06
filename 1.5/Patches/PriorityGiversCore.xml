@@ -455,6 +455,72 @@
                 <priority>0~20</priority>
                 <description>People are hungry</description>
             </li>
+            <li Class="Autonomy.PriorityGiver" Name="AverageFoodPoisonChance">
+                <condition>ComparedStats</condition>
+                <stat>FoodPoisonChance</stat>
+                <useAverage>true</useAverage>
+                <type>SocialPreference</type>
+                <workPreferenceScoreRange>-10~10</workPreferenceScoreRange>
+                <typeMultiplier>0.5~2</typeMultiplier> <!-- The more cooperative the stronger the effect -->
+                <rangeDatas>
+                    <!-- Higher score is worse -->
+                    <li>
+                        <validRange>-999~-0</validRange>
+                        <priority>0~0</priority>
+                        <description>I can cook cleanly</description>
+                    </li>
+                    <li>
+                        <validRange>0.001~0.01</validRange>
+                        <priority>-5~0</priority>
+                        <description>I don't trust my cooking</description>
+                    </li>
+                    <li>
+                        <validRange>0.01~0.5</validRange>
+                        <priority>-20~-5</priority>
+                        <description>I am a bit of a risk</description>
+                    </li>
+                    <li>
+                        <validRange>0.5~999</validRange>
+                        <priority>-20~-20</priority>
+                        <description>I am a risk</description>
+                    </li>
+                </rangeDatas>
+            </li>
+            <li Class="Autonomy.PriorityGiver" Name="AverageCookSpeed">
+                <condition>ComparedStats</condition>
+                <stat>CookSpeed</stat>
+                <useAverage>true</useAverage>
+                <type>SocialPreference</type>
+                <workPreferenceScoreRange>-10~10</workPreferenceScoreRange>
+                <typeMultiplier>0.5~2</typeMultiplier> <!-- The more cooperative the stronger the effect -->
+                <rangeDatas>
+                    <li>
+                        <validRange>-999~-0.21</validRange>
+                        <priority>-10~-10</priority>
+                        <description>I am very slow</description>
+                    </li>
+                    <li>
+                        <validRange>-0.2~0</validRange>
+                        <priority>0~-10</priority>
+                        <description>There are faster people</description>
+                    </li>
+                    <li>
+                        <validRange>0.01~0.1</validRange>
+                        <priority>0~0</priority>
+                        <description>I am average at this</description>
+                    </li>
+                    <li>
+                        <validRange>0.11~0.4</validRange>
+                        <priority>0~0</priority>
+                        <description>I am better at this than most</description>
+                    </li>
+                    <li>
+                        <validRange>0.41~999</validRange>
+                        <priority>0~0</priority>
+                        <description>I am better at this than most</description>
+                    </li>
+                </rangeDatas>
+            </li>
             <li Class="Autonomy.PriorityGiver" Name="MyFoodLevel">
                 <condition>BasedOnInfoRange</condition>
                 <infoRange>

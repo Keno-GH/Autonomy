@@ -11,6 +11,7 @@
         <value>
             <!-- The mod already adds passion and skill level related givers, so its not neccessary to add them -->
             <!-- Instead, we add givers based on what the usage of this worktype can provide -->
+            <!-- For this, we use info based givers. The info can come from the map or the pawn and are written in c# -->
             <li Class="Autonomy.PriorityGiver" Name="LowOnMedicinePerColonist">
                 <condition>BasedOnInfoRange</condition>
                 <infoRange>
@@ -50,10 +51,13 @@
                 <priority>0~5</priority>
                 <description>We are low on meat</description>
             </li>
-            <!-- We also add at least one average speed giver. Very recommended otherwise all pawns have this on -->
+            <!-- We also add at least one average stat giver. Very recommended otherwise all pawns have this on -->
             <!-- when the info based givers trigger, even though there are much better suited people for this. -->
             <!-- It is good to note that ComparedStats givers use pawns that are not in bed, so the average changes -->
             <!-- when pawns sleep or are recovering in bed.-->
+            <!-- We compare stats instead of skill levels because stats change based on hediffs, genes, etc. And we -->
+            <!-- want pawns to adapt to such situations. -->
+            <!-- ComparedStats can use any stat that is defined as a StatDef and apply to pawns -->
             <li Class="Autonomy.PriorityGiver" Name="AverageManagingSpeed">
                 <condition>ComparedStats</condition>
                 <stat>ManagingSpeed</stat>

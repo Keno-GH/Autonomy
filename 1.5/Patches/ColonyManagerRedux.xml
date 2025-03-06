@@ -21,7 +21,7 @@
                 <type>SocialPreference</type>
                 <workPreferenceScoreRange>-10~10</workPreferenceScoreRange>
                 <typeMultiplier>1~2</typeMultiplier>
-                <priority>0~10</priority>
+                <priority>0~5</priority>
                 <description>We are low on medicine</description>
             </li>
             <li Class="Autonomy.PriorityGiver" Name="LowVegetablesPerColonist">
@@ -34,7 +34,7 @@
                 <type>WorkApproach</type>
                 <workPreferenceScoreRange>-10~10</workPreferenceScoreRange>
                 <typeMultiplier>2~1</typeMultiplier>
-                <priority>0~10</priority>
+                <priority>0~5</priority>
                 <description>We are low on vegetables</description>
             </li>
             <li Class="Autonomy.PriorityGiver" Name="LowMeatPerColonist">
@@ -47,8 +47,47 @@
                 <type>WorkApproach</type>
                 <workPreferenceScoreRange>-10~10</workPreferenceScoreRange>
                 <typeMultiplier>2~1</typeMultiplier>
-                <priority>0~10</priority>
+                <priority>0~5</priority>
                 <description>We are low on meat</description>
+            </li>
+            <!-- We also add at least one average speed giver. Very recommended otherwise all pawns have this on -->
+            <!-- when the info based givers trigger, even though there are much better suited people for this. -->
+            <!-- It is good to note that ComparedStats givers use pawns that are not in bed, so the average changes -->
+            <!-- when pawns sleep or are recovering in bed.-->
+            <li Class="Autonomy.PriorityGiver" Name="AverageManagingSpeed">
+                <condition>ComparedStats</condition>
+                <stat>ManagingSpeed</stat>
+                <useAverage>true</useAverage>
+                <type>SocialPreference</type>
+                <workPreferenceScoreRange>-10~10</workPreferenceScoreRange>
+                <typeMultiplier>0.5~2</typeMultiplier> <!-- The more cooperative the stronger the effect -->
+                <rangeDatas>
+                    <li>
+                        <validRange>-999~-0.21</validRange>
+                        <priority>-10~-10</priority>
+                        <description>I am very slow</description>
+                    </li>
+                    <li>
+                        <validRange>-0.2~0</validRange>
+                        <priority>0~-10</priority>
+                        <description>There are faster people</description>
+                    </li>
+                    <li>
+                        <validRange>0.01~0.1</validRange>
+                        <priority>0~0</priority>
+                        <description>I am average at this</description>
+                    </li>
+                    <li>
+                        <validRange>0.11~0.4</validRange>
+                        <priority>0~0</priority>
+                        <description>I am better at this than most</description>
+                    </li>
+                    <li>
+                        <validRange>0.41~999</validRange>
+                        <priority>0~0</priority>
+                        <description>I am better at this than most</description>
+                    </li>
+                </rangeDatas>
             </li>
             <!-- And we also add basetype givers to reflect direct interests to some work drives -->
             <li Class="Autonomy.PriorityGiver" Name="IndustrialEnjoy">

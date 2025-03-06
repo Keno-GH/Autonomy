@@ -78,13 +78,17 @@ namespace Autonomy
             {
                 WorkTypeDef workTypeDef = kvp.Key;
                 int priority = kvp.Value;
-                if (priority >= minPriority && priority < minPriority + step)
+                if (priority < 0)
+                {
+                    pawn.workSettings.SetPriority(workTypeDef, 0);
+                }
+                else if (priority >= minPriority && priority < minPriority + step)
                 {
                     if (priority < 0) {
                         pawn.workSettings.SetPriority(workTypeDef, 0); // Only disable lowest priority if the priority is negative
                     }
                     else {
-                        pawn.workSettings.SetPriority(workTypeDef, 4);
+                        pawn.workSettings.SetPriority(workTypeDef, 0); // Set lowest priority to 0
                     }
                         
                 }

@@ -1,0 +1,57 @@
+<Patch>
+
+    <Operation Class="XmlExtensions.FindMod">
+    <mods>
+        <li>Colony Manager Redux</li>
+    </mods>
+    <caseTrue>
+
+    <Operation Class="PatchOperationAdd" Name="ManagingPriorityGivers">
+        <xpath>Defs/WorkTypeDef[defName="Managing"]/modExtensions/li[@Class="Autonomy.PriorityGiverExtension"]/priorityGivers</xpath>
+        <value>
+            <li Class="Autonomy.PriorityGiver" Name="LowOnMedicinePerColonist">
+                <condition>BasedOnInfoRange</condition>
+                <infoRange>
+                    <infoKey>medicineInHomePerColonist</infoKey>
+                    <fromMap>true</fromMap>
+                    <range>10~0</range>
+                </infoRange>
+                <type>SocialPreference</type>
+                <workPreferenceScoreRange>-10~10</workPreferenceScoreRange>
+                <typeMultiplier>1~2</typeMultiplier>
+                <priority>0~10</priority>
+                <description>We are low on medicine</description>
+            </li>
+            <li Class="Autonomy.PriorityGiver" Name="LowVegetablesPerColonist">
+                <condition>BasedOnInfoRange</condition>
+                <infoRange>
+                    <infoKey>vegetablesInHomePerColonist</infoKey>
+                    <fromMap>true</fromMap>
+                    <range>30~0</range>
+                </infoRange>
+                <type>WorkApproach</type>
+                <workPreferenceScoreRange>-10~10</workPreferenceScoreRange>
+                <typeMultiplier>2~1</typeMultiplier>
+                <priority>0~10</priority>
+                <description>We are low on vegetables</description>
+            </li>
+            <li Class="Autonomy.PriorityGiver" Name="LowMeatPerColonist">
+                <condition>BasedOnInfoRange</condition>
+                <infoRange>
+                    <infoKey>meatInHomePerColonist</infoKey>
+                    <fromMap>true</fromMap>
+                    <range>30~0</range>
+                </infoRange>
+                <type>WorkApproach</type>
+                <workPreferenceScoreRange>-10~10</workPreferenceScoreRange>
+                <typeMultiplier>2~1</typeMultiplier>
+                <priority>0~10</priority>
+                <description>We are low on meat</description>
+            </li>
+        </value>
+    </Operation>
+
+    </caseTrue>
+    </Operation>
+
+</Patch>

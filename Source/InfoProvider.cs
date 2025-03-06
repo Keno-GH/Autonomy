@@ -288,18 +288,15 @@ namespace Autonomy
                 bool needsTending = pawn.health.hediffSet.HasTendableHediff();
                 var immunizableHeddifs = pawn.health.hediffSet.hediffs
                     .Select(h => h as HediffWithComps)
-                    .Where(h => h != null && h.comps.Any(c => c is HediffComp_Immunizable));
-                float immunityGainSpeed = immunizableHeddifs.Sum(h => pawn.health.immunity.GetImmunityRecord(h.def).ImmunityChangePerTick(pawn, true, h) * 60000f);
-                float severityGainSpeed = pawn.health.hediffSet
-                    .hediffs
-                    .Select(h => h as HediffWithComps)
+                    .Where(h => h != null && h.comps.Any(c => c is HediffComp_Immunizable && pawn.health.immunity.GetImmunityRecord(h.def)?.ImmunityChangePerTick(pawn, true, h) > 0));
+                float immunityGainSpeed = immunizableHeddifs
+                    .Sum(h => pawn.health.immunity.GetImmunityRecord(h.def).ImmunityChangePerTick(pawn, true, h) * 60000f);
+                float severityGainSpeed = immunizableHeddifs
                     .Where(h => h != null && h.comps.Any(c => c is HediffComp_Immunizable))
                     .Select(h => h.TryGetComp<HediffComp_Immunizable>())
                     .Where(c => c != null)
                     .Sum(c => c.Props.severityPerDayNotImmune);
-                float severityTendedSpeed = pawn.health.hediffSet
-                    .hediffs
-                    .Select(h => h as HediffWithComps)
+                float severityTendedSpeed = immunizableHeddifs
                     .Where(h => h != null && h.comps.Any(c => c is HediffComp_TendDuration))
                     .Select(h => h.TryGetComp<HediffComp_TendDuration>())
                     .Where(c => c != null)

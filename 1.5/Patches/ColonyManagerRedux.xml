@@ -9,6 +9,8 @@
     <Operation Class="PatchOperationAdd" Name="ManagingPriorityGivers">
         <xpath>Defs/WorkTypeDef[defName="Managing"]/modExtensions/li[@Class="Autonomy.PriorityGiverExtension"]/priorityGivers</xpath>
         <value>
+            <!-- The mod already adds passion and skill level related givers, so its not neccessary to add them -->
+            <!-- Instead, we add givers based on what the usage of this worktype can provide -->
             <li Class="Autonomy.PriorityGiver" Name="LowOnMedicinePerColonist">
                 <condition>BasedOnInfoRange</condition>
                 <infoRange>
@@ -47,6 +49,39 @@
                 <typeMultiplier>2~1</typeMultiplier>
                 <priority>0~10</priority>
                 <description>We are low on meat</description>
+            </li>
+            <!-- And we also add basetype givers to reflect direct interests to some work drives -->
+            <li Class="Autonomy.PriorityGiver" Name="IndustrialEnjoy">
+                <condition>BaseType</condition>
+                <type>WorkEnvironmentAesthetic</type>
+                <workPreferenceScoreRange>0~10</workPreferenceScoreRange> <!-- Industrial side -->
+                <typeMultiplier>0.1~1</typeMultiplier> <!-- The more industrial the stronger the effect -->
+                <priority>5</priority>
+                <description>I enjoy working under a roof at a workbench</description>
+            </li>
+            <li Class="Autonomy.PriorityGiver" Name="LogicalEnjoy">
+                <condition>BaseType</condition>
+                <type>CognitiveOrientation</type>
+                <workPreferenceScoreRange>-10~0</workPreferenceScoreRange> <!-- Logical side -->
+                <typeMultiplier>1~0.1</typeMultiplier> <!-- The more logical the stronger the effect -->
+                <priority>5</priority>
+                <description>I enjoy logical jobs</description>
+            </li>
+            <li Class="Autonomy.PriorityGiver" Name="CommunalEnjoy">
+                <condition>BaseType</condition>
+                <type>SocialPreference</type>
+                <workPreferenceScoreRange>0~10</workPreferenceScoreRange> <!-- Communal side -->
+                <typeMultiplier>0.1~1</typeMultiplier> <!-- The more communal the stronger the effect -->
+                <priority>5</priority>
+                <description>I want to work for the community</description>
+            </li>
+            <li Class="Autonomy.PriorityGiver" Name="StrictEnjoy">
+                <condition>BaseType</condition>
+                <type>WorkApproach</type>
+                <workPreferenceScoreRange>-10~0</workPreferenceScoreRange> <!-- Strict side -->
+                <typeMultiplier>1~0.1</typeMultiplier> <!-- The stricter the stronger the effect -->
+                <priority>5</priority>
+                <description>Order is important to me</description>
             </li>
         </value>
     </Operation>

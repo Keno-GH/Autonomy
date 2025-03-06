@@ -1,0 +1,121 @@
+<Patch>
+
+    <!-- Auto patchers that target automatically -->
+
+    <Operation Class="XmlExtensions.PatchOperationSafeAdd"> <!-- Add the PriorityGiverExtension to all work types, to make patching easier -->
+        <xpath>Defs/WorkTypeDef[not(modExtensions/li[@Class="Autonomy.PriorityGiverExtension"])]</xpath>
+        <value>
+            <modExtensions>
+                <li Class="Autonomy.PriorityGiverExtension">
+                    <priorityGivers>
+                    </priorityGivers>
+                </li>
+            </modExtensions>
+        </value>
+    </Operation>
+
+        <Operation Class="XmlExtensions.ForEach" Name="AllSkilledWorktypesGivers"> <!-- Give skill related priority givers to work types with skills -->
+        <xpath>Defs/WorkTypeDef[relevantSkills]</xpath>
+        <storeIn>SkilledWorkTypeDef</storeIn>
+        <apply> 
+            <Operation Class="XmlExtensions.ForEach">
+                <xpath>{SkilledWorkTypeDef}/relevantSkills/li</xpath>
+                <storeIn>SkillLi</storeIn>
+                <prefixLength>4</prefixLength>
+                <apply>
+                    <Operation Class="XmlExtensions.AggregateValues">
+                        <valueOperations>
+                            <Operation Class="XmlExtensions.CreateVariable">
+                                <storeIn>Skill</storeIn>
+                                <value>{SkillLi}</value>
+                                <fromXml>true</fromXml>
+                            </Operation>
+                            <Operation Class="XmlExtensions.CreateVariable">
+                                <storeIn>SkillLabel</storeIn>
+                                <value>Defs/SkillDef[defName="{Skill}"]/skillLabel</value>
+                                <fromXml>true</fromXml>
+                            </Operation>
+                        </valueOperations>
+                        <apply>
+                            <Operation Class="PatchOperationAdd">
+                                <xpath>{SkilledWorkTypeDef}/modExtensions/li[@Class="Autonomy.PriorityGiverExtension"]/priorityGivers</xpath>
+                                <value>
+                                    <li Class="Autonomy.PriorityGiver">
+                                        <condition>SkillAffinity</condition>
+                                        <skill>{Skill}</skill>
+                                        <rangeDatas>
+                                            <li>
+                                                <validRange>0~3</validRange>
+                                                <priority>-5~-1</priority>
+                                                <description>I know almost nothing about {SkillLabel}</description>
+                                            </li>
+                                            <li>
+                                                <validRange>5~10</validRange>
+                                                <priority>1~5</priority>
+                                                <description>I know about {SkillLabel}</description>
+                                            </li>
+                                            <li>
+                                                <validRange>11~20</validRange>
+                                                <priority>6~10</priority>
+                                                <description>I know a lot about {SkillLabel}</description>
+                                            </li>
+                                        </rangeDatas>
+                                    </li>
+                                    <li Class="Autonomy.PriorityGiver">
+                                        <mayRequire>Vanilla Skills Expanded</mayRequire>
+                                        <condition>ApathyPassion</condition>
+                                        <type>SocialPreference</type>
+                                        <workPreferenceScoreRange>-10~10</workPreferenceScoreRange> <!-- The whole spectrum -->
+                                        <typeMultiplier>2~0.5</typeMultiplier> <!-- The more independent the stronger the effect -->
+                                        <skill>{Skill}</skill>
+                                        <priority>-5</priority>
+                                        <description>I really don't care about {SkillLabel}</description>
+                                    </li>
+                                    <li Class="Autonomy.PriorityGiver">
+                                        <condition>MinorPassion</condition>
+                                        <type>SocialPreference</type> 
+                                        <workPreferenceScoreRange>-10~10</workPreferenceScoreRange> <!-- The whole spectrum -->
+                                        <typeMultiplier>2~0.5</typeMultiplier> <!-- The more independent the stronger the effect -->
+                                        <skill>{Skill}</skill>
+                                        <priority>3</priority>
+                                        <description>I am passionate about {SkillLabel}</description>
+                                    </li>
+                                    <li Class="Autonomy.PriorityGiver">
+                                        <condition>MajorPassion</condition>
+                                        <type>SocialPreference</type>
+                                        <workPreferenceScoreRange>-10~10</workPreferenceScoreRange> <!-- The whole spectrum -->
+                                        <typeMultiplier>2~0.5</typeMultiplier> <!-- The more independent the stronger the effect -->
+                                        <skill>{Skill}</skill>
+                                        <priority>5</priority>
+                                        <description>I am very passionate about {SkillLabel}</description>
+                                    </li>
+                                    <li Class="Autonomy.PriorityGiver">
+                                        <mayRequire>Vanilla Skills Expanded</mayRequire>
+                                        <condition>NaturalPassion</condition>
+                                        <type>SocialPreference</type>
+                                        <workPreferenceScoreRange>-10~10</workPreferenceScoreRange> <!-- The whole spectrum -->
+                                        <typeMultiplier>2~0.5</typeMultiplier> <!-- The more independent the stronger the effect -->
+                                        <skill>{Skill}</skill>
+                                        <priority>10</priority>
+                                        <description>I am a natural at {SkillLabel}</description>
+                                    </li>
+                                    <li Class="Autonomy.PriorityGiver">
+                                        <mayRequire>Vanilla Skills Expanded</mayRequire>
+                                        <condition>CriticalPassion</condition>
+                                        <type>SocialPreference</type>
+                                        <workPreferenceScoreRange>-10~10</workPreferenceScoreRange> <!-- The whole spectrum -->
+                                        <typeMultiplier>2~0.5</typeMultiplier> <!-- The more independent the stronger the effect -->
+                                        <skill>{Skill}</skill>
+                                        <priority>20</priority>
+                                        <description>I live for {SkillLabel} work</description>
+                                    </li>
+                                </value>
+                            </Operation>
+                        </apply>
+                    </Operation>
+                </apply>
+            </Operation>
+        </apply>
+    </Operation>
+
+</Patch>

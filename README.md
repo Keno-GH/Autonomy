@@ -22,4 +22,3 @@ Free Will is an excellent mod that heavily inspired Autonomy. The key motivation
 
 * Add many WorkdriveGivers to precepts, traits, backstories, and genes
 * (Maybe) add a PriorityGiver patch maker for simple conditions
-* Optimize infoProviders to use already created lists instead of creating new ones

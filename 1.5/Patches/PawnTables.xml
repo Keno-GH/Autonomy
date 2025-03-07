@@ -1,4 +1,5 @@
 <Patch>
+    <!-- Add new column for Autoinomy to the Work pawn table -->
     <Operation Class="PatchOperationInsert">
         <xpath>/Defs/PawnTableDef[defName="Work"]/columns/li[text()="CopyPasteWorkPriorities"]</xpath>
         <value>

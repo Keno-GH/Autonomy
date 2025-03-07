@@ -1,6 +1,6 @@
 <Patch>
 
-    <!-- Auto patchers that target automatically -->
+    <!-- Auto patchers that target automatically to the correct nodes -->
 
     <Operation Class="XmlExtensions.PatchOperationSafeAdd"> <!-- Add the PriorityGiverExtension to all work types, to make patching easier -->
         <xpath>Defs/WorkTypeDef[not(modExtensions/li[@Class="Autonomy.PriorityGiverExtension"])]</xpath>

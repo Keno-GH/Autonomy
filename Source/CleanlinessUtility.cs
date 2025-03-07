@@ -24,8 +24,7 @@ namespace Autonomy
             {
                 cleanliness = CalculateOutdoorCleanliness(pawn.Position, pawn.Map);
             }
-
-            Log.Message($"Calculated cleanliness for pawn {pawn.Name}: {cleanliness}");
+            
             return cleanliness;
         }
 

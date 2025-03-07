@@ -55,7 +55,10 @@ namespace Autonomy
 
                 foreach (var pawn in workingColonists)
                 {
-                    PriorityGiverUtility.SetWorkPriorities(pawn, mapInfo);
+                    if (pawn.GetComp<CompAutonomy>().Enabled)
+                    {
+                        PriorityGiverUtility.SetWorkPriorities(pawn, mapInfo);
+                    }
                 }
 
                 tickCounter = 0;

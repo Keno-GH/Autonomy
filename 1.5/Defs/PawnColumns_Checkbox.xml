@@ -1,0 +1,10 @@
+<Defs>
+  <PawnColumnDef>
+    <defName>EnableAutonomy</defName>
+    <workerClass>Autonomy.PawnColumnWorker_EnableAutonomy</workerClass>
+    <sortable>true</sortable>
+    <headerIcon>UI/Issues/WorkDrive</headerIcon>
+    <headerTip>Enable Autonomy for this pawn</headerTip>
+    <paintable>true</paintable>
+  </PawnColumnDef>
+</Defs>

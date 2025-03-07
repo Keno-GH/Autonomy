@@ -22,7 +22,6 @@ Free Will is an excellent mod that heavily inspired Autonomy. The key motivation
 
 * Add many WorkdriveGivers to precepts, traits, backstories, and genes
 * Add a default priorityGiver that is controlled by settings, so players can force a specific worktype to be higher for everyone.
-* Add a toggle to activate or deactivate Autonomy on each pawn. The toggle should be in the worktab, next to the label of the pawn.
 * Automatically enable the numeric priority system and permantently disable the check based one- I don't expect no one using this mod using the simpler system.
 * Add an ideology precept that will describe if autonomy is desired or the pawn would rather have someone else tell them a schedule.
 * Consider priority for more than capable

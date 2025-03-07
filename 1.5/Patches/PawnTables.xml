@@ -1,0 +1,9 @@
+<Patch>
+    <Operation Class="PatchOperationInsert">
+        <xpath>/Defs/PawnTableDef[defName="Work"]/columns/li[text()="CopyPasteWorkPriorities"]</xpath>
+        <value>
+            <li>EnableAutonomy</li>
+            <li>GapTiny</li>
+        </value>
+    </Operation>
+</Patch>

@@ -25,7 +25,6 @@ namespace Autonomy
             UpdateMapInfo();
         }
 
-        // Increase the window size
         public override Vector2 InitialSize => new Vector2(500f, 400f);
 
         public override void DoWindowContents(Rect inRect)

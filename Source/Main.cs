@@ -31,8 +31,33 @@ namespace Autonomy
         public MyMapComponent(Map map) : base(map){}
         public override void FinalizeInit()
         {
+            base.FinalizeInit();
             Messages.Message("Success", null, MessageTypeDefOf.PositiveEvent);
             Find.LetterStack.ReceiveLetter(new TaggedString("Success"), new TaggedString("Success message"), LetterDefinition.success_letter, "", 0);
+
+            InitializeAutonomyCompForAllPawns();
+        }
+
+        private void InitializeAutonomyCompForAllPawns()
+        {
+            foreach (var pawn in map.mapPawns.AllPawns)
+            {
+                if (pawn.workSettings != null && pawn.workSettings.EverWork)
+                {
+                    AddAutonomyCompIfMissing(pawn);
+                }
+            }
+        }
+
+        private void AddAutonomyCompIfMissing(Pawn pawn)
+        {
+            var comp = pawn.GetComp<CompAutonomy>();
+            if (comp == null)
+            {
+                comp = new CompAutonomy();
+                pawn.AllComps.Add(comp);
+                comp.Enabled = true; // Initialize with the comp enabled
+            }
         }
 
         public override void MapComponentTick()
@@ -42,6 +67,12 @@ namespace Autonomy
             if (tickCounter >= tickInterval)
             {
                 Log.Message("Hello world every " + tickInterval + " ticks!");
+
+                if (map == null || map.mapPawns == null)
+                {
+                    Log.Error("Map or mapPawns is null.");
+                    return;
+                }
 
                 // Collect the pawns in a separate list to avoid modifying the collection while iterating
                 List<Pawn> workingColonists = map.mapPawns.FreeColonists
@@ -55,13 +86,36 @@ namespace Autonomy
 
                 foreach (var pawn in workingColonists)
                 {
-                    if (pawn.GetComp<CompAutonomy>().Enabled)
+                    var compAutonomy = pawn.GetComp<CompAutonomy>();
+                    if (compAutonomy != null && compAutonomy.Enabled)
                     {
                         PriorityGiverUtility.SetWorkPriorities(pawn, mapInfo);
+                    }
+                    else
+                    {
+                        Log.Message("Autonomy disabled for working pawn" + pawn.Name);
                     }
                 }
 
                 tickCounter = 0;
+            }
+        }
+    }
+
+    [HarmonyPatch(typeof(Pawn), "SpawnSetup")]
+    public static class Pawn_SpawnSetup_Patch
+    {
+        public static void Postfix(Pawn __instance)
+        {
+            if (__instance.workSettings != null && __instance.workSettings.EverWork)
+            {
+                var comp = __instance.GetComp<CompAutonomy>();
+                if (comp == null)
+                {
+                    comp = new CompAutonomy();
+                    __instance.AllComps.Add(comp);
+                    comp.Enabled = true; // Initialize with the comp enabled
+                }
             }
         }
     }

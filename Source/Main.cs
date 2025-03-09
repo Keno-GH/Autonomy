@@ -35,6 +35,9 @@ namespace Autonomy
             Messages.Message("Success", null, MessageTypeDefOf.PositiveEvent);
             Find.LetterStack.ReceiveLetter(new TaggedString("Success"), new TaggedString("Success message"), LetterDefinition.success_letter, "", 0);
 
+            // Enable manual priorities
+            Find.PlaySettings.useWorkPriorities = true;
+
             InitializeAutonomyCompForAllPawns();
         }
 

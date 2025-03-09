@@ -10,6 +10,16 @@ Personality is determined by work drive givers, which are attached to traits, ge
 
 The mod also introduces several new work types, subdividing existing ones similarly to the Complex Jobs mod. However, this means it is not compatible with Complex Jobs or other mods that add work type subdivisions. While these new work types are optional, playing with them enabled is recommended, as the mod’s balance is designed around them.
 
+# Does everyone have Autonomy?
+
+You can enable and disable autonomy individually for each pawn that shows up in the Work Tab. However, some have special rules.
+
+Slaves with autonomy enabled will never use workdrive multipliers, wordrive base type conditions, and passion conditions. This means that they will only consider their stats and the colony needs. Maybe in the future I will revisit this to separate systems.
+
+# How about having an ideology surrounding Autonomy desire
+
+Maybe. Personally I prefer to play with Autonomy always on because I prefer my pawns adapt automatically
+
 # Is This Mod Compatible With Other Mods?
 
 Currently, this mod has no built-in compatibility, but future updates will add support for other mods. It is also designed to be easily made compatible through additional patches.
@@ -23,7 +33,6 @@ Free Will is an excellent mod that heavily inspired Autonomy. The key motivation
 * Add many WorkdriveGivers to precepts, traits, backstories, and genes
 * Add a default priorityGiver that is controlled by settings, so players can force a specific worktype to be higher for everyone.
 * Automatically enable the numeric priority system and permantently disable the check based one- I don't expect no one using this mod using the simpler system.
-* Add an ideology precept that will describe if autonomy is desired or the pawn would rather have someone else tell them a schedule.
 * Consider priority for more than capable
 * Check possible incompatibilities with priorityHaving non human pawns like mechanoids or modded ones like VFE Phytokin
 * Add better error catching so its easier to get which pawn is causing a problem

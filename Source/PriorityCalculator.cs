@@ -71,6 +71,19 @@ namespace Autonomy
 
             foreach (var giver in extension.priorityGivers)
             {
+                // Get the PriorityGiverDef for the current giver
+                var def = DefDatabase<PriorityGiverDef>.GetNamed(giver.condition, false);
+                if (def == null)
+                {
+                    Log.Error($"PriorityCalculator: No PriorityGiverDef found for condition {giver.condition}");
+                    continue;
+                }
+
+                // Check if the pawn is a slave and if the def is not allowed for slaves
+                if (pawn.IsSlave && !def.allowedForSlaves)
+                {
+                    continue;
+                }
 
                 if (!string.IsNullOrEmpty(giver.mayRequire))
                 {

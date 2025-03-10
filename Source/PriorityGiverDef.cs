@@ -8,5 +8,6 @@ namespace Autonomy
     {
         public string giver;
         public List<string> arguments;
+        public bool allowedForSlaves;
     }
 }

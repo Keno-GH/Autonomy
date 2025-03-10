@@ -3,34 +3,42 @@
     <Autonomy.PriorityGiverDef>
         <defName>BaseType</defName>
         <giver>HandleBaseType</giver>
+        <allowedForSlaves>false</allowedForSlaves>
     </Autonomy.PriorityGiverDef>
     <Autonomy.PriorityGiverDef>
         <defName>SurroundingsFilthy</defName>
         <giver>HandleSurroundingsFilthy</giver>
+        <allowedForSlaves>false</allowedForSlaves>
     </Autonomy.PriorityGiverDef>
     <Autonomy.PriorityGiverDef>
         <defName>SkillAffinity</defName>
         <giver>HandleSkillAffinity</giver>
+        <allowedForSlaves>true</allowedForSlaves>
     </Autonomy.PriorityGiverDef>
     <Autonomy.PriorityGiverDef>
         <defName>MinorPassion</defName>
         <giver>HandlePassion</giver>
+        <allowedForSlaves>false</allowedForSlaves>
     </Autonomy.PriorityGiverDef>
     <Autonomy.PriorityGiverDef>
         <defName>MajorPassion</defName>
         <giver>HandlePassion</giver>
+        <allowedForSlaves>false</allowedForSlaves>
     </Autonomy.PriorityGiverDef>
     <Autonomy.PriorityGiverDef>
         <defName>ComparedStats</defName>
         <giver>HandleComparedStats</giver>
+        <allowedForSlaves>true</allowedForSlaves>
     </Autonomy.PriorityGiverDef>
     <Autonomy.PriorityGiverDef>
         <defName>BuildingImmunity</defName>
         <giver>HandleImmunity</giver>
+        <allowedForSlaves>true</allowedForSlaves>
     </Autonomy.PriorityGiverDef>
     <Autonomy.PriorityGiverDef>
         <defName>BasedOnInfoRange</defName>
         <giver>HandleInfoRange</giver>
+        <allowedForSlaves>true</allowedForSlaves>
     </Autonomy.PriorityGiverDef>
 
     <!-- Vanilla Skills Expanded -->
@@ -38,13 +46,16 @@
     <Autonomy.PriorityGiverDef>
         <defName>NaturalPassion</defName>
         <giver>HandlePassion</giver>
+        <allowedForSlaves>false</allowedForSlaves>
     </Autonomy.PriorityGiverDef>
     <Autonomy.PriorityGiverDef>
         <defName>CriticalPassion</defName>
         <giver>HandlePassion</giver>
+        <allowedForSlaves>false</allowedForSlaves>
     </Autonomy.PriorityGiverDef>
     <Autonomy.PriorityGiverDef>
         <defName>ApathyPassion</defName>
         <giver>HandlePassion</giver>
+        <allowedForSlaves>false</allowedForSlaves>
     </Autonomy.PriorityGiverDef>
 </Defs>

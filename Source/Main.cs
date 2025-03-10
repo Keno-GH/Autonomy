@@ -130,8 +130,17 @@ namespace Autonomy
         {
             // Log.Message("Mod template loaded successfully!");
 
-            Harmony harmony = new Harmony("Template");
+            Harmony harmony = new Harmony("Autonomy");
             harmony.PatchAll(Assembly.GetExecutingAssembly());
+
+            // Register workers
+            PriorityWorkerRegistry.RegisterWorker("PriorityWorker_BaseType", new Autonomy.Workers.BaseTypeWorker());
+            PriorityWorkerRegistry.RegisterWorker("PriorityWorker_ComparedStats", new Autonomy.Workers.ComparedStatsWorker());
+            PriorityWorkerRegistry.RegisterWorker("PriorityWorker_Immunity", new Autonomy.Workers.ImmunityWorker());
+            PriorityWorkerRegistry.RegisterWorker("PriorityWorker_InfoRange", new Autonomy.Workers.InfoRangeWorker());
+            PriorityWorkerRegistry.RegisterWorker("PriorityWorker_Passion", new Autonomy.Workers.PassionWorker());
+            PriorityWorkerRegistry.RegisterWorker("PriorityWorker_SkillAffinity", new Autonomy.Workers.SkillAffinityWorker());
+            PriorityWorkerRegistry.RegisterWorker("PriorityWorker_SurroundingsFilthy", new Autonomy.Workers.SurroundingsFilthyWorker());
         }
     }
 

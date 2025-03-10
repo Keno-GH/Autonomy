@@ -6,7 +6,7 @@ namespace Autonomy
 {
     public class PriorityGiverDef : Def
     {
-        public string giver;
+        public string workerClass;
         public List<string> arguments;
         public bool allowedForSlaves;
     }

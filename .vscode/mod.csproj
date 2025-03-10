@@ -20,6 +20,7 @@
  	<ItemGroup>
 	 	<!-- Mod -->
 	 	<Compile Include="../Source/*" />
+	 	<Compile Include="../Source/Workers/*" />
 		
 	 	<!-- Rimworld -->
 	 	<Reference Include="../../../RimWorldWin64_Data/Managed/*.dll">

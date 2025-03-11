@@ -222,6 +222,42 @@
         </value>
     </Operation>
 
+    <Operation Class="PatchOperationAdd" Name="WardenPriorityGivers">
+        <xpath>Defs/WorkTypeDef[defName="Warden"]/modExtensions/li[@Class="Autonomy.PriorityGiverExtension"]/priorityGivers</xpath>
+        <value>
+            <li Class="Autonomy.PriorityGiver" Name="AverageNegotiationAbility">
+                <condition>ComparedStats</condition>
+                <stat>NegotiationAbility</stat>
+                <useAverage>true</useAverage>
+                <type>SocialPreference</type>
+                <workPreferenceScoreRange>-10~10</workPreferenceScoreRange>
+                <typeMultiplier>0.5~2</typeMultiplier>
+                <rangeDatas>
+                    <li>
+                        <validRange>-999~-0.21</validRange>
+                        <priority>-10~-10</priority>
+                        <description>Others are much better negotiators than me</description>
+                    </li>
+                    <li>
+                        <validRange>-0.2~0</validRange>
+                        <priority>-10~0</priority>
+                        <description>Others are better negotiators than me</description>
+                    </li>
+                    <li>
+                        <validRange>0.01~0.3</validRange>
+                        <priority>1~5</priority>
+                        <description>I am average at negotiating</description>
+                    </li>
+                    <li>
+                        <validRange>0.31~999</validRange>
+                        <priority>5~5</priority>
+                        <description>I am better at negotiating than most</description>
+                    </li>
+                </rangeDatas>
+            </li>
+        </value>
+    </Operation>
+
     <Operation Class="PatchOperationAdd" Name="AutonomyNurseryPriorityGivers">
         <xpath>Defs/WorkTypeDef[defName="AutonomyNursery"]/modExtensions/li[@Class="Autonomy.PriorityGiverExtension"]/priorityGivers</xpath>
         <value>
@@ -1880,8 +1916,11 @@
                     </li>
                 </rangeDatas>
             </li>
+            <!-- TODO: Inforange about average slave supression -->
         </value>
     </Operation>
+
+
 
         </caseTrue>
     </Operation>
@@ -2036,6 +2075,7 @@
                     </li>
                 </rangeDatas>
             </li>
+            <!-- TODO: Inforange about average entity supression -->
         </value>
     </Operation>
 

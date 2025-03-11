@@ -349,17 +349,17 @@
                     </li>
                     <li>
                         <validRange>0.01~0.1</validRange>
-                        <priority>1~2</priority>
+                        <priority>0~0</priority>
                         <description>I am average at this</description>
                     </li>
                     <li>
                         <validRange>0.11~0.2</validRange>
-                        <priority>2~5</priority>
+                        <priority>0~0</priority>
                         <description>I am better at this than most</description>
                     </li>
                     <li>
                         <validRange>0.2~999</validRange>
-                        <priority>5~5</priority>
+                        <priority>0~0</priority>
                         <description>I am better at this than most</description>
                     </li>
                 </rangeDatas>
@@ -399,22 +399,47 @@
                 <priority>5</priority>
                 <description>I like working with animals</description>
             </li>
+            <li Class="Autonomy.PriorityGiver" Name="AverageMoveSpeed">
+                <condition>ComparedStats</condition>
+                <stat>MoveSpeed</stat>
+                <useAverage>true</useAverage>
+                <type>SocialPreference</type>
+                <workPreferenceScoreRange>-10~10</workPreferenceScoreRange>
+                <typeMultiplier>0.5~2</typeMultiplier> <!-- The more cooperative the stronger the effect -->
+                <rangeDatas>
+                    <li>
+                        <validRange>-999~-1</validRange>
+                        <priority>-10~-5</priority>
+                        <description>I am much slower than average</description>
+                    </li>
+                    <li>
+                        <validRange>-0.99~-0.01</validRange>
+                        <priority>-5~0</priority>
+                        <description>I am slower than average</description>
+                    </li>
+                    <li>
+                        <validRange>0~0.99</validRange>
+                        <priority>0~0</priority>
+                        <description>I am average speed</description>
+                    </li>
+                    <li>
+                        <validRange>1~1.99</validRange>
+                        <priority>0~0</priority>
+                        <description>I am faster than average</description>
+                    </li>
+                    <li>
+                        <validRange>1.99~999</validRange>
+                        <priority>0~0</priority>
+                        <description>I am much faster than average</description>
+                    </li>
+                </rangeDatas>
+            </li>
         </value>
     </Operation>
 
     <Operation Class="PatchOperationAdd" Name="HuntingPriorityGivers">
         <xpath>Defs/WorkTypeDef[defName="Hunting"]/modExtensions/li[@Class="Autonomy.PriorityGiverExtension"]/priorityGivers</xpath>
         <value>
-            <li Class="Autonomy.PriorityGiver" Name="BestHuntingStealth">
-                <condition>ComparedStats</condition>
-                <stat>HuntingStealth</stat>
-                <useAverage>false</useAverage>
-                <type>SocialPreference</type>
-                <workPreferenceScoreRange>-10~10</workPreferenceScoreRange>
-                <typeMultiplier>0.5~1.5</typeMultiplier> <!-- The more cooperative the stronger the effect -->
-                <priority>0~10</priority>
-                <description>I am the best at hunting stealthily</description>
-            </li>
             <li Class="Autonomy.PriorityGiver" Name="AverageMoveSpeed">
                 <condition>ComparedStats</condition>
                 <stat>MoveSpeed</stat>
@@ -440,13 +465,48 @@
                     </li>
                     <li>
                         <validRange>0.05~0.2</validRange>
-                        <priority>2~5</priority>
+                        <priority>0~0</priority>
                         <description>I am faster than average</description>
                     </li>
                     <li>
                         <validRange>0.2~999</validRange>
-                        <priority>5~5</priority>
+                        <priority>0~0</priority>
                         <description>I am faster than average</description>
+                    </li>
+                </rangeDatas>
+            </li>
+            <li Class="Autonomy.PriorityGiver" Name="AverageHuntingStealth">
+                <condition>ComparedStats</condition>
+                <stat>HuntingStealth</stat>
+                <useAverage>true</useAverage>
+                <type>SocialPreference</type>
+                <workPreferenceScoreRange>-10~10</workPreferenceScoreRange>
+                <typeMultiplier>0.5~2</typeMultiplier> <!-- The more cooperative the stronger the effect -->
+                <rangeDatas>
+                    <li>
+                        <validRange>-999~-0.11</validRange>
+                        <priority>-10~-10</priority>
+                        <description>I am as stealthy</description>
+                    </li>
+                    <li>
+                        <validRange>-0.1~0</validRange>
+                        <priority>-10~0</priority>
+                        <description>I am as stealthy</description>
+                    </li>
+                    <li>
+                        <validRange>0.01~0.1</validRange>
+                        <priority>0~0</priority>
+                        <description>I am average at this</description>
+                    </li>
+                    <li>
+                        <validRange>0.11~0.4</validRange>
+                        <priority>0~0</priority>
+                        <description>I am better at this than most</description>
+                    </li>
+                    <li>
+                        <validRange>0.41~999</validRange>
+                        <priority>0~0</priority>
+                        <description>I am better at this than most</description>
                     </li>
                 </rangeDatas>
             </li>
@@ -1075,6 +1135,41 @@
                     </li>
                 </rangeDatas>
             </li>
+            <li Class="Autonomy.PriorityGiver" Name="AverageCarryingCapacity">
+                <condition>ComparedStats</condition>
+                <stat>CarryingCapacity</stat>
+                <useAverage>true</useAverage>
+                <type>SocialPreference</type>
+                <workPreferenceScoreRange>-10~10</workPreferenceScoreRange>
+                <typeMultiplier>0.5~2</typeMultiplier> <!-- The more cooperative the stronger the effect -->
+                <rangeDatas>
+                    <li>
+                        <validRange>-999~-20</validRange>
+                        <priority>-10~-10</priority>
+                        <description>I can't carry much</description>
+                    </li>
+                    <li>
+                        <validRange>-20~0</validRange>
+                        <priority>-10~0</priority>
+                        <description>I can't carry much</description>
+                    </li>
+                    <li>
+                        <validRange>1~10</validRange>
+                        <priority>0~2</priority>
+                        <description>I can carry an average amount</description>
+                    </li>
+                    <li>
+                        <validRange>11~100</validRange>
+                        <priority>2~5</priority>
+                        <description>I am better at this than most</description>
+                    </li>
+                    <li>
+                        <validRange>101~999</validRange>
+                        <priority>5~5</priority>
+                        <description>I am better at this than most</description>
+                    </li>
+                </rangeDatas>
+            </li>
         </value>
     </Operation>
     
@@ -1399,7 +1494,7 @@
                 <type>WorkApproach</type>
                 <workPreferenceScoreRange>-10~10</workPreferenceScoreRange>
                 <typeMultiplier>1.5~1</typeMultiplier> <!-- The more strict the stronger the effect -->
-                <priority>0~20</priority>
+                <priority>0~15</priority>
                 <description>Children are hungry</description>
             </li>
             <li Class="Autonomy.PriorityGiver" Name="childrenWantingTeacher">
@@ -1412,7 +1507,7 @@
                 <type>SocialPreference</type>
                 <workPreferenceScoreRange>-10~10</workPreferenceScoreRange>
                 <typeMultiplier>0.5~2</typeMultiplier> <!-- The more cooperative the stronger the effect -->
-                <priority>0~15</priority>
+                <priority>0~10</priority>
                 <description>Children want a teacher</description>
             </li>
             <li Class="Autonomy.PriorityGiver" Name="CommunalEnjoy">
@@ -1428,11 +1523,11 @@
                 <infoRange>
                     <infoKey>childrenCount</infoKey>
                     <fromMap>false</fromMap>
-                    <range>0~10</range>
+                    <range>0~20</range>
                 </infoRange>
                 <workPreferenceScoreRange>-10~10</workPreferenceScoreRange>
                 <typeMultiplier>0.5~1</typeMultiplier> <!-- The more communal the stronger the effect -->
-                <priority>0~400</priority>
+                <priority>0~400</priority> <!-- About 20 per child -->
                 <description>I am a parent</description>
             </li>
         </value>

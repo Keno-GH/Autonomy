@@ -46,6 +46,9 @@
         <gerundLabel>veterinary</gerundLabel>
         <description>Provide medical care to animals.</description>
         <verb>veterinary</verb>
+        <relevantSkills>
+            <li>Medicine</li>
+        </relevantSkills>
         <naturalPriority>1120</naturalPriority>
         <alwaysStartActive>true</alwaysStartActive>
         <requireCapableColonist>true</requireCapableColonist>

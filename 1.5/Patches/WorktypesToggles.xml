@@ -69,6 +69,45 @@
     </caseFalse>
 </Operation>
 
+<Operation Class="XmlExtensions.OptionalPatch" Name="Entity Handling">
+    <modId>Autonomy</modId>
+    <key>EnableAutonomyEntityHandling</key>
+    <defaultValue>true</defaultValue>
+    <caseTrue>
+        <Operation Class="XmlExtensions.FindMod">
+            <mods>
+                <li>Anomaly</li>
+            </mods>
+            <caseTrue>
+                <Operation Class="XmlExtensions.PatchOperationAddOrReplace">
+                    <xpath>/Defs/WorkGiverDef[defName="TakeEntityToHoldingPlatform"
+                    or defName="ReleaseEntity"
+                    or defName="TransferEntity"
+                    or defName="ActivitySuppression"
+                    or defName="ExecuteEntity"]</xpath>
+                    <value>
+                        <workType>AutonomyEntityHandling</workType>
+                    </value>
+                </Operation>
+            </caseTrue>
+            <caseFalse>
+                <Operation Class="XmlExtensions.PatchOperationAttributeSet">
+                    <xpath>/Defs/WorkTypeDef[defName="AutonomyEntityHandling"]</xpath>
+                    <attribute>Abstract</attribute>
+                    <value>true</value>
+                </Operation>
+            </caseFalse>
+        </Operation>
+    </caseTrue>
+    <caseFalse>
+        <Operation Class="XmlExtensions.PatchOperationAttributeSet">
+            <xpath>/Defs/WorkTypeDef[defName="AutonomyEntityHandling"]</xpath>
+            <attribute>Abstract</attribute>
+            <value>true</value>
+        </Operation>
+    </caseFalse>
+</Operation>
+
 <Operation Class="XmlExtensions.OptionalPatch" Name="Slaughtering">
     <modId>Autonomy</modId>
     <key>EnableAutonomySlaughtering</key>

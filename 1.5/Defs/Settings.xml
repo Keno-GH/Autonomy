@@ -70,6 +70,12 @@
             <defaultValue>true</defaultValue>
             <tooltip>A worktype about disposing of the dead. Allows colonists that don't mind corpses to prioritize this job. Also allows colonist to react to death in their yard.</tooltip>
         </li>
+        <li Class="XmlExtensions.Setting.Checkbox">
+            <key>EnableAutonomyEntityHandling</key>
+            <label>Enable Entity Handling</label>
+            <defaultValue>true</defaultValue>
+            <tooltip>A worktype about anomaly entities. Allows for proper usage of the intellectual skill when supressing. Requires Anomaly.</tooltip>
+        </li>
     </settings>
 </XmlExtensions.SettingsMenuDef>
 </Defs>

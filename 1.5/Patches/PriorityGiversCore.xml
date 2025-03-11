@@ -1977,7 +1977,7 @@
     </Operation>
 
     <Operation Class="PatchOperationAdd" Name="WardenPriorityGivers">
-        <xpath>Defs/WorkTypeDef[defName="Warden"]/modExtensions/li[@Class="Autonomy.PriorityGiverExtension"]/priorityGivers</xpath>
+        <xpath>Defs/WorkTypeDef[defName="AutonomyEntityHandling"]/modExtensions/li[@Class="Autonomy.PriorityGiverExtension"]/priorityGivers</xpath>
         <value>
             <li Class="Autonomy.PriorityGiver" Name="AverageActivitySuppressionRate">
                 <condition>ComparedStats</condition>

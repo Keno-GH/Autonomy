@@ -230,6 +230,23 @@
         </workTags>
     </WorkTypeDef>
 
+    <WorkTypeDef OriginalName="Warden"> <!-- Subdivided from Warden -->
+        <defName>AutonomyEntityHandling</defName>
+        <labelShort>Entity Guard</labelShort>
+        <pawnLabel>handling entity</pawnLabel>
+        <gerundLabel>handling entity</gerundLabel>
+        <description>Handle anomalous entities.</description>
+        <verb>handle entity</verb>
+        <naturalPriority>1090</naturalPriority>
+        <relevantSkills>
+            <li>Intellectual</li>
+        </relevantSkills>
+        <workTags>
+            <li>Commoner</li>
+            <li>AllWork</li>
+        </workTags>
+    </WorkTypeDef>
+
 
 
 </Defs>

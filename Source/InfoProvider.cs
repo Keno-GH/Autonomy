@@ -103,9 +103,9 @@ namespace Autonomy
                 {
                     if (colonist.health.hediffSet.HasTendableHediff())
                         colonistsNeedingTending++;
-                    
+
                     colonistsBloodLoss += colonist.health.hediffSet.BleedRateTotal;
-                    
+
                     if (colonist.CurJob != null && colonist.CurJob.def == JobDefOf.Wait_Downed)
                         colonistsNeedRescuing++;
                 }
@@ -117,7 +117,7 @@ namespace Autonomy
                 {
                     if (animal.health.hediffSet.HasTendableHediff())
                         animalsNeedingTending++;
-                    
+
                     animalsBloodLoss += animal.health.hediffSet.BleedRateTotal;
                 }
 
@@ -135,7 +135,7 @@ namespace Autonomy
                     .DefaultIfEmpty(1f)
                     .Average();
                 var colonistRecoveringInBed = map.mapPawns.FreeColonists.Where(p => p.CurJob.def == JobDefOf.LayDown && p.CurJob.jobGiver.Isnt<JobGiver_GetRest>()).ToList();
-                
+
                 float colonistsFoodLevelTotal = 0f;
                 float colonistsChemicalNeedLevelTotal = 0f;
                 foreach (var colonist in colonistRecoveringInBed)
@@ -157,7 +157,7 @@ namespace Autonomy
                 float childrenFoodLevelAverage = 1f;
                 int childrenWantingTeacher = 0;
                 int childrenInColony = 0;
-                var children = map.mapPawns.FreeColonists.Where(p => p.ageTracker.CurLifeStage.defName == "HumanlikeChild" || p.ageTracker.CurLifeStage.defName == "HumanlikePreTeenager" ).ToList();
+                var children = map.mapPawns.FreeColonists.Where(p => p.ageTracker.CurLifeStage.defName == "HumanlikeChild" || p.ageTracker.CurLifeStage.defName == "HumanlikePreTeenager").ToList();
                 var babies = map.mapPawns.FreeColonists.Where(p => p.ageTracker.CurLifeStage.defName == "HumanlikeBaby").ToList();
                 if (children.Any())
                 {
@@ -173,58 +173,79 @@ namespace Autonomy
                 mapInfo["childrenFoodLevelAverage"] = childrenFoodLevelAverage;
                 mapInfo["childrenWantingTeacher"] = childrenWantingTeacher;
                 mapInfo["childrenInColony"] = childrenInColony;
-
-                var statDefsToCheck = priorityGivers
-                    .Where(g => !string.IsNullOrEmpty(g.stat))
-                    .Select(g => 
-                    {
-                        var statDef = DefDatabase<StatDef>.GetNamed(g.stat, errorOnFail: false);
-                        if (statDef == null)
-                        {
-                            throw new KeyNotFoundException($"StatDef named '{g.stat}' not found.");
-                        }
-                        return statDef;
-                    })
-                    .Distinct();
-
-                foreach (StatDef statDef in statDefsToCheck)
-                {
-
-                    float sum = 0f;
-                    int count = 0;
-                    Pawn bestColonist = null;
-                    float maxStatValue = float.MinValue;
-                    float statValue = 0f;
-
-                    foreach (Pawn pawn in workingColonists)
-                    {
-                        try 
-                        {
-                            statValue = pawn.GetStatValue(statDef, true);
-                        }
-                        catch
-                        {
-                            Log.Warning($"Pawn {pawn.Name} does not have stat {statDef.defName}.");
-                            continue;
-                        }
-
-                        if (pawn.InBed())
-                            continue; // Skip colonists who are in bed to account for injuries and varying schedules
-
-                        sum += statValue;
-                        count++;
-
-                        if (statValue > maxStatValue)
-                        {
-                            maxStatValue = statValue;
-                            bestColonist = pawn;
-                        }
-                    }
-                    mapInfo[$"bestAt_{statDef.defName}"] = maxStatValue;
-                    mapInfo[$"average_{statDef.defName}"] = count > 0 ? sum / count : 0;
-                }
+                CalculateStatMetrics(priorityGivers, workingColonists, mapInfo);
             }
             return mapInfo;
+        }
+
+        private static void CalculateStatMetrics(List<PriorityGiver> priorityGivers, List<Pawn> workingColonists, Dictionary<string, float> mapInfo)
+        {
+            var statDefsToCheck = priorityGivers
+                .Where(g => !string.IsNullOrEmpty(g.stat))
+                .Select(g =>
+                {
+                    var statDef = DefDatabase<StatDef>.GetNamed(g.stat, errorOnFail: false);
+                    if (statDef == null)
+                    {
+                        throw new KeyNotFoundException($"StatDef named '{g.stat}' not found.");
+                    }
+                    return new { statDef, g.onlyForAllowed };
+                })
+                .Distinct();
+
+            foreach (var item in statDefsToCheck)
+            {
+                StatDef statDef = item.statDef;
+                WorkTypeDef workTypeDef = item.onlyForAllowed != null ? DefDatabase<WorkTypeDef>.GetNamed(item.onlyForAllowed, errorOnFail: false) : null;
+
+                float sum = 0f;
+                int count = 0;
+                Pawn bestColonist = null;
+                float maxStatValue = float.MinValue;
+                float statValue = 0f;
+
+                foreach (Pawn pawn in workingColonists)
+                {
+                    if (
+                        workTypeDef != null && (
+                            !pawn.story.DisabledWorkTagsBackstoryAndTraits.OverlapsWithOnAnyWorkType(workTypeDef.workTags) 
+                            || !pawn.story.DisabledWorkTagsBackstoryTraitsAndGenes.OverlapsWithOnAnyWorkType(workTypeDef.workTags)
+                        )
+                    )
+                    {
+                        continue;
+                    }
+                    try
+                    {
+                        statValue = pawn.GetStatValue(statDef, true);
+                    }
+                    catch
+                    {
+                        Log.Warning($"Pawn {pawn.Name} does not have stat {statDef.defName}.");
+                        continue;
+                    }
+
+                    if (pawn.InBed())
+                        continue; // Skip colonists who are in bed to account for injuries and varying schedules
+
+                    sum += statValue;
+                    count++;
+
+                    if (statValue > maxStatValue)
+                    {
+                        maxStatValue = statValue;
+                        bestColonist = pawn;
+                    }
+                }
+
+                mapInfo[$"bestAt_{statDef.defName}"] = maxStatValue;
+                mapInfo[$"average_{statDef.defName}"] = count > 0 ? sum / count : 0;
+
+                if (workTypeDef != null)
+                {
+                    mapInfo[$"average_{statDef.defName}_{workTypeDef.defName}"] = count > 0 ? sum / count : 0;
+                }
+            }
         }
 
         public static Dictionary<string, float> GetPawnInfo(Pawn pawn)

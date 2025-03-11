@@ -227,6 +227,7 @@
         <value>
             <li Class="Autonomy.PriorityGiver" Name="AverageNegotiationAbility">
                 <condition>ComparedStats</condition>
+                <onlyForAllowed>Warden</onlyForAllowed>
                 <stat>NegotiationAbility</stat>
                 <useAverage>true</useAverage>
                 <type>SocialPreference</type>

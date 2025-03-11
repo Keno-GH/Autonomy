@@ -14,17 +14,22 @@ namespace Autonomy.Workers
             var pawn = context.Pawn;
 
             float comparisonStatValue;
-            float pawnStatValue = pawn.GetStatValue(StatDef.Named(giver.stat), true);
-            if (giver.useAverage)
+            string statKey = giver.useAverage ? $"average_{giver.stat}" : $"bestAt_{giver.stat}";
+
+            if (!string.IsNullOrEmpty(giver.onlyForAllowed))
             {
-                if (!mapInfo.TryGetValue($"average_{giver.stat}", out comparisonStatValue)) return 0;
-            }
-            else
-            {
-                if (!mapInfo.TryGetValue($"bestAt_{giver.stat}", out comparisonStatValue)) return 0;
-                if (pawnStatValue < comparisonStatValue) return 0;
+                WorkTypeDef workTypeDef = DefDatabase<WorkTypeDef>.GetNamed(giver.onlyForAllowed, errorOnFail: false);
+                if (workTypeDef != null && !pawn.workSettings.WorkIsActive(workTypeDef))
+                {
+                    return 0; // Skip if the pawn does not have the required work type enabled
+                }
+                statKey = $"average_{giver.stat}_{workTypeDef.defName}";
             }
 
+            if (!mapInfo.TryGetValue(statKey, out comparisonStatValue)) return 0;
+
+            float pawnStatValue = pawn.GetStatValue(StatDef.Named(giver.stat), true);
+            if (!giver.useAverage && pawnStatValue < comparisonStatValue) return 0;
 
             if (!workDrivePreferences.TryGetValue(giver.type, out int workDrivePreference)) return 0;
 

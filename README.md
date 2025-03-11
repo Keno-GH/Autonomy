@@ -30,6 +30,7 @@ Free Will is an excellent mod that heavily inspired Autonomy. The key motivation
 
 # TODO
 
+* Add temperature based conditions
 * Add many WorkdriveGivers to precepts, traits, backstories, and genes
 * Add a default priorityGiver that is controlled by settings, so players can force a specific worktype to be higher for everyone.
 * Automatically enable the numeric priority system and permantently disable the check based one- I don't expect no one using this mod using the simpler system.
@@ -39,6 +40,7 @@ Free Will is an excellent mod that heavily inspired Autonomy. The key motivation
 
 # Ideas (May or may not happen)
 
+* Refactor patches so they target WorkGiverDefs instead of WorkTypeDefs (The patch would find the associated WorkTypeDef, allows for better mod compat but may also break things)
 * Subdivide this mod into a library and main mod so we can build modules later (This needs to happen before the first realse if its gonna happen)
 * Add schedule Autonomy (Module?)
 * Add a condition builder in settings

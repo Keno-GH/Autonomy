@@ -69,6 +69,49 @@
     </caseFalse>
 </Operation>
 
+<Operation Class="XmlExtensions.OptionalPatch" Name="Slaver">
+    <modId>Autonomy</modId>
+    <key>EnableAutonomySlaver</key>
+    <defaultValue>true</defaultValue>
+    <caseTrue>
+        <Operation Class="XmlExtensions.FindMod">
+            <mods>
+                <li>Ideology</li>
+            </mods>
+            <caseTrue>
+                <Operation Class="XmlExtensions.PatchOperationAddOrReplace">
+                    <xpath>
+                        /Defs/WorkGiverDef[
+                            defName="ExecuteSlave"
+                            or defName="EmancipateSlave"
+                            or defName="EnslavePrisoner"
+                            or defName="ImprisonSlave"
+                            or defName="SuppressSlave"
+                        ]
+                    </xpath>
+                    <value>
+                        <workType>AutonomySlaver</workType>
+                    </value>
+                </Operation>
+            </caseTrue>
+            <caseFalse>
+                <Operation Class="XmlExtensions.PatchOperationAttributeSet">
+                    <xpath>/Defs/WorkTypeDef[defName="AutonomySlaver"]</xpath>
+                    <attribute>Abstract</attribute>
+                    <value>true</value>
+                </Operation>
+            </caseFalse>
+        </Operation>
+    </caseTrue>
+    <caseFalse>
+        <Operation Class="XmlExtensions.PatchOperationAttributeSet">
+            <xpath>/Defs/WorkTypeDef[defName="AutonomySlaver"]</xpath>
+            <attribute>Abstract</attribute>
+            <value>true</value>
+        </Operation>
+    </caseFalse>
+</Operation>
+
 <Operation Class="XmlExtensions.OptionalPatch" Name="Entity Handling">
     <modId>Autonomy</modId>
     <key>EnableAutonomyEntityHandling</key>

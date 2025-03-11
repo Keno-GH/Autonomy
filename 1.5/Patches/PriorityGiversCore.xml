@@ -1849,6 +1849,43 @@
         </value>
     </Operation>
 
+    <!-- Ideology Worktypes -->
+
+    <Operation Class="XmlExtensions.FindMod">
+        <mods>
+            <li>Ideology</li>
+        </mods>
+        <caseTrue>
+
+    <Operation Class="PatchOperationAdd" Name="AutonomySlaverPriorityGivers">
+        <xpath>Defs/WorkTypeDef[defName="AutonomySlaver"]/modExtensions/li[@Class="Autonomy.PriorityGiverExtension"]/priorityGivers</xpath>
+        <value>
+            <li Class="Autonomy.PriorityGiver" Name="AverageSuppressionPower">
+                <condition>ComparedStats</condition>
+                <stat>SuppressionPower</stat>
+                <useAverage>true</useAverage>
+                <type>SocialPreference</type>
+                <workPreferenceScoreRange>-10~10</workPreferenceScoreRange>
+                <typeMultiplier>0.5~2</typeMultiplier> <!-- The more cooperative the stronger the effect -->
+                <rangeDatas>
+                    <li>
+                        <validRange>-999~-0.21</validRange>
+                        <priority>-10~-10</priority>
+                        <description>Others suppress slaves much better than me</description>
+                    </li>
+                    <li>
+                        <validRange>-0.2~0</validRange>
+                        <priority>-10~0</priority>
+                        <description>Others suppress slaves better than me</description>
+                    </li>
+                </rangeDatas>
+            </li>
+        </value>
+    </Operation>
+
+        </caseTrue>
+    </Operation>
+
     <!-- Biotech Worktypes -->
 
     <Operation Class="XmlExtensions.FindMod">

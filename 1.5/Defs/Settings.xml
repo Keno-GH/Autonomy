@@ -76,6 +76,12 @@
             <defaultValue>true</defaultValue>
             <tooltip>A worktype about anomaly entities. Allows for proper usage of the intellectual skill when supressing. Requires Anomaly.</tooltip>
         </li>
+        <li Class="XmlExtensions.Setting.Checkbox">
+            <key>EnableAutonomySlaver</key>
+            <label>Enable Slaver</label>
+            <defaultValue>true</defaultValue>
+            <tooltip>A worktype about handling slaves. Allows colonists to manage and control slaves more effectively. Requires Ideology</tooltip>
+        </li>
     </settings>
 </XmlExtensions.SettingsMenuDef>
 </Defs>

@@ -232,7 +232,7 @@
 
     <WorkTypeDef OriginalName="Warden"> <!-- Subdivided from Warden -->
         <defName>AutonomyEntityHandling</defName>
-        <labelShort>Entity Guard</labelShort>
+        <labelShort>Dark Handle</labelShort>
         <pawnLabel>handling entity</pawnLabel>
         <gerundLabel>handling entity</gerundLabel>
         <description>Handle anomalous entities.</description>
@@ -240,6 +240,23 @@
         <naturalPriority>1090</naturalPriority>
         <relevantSkills>
             <li>Intellectual</li>
+        </relevantSkills>
+        <workTags>
+            <li>Commoner</li>
+            <li>AllWork</li>
+        </workTags>
+    </WorkTypeDef>
+
+    <WorkTypeDef OriginalName="Warden"> <!-- Subdivided from Warden -->
+        <defName>AutonomySlaver</defName>
+        <labelShort>Enforce</labelShort>
+        <pawnLabel>enforcing</pawnLabel>
+        <gerundLabel>enforcing</gerundLabel>
+        <description>Handles slaves and keeps them working.</description>
+        <verb>enforce</verb>
+        <naturalPriority>1080</naturalPriority>
+        <relevantSkills>
+            <li>Social</li>
         </relevantSkills>
         <workTags>
             <li>Commoner</li>

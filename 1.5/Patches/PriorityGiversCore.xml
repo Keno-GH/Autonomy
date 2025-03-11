@@ -803,6 +803,83 @@
         </value>
     </Operation>
 
+    <Operation Class="PatchOperationAdd" Name="ConstructionPriorityGivers">
+        <xpath>Defs/WorkTypeDef[defName="Construction"]/modExtensions/li[@Class="Autonomy.PriorityGiverExtension"]/priorityGivers</xpath>
+        <value>
+            <li Class="Autonomy.PriorityGiver" Name="CreativeEnjoy">
+                <condition>BaseType</condition>
+                <type>CognitiveOrientation</type>
+                <workPreferenceScoreRange>0~10</workPreferenceScoreRange> <!-- Creative side -->
+                <typeMultiplier>0.1~1</typeMultiplier> <!-- The more creative the stronger the effect -->
+                <priority>5</priority>
+                <description>Constructing is artistic</description>
+            </li>
+            <li Class="Autonomy.PriorityGiver" Name="LogicalEnjoy">
+                <condition>BaseType</condition>
+                <type>CognitiveOrientation</type>
+                <workPreferenceScoreRange>-10~0</workPreferenceScoreRange> <!-- Logical side -->
+                <typeMultiplier>1~0.1</typeMultiplier> <!-- The more logical the stronger the effect -->
+                <priority>5</priority>
+                <description>Constructing is mathematical</description>
+            </li>
+            <li Class="Autonomy.PriorityGiver" Name="AverageConstructionSpeed">
+                <condition>ComparedStats</condition>
+                <stat>ConstructionSpeed</stat>
+                <useAverage>true</useAverage>
+                <type>SocialPreference</type>
+                <workPreferenceScoreRange>-10~10</workPreferenceScoreRange>
+                <typeMultiplier>0.5~2</typeMultiplier> <!-- The more cooperative the stronger the effect -->
+                <rangeDatas>
+                    <li>
+                        <validRange>-999~-0.21</validRange>
+                        <priority>-10~-10</priority>
+                        <description>I am very slow at this</description>
+                    </li>
+                    <li>
+                        <validRange>-0.2~0</validRange>
+                        <priority>-10~0</priority>
+                        <description>I am slow at this</description>
+                    </li>
+                </rangeDatas>
+            </li>
+            <li Class="Autonomy.PriorityGiver" Name="AverageConstructSuccessChance">
+                <condition>ComparedStats</condition>
+                <stat>ConstructSuccessChance</stat>
+                <useAverage>true</useAverage>
+                <type>SocialPreference</type>
+                <workPreferenceScoreRange>-10~10</workPreferenceScoreRange>
+                <typeMultiplier>0.5~2</typeMultiplier> <!-- The more cooperative the stronger the effect -->
+                <rangeDatas>
+                    <li>
+                        <validRange>-999~-0.21</validRange>
+                        <priority>-10~-10</priority>
+                        <description>Others are much better at construction</description>
+                    </li>
+                    <li>
+                        <validRange>-0.2~0</validRange>
+                        <priority>-10~0</priority>
+                        <description>Others are better at construction</description>
+                    </li>
+                    <li>
+                        <validRange>0.01~0.1</validRange>
+                        <priority>0~0</priority>
+                        <description>I am average at construction</description>
+                    </li>
+                    <li>
+                        <validRange>0.11~0.4</validRange>
+                        <priority>0~5</priority>
+                        <description>I am good at construction</description>
+                    </li>
+                    <li>
+                        <validRange>0.41~999</validRange>
+                        <priority>5~10</priority>
+                        <description>I am excellent at construction</description>
+                    </li>
+                </rangeDatas>
+            </li>
+        </value>
+    </Operation>
+
     <Operation Class="PatchOperationAdd" Name="GrowingPriorityGivers">
         <xpath>Defs/WorkTypeDef[defName="Growing"]/modExtensions/li[@Class="Autonomy.PriorityGiverExtension"]/priorityGivers</xpath>
         <value>
@@ -984,6 +1061,315 @@
                 <typeMultiplier>2~1</typeMultiplier>
                 <priority>0~10</priority>
                 <description>We are low on vegetables</description>
+            </li>
+        </value>
+    </Operation>
+
+    <Operation Class="PatchOperationAdd" Name="MiningPriorityGivers">
+        <xpath>Defs/WorkTypeDef[defName="Mining"]/modExtensions/li[@Class="Autonomy.PriorityGiverExtension"]/priorityGivers</xpath>
+        <value>
+            <li Class="Autonomy.PriorityGiver" Name="AverageMoveSpeed">
+                <condition>ComparedStats</condition>
+                <stat>MoveSpeed</stat>
+                <useAverage>true</useAverage>
+                <type>SocialPreference</type>
+                <workPreferenceScoreRange>-10~10</workPreferenceScoreRange>
+                <typeMultiplier>0.5~2</typeMultiplier> <!-- The more cooperative the stronger the effect -->
+                <rangeDatas>
+                    <li>
+                        <validRange>-999~-1</validRange>
+                        <priority>-10~-5</priority>
+                        <description>I am much slower than average</description>
+                    </li>
+                    <li>
+                        <validRange>-0.99~-0.01</validRange>
+                        <priority>-5~0</priority>
+                        <description>I am slower than average</description>
+                    </li>
+                </rangeDatas>
+            </li>
+            <li Class="Autonomy.PriorityGiver" Name="AverageMiningSpeed">
+                <condition>ComparedStats</condition>
+                <stat>MiningSpeed</stat>
+                <useAverage>true</useAverage>
+                <type>SocialPreference</type>
+                <workPreferenceScoreRange>-10~10</workPreferenceScoreRange>
+                <typeMultiplier>0.5~2</typeMultiplier> <!-- The more cooperative the stronger the effect -->
+                <rangeDatas>
+                    <li>
+                        <validRange>-999~-0.21</validRange>
+                        <priority>-10~-10</priority>
+                        <description>There are better people for this</description>
+                    </li>
+                    <li>
+                        <validRange>-0.2~0</validRange>
+                        <priority>-10~0</priority>
+                        <description>There are better people for this</description>
+                    </li>
+                </rangeDatas>
+            </li>
+            <li Class="Autonomy.PriorityGiver" Name="AverageMiningYield">
+                <condition>ComparedStats</condition>
+                <stat>MiningYield</stat>
+                <useAverage>true</useAverage>
+                <type>SocialPreference</type>
+                <workPreferenceScoreRange>-10~10</workPreferenceScoreRange>
+                <typeMultiplier>0.5~2</typeMultiplier> <!-- The more cooperative the stronger the effect -->
+                <rangeDatas>
+                    <li>
+                        <validRange>-999~-0.21</validRange>
+                        <priority>-10~-10</priority>
+                        <description>My mining yield is very low</description>
+                    </li>
+                    <li>
+                        <validRange>-0.2~0</validRange>
+                        <priority>-10~0</priority>
+                        <description>My mining yield is below average</description>
+                    </li>
+                    <li>
+                        <validRange>0.01~0.1</validRange>
+                        <priority>0~5</priority>
+                        <description>My mining yield is average</description>
+                    </li>
+                    <li>
+                        <validRange>0.11~0.4</validRange>
+                        <priority>5~10</priority>
+                        <description>My mining yield is above average</description>
+                    </li>
+                    <li>
+                        <validRange>0.41~999</validRange>
+                        <priority>10~10</priority>
+                        <description>My mining yield is above average</description>
+                    </li>
+                </rangeDatas>
+            </li>
+        </value>
+    </Operation>
+
+    <Operation Class="PatchOperationAdd" Name="SmithingPriorityGivers">
+        <xpath>Defs/WorkTypeDef[defName="Smithing"]/modExtensions/li[@Class="Autonomy.PriorityGiverExtension"]/priorityGivers</xpath>
+        <value>
+            <li Class="Autonomy.PriorityGiver" Name="AverageGeneralLaborSpeed">
+                <condition>ComparedStats</condition>
+                <stat>GeneralLaborSpeed</stat>
+                <useAverage>true</useAverage>
+                <type>SocialPreference</type>
+                <workPreferenceScoreRange>-10~10</workPreferenceScoreRange>
+                <typeMultiplier>0.5~2</typeMultiplier> <!-- The more cooperative the stronger the effect -->
+                <rangeDatas>
+                    <li>
+                        <validRange>-999~-0.21</validRange>
+                        <priority>-8~-8</priority>
+                        <description>There are better people for this</description>
+                    </li>
+                    <li>
+                        <validRange>-0.2~0</validRange>
+                        <priority>-8~0</priority>
+                        <description>There are better people for this</description>
+                    </li>
+                    <li>
+                        <validRange>0.01~0.1</validRange>
+                        <priority>0~0</priority>
+                        <description>I am average at this</description>
+                    </li>
+                    <li>
+                        <validRange>0.11~0.4</validRange>
+                        <priority>0~0</priority>
+                        <description>I am better at this than most</description>
+                    </li>
+                    <li>
+                        <validRange>0.41~999</validRange>
+                        <priority>0~0</priority>
+                        <description>I am better at this than most</description>
+                    </li>
+                </rangeDatas>
+            </li>
+            <li Class="Autonomy.PriorityGiver" Name="CreativeEnjoy">
+                <condition>BaseType</condition>
+                <type>CognitiveOrientation</type>
+                <workPreferenceScoreRange>0~10</workPreferenceScoreRange> <!-- Creative side -->
+                <typeMultiplier>0.1~1</typeMultiplier> <!-- The more creative the stronger the effect -->
+                <priority>5</priority>
+                <description>I enjoy smithing</description>
+            </li>
+            <li Class="Autonomy.PriorityGiver" Name="IndustrialEnjoy">
+                <condition>BaseType</condition>
+                <type>WorkEnvironmentAesthetic</type>
+                <workPreferenceScoreRange>0~10</workPreferenceScoreRange> <!-- Industrial side -->
+                <typeMultiplier>0.1~1</typeMultiplier> <!-- The more industrial the stronger the effect -->
+                <priority>5</priority>
+                <description>I like working indoors</description>
+            </li>
+        </value>
+    </Operation>
+
+    <Operation Class="PatchOperationAdd" Name="TailoringPriorityGivers">
+        <xpath>Defs/WorkTypeDef[defName="Tailoring"]/modExtensions/li[@Class="Autonomy.PriorityGiverExtension"]/priorityGivers</xpath>
+        <value>
+            <li Class="Autonomy.PriorityGiver" Name="AverageGeneralLaborSpeed">
+                <condition>ComparedStats</condition>
+                <stat>GeneralLaborSpeed</stat>
+                <useAverage>true</useAverage>
+                <type>SocialPreference</type>
+                <workPreferenceScoreRange>-10~10</workPreferenceScoreRange>
+                <typeMultiplier>0.5~2</typeMultiplier> <!-- The more cooperative the stronger the effect -->
+                <rangeDatas>
+                    <li>
+                        <validRange>-999~-0.21</validRange>
+                        <priority>-8~-8</priority>
+                        <description>There are better people for this</description>
+                    </li>
+                    <li>
+                        <validRange>-0.2~0</validRange>
+                        <priority>-8~0</priority>
+                        <description>There are better people for this</description>
+                    </li>
+                    <li>
+                        <validRange>0.01~0.1</validRange>
+                        <priority>0~0</priority>
+                        <description>I am average at this</description>
+                    </li>
+                    <li>
+                        <validRange>0.11~0.4</validRange>
+                        <priority>0~0</priority>
+                        <description>I am better at this than most</description>
+                    </li>
+                    <li>
+                        <validRange>0.41~999</validRange>
+                        <priority>0~0</priority>
+                        <description>I am better at this than most</description>
+                    </li>
+                </rangeDatas>
+            </li>
+            <li Class="Autonomy.PriorityGiver" Name="CreativeEnjoy">
+                <condition>BaseType</condition>
+                <type>CognitiveOrientation</type>
+                <workPreferenceScoreRange>0~10</workPreferenceScoreRange> <!-- Creative side -->
+                <typeMultiplier>0.1~1</typeMultiplier> <!-- The more creative the stronger the effect -->
+                <priority>5</priority>
+                <description>I enjoy tailoring</description>
+            </li>
+            <li Class="Autonomy.PriorityGiver" Name="IndustrialEnjoy">
+                <condition>BaseType</condition>
+                <type>WorkEnvironmentAesthetic</type>
+                <workPreferenceScoreRange>0~10</workPreferenceScoreRange> <!-- Industrial side -->
+                <typeMultiplier>0.1~1</typeMultiplier> <!-- The more industrial the stronger the effect -->
+                <priority>5</priority>
+                <description>I like working indoors</description>
+            </li>
+        </value>
+    </Operation>
+
+    <Operation Class="PatchOperationAdd" Name="ArtPriorityGivers">
+        <xpath>Defs/WorkTypeDef[defName="Art"]/modExtensions/li[@Class="Autonomy.PriorityGiverExtension"]/priorityGivers</xpath>
+        <value>
+            <li Class="Autonomy.PriorityGiver" Name="AverageGeneralLaborSpeed">
+                <condition>ComparedStats</condition>
+                <stat>GeneralLaborSpeed</stat>
+                <useAverage>true</useAverage>
+                <type>SocialPreference</type>
+                <workPreferenceScoreRange>-10~10</workPreferenceScoreRange>
+                <typeMultiplier>0.5~2</typeMultiplier> <!-- The more cooperative the stronger the effect -->
+                <rangeDatas>
+                    <li>
+                        <validRange>-999~-0.21</validRange>
+                        <priority>-5~-5</priority>
+                        <description>There are better people for this</description>
+                    </li>
+                    <li>
+                        <validRange>-0.2~0</validRange>
+                        <priority>-5~0</priority>
+                        <description>There are better people for this</description>
+                    </li>
+                    <li>
+                        <validRange>0.01~0.1</validRange>
+                        <priority>0~0</priority>
+                        <description>I am average at this</description>
+                    </li>
+                    <li>
+                        <validRange>0.11~0.4</validRange>
+                        <priority>0~0</priority>
+                        <description>I am better at this than most</description>
+                    </li>
+                    <li>
+                        <validRange>0.41~999</validRange>
+                        <priority>0~0</priority>
+                        <description>I am better at this than most</description>
+                    </li>
+                </rangeDatas>
+            </li>
+            <li Class="Autonomy.PriorityGiver" Name="CreativeEnjoy">
+                <condition>BaseType</condition>
+                <type>CognitiveOrientation</type>
+                <workPreferenceScoreRange>0~10</workPreferenceScoreRange> <!-- Creative side -->
+                <typeMultiplier>0.1~1</typeMultiplier> <!-- The more creative the stronger the effect -->
+                <priority>10</priority>
+                <description>I enjoy creating art</description>
+            </li>
+            <li Class="Autonomy.PriorityGiver" Name="IndustrialEnjoy">
+                <condition>BaseType</condition>
+                <type>WorkEnvironmentAesthetic</type>
+                <workPreferenceScoreRange>0~10</workPreferenceScoreRange> <!-- Industrial side -->
+                <typeMultiplier>0.1~1</typeMultiplier> <!-- The more industrial the stronger the effect -->
+                <priority>5</priority>
+                <description>I like working indoors</description>
+            </li>
+        </value>
+    </Operation>
+
+    <Operation Class="PatchOperationAdd" Name="CraftingPriorityGivers">
+        <xpath>Defs/WorkTypeDef[defName="Crafting"]/modExtensions/li[@Class="Autonomy.PriorityGiverExtension"]/priorityGivers</xpath>
+        <value>
+            <li Class="Autonomy.PriorityGiver" Name="AverageGeneralLaborSpeed">
+                <condition>ComparedStats</condition>
+                <stat>GeneralLaborSpeed</stat>
+                <useAverage>true</useAverage>
+                <type>SocialPreference</type>
+                <workPreferenceScoreRange>-10~10</workPreferenceScoreRange>
+                <typeMultiplier>0.5~2</typeMultiplier> <!-- The more cooperative the stronger the effect -->
+                <rangeDatas>
+                    <li>
+                        <validRange>-999~-0.21</validRange>
+                        <priority>-12~-12</priority>
+                        <description>There are better people for this</description>
+                    </li>
+                    <li>
+                        <validRange>-0.2~0</validRange>
+                        <priority>-12~0</priority>
+                        <description>There are better people for this</description>
+                    </li>
+                    <li>
+                        <validRange>0.01~0.1</validRange>
+                        <priority>0~0</priority>
+                        <description>I am average at this</description>
+                    </li>
+                    <li>
+                        <validRange>0.11~0.4</validRange>
+                        <priority>0~0</priority>
+                        <description>I am better at this than most</description>
+                    </li>
+                    <li>
+                        <validRange>0.41~999</validRange>
+                        <priority>0~0</priority>
+                        <description>I am better at this than most</description>
+                    </li>
+                </rangeDatas>
+            </li>
+            <li Class="Autonomy.PriorityGiver" Name="CreativeEnjoy">
+                <condition>BaseType</condition>
+                <type>CognitiveOrientation</type>
+                <workPreferenceScoreRange>0~10</workPreferenceScoreRange> <!-- Creative side -->
+                <typeMultiplier>0.1~1</typeMultiplier> <!-- The more creative the stronger the effect -->
+                <priority>5</priority>
+                <description>I enjoy crafting</description>
+            </li>
+            <li Class="Autonomy.PriorityGiver" Name="IndustrialEnjoy">
+                <condition>BaseType</condition>
+                <type>WorkEnvironmentAesthetic</type>
+                <workPreferenceScoreRange>0~10</workPreferenceScoreRange> <!-- Industrial side -->
+                <typeMultiplier>0.1~1</typeMultiplier> <!-- The more industrial the stronger the effect -->
+                <priority>5</priority>
+                <description>I like working indoors</description>
             </li>
         </value>
     </Operation>
@@ -1430,8 +1816,8 @@
                 <stat>ResearchSpeed</stat>
                 <type>SocialPreference</type>
                 <useAverage>true</useAverage>
-                <workPreferenceScoreRange>0~10</workPreferenceScoreRange> <!-- The more cooperative the stronger the effect -->
-                <typeMultiplier>0~2</typeMultiplier>
+                <workPreferenceScoreRange>-10~10</workPreferenceScoreRange> <!-- The more cooperative the stronger the effect -->
+                <typeMultiplier>1~2</typeMultiplier>
                 <rangeDatas>
                     <li>
                         <validRange>-999~-0.21</validRange>
@@ -1529,6 +1915,89 @@
                 <typeMultiplier>0.5~1</typeMultiplier> <!-- The more communal the stronger the effect -->
                 <priority>0~400</priority> <!-- About 20 per child -->
                 <description>I am a parent</description>
+            </li>
+        </value>
+    </Operation>
+
+        </caseTrue>
+    </Operation>
+
+    <!-- Anomaly Worktypes -->
+
+    <Operation Class="XmlExtensions.FindMod">
+        <mods>
+            <li>Anomaly</li>
+        </mods>
+        <caseTrue>
+
+    <Operation Class="PatchOperationAdd" Name="DarkStudyPriorityGivers">
+        <xpath>Defs/WorkTypeDef[defName="DarkStudy"]/modExtensions/li[@Class="Autonomy.PriorityGiverExtension"]/priorityGivers</xpath>
+        <value>
+            <li Class="Autonomy.PriorityGiver" Name="AverageEntityStudyRate">
+                <condition>ComparedStats</condition>
+                <stat>EntityStudyRate</stat>
+                <useAverage>true</useAverage>
+                <type>SocialPreference</type>
+                <workPreferenceScoreRange>-10~10</workPreferenceScoreRange>
+                <typeMultiplier>0.5~2</typeMultiplier> <!-- The more cooperative the stronger the effect -->
+                <rangeDatas>
+                    <li>
+                        <validRange>-999~-0.21</validRange>
+                        <priority>-10~-10</priority>
+                        <description>Others study dark entities much faster than me</description>
+                    </li>
+                    <li>
+                        <validRange>-0.2~0</validRange>
+                        <priority>-10~0</priority>
+                        <description>Others study dark entities faster than me</description>
+                    </li>
+                </rangeDatas>
+            </li>
+            <li Class="Autonomy.PriorityGiver" Name="AverageStudyEfficiency">
+                <condition>ComparedStats</condition>
+                <stat>StudyEfficiency</stat>
+                <useAverage>true</useAverage>
+                <type>SocialPreference</type>
+                <workPreferenceScoreRange>-10~10</workPreferenceScoreRange>
+                <typeMultiplier>0.5~2</typeMultiplier> <!-- The more cooperative the stronger the effect -->
+                <rangeDatas>
+                    <li>
+                        <validRange>-999~-0.21</validRange>
+                        <priority>-10~-10</priority>
+                        <description>Others are much more efficient at studying than me</description>
+                    </li>
+                    <li>
+                        <validRange>-0.2~0</validRange>
+                        <priority>-10~0</priority>
+                        <description>Others are more efficient at studying than me</description>
+                    </li>
+                </rangeDatas>
+            </li>
+        </value>
+    </Operation>
+
+    <Operation Class="PatchOperationAdd" Name="WardenPriorityGivers">
+        <xpath>Defs/WorkTypeDef[defName="Warden"]/modExtensions/li[@Class="Autonomy.PriorityGiverExtension"]/priorityGivers</xpath>
+        <value>
+            <li Class="Autonomy.PriorityGiver" Name="AverageActivitySuppressionRate">
+                <condition>ComparedStats</condition>
+                <stat>ActivitySuppressionRate</stat>
+                <useAverage>true</useAverage>
+                <type>SocialPreference</type>
+                <workPreferenceScoreRange>-10~10</workPreferenceScoreRange>
+                <typeMultiplier>0.5~2</typeMultiplier> <!-- The more cooperative the stronger the effect -->
+                <rangeDatas>
+                    <li>
+                        <validRange>-999~-0.21</validRange>
+                        <priority>-5~-5</priority>
+                        <description>Others suppress entities much better than me</description>
+                    </li>
+                    <li>
+                        <validRange>-0.2~0</validRange>
+                        <priority>-5~0</priority>
+                        <description>Others suppress entities better than me</description>
+                    </li>
+                </rangeDatas>
             </li>
         </value>
     </Operation>

@@ -46,13 +46,13 @@
                                         <rangeDatas>
                                             <li>
                                                 <validRange>0~3</validRange>
-                                                <priority>-5~-1</priority>
+                                                <priority>0~1</priority>
                                                 <description>I know almost nothing about {SkillLabel}</description>
                                             </li>
                                             <li>
                                                 <validRange>5~10</validRange>
                                                 <priority>1~5</priority>
-                                                <description>I know about {SkillLabel}</description>
+                                                <description>I can do {SkillLabel}</description>
                                             </li>
                                             <li>
                                                 <validRange>11~20</validRange>
@@ -69,7 +69,7 @@
                                         <typeMultiplier>2~0.5</typeMultiplier> <!-- The more independent the stronger the effect -->
                                         <skill>{Skill}</skill>
                                         <priority>-5</priority>
-                                        <description>I really don't care about {SkillLabel}</description>
+                                        <description>I avoid {SkillLabel}</description>
                                     </li>
                                     <li Class="Autonomy.PriorityGiver">
                                         <condition>MinorPassion</condition>
@@ -78,7 +78,7 @@
                                         <typeMultiplier>2~0.5</typeMultiplier> <!-- The more independent the stronger the effect -->
                                         <skill>{Skill}</skill>
                                         <priority>3</priority>
-                                        <description>I am passionate about {SkillLabel}</description>
+                                        <description>I like {SkillLabel}</description>
                                     </li>
                                     <li Class="Autonomy.PriorityGiver">
                                         <condition>MajorPassion</condition>
@@ -87,7 +87,7 @@
                                         <typeMultiplier>2~0.5</typeMultiplier> <!-- The more independent the stronger the effect -->
                                         <skill>{Skill}</skill>
                                         <priority>5</priority>
-                                        <description>I am very passionate about {SkillLabel}</description>
+                                        <description>I love {SkillLabel}</description>
                                     </li>
                                     <li Class="Autonomy.PriorityGiver">
                                         <mayRequire>Vanilla Skills Expanded</mayRequire>
@@ -107,7 +107,7 @@
                                         <typeMultiplier>2~0.5</typeMultiplier> <!-- The more independent the stronger the effect -->
                                         <skill>{Skill}</skill>
                                         <priority>20</priority>
-                                        <description>I live for {SkillLabel} work</description>
+                                        <description>Doing {SkillLabel} is my life</description>
                                     </li>
                                 </value>
                             </Operation>

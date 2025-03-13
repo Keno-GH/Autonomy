@@ -215,6 +215,8 @@ namespace Autonomy
                     {
                         continue;
                     }
+                    if (statDef.Worker.IsDisabledFor(pawn))
+                        continue;
                     try
                     {
                         statValue = pawn.GetStatValue(statDef, true);

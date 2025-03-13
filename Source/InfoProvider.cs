@@ -189,14 +189,14 @@ namespace Autonomy
                     {
                         throw new KeyNotFoundException($"StatDef named '{g.stat}' not found.");
                     }
-                    return new { statDef, g.onlyForAllowed };
+                    return new { statDef, g.onlyForEnabled };
                 })
                 .Distinct();
 
             foreach (var item in statDefsToCheck)
             {
                 StatDef statDef = item.statDef;
-                WorkTypeDef workTypeDef = item.onlyForAllowed != null ? DefDatabase<WorkTypeDef>.GetNamed(item.onlyForAllowed, errorOnFail: false) : null;
+                WorkTypeDef workTypeDef = item.onlyForEnabled != null ? DefDatabase<WorkTypeDef>.GetNamed(item.onlyForEnabled, errorOnFail: false) : null;
 
                 float sum = 0f;
                 int count = 0;

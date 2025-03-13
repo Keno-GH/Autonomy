@@ -25,7 +25,7 @@ namespace Autonomy
         public string exclusiveTo;
         public List<RangeData> rangeDatas;
         public InfoRange infoRange;
-        public string onlyForAllowed;
+        public string onlyForEnabled;
         public string mayRequire;
     }
 

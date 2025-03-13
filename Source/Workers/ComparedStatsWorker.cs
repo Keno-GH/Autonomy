@@ -16,9 +16,9 @@ namespace Autonomy.Workers
             float comparisonStatValue;
             string statKey = giver.useAverage ? $"average_{giver.stat}" : $"bestAt_{giver.stat}";
 
-            if (!string.IsNullOrEmpty(giver.onlyForAllowed))
+            if (!string.IsNullOrEmpty(giver.onlyForEnabled))
             {
-                WorkTypeDef workTypeDef = DefDatabase<WorkTypeDef>.GetNamed(giver.onlyForAllowed, errorOnFail: false);
+                WorkTypeDef workTypeDef = DefDatabase<WorkTypeDef>.GetNamed(giver.onlyForEnabled, errorOnFail: false);
                 if (workTypeDef != null && !pawn.workSettings.WorkIsActive(workTypeDef))
                 {
                     return 0; // Skip if the pawn does not have the required work type enabled

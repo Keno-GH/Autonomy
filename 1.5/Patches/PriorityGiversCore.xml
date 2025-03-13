@@ -227,7 +227,7 @@
         <value>
             <li Class="Autonomy.PriorityGiver" Name="AverageNegotiationAbility">
                 <condition>ComparedStats</condition>
-                <onlyForAllowed>Warden</onlyForAllowed>
+                <onlyForEnabled>Warden</onlyForEnabled>
                 <stat>NegotiationAbility</stat>
                 <useAverage>true</useAverage>
                 <type>SocialPreference</type>
@@ -948,6 +948,7 @@
             <li Class="Autonomy.PriorityGiver" Name="AverageMoveSpeed">
                 <condition>ComparedStats</condition>
                 <stat>MoveSpeed</stat>
+                <onlyForEnabled>PlantCutting</onlyForEnabled>
                 <useAverage>true</useAverage>
                 <type>SocialPreference</type>
                 <workPreferenceScoreRange>-10~10</workPreferenceScoreRange>
@@ -964,19 +965,9 @@
                         <description>I am slower than average</description>
                     </li>
                     <li>
-                        <validRange>0.01~0.1</validRange>
+                        <validRange>0.01~999</validRange>
                         <priority>0~0</priority>
-                        <description>I am average speed</description>
-                    </li>
-                    <li>
-                        <validRange>0.11~0.4</validRange>
-                        <priority>0~0</priority>
-                        <description>I am faster than average</description>
-                    </li>
-                    <li>
-                        <validRange>0.41~999</validRange>
-                        <priority>0~0</priority>
-                        <description>I am faster than average</description>
+                        <description>I am average at this</description>
                     </li>
                 </rangeDatas>
             </li>

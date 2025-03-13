@@ -344,19 +344,9 @@
                         <description>I am slower than average</description>
                     </li>
                     <li>
-                        <validRange>0~0.99</validRange>
+                        <validRange>0.01~999</validRange>
                         <priority>0~0</priority>
-                        <description>I am average speed</description>
-                    </li>
-                    <li>
-                        <validRange>1~1.99</validRange>
-                        <priority>0~0</priority>
-                        <description>I am faster than average</description>
-                    </li>
-                    <li>
-                        <validRange>1.99~999</validRange>
-                        <priority>0~0</priority>
-                        <description>I am much faster than average</description>
+                        <description>I am average at this</description>
                     </li>
                 </rangeDatas>
             </li>
@@ -385,19 +375,9 @@
                         <description>There are better people for this</description>
                     </li>
                     <li>
-                        <validRange>0.01~0.1</validRange>
+                        <validRange>0.01~999</validRange>
                         <priority>0~0</priority>
                         <description>I am average at this</description>
-                    </li>
-                    <li>
-                        <validRange>0.11~0.2</validRange>
-                        <priority>0~0</priority>
-                        <description>I am better at this than most</description>
-                    </li>
-                    <li>
-                        <validRange>0.2~999</validRange>
-                        <priority>0~0</priority>
-                        <description>I am better at this than most</description>
                     </li>
                 </rangeDatas>
             </li>
@@ -455,19 +435,9 @@
                         <description>I am slower than average</description>
                     </li>
                     <li>
-                        <validRange>0~0.99</validRange>
+                        <validRange>0.01~999</validRange>
                         <priority>0~0</priority>
-                        <description>I am average speed</description>
-                    </li>
-                    <li>
-                        <validRange>1~1.99</validRange>
-                        <priority>0~0</priority>
-                        <description>I am faster than average</description>
-                    </li>
-                    <li>
-                        <validRange>1.99~999</validRange>
-                        <priority>0~0</priority>
-                        <description>I am much faster than average</description>
+                        <description>I am average at this</description>
                     </li>
                 </rangeDatas>
             </li>
@@ -496,19 +466,9 @@
                         <description>I am slower than average</description>
                     </li>
                     <li>
-                        <validRange>0.01~0.04</validRange>
+                        <validRange>0.01~999</validRange>
                         <priority>0~0</priority>
-                        <description>I am average speed</description>
-                    </li>
-                    <li>
-                        <validRange>0.05~0.2</validRange>
-                        <priority>0~0</priority>
-                        <description>I am faster than average</description>
-                    </li>
-                    <li>
-                        <validRange>0.2~999</validRange>
-                        <priority>0~0</priority>
-                        <description>I am faster than average</description>
+                        <description>I am average at this</description>
                     </li>
                 </rangeDatas>
             </li>
@@ -531,19 +491,9 @@
                         <description>I am as stealthy</description>
                     </li>
                     <li>
-                        <validRange>0.01~0.1</validRange>
+                        <validRange>0.01~999</validRange>
                         <priority>0~0</priority>
                         <description>I am average at this</description>
-                    </li>
-                    <li>
-                        <validRange>0.11~0.4</validRange>
-                        <priority>0~0</priority>
-                        <description>I am better at this than most</description>
-                    </li>
-                    <li>
-                        <validRange>0.41~999</validRange>
-                        <priority>0~0</priority>
-                        <description>I am better at this than most</description>
                     </li>
                 </rangeDatas>
             </li>
@@ -637,19 +587,9 @@
                         <description>There are faster people</description>
                     </li>
                     <li>
-                        <validRange>0.01~0.1</validRange>
+                        <validRange>0.01~999</validRange>
                         <priority>0~0</priority>
                         <description>I am average at this</description>
-                    </li>
-                    <li>
-                        <validRange>0.11~0.4</validRange>
-                        <priority>0~0</priority>
-                        <description>I am better at this than most</description>
-                    </li>
-                    <li>
-                        <validRange>0.41~999</validRange>
-                        <priority>0~0</priority>
-                        <description>I am better at this than most</description>
                     </li>
                 </rangeDatas>
             </li>
@@ -733,19 +673,9 @@
                         <description>There are better people for this</description>
                     </li>
                     <li>
-                        <validRange>0.01~0.1</validRange>
+                        <validRange>0.01~999</validRange>
                         <priority>0~0</priority>
                         <description>I am average at this</description>
-                    </li>
-                    <li>
-                        <validRange>0.11~0.4</validRange>
-                        <priority>0~0</priority>
-                        <description>I am better at this than most</description>
-                    </li>
-                    <li>
-                        <validRange>0.41~999</validRange>
-                        <priority>0~0</priority>
-                        <description>I am better at this than most</description>
                     </li>
                 </rangeDatas>
             </li>
@@ -877,6 +807,11 @@
                         <priority>-10~0</priority>
                         <description>I am slow at this</description>
                     </li>
+                    <li>
+                        <validRange>0.01~999</validRange>
+                        <priority>0~0</priority>
+                        <description>I am average at this</description>
+                    </li>
                 </rangeDatas>
             </li>
             <li Class="Autonomy.PriorityGiver" Name="AverageConstructSuccessChance">
@@ -939,19 +874,9 @@
                         <description>There are better people for this</description>
                     </li>
                     <li>
-                        <validRange>0.01~0.1</validRange>
+                        <validRange>0.01~999</validRange>
                         <priority>0~0</priority>
                         <description>I am average at this</description>
-                    </li>
-                    <li>
-                        <validRange>0.11~0.4</validRange>
-                        <priority>0~0</priority>
-                        <description>I am better at this than most</description>
-                    </li>
-                    <li>
-                        <validRange>0.41~999</validRange>
-                        <priority>0~0</priority>
-                        <description>I am better at this than most</description>
                     </li>
                 </rangeDatas>
             </li>
@@ -1014,19 +939,9 @@
                         <description>There are better people for this</description>
                     </li>
                     <li>
-                        <validRange>0.01~0.1</validRange>
+                        <validRange>0.01~999</validRange>
                         <priority>0~0</priority>
                         <description>I am average at this</description>
-                    </li>
-                    <li>
-                        <validRange>0.11~0.4</validRange>
-                        <priority>0~0</priority>
-                        <description>I am better at this than most</description>
-                    </li>
-                    <li>
-                        <validRange>0.41~999</validRange>
-                        <priority>0~0</priority>
-                        <description>I am better at this than most</description>
                     </li>
                 </rangeDatas>
             </li>
@@ -1123,6 +1038,11 @@
                         <priority>-5~0</priority>
                         <description>I am slower than average</description>
                     </li>
+                    <li>
+                        <validRange>0.01~999</validRange>
+                        <priority>0~0</priority>
+                        <description>I am average at this</description>
+                    </li>
                 </rangeDatas>
             </li>
             <li Class="Autonomy.PriorityGiver" Name="AverageMiningSpeed">
@@ -1142,6 +1062,11 @@
                         <validRange>-0.2~0</validRange>
                         <priority>-10~0</priority>
                         <description>There are better people for this</description>
+                    </li>
+                    <li>
+                        <validRange>0.01~999</validRange>
+                        <priority>0~0</priority>
+                        <description>I am average at this</description>
                     </li>
                 </rangeDatas>
             </li>
@@ -1205,19 +1130,9 @@
                         <description>There are better people for this</description>
                     </li>
                     <li>
-                        <validRange>0.01~0.1</validRange>
+                        <validRange>0.01~999</validRange>
                         <priority>0~0</priority>
                         <description>I am average at this</description>
-                    </li>
-                    <li>
-                        <validRange>0.11~0.4</validRange>
-                        <priority>0~0</priority>
-                        <description>I am better at this than most</description>
-                    </li>
-                    <li>
-                        <validRange>0.41~999</validRange>
-                        <priority>0~0</priority>
-                        <description>I am better at this than most</description>
                     </li>
                 </rangeDatas>
             </li>
@@ -1262,19 +1177,9 @@
                         <description>There are better people for this</description>
                     </li>
                     <li>
-                        <validRange>0.01~0.1</validRange>
+                        <validRange>0.01~999</validRange>
                         <priority>0~0</priority>
                         <description>I am average at this</description>
-                    </li>
-                    <li>
-                        <validRange>0.11~0.4</validRange>
-                        <priority>0~0</priority>
-                        <description>I am better at this than most</description>
-                    </li>
-                    <li>
-                        <validRange>0.41~999</validRange>
-                        <priority>0~0</priority>
-                        <description>I am better at this than most</description>
                     </li>
                 </rangeDatas>
             </li>
@@ -1319,19 +1224,9 @@
                         <description>There are better people for this</description>
                     </li>
                     <li>
-                        <validRange>0.01~0.1</validRange>
+                        <validRange>0.01~999</validRange>
                         <priority>0~0</priority>
                         <description>I am average at this</description>
-                    </li>
-                    <li>
-                        <validRange>0.11~0.4</validRange>
-                        <priority>0~0</priority>
-                        <description>I am better at this than most</description>
-                    </li>
-                    <li>
-                        <validRange>0.41~999</validRange>
-                        <priority>0~0</priority>
-                        <description>I am better at this than most</description>
                     </li>
                 </rangeDatas>
             </li>
@@ -1376,19 +1271,9 @@
                         <description>There are better people for this</description>
                     </li>
                     <li>
-                        <validRange>0.01~0.1</validRange>
+                        <validRange>0.01~999</validRange>
                         <priority>0~0</priority>
                         <description>I am average at this</description>
-                    </li>
-                    <li>
-                        <validRange>0.11~0.4</validRange>
-                        <priority>0~0</priority>
-                        <description>I am better at this than most</description>
-                    </li>
-                    <li>
-                        <validRange>0.41~999</validRange>
-                        <priority>0~0</priority>
-                        <description>I am better at this than most</description>
                     </li>
                 </rangeDatas>
             </li>
@@ -1488,19 +1373,9 @@
                         <description>There are better people for this</description>
                     </li>
                     <li>
-                        <validRange>0.01~0.1</validRange>
+                        <validRange>0.01~999</validRange>
                         <priority>0~0</priority>
                         <description>I am average at this</description>
-                    </li>
-                    <li>
-                        <validRange>0.11~0.4</validRange>
-                        <priority>0~0</priority>
-                        <description>I am better at this than most</description>
-                    </li>
-                    <li>
-                        <validRange>0.41~999</validRange>
-                        <priority>0~0</priority>
-                        <description>I am better at this than most</description>
                     </li>
                 </rangeDatas>
             </li>
@@ -1867,19 +1742,9 @@
                         <description>There are better people for this</description>
                     </li>
                     <li>
-                        <validRange>0.01~0.1</validRange>
+                        <validRange>0.01~999</validRange>
                         <priority>0~0</priority>
                         <description>I am average at this</description>
-                    </li>
-                    <li>
-                        <validRange>0.11~0.4</validRange>
-                        <priority>0~0</priority>
-                        <description>I am better at this than most</description>
-                    </li>
-                    <li>
-                        <validRange>0.41~999</validRange>
-                        <priority>0~0</priority>
-                        <description>I am better at this than most</description>
                     </li>
                 </rangeDatas>
             </li>
@@ -1914,6 +1779,11 @@
                         <validRange>-0.2~0</validRange>
                         <priority>-10~0</priority>
                         <description>Others suppress slaves better than me</description>
+                    </li>
+                    <li>
+                        <validRange>0.01~999</validRange>
+                        <priority>0~0</priority>
+                        <description>I am average at this</description>
                     </li>
                 </rangeDatas>
             </li>
@@ -2024,9 +1894,14 @@
                         <description>Others study dark entities much faster than me</description>
                     </li>
                     <li>
-                        <validRange>-0.2~0</validRange>
+                        <validRange>-0.2~-0.01</validRange>
                         <priority>-10~0</priority>
                         <description>Others study dark entities faster than me</description>
+                    </li>
+                    <li>
+                        <validRange>0~999</validRange>
+                        <priority>0~0</priority>
+                        <description>I am average at this</description>
                     </li>
                 </rangeDatas>
             </li>
@@ -2044,9 +1919,14 @@
                         <description>Others are much more efficient at studying than me</description>
                     </li>
                     <li>
-                        <validRange>-0.2~0</validRange>
+                        <validRange>-0.2~-0.01</validRange>
                         <priority>-10~0</priority>
                         <description>Others are more efficient at studying than me</description>
+                    </li>
+                    <li>
+                        <validRange>0~999</validRange>
+                        <priority>0~0</priority>
+                        <description>I am average at this</description>
                     </li>
                 </rangeDatas>
             </li>
@@ -2073,6 +1953,11 @@
                         <validRange>-0.2~0</validRange>
                         <priority>-5~0</priority>
                         <description>Others suppress entities better than me</description>
+                    </li>
+                    <li>
+                        <validRange>0.01~999</validRange>
+                        <priority>0~0</priority>
+                        <description>I am average at this</description>
                     </li>
                 </rangeDatas>
             </li>

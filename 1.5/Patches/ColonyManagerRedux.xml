@@ -69,27 +69,27 @@
                     <li>
                         <validRange>-999~-0.21</validRange>
                         <priority>-10~-10</priority>
-                        <description>I am very slow</description>
+                        <description>I manage very slow</description>
                     </li>
                     <li>
                         <validRange>-0.2~0</validRange>
                         <priority>0~-10</priority>
-                        <description>There are faster people</description>
+                        <description>There are faster managers</description>
                     </li>
                     <li>
                         <validRange>0.01~0.1</validRange>
                         <priority>0~0</priority>
-                        <description>I am average at this</description>
+                        <description>I am average at managing</description>
                     </li>
                     <li>
                         <validRange>0.11~0.4</validRange>
                         <priority>0~0</priority>
-                        <description>I am better at this than most</description>
+                        <description>I am better at managing than most</description>
                     </li>
                     <li>
                         <validRange>0.41~999</validRange>
                         <priority>0~0</priority>
-                        <description>I am better at this than most</description>
+                        <description>I am better at managing than most</description>
                     </li>
                 </rangeDatas>
             </li>

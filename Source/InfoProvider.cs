@@ -206,15 +206,8 @@ namespace Autonomy
 
                 foreach (Pawn pawn in workingColonists)
                 {
-                    if (
-                        workTypeDef != null && (
-                            !pawn.story.DisabledWorkTagsBackstoryAndTraits.OverlapsWithOnAnyWorkType(workTypeDef.workTags) 
-                            || !pawn.story.DisabledWorkTagsBackstoryTraitsAndGenes.OverlapsWithOnAnyWorkType(workTypeDef.workTags)
-                        )
-                    )
-                    {
+                    if (workTypeDef != null && pawn.WorkTypeIsDisabled(workTypeDef))
                         continue;
-                    }
                     if (statDef.Worker.IsDisabledFor(pawn))
                         continue;
                     try

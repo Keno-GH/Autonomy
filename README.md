@@ -45,3 +45,7 @@ Free Will is an excellent mod that heavily inspired Autonomy. The key motivation
 * Subdivide this mod into a library and main mod so we can build modules later (This needs to happen before the first realse if its gonna happen)
 * Add schedule Autonomy (Module?)
 * Add a condition builder in settings
+
+# Known bugs
+
+* onlyForEnabled field in priorityGivers doesn't work properly: Pawns compare themselves to those with the onlyForEnabled WorkType disabled

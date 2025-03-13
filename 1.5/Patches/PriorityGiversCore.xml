@@ -1391,6 +1391,7 @@
             </li>
             <li Class="Autonomy.PriorityGiver" Name="AverageMoveSpeed">
                 <condition>ComparedStats</condition>
+                <onlyForEnabled>Hauling</onlyForEnabled>
                 <type>SocialPreference</type>
                 <stat>MoveSpeed</stat>
                 <useAverage>true</useAverage>
@@ -1427,6 +1428,7 @@
             <li Class="Autonomy.PriorityGiver" Name="AverageCarryingCapacity">
                 <condition>ComparedStats</condition>
                 <stat>CarryingCapacity</stat>
+                <onlyForEnabled>Hauling</onlyForEnabled>
                 <useAverage>true</useAverage>
                 <type>SocialPreference</type>
                 <workPreferenceScoreRange>-10~10</workPreferenceScoreRange>

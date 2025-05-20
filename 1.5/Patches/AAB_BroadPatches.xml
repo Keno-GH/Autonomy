@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Patch>
+
+    <Operation Class="PatchOperationAdd" Name="HardOutdoorWorkTemperatureGivers">
+        <xpath>Defs/WorkTypeDef[
+            defName="PlantCutting" or
+            defName="AutonomyPruning" or
+            defName="Hunting" or
+            defName="AutonomyTaming" or
+            defName="Mining" or
+            defName="Hauling"
+        ]/modExtensions/li[@Class="Autonomy.PriorityGiverExtension"]/priorityGivers</xpath>
+        <value>
+            <li Class="Autonomy.PriorityGiver" Name="UncomfortableTemperatureOutdoorsHard">
+                <condition>BasedOnInfoRange</condition>
+                <infoRange>
+                    <infoKey>temperatureDifferenceCold</infoKey>
+                    <fromMap>false</fromMap>
+                    <range>20~0</range> <!-- Hard work: Max effect at 20 degree diff -->
+                </infoRange>
+                <type>SocialPreference</type>
+                <workPreferenceScoreRange>-10~-1</workPreferenceScoreRange> <!-- Individualistic pawns -->
+                <typeMultiplier>3~1</typeMultiplier>
+                <priority>-20~0</priority> <!-- Hard work: Max penalty -20 -->
+                <description>It's too cold outside for hard work.</description>
+            </li>
+            <li Class="Autonomy.PriorityGiver" Name="UncomfortableTemperatureOutdoorsHardHot">
+                <condition>BasedOnInfoRange</condition>
+                <infoRange>
+                    <infoKey>temperatureDifferenceHot</infoKey>
+                    <fromMap>false</fromMap>
+                    <range>20~0</range> <!-- Hard work: Max effect at 20 degree diff -->
+                </infoRange>
+                <type>SocialPreference</type>
+                <workPreferenceScoreRange>-10~-1</workPreferenceScoreRange> <!-- Individualistic pawns -->
+                <typeMultiplier>3~1</typeMultiplier>
+                <priority>-20~0</priority> <!-- Hard work: Max penalty -20 -->
+                <description>It's too hot outside for hard work.</description>
+            </li>
+        </value>
+    </Operation>
+
+    <Operation Class="PatchOperationAdd" Name="SoftOutdoorWorkTemperatureGivers">
+        <xpath>Defs/WorkTypeDef[
+            defName="Growing" or
+            defName="Handling" or
+            defName="Construction"
+        ]/modExtensions/li[@Class="Autonomy.PriorityGiverExtension"]/priorityGivers</xpath>
+        <value>
+            <li Class="Autonomy.PriorityGiver" Name="UncomfortableTemperatureOutdoorsSoft">
+                <condition>BasedOnInfoRange</condition>
+                <infoRange>
+                    <infoKey>temperatureDifferenceCold</infoKey>
+                    <fromMap>false</fromMap>
+                    <range>40~0</range> <!-- Soft work: Max effect at 40 degree diff -->
+                </infoRange>
+                <type>SocialPreference</type>
+                <workPreferenceScoreRange>-10~-1</workPreferenceScoreRange> <!-- Individualistic pawns -->
+                <typeMultiplier>3~1</typeMultiplier>
+                <priority>-20~0</priority> <!-- Soft work: Max penalty -20 -->
+                <description>It's too cold outside for this work.</description>
+            </li>
+            <li Class="Autonomy.PriorityGiver" Name="UncomfortableTemperatureOutdoorsSoftHot">
+                <condition>BasedOnInfoRange</condition>
+                <infoRange>
+                    <infoKey>temperatureDifferenceHot</infoKey>
+                    <fromMap>false</fromMap>
+                    <range>40~0</range> <!-- Soft work: Max effect at 40 degree diff -->
+                </infoRange>
+                <type>SocialPreference</type>
+                <workPreferenceScoreRange>-10~-1</workPreferenceScoreRange> <!-- Individualistic pawns -->
+                <typeMultiplier>3~1</typeMultiplier>
+                <priority>-20~0</priority> <!-- Soft work: Max penalty -20 -->
+                <description>It's too hot outside for this work.</description>
+            </li>
+        </value>
+    </Operation>
+
+</Patch>

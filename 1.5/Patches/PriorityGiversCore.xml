@@ -1668,7 +1668,7 @@
             <li Class="Autonomy.PriorityGiver" Name="LogicalEnjoy">
                 <condition>BaseType</condition>
                 <type>CognitiveOrientation</type>
-                <workPreferenceScoreRange>-10~-1</workPreferenceScoreRange>
+                <workPreferenceScoreRange>-10~-1</workPreferenceScoreRange> <!-- Logical side -->
                 <typeMultiplier>1~0.1</typeMultiplier> <!-- The more logical the stronger the effect -->
                 <priority>5</priority>
                 <description>I enjoy cleaning</description>

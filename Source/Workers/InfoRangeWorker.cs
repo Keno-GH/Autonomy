@@ -76,6 +76,9 @@ namespace Autonomy.Workers
                 return 0;
             }
 
+            // workPreferenceScoreRange and typeMultiplier are used to adjust the priority based on pawn's work drive preferences.
+            // minScore/maxScore define the range of a pawn's work drive preference (e.g., -10 to 10 for SocialPreference).
+            // minMultiplier/maxMultiplier define how the basePriority should be scaled based on that preference.
             float minScore = 0, maxScore = 0, minMultiplier = 0, maxMultiplier = 0;
 
             bool hasWorkDrivePreference;
@@ -115,6 +118,10 @@ namespace Autonomy.Workers
             int minPriority, maxPriority;
             try
             {
+                // These are the raw values from the XML's 'priority' attribute.
+                // For interpolation, the first value is treated as the priority at the 'leftLimit' of the 'range',
+                // and the second value is the priority at the 'rightLimit' of the 'range'.
+                // Example: priority="0~-25" means minPriority=0, maxPriority=-25.
                 minPriority = int.Parse(giver.priority.Split('~')[0]);
                 maxPriority = int.Parse(giver.priority.Split('~')[1]);
             }
@@ -127,18 +134,40 @@ namespace Autonomy.Workers
             bool isDecreasingValue = leftLimit > rightLimit;
             int basePriority;
 
+            // Interpolation logic:
+            // Calculates a basePriority by mapping the 'value' (from infoKey) within the 'range' (leftLimit~rightLimit)
+            // to a point within the 'priority' (minPriority~maxPriority from XML).
+
             if (isDecreasingValue)
             {
+                // Handles ranges like "40~0".
+                // If value is beyond the limits, it's clamped to the respective priority.
+                // Otherwise, it interpolates.
+                // Example: range="40~0", priority="-25~0", value=8
+                // leftLimit=40, rightLimit=0
+                // XML_minPriority=-25, XML_maxPriority=0
+                // basePriority = XML_maxPriority - (int)((value - rightLimit) * (XML_maxPriority - XML_minPriority) / (leftLimit - rightLimit))
+                // basePriority = 0 - (int)((8 - 0) * (0 - (-25)) / (40 - 0))
+                // basePriority = 0 - (int)(8 * 25 / 40) = 0 - (int)(5) = -5
                 basePriority =
-                value < rightLimit ? maxPriority
-                : value > leftLimit ? minPriority
+                value < rightLimit ? maxPriority // Value is less than the 'end' of a decreasing range (e.g., value < 0 for 40~0)
+                : value > leftLimit ? minPriority // Value is greater than the 'start' of a decreasing range (e.g., value > 40 for 40~0)
                 : maxPriority - (int)((value - rightLimit) * (maxPriority - minPriority) / (leftLimit - rightLimit));
             }
             else
             {   
+                // Handles ranges like "0~40".
+                // If value is beyond the limits, it's clamped to the respective priority.
+                // Otherwise, it interpolates.
+                // Example: range="0~40", priority="0~-25", value=8
+                // leftLimit=0, rightLimit=40
+                // XML_minPriority=0, XML_maxPriority=-25
+                // basePriority = XML_minPriority + (int)((value - leftLimit) * (XML_maxPriority - XML_minPriority) / (rightLimit - leftLimit))
+                // basePriority = 0 + (int)((8 - 0) * (-25 - 0) / (40 - 0))
+                // basePriority = 0 + (int)(8 * -25 / 40) = 0 + (int)(-5) = -5
                 basePriority = 
-                value > rightLimit ? maxPriority
-                : value < leftLimit ? minPriority
+                value > rightLimit ? maxPriority // Value is greater than the 'end' of an increasing range (e.g., value > 40 for 0~40)
+                : value < leftLimit ? minPriority // Value is less than the 'start' of an increasing range (e.g., value < 0 for 0~40)
                 : minPriority + (int)((value - leftLimit) * (maxPriority - minPriority) / (rightLimit - leftLimit));
             }
 
@@ -149,9 +178,31 @@ namespace Autonomy.Workers
                 basePriority = (int)(basePriority * multiplier);
             }
 
-            if (basePriority < minPriority) basePriority = minPriority;
-            else if (basePriority > maxPriority) basePriority = maxPriority;
+            // Final Clamping:
+            // The calculated basePriority (after interpolation and potential work drive multiplication)
+            // is clamped to be within the numerical min and max of the original priority string.
+            // IMPORTANT: For this clamping to work as intended (e.g., ensuring a value of 0 for TempDiffHot=0
+            // when priority is "-25~0"), the priority string in XML should be numerically ordered
+            // from smallest to largest (e.g., "-25~0", not "0~-25").
+            // If priority was "0~-25" (parsedMin=0, parsedMax=-25):
+            //   A calculated basePriority of 0 would be clamped: 0 > -25 (parsedMax) is true, so basePriority becomes -25. (Incorrect for TempDiffHot=0)
+            // If priority is "-25~0" (parsedMin=-25, parsedMax=0):
+            //   A calculated basePriority of 0 would NOT be clamped: 0 < -25 is false, 0 > 0 is false. So basePriority remains 0. (Correct for TempDiffHot=0)
+            
+            // Store the parsed min/max from the XML string for clarity in clamping.
+            int parsedXmlMinPriority = int.Parse(giver.priority.Split('~')[0]);
+            int parsedXmlMaxPriority = int.Parse(giver.priority.Split('~')[1]);
 
+            if (parsedXmlMinPriority < parsedXmlMaxPriority) // e.g. "-25~0"
+            {
+                if (basePriority < parsedXmlMinPriority) basePriority = parsedXmlMinPriority;
+                else if (basePriority > parsedXmlMaxPriority) basePriority = parsedXmlMaxPriority;
+            }
+            else // e.g. "0~-25"
+            {
+                if (basePriority < parsedXmlMaxPriority) basePriority = parsedXmlMaxPriority; // Check against the numerically smaller value
+                else if (basePriority > parsedXmlMinPriority) basePriority = parsedXmlMinPriority; // Check against the numerically larger value
+            }
             return basePriority;
         }
     }

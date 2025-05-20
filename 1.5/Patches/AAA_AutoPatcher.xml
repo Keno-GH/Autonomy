@@ -15,7 +15,7 @@
     </Operation>
 
     <Operation Class="PatchOperationAdd" Name="AllSkilledWorktypesBoredomGiver">
-        <xpath>Defs/WorkTypeDef[relevantSkills]</xpath>
+        <xpath>Defs/WorkTypeDef[relevantSkills]/modExtensions/li[@Class="Autonomy.PriorityGiverExtension"]/priorityGivers</xpath>
         <value>
             <li Class="Autonomy.PriorityGiver">
                 <condition>BoredSkilled</condition>
@@ -29,7 +29,7 @@
     </Operation>
 
     <Operation Class="PatchOperationAdd" Name="UnskilledWorktypesBoredomGiver">
-        <xpath>Defs/WorkTypeDef[not relevantSkills]</xpath>
+        <xpath>Defs/WorkTypeDef[not(relevantSkills)]/modExtensions/li[@Class="Autonomy.PriorityGiverExtension"]/priorityGivers</xpath>
         <value>
             <li Class="Autonomy.PriorityGiver">
                 <condition>BoredUnskilled</condition>

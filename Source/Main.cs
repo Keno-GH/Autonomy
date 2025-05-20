@@ -141,6 +141,7 @@ namespace Autonomy
             PriorityWorkerRegistry.RegisterWorker("PriorityWorker_Passion", new Autonomy.Workers.PassionWorker());
             PriorityWorkerRegistry.RegisterWorker("PriorityWorker_SkillAffinity", new Autonomy.Workers.SkillAffinityWorker());
             PriorityWorkerRegistry.RegisterWorker("PriorityWorker_SurroundingsFilthy", new Autonomy.Workers.SurroundingsFilthyWorker());
+            PriorityWorkerRegistry.RegisterWorker("PriorityWorker_Boredom", new Autonomy.Workers.BoredomWorker()); // Added BoredomWorker registration
         }
     }
 

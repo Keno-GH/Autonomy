@@ -40,6 +40,16 @@
         <workerClass>PriorityWorker_InfoRange</workerClass>
         <allowedForSlaves>true</allowedForSlaves>
     </Autonomy.PriorityGiverDef>
+    <Autonomy.PriorityGiverDef>
+        <defName>BoredSkilled</defName>
+        <workerClass>PriorityWorker_Boredom</workerClass>
+        <allowedForSlaves>false</allowedForSlaves>
+    </Autonomy.PriorityGiverDef>
+    <Autonomy.PriorityGiverDef>
+        <defName>BoredUnskilled</defName>
+        <workerClass>PriorityWorker_Boredom</workerClass>
+        <allowedForSlaves>false</allowedForSlaves>
+    </Autonomy.PriorityGiverDef>
 
     <!-- Vanilla Skills Expanded -->
 

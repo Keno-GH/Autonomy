@@ -376,7 +376,25 @@ namespace Autonomy
             float chemicalLevel = pawn.story.traits.HasTrait(TraitDefOf.DrugDesire) ? pawn.needs.TryGetNeed<Need_Chemical_Any>().CurLevelPercentage : 1f;
             pawnInfo["chemicalLevel"] = chemicalLevel;
 
-            // Log.Message($"Pawn {pawn.Name} has {injuriesCount} injuries, bleeding rate: {bleedingRate}, needs tending: {needsTending}, immunity gain speed: {immunityGainSpeed}, severity gain speed: {severityGainSpeed}, severity tended speed: {severityTendedSpeed}, true severity gained: {severityGainSpeed + severityTendedSpeed}, immunity rate - true severity gained: {immunityGainSpeed - (severityGainSpeed + severityTendedSpeed)}. Pawn Immunity Stat Value: {pawn.GetStatValue(StatDefOf.ImmunityGainSpeed, applyPostProcess: true)}");
+            // Temperature difference calculation
+            float outdoorTemp = pawn.Map.mapTemperature.OutdoorTemp;
+            FloatRange comfortableRange = pawn.ComfortableTemperatureRange();
+            float tempDiffCold = 0f;
+            float tempDiffHot = 0f;
+
+            if (outdoorTemp < comfortableRange.min)
+            {
+                tempDiffCold = comfortableRange.min - outdoorTemp;
+            }
+            else if (outdoorTemp > comfortableRange.max)
+            {
+                tempDiffHot = outdoorTemp - comfortableRange.max;
+            }
+
+            pawnInfo["temperatureDifferenceCold"] = tempDiffCold;
+            pawnInfo["temperatureDifferenceHot"] = tempDiffHot;
+
+            Log.Message($"Pawn {pawn.Name} - TempDiffCold: {tempDiffCold}, TempDiffHot: {tempDiffHot}");
 
             foreach (var skill in pawn.skills.skills)
             {

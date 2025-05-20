@@ -14,7 +14,35 @@
         </value>
     </Operation>
 
-        <Operation Class="XmlExtensions.ForEach" Name="AllSkilledWorktypesGivers"> <!-- Give skill related priority givers to work types with skills -->
+    <Operation Class="PatchOperationAdd" Name="AllSkilledWorktypesBoredomGiver">
+        <xpath>Defs/WorkTypeDef[relevantSkills]</xpath>
+        <value>
+            <li Class="Autonomy.PriorityGiver">
+                <condition>BoredSkilled</condition>
+                <type>SocialPreference</type> 
+                <workPreferenceScoreRange>-10~10</workPreferenceScoreRange> <!-- The whole spectrum -->
+                <typeMultiplier>2~0.5</typeMultiplier> <!-- The more independent the stronger the effect -->
+                <priority>0~20</priority>
+                <description>I want to try new things</description>
+            </li>
+        </value>
+    </Operation>
+
+    <Operation Class="PatchOperationAdd" Name="UnskilledWorktypesBoredomGiver">
+        <xpath>Defs/WorkTypeDef[not relevantSkills]</xpath>
+        <value>
+            <li Class="Autonomy.PriorityGiver">
+                <condition>BoredUnskilled</condition>
+                <type>SocialPreference</type> 
+                <workPreferenceScoreRange>-10~10</workPreferenceScoreRange> <!-- The whole spectrum -->
+                <typeMultiplier>2~0.5</typeMultiplier> <!-- The more independent the stronger the effect -->
+                <priority>0~20</priority>
+                <description>I am bored</description>
+            </li>
+        </value>
+    </Operation>
+
+    <Operation Class="XmlExtensions.ForEach" Name="AllSkilledWorktypesGivers"> <!-- Give skill related priority givers to work types with skills -->
         <xpath>Defs/WorkTypeDef[relevantSkills]</xpath>
         <storeIn>SkilledWorkTypeDef</storeIn>
         <apply> 

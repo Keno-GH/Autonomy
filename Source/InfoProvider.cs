@@ -7,6 +7,16 @@ namespace Autonomy
 {
     public static class InfoProvider
     {
+        // Static dictionary to track wandering status and ticks for each pawn
+        private static Dictionary<int, (bool isWandering, int ticksSinceLastWork)> pawnWanderingStates = 
+            new Dictionary<int, (bool, int)>();
+
+        // Helper method to check if a job is a wandering job
+        private static bool IsWanderingJob(JobDef jobDef)
+        {
+            return jobDef == JobDefOf.GotoWander || jobDef == JobDefOf.Wait_Wander;
+        }
+
         public static Dictionary<string, float> GetMapInfo(Map map, List<PriorityGiver> priorityGivers, List<Pawn> workingColonists)
         {
             Dictionary<string, float> mapInfo = new Dictionary<string, float>();
@@ -249,116 +259,151 @@ namespace Autonomy
             if (pawn == null)
             {
                 pawnInfo["noPawn"] = 0;
+                return pawnInfo;
             }
-            else
+            
+            // Check if pawn is currently in a wandering job
+            bool isCurrentlyWandering = pawn.CurJob != null && IsWanderingJob(pawn.CurJob.def);
+            
+            // Get previous state or default if not found
+            if (!pawnWanderingStates.TryGetValue(pawn.thingIDNumber, out var previousState))
             {
-                float cleanliness = CleanlinessUtility.CalculateCleanliness(pawn);
-                pawnInfo["cleanlinessSurroundingMe"] = cleanliness;
-
-                List<TraitDef> traitsThatNullifyObservedLayingCorpse = ThoughtDef.Named("ObservedLayingCorpse").nullifyingTraits;
-                List<HediffDef> hediffsThatNullifyObservedLayingCorpse = ThoughtDef.Named("ObservedLayingCorpse").nullifyingHediffs;
-                List<PreceptDef> preceptsThatNullifyObservedLayingCorpse = ThoughtDef.Named("ObservedLayingCorpse").nullifyingPrecepts;
-
-                bool caresAboutDeaths = true;
-
-                // Check traits
-                foreach (Trait trait in pawn.story.traits.allTraits)
+                previousState = (false, 0);
+            }
+            
+            // Update wandering ticks based on current and previous state
+            int ticksSinceLastWork = 0;
+            if (isCurrentlyWandering)
+            {
+                // If was previously wandering, increase counter
+                if (previousState.isWandering)
                 {
-                    if (traitsThatNullifyObservedLayingCorpse.Contains(trait.def))
+                    ticksSinceLastWork = previousState.ticksSinceLastWork + 1000;
+                }
+                // Otherwise start counting
+                else
+                {
+                    ticksSinceLastWork = 1000;
+                }
+            }
+            
+            // Update the state dictionary
+            pawnWanderingStates[pawn.thingIDNumber] = (isCurrentlyWandering, ticksSinceLastWork);
+            
+            // Add to pawn info
+            pawnInfo["ticksSinceLastWork"] = ticksSinceLastWork;
+            Log.Message($"Pawn {pawn.Name} is currently wandering? {isCurrentlyWandering}, ticks since last work: {ticksSinceLastWork}");
+            
+            float cleanliness = CleanlinessUtility.CalculateCleanliness(pawn);
+            pawnInfo["cleanlinessSurroundingMe"] = cleanliness;
+
+            List<TraitDef> traitsThatNullifyObservedLayingCorpse = ThoughtDef.Named("ObservedLayingCorpse").nullifyingTraits;
+            List<HediffDef> hediffsThatNullifyObservedLayingCorpse = ThoughtDef.Named("ObservedLayingCorpse").nullifyingHediffs;
+            List<PreceptDef> preceptsThatNullifyObservedLayingCorpse = ThoughtDef.Named("ObservedLayingCorpse").nullifyingPrecepts;
+
+            bool caresAboutDeaths = true;
+
+            // Check traits
+            foreach (Trait trait in pawn.story.traits.allTraits)
+            {
+                if (traitsThatNullifyObservedLayingCorpse.Contains(trait.def))
+                {
+                    caresAboutDeaths = false;
+                    break;
+                }
+            }
+
+            // Check hediffs if Anomaly DLC is enabled
+            if (caresAboutDeaths && ModsConfig.AnomalyActive)
+            {
+                foreach (Hediff hediff in pawn.health.hediffSet.hediffs)
+                {
+                    if (hediffsThatNullifyObservedLayingCorpse.Contains(hediff.def))
                     {
                         caresAboutDeaths = false;
                         break;
                     }
                 }
-
-                // Check hediffs if Anomaly DLC is enabled
-                if (caresAboutDeaths && ModsConfig.AnomalyActive)
-                {
-                    foreach (Hediff hediff in pawn.health.hediffSet.hediffs)
-                    {
-                        if (hediffsThatNullifyObservedLayingCorpse.Contains(hediff.def))
-                        {
-                            caresAboutDeaths = false;
-                            break;
-                        }
-                    }
-                }
-
-                // Check precepts if Ideology DLC is enabled
-                if (caresAboutDeaths && ModsConfig.IdeologyActive)
-                {
-                    foreach (Precept precept in pawn.Ideo?.PreceptsListForReading)
-                    {
-                        if (preceptsThatNullifyObservedLayingCorpse.Contains(precept.def))
-                        {
-                            caresAboutDeaths = false;
-                            break;
-                        }
-                    }
-                }
-
-                pawnInfo["ignoresDeath"] = caresAboutDeaths ? 0 : 1;
-
-                int injuriesCount = pawn.health.hediffSet.GetHediffsTendable().Count();
-                float bleedingRate = pawn.health.hediffSet.BleedRateTotal;
-                bool needsTending = pawn.health.hediffSet.HasTendableHediff();
-                var immunizableHeddifs = pawn.health.hediffSet.hediffs
-                    .Select(h => h as HediffWithComps)
-                    .Where(h => h != null && h.comps.Any(c => c is HediffComp_Immunizable && pawn.health.immunity.GetImmunityRecord(h.def)?.ImmunityChangePerTick(pawn, true, h) > 0));
-                float immunityGainSpeed = immunizableHeddifs
-                    .Sum(h => pawn.health.immunity.GetImmunityRecord(h.def).ImmunityChangePerTick(pawn, true, h) * 60000f);
-                float severityGainSpeed = immunizableHeddifs
-                    .Where(h => h != null && h.comps.Any(c => c is HediffComp_Immunizable))
-                    .Select(h => h.TryGetComp<HediffComp_Immunizable>())
-                    .Where(c => c != null)
-                    .Sum(c => c.Props.severityPerDayNotImmune);
-                float severityTendedSpeed = immunizableHeddifs
-                    .Where(h => h != null && h.comps.Any(c => c is HediffComp_TendDuration))
-                    .Select(h => h.TryGetComp<HediffComp_TendDuration>())
-                    .Where(c => c != null)
-                    .Sum(c => c.TProps.severityPerDayTended * c.tendQuality);
-                
-                pawnInfo["injuriesCount"] = injuriesCount;
-                pawnInfo["bleedingRate"] = bleedingRate;
-                pawnInfo["needsTending"] = needsTending ? 1 : 0;
-                pawnInfo["immunityGainSpeed"] = immunityGainSpeed;
-                pawnInfo["severityGainSpeed"] = severityGainSpeed;
-                pawnInfo["severityTendedSpeed"] = severityTendedSpeed;
-
-                float foodLevel = pawn.needs.food.CurLevelPercentage;
-                pawnInfo["foodLevel"] = foodLevel;
-
-                float chemicalLevel = pawn.story.traits.HasTrait(TraitDefOf.DrugDesire) ? pawn.needs.TryGetNeed<Need_Chemical_Any>().CurLevelPercentage : 1f;
-                pawnInfo["chemicalLevel"] = chemicalLevel;
-
-                // Log.Message($"Pawn {pawn.Name} has {injuriesCount} injuries, bleeding rate: {bleedingRate}, needs tending: {needsTending}, immunity gain speed: {immunityGainSpeed}, severity gain speed: {severityGainSpeed}, severity tended speed: {severityTendedSpeed}, true severity gained: {severityGainSpeed + severityTendedSpeed}, immunity rate - true severity gained: {immunityGainSpeed - (severityGainSpeed + severityTendedSpeed)}. Pawn Immunity Stat Value: {pawn.GetStatValue(StatDefOf.ImmunityGainSpeed, applyPostProcess: true)}");
-
-                foreach (var skill in pawn.skills.skills)
-                {
-                    pawnInfo[skill.def.defName] = skill.Level;
-                    pawnInfo[$"{skill.def.defName}_passion"] = (int)skill.passion;
-
-                    // Vanilla Skills Expanded
-                    pawnInfo[$"has_{skill.def.defName}_apathyPassion"] = skill.passion.GetLabel() == "Apathy" ? 1 : 0;
-                    pawnInfo[$"has_{skill.def.defName}_criticalPassion"] = skill.passion.GetLabel() == "Critical" ? 1 : 0;
-                    pawnInfo[$"has_{skill.def.defName}_naturalPassion"] = skill.passion.GetLabel() == "Natural" ? 1 : 0;
-
-                }
-
-                int childrenCount = 0;
-                if (pawn.relations != null)
-                {
-                    childrenCount = pawn.relations.Children
-                    .Where(
-                        p => p.ageTracker.CurLifeStage.defName == "HumanlikeChild" 
-                        || p.ageTracker.CurLifeStage.defName == "HumanlikePreTeenager"
-                        || p.ageTracker.CurLifeStage.defName == "HumanlikeBaby"
-                        )
-                    .Count();
-                }
-
-                pawnInfo["childrenCount"] = childrenCount;
             }
+
+            // Check precepts if Ideology DLC is enabled
+            if (caresAboutDeaths && ModsConfig.IdeologyActive)
+            {
+                foreach (Precept precept in pawn.Ideo?.PreceptsListForReading)
+                {
+                    if (preceptsThatNullifyObservedLayingCorpse.Contains(precept.def))
+                    {
+                        caresAboutDeaths = false;
+                        break;
+                    }
+                }
+            }
+
+            pawnInfo["ignoresDeath"] = caresAboutDeaths ? 0 : 1;
+
+            int injuriesCount = pawn.health.hediffSet.GetHediffsTendable().Count();
+            float bleedingRate = pawn.health.hediffSet.BleedRateTotal;
+            bool needsTending = pawn.health.hediffSet.HasTendableHediff();
+            // immunizableHeddifs are hediffs that have a HediffComp_Immunizable. Apparently this does *not* mean that the
+            // hediff is immunizable so we also need to check if the immunity change per tick is greater than 0.
+            // Thanks tynan.
+            var immunizableHeddifs = pawn.health.hediffSet.hediffs
+                .Select(h => h as HediffWithComps)
+                .Where(h => h != null && h.comps.Any(c => c is HediffComp_Immunizable && pawn.health.immunity.GetImmunityRecord(h.def)?.ImmunityChangePerTick(pawn, true, h) > 0));
+            float immunityGainSpeed = immunizableHeddifs
+                .Sum(h => pawn.health.immunity.GetImmunityRecord(h.def).ImmunityChangePerTick(pawn, true, h) * 60000f);
+            float severityGainSpeed = immunizableHeddifs
+                .Where(h => h != null && h.comps.Any(c => c is HediffComp_Immunizable))
+                .Select(h => h.TryGetComp<HediffComp_Immunizable>())
+                .Where(c => c != null)
+                .Sum(c => c.Props.severityPerDayNotImmune);
+            float severityTendedSpeed = immunizableHeddifs
+                .Where(h => h != null && h.comps.Any(c => c is HediffComp_TendDuration))
+                .Select(h => h.TryGetComp<HediffComp_TendDuration>())
+                .Where(c => c != null)
+                .Sum(c => c.TProps.severityPerDayTended * c.tendQuality);
+            
+            pawnInfo["injuriesCount"] = injuriesCount;
+            pawnInfo["bleedingRate"] = bleedingRate;
+            pawnInfo["needsTending"] = needsTending ? 1 : 0;
+            pawnInfo["immunityGainSpeed"] = immunityGainSpeed;
+            pawnInfo["severityGainSpeed"] = severityGainSpeed;
+            pawnInfo["severityTendedSpeed"] = severityTendedSpeed;
+
+            float foodLevel = pawn.needs.food.CurLevelPercentage;
+            pawnInfo["foodLevel"] = foodLevel;
+
+            float chemicalLevel = pawn.story.traits.HasTrait(TraitDefOf.DrugDesire) ? pawn.needs.TryGetNeed<Need_Chemical_Any>().CurLevelPercentage : 1f;
+            pawnInfo["chemicalLevel"] = chemicalLevel;
+
+            // Log.Message($"Pawn {pawn.Name} has {injuriesCount} injuries, bleeding rate: {bleedingRate}, needs tending: {needsTending}, immunity gain speed: {immunityGainSpeed}, severity gain speed: {severityGainSpeed}, severity tended speed: {severityTendedSpeed}, true severity gained: {severityGainSpeed + severityTendedSpeed}, immunity rate - true severity gained: {immunityGainSpeed - (severityGainSpeed + severityTendedSpeed)}. Pawn Immunity Stat Value: {pawn.GetStatValue(StatDefOf.ImmunityGainSpeed, applyPostProcess: true)}");
+
+            foreach (var skill in pawn.skills.skills)
+            {
+                pawnInfo[skill.def.defName] = skill.Level;
+                pawnInfo[$"{skill.def.defName}_passion"] = (int)skill.passion;
+
+                // Vanilla Skills Expanded
+                pawnInfo[$"has_{skill.def.defName}_apathyPassion"] = skill.passion.GetLabel() == "Apathy" ? 1 : 0;
+                pawnInfo[$"has_{skill.def.defName}_criticalPassion"] = skill.passion.GetLabel() == "Critical" ? 1 : 0;
+                pawnInfo[$"has_{skill.def.defName}_naturalPassion"] = skill.passion.GetLabel() == "Natural" ? 1 : 0;
+
+            }
+
+            int childrenCount = 0;
+            if (pawn.relations != null)
+            {
+                childrenCount = pawn.relations.Children
+                .Where(
+                    p => p.ageTracker.CurLifeStage.defName == "HumanlikeChild" 
+                    || p.ageTracker.CurLifeStage.defName == "HumanlikePreTeenager"
+                    || p.ageTracker.CurLifeStage.defName == "HumanlikeBaby"
+                    )
+                .Count();
+            }
+
+            pawnInfo["childrenCount"] = childrenCount;
+
             return pawnInfo;
         }
     }

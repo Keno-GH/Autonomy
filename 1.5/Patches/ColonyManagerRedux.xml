@@ -100,7 +100,7 @@
                 <workPreferenceScoreRange>0~10</workPreferenceScoreRange> <!-- Industrial side -->
                 <typeMultiplier>0.1~1</typeMultiplier> <!-- The more industrial the stronger the effect -->
                 <priority>5</priority>
-                <description>I enjoy working under a roof at a workbench</description>
+                <description>I enjoy working under a roof</description>
             </li>
             <li Class="Autonomy.PriorityGiver" Name="LogicalEnjoy">
                 <condition>BaseType</condition>

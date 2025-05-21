@@ -30,59 +30,6 @@
         </value>
     </Operation>
 
-     <Operation Class="PatchOperationAdd" Name="GeneralTendingPriorityGivers">
-        <xpath>Defs/WorkTypeDef[
-        defName="Doctor" or
-        defName="AutonomyEmergencyTending" or
-        defName="AutonomyVeterinary"
-        ]/modExtensions/li[@Class="Autonomy.PriorityGiverExtension"]/priorityGivers</xpath>
-        <value>
-            <li Class="Autonomy.PriorityGiver" Name="AverageTendQuality">
-                <condition>ComparedStats</condition>
-                <stat>MedicalTendQuality</stat>
-                <useAverage>true</useAverage>
-                <type>SocialPreference</type>
-                <workPreferenceScoreRange>-10~10</workPreferenceScoreRange>
-                <typeMultiplier>0.5~1.5</typeMultiplier> <!-- The more cooperative the stronger the effect -->
-                <rangeDatas>
-                    <li>
-                        <validRange>-999~-0.81</validRange>
-                        <priority>-10~-10</priority>
-                        <description>There are better people for this</description>
-                    </li>
-                    <li>
-                        <validRange>-0.8~0</validRange>
-                        <priority>-10~0</priority>
-                        <description>There are better people for this</description>
-                    </li>
-                    <li>
-                        <validRange>0.01~0.3</validRange>
-                        <priority>1~2</priority>
-                        <description>I am average at this</description>
-                    </li>
-                    <li>
-                        <validRange>0.31~0.8</validRange>
-                        <priority>2~10</priority>
-                        <description>I am better at this than most</description>
-                    </li>
-                    <li>
-                        <validRange>0.81~999</validRange>
-                        <priority>10~10</priority>
-                        <description>I am better at this than most</description>
-                    </li>
-                </rangeDatas>
-            </li>
-            <li Class="Autonomy.PriorityGiver" Name="LogicalEnjoy">
-                <condition>BaseType</condition>
-                <type>CognitiveOrientation</type>
-                <workPreferenceScoreRange>-10~-1</workPreferenceScoreRange>
-                <typeMultiplier>1~0.1</typeMultiplier> <!-- The more logical the stronger the effect -->
-                <priority>5</priority>
-                <description>I enjoy logical tasks</description>
-            </li>
-        </value>
-    </Operation>
-
     <Operation Class="PatchOperationAdd" Name="DoctorPriorityGivers">
         <xpath>Defs/WorkTypeDef[defName="Doctor"]/modExtensions/li[@Class="Autonomy.PriorityGiverExtension"]/priorityGivers</xpath>
         <value>
@@ -95,14 +42,6 @@
                 <typeMultiplier>0.5~1.5</typeMultiplier> <!-- The more cooperative the stronger the effect -->
                 <priority>0~10</priority>
                 <description>I the best at this around</description>
-            </li>
-            <li Class="Autonomy.PriorityGiver" Name="IndustrialEnjoy">
-                <condition>BaseType</condition>
-                <type>WorkEnvironmentAesthetic</type>
-                <workPreferenceScoreRange>0~10</workPreferenceScoreRange> <!-- Industrial side -->
-                <typeMultiplier>0.1~1</typeMultiplier> <!-- The more industrial the stronger the effect -->
-                <priority>5</priority>
-                <description>I enjoy working under a roof</description>
             </li>
         </value>
     </Operation>
@@ -167,14 +106,6 @@
                 <typeMultiplier>0.8~2</typeMultiplier> <!-- The more cooperative the stronger the effect -->
                 <priority>0~20</priority>
                 <description>Animals are bleeding out</description>
-            </li>
-            <li Class="Autonomy.PriorityGiver" Name="OrganicEnjoy">
-                <condition>BaseType</condition>
-                <type>WorkEnvironmentAesthetic</type>
-                <workPreferenceScoreRange>-10~0</workPreferenceScoreRange> <!-- Rustic side -->
-                <typeMultiplier>1~0.1</typeMultiplier> <!-- The more organic  the stronger the effect -->
-                <priority>15</priority>
-                <description>I enjoy animal related work</description>
             </li>
         </value>
     </Operation>
@@ -301,14 +232,6 @@
                 <priority>0~10</priority>
                 <description>Patients are bored</description>
             </li>
-            <li Class="Autonomy.PriorityGiver" Name="CommunalEnjoy">
-                <condition>BaseType</condition>
-                <type>SocialPreference</type>
-                <workPreferenceScoreRange>0~10</workPreferenceScoreRange> <!-- Communal side -->
-                <typeMultiplier>0.1~2</typeMultiplier> <!-- The more communal the stronger the effect -->
-                <priority>10</priority>
-                <description>I enjoy caring for patients</description>
-            </li>
             <li Class="Autonomy.PriorityGiver" Name="IndividualisticDislike">
                 <condition>BaseType</condition>
                 <type>SocialPreference</type>
@@ -316,14 +239,6 @@
                 <typeMultiplier>1~0.1</typeMultiplier> <!-- The more individualistic the stronger the effect -->
                 <priority>-5</priority>
                 <description>I dislike caring for patients</description>
-            </li>
-            <li Class="Autonomy.PriorityGiver" Name="IndustrialEnjoy">
-                <condition>BaseType</condition>
-                <type>WorkEnvironmentAesthetic</type>
-                <workPreferenceScoreRange>0~10</workPreferenceScoreRange> <!-- Industrial side -->
-                <typeMultiplier>0.1~1</typeMultiplier> <!-- The more industrial the stronger the effect -->
-                <priority>5</priority>
-                <description>I like working under roofs</description>
             </li>
             <li Class="Autonomy.PriorityGiver" Name="AverageMoveSpeed">
                 <condition>ComparedStats</condition>
@@ -381,14 +296,6 @@
                     </li>
                 </rangeDatas>
             </li>
-            <li Class="Autonomy.PriorityGiver" Name="OrganicEnjoy">
-                <condition>BaseType</condition>
-                <type>WorkEnvironmentAesthetic</type>
-                <workPreferenceScoreRange>-10~0</workPreferenceScoreRange> <!-- Organic side -->
-                <typeMultiplier>1~0.1</typeMultiplier> <!-- The more organic the stronger the effect -->
-                <priority>5</priority>
-                <description>I like working with animals</description>
-            </li>
         </value>
     </Operation>
 
@@ -407,14 +314,6 @@
                 <typeMultiplier>2~1</typeMultiplier>
                 <priority>0~15</priority>
                 <description>We are low on meat</description>
-            </li>
-            <li Class="Autonomy.PriorityGiver" Name="OrganicEnjoy">
-                <condition>BaseType</condition>
-                <type>WorkEnvironmentAesthetic</type>
-                <workPreferenceScoreRange>-10~0</workPreferenceScoreRange> <!-- Organic side -->
-                <typeMultiplier>1~0.1</typeMultiplier> <!-- The more organic the stronger the effect -->
-                <priority>5</priority>
-                <description>I like working with animals</description>
             </li>
             <li Class="Autonomy.PriorityGiver" Name="AverageMoveSpeed">
                 <condition>ComparedStats</condition>
@@ -496,14 +395,6 @@
                         <description>I am average at this</description>
                     </li>
                 </rangeDatas>
-            </li>
-            <li Class="Autonomy.PriorityGiver" Name="OrganicEnjoy">
-                <condition>BaseType</condition>
-                <type>WorkEnvironmentAesthetic</type>
-                <workPreferenceScoreRange>-10~0</workPreferenceScoreRange> <!-- Organic side -->
-                <typeMultiplier>1~0.1</typeMultiplier> <!-- The more organic the stronger the effect -->
-                <priority>5</priority>
-                <description>I enjoy hunting</description>
             </li>
             <li Class="Autonomy.PriorityGiver" Name="LowMeatPerColonist">
                 <condition>BasedOnInfoRange</condition>
@@ -619,22 +510,6 @@
                 <priority>0~10</priority>
                 <description>We need more meals</description>
             </li>
-            <li Class="Autonomy.PriorityGiver" Name="CreativeEnjoy">
-                <condition>BaseType</condition>
-                <type>CognitiveOrientation</type>
-                <workPreferenceScoreRange>0~10</workPreferenceScoreRange> <!-- Creative side -->
-                <typeMultiplier>0.1~1</typeMultiplier> <!-- The more organic  the stronger the effect -->
-                <priority>15</priority>
-                <description>I enjoy cooking</description>
-            </li>
-            <li Class="Autonomy.PriorityGiver" Name="IndustrialEnjoy">
-                <condition>BaseType</condition>
-                <type>WorkEnvironmentAesthetic</type>
-                <workPreferenceScoreRange>0~10</workPreferenceScoreRange> <!-- Industrial side -->
-                <typeMultiplier>0.1~1</typeMultiplier> <!-- The more industrial the stronger the effect -->
-                <priority>5</priority>
-                <description>I enjoy working under a roof</description>
-            </li>
         </value>
     </Operation>
 
@@ -697,14 +572,6 @@
                 <typeMultiplier>1~2</typeMultiplier>
                 <priority>0~10</priority>
                 <description>We are running low on social drugs</description>
-            </li>
-            <li Class="Autonomy.PriorityGiver" Name="IndustrialEnjoy">
-                <condition>BaseType</condition>
-                <type>WorkEnvironmentAesthetic</type>
-                <workPreferenceScoreRange>0~10</workPreferenceScoreRange> <!-- Industrial side -->
-                <typeMultiplier>0.1~1</typeMultiplier> <!-- The more industrial the stronger the effect -->
-                <priority>5</priority>
-                <description>I enjoy working under a roof</description>
             </li>
             <li Class="Autonomy.PriorityGiver" Name="AverageChemicalNeedLevel">
                 <condition>BasedOnInfoRange</condition>
@@ -773,22 +640,6 @@
     <Operation Class="PatchOperationAdd" Name="ConstructionPriorityGivers">
         <xpath>Defs/WorkTypeDef[defName="Construction"]/modExtensions/li[@Class="Autonomy.PriorityGiverExtension"]/priorityGivers</xpath>
         <value>
-            <li Class="Autonomy.PriorityGiver" Name="CreativeEnjoy">
-                <condition>BaseType</condition>
-                <type>CognitiveOrientation</type>
-                <workPreferenceScoreRange>0~10</workPreferenceScoreRange> <!-- Creative side -->
-                <typeMultiplier>0.1~1</typeMultiplier> <!-- The more creative the stronger the effect -->
-                <priority>5</priority>
-                <description>Constructing is artistic</description>
-            </li>
-            <li Class="Autonomy.PriorityGiver" Name="LogicalEnjoy">
-                <condition>BaseType</condition>
-                <type>CognitiveOrientation</type>
-                <workPreferenceScoreRange>-10~0</workPreferenceScoreRange> <!-- Logical side -->
-                <typeMultiplier>1~0.1</typeMultiplier> <!-- The more logical the stronger the effect -->
-                <priority>5</priority>
-                <description>Constructing is mathematical</description>
-            </li>
             <li Class="Autonomy.PriorityGiver" Name="AverageConstructionSpeed">
                 <condition>ComparedStats</condition>
                 <stat>ConstructionSpeed</stat>
@@ -880,14 +731,6 @@
                     </li>
                 </rangeDatas>
             </li>
-            <li Class="Autonomy.PriorityGiver" Name="OrganicEnjoy">
-                <condition>BaseType</condition>
-                <type>WorkEnvironmentAesthetic</type>
-                <workPreferenceScoreRange>-10~0</workPreferenceScoreRange> <!-- Organic side -->
-                <typeMultiplier>1~0.1</typeMultiplier> <!-- The more organic the stronger the effect -->
-                <priority>5</priority>
-                <description>I enjoy growing plants</description>
-            </li>
             <li Class="Autonomy.PriorityGiver" Name="LowOnMedicinePerColonist">
                 <condition>BasedOnInfoRange</condition>
                 <infoRange>
@@ -970,14 +813,6 @@
                         <description>I am average at this</description>
                     </li>
                 </rangeDatas>
-            </li>
-            <li Class="Autonomy.PriorityGiver" Name="OrganicEnjoy">
-                <condition>BaseType</condition>
-                <type>WorkEnvironmentAesthetic</type>
-                <workPreferenceScoreRange>-10~0</workPreferenceScoreRange> <!-- Organic side -->
-                <typeMultiplier>1~0.1</typeMultiplier> <!-- The more organic the stronger the effect -->
-                <priority>6</priority>
-                <description>I enjoy working outside</description>
             </li>
             <li Class="Autonomy.PriorityGiver" Name="LowOnMedicinePerColonist">
                 <condition>BasedOnInfoRange</condition>
@@ -1127,22 +962,6 @@
                     </li>
                 </rangeDatas>
             </li>
-            <li Class="Autonomy.PriorityGiver" Name="CreativeEnjoy">
-                <condition>BaseType</condition>
-                <type>CognitiveOrientation</type>
-                <workPreferenceScoreRange>0~10</workPreferenceScoreRange> <!-- Creative side -->
-                <typeMultiplier>0.1~1</typeMultiplier> <!-- The more creative the stronger the effect -->
-                <priority>5</priority>
-                <description>I enjoy smithing</description>
-            </li>
-            <li Class="Autonomy.PriorityGiver" Name="IndustrialEnjoy">
-                <condition>BaseType</condition>
-                <type>WorkEnvironmentAesthetic</type>
-                <workPreferenceScoreRange>0~10</workPreferenceScoreRange> <!-- Industrial side -->
-                <typeMultiplier>0.1~1</typeMultiplier> <!-- The more industrial the stronger the effect -->
-                <priority>5</priority>
-                <description>I like working indoors</description>
-            </li>
         </value>
     </Operation>
 
@@ -1173,22 +992,6 @@
                         <description>I am average at this</description>
                     </li>
                 </rangeDatas>
-            </li>
-            <li Class="Autonomy.PriorityGiver" Name="CreativeEnjoy">
-                <condition>BaseType</condition>
-                <type>CognitiveOrientation</type>
-                <workPreferenceScoreRange>0~10</workPreferenceScoreRange> <!-- Creative side -->
-                <typeMultiplier>0.1~1</typeMultiplier> <!-- The more creative the stronger the effect -->
-                <priority>5</priority>
-                <description>I enjoy tailoring</description>
-            </li>
-            <li Class="Autonomy.PriorityGiver" Name="IndustrialEnjoy">
-                <condition>BaseType</condition>
-                <type>WorkEnvironmentAesthetic</type>
-                <workPreferenceScoreRange>0~10</workPreferenceScoreRange> <!-- Industrial side -->
-                <typeMultiplier>0.1~1</typeMultiplier> <!-- The more industrial the stronger the effect -->
-                <priority>5</priority>
-                <description>I like working indoors</description>
             </li>
         </value>
     </Operation>
@@ -1221,22 +1024,6 @@
                     </li>
                 </rangeDatas>
             </li>
-            <li Class="Autonomy.PriorityGiver" Name="CreativeEnjoy">
-                <condition>BaseType</condition>
-                <type>CognitiveOrientation</type>
-                <workPreferenceScoreRange>0~10</workPreferenceScoreRange> <!-- Creative side -->
-                <typeMultiplier>0.1~1</typeMultiplier> <!-- The more creative the stronger the effect -->
-                <priority>10</priority>
-                <description>I enjoy creating art</description>
-            </li>
-            <li Class="Autonomy.PriorityGiver" Name="IndustrialEnjoy">
-                <condition>BaseType</condition>
-                <type>WorkEnvironmentAesthetic</type>
-                <workPreferenceScoreRange>0~10</workPreferenceScoreRange> <!-- Industrial side -->
-                <typeMultiplier>0.1~1</typeMultiplier> <!-- The more industrial the stronger the effect -->
-                <priority>5</priority>
-                <description>I like working indoors</description>
-            </li>
         </value>
     </Operation>
 
@@ -1267,22 +1054,6 @@
                         <description>I am average at this</description>
                     </li>
                 </rangeDatas>
-            </li>
-            <li Class="Autonomy.PriorityGiver" Name="CreativeEnjoy">
-                <condition>BaseType</condition>
-                <type>CognitiveOrientation</type>
-                <workPreferenceScoreRange>0~10</workPreferenceScoreRange> <!-- Creative side -->
-                <typeMultiplier>0.1~1</typeMultiplier> <!-- The more creative the stronger the effect -->
-                <priority>5</priority>
-                <description>I enjoy crafting</description>
-            </li>
-            <li Class="Autonomy.PriorityGiver" Name="IndustrialEnjoy">
-                <condition>BaseType</condition>
-                <type>WorkEnvironmentAesthetic</type>
-                <workPreferenceScoreRange>0~10</workPreferenceScoreRange> <!-- Industrial side -->
-                <typeMultiplier>0.1~1</typeMultiplier> <!-- The more industrial the stronger the effect -->
-                <priority>5</priority>
-                <description>I like working indoors</description>
             </li>
         </value>
     </Operation>
@@ -1328,22 +1099,6 @@
                 <typeMultiplier>1~2</typeMultiplier>
                 <priority>0~10</priority>
                 <description>We are low on medicine</description>
-            </li>
-            <li Class="Autonomy.PriorityGiver" Name="IndustrialEnjoy">
-                <condition>BaseType</condition>
-                <type>WorkEnvironmentAesthetic</type>
-                <workPreferenceScoreRange>0~10</workPreferenceScoreRange> <!-- Industrial side -->
-                <typeMultiplier>0.1~1</typeMultiplier> <!-- The more industrial the stronger the effect -->
-                <priority>10</priority>
-                <description>I like working under roofs at workbenches</description>
-            </li>
-            <li Class="Autonomy.PriorityGiver" Name="LogicalEnjoy">
-                <condition>BaseType</condition>
-                <type>CognitiveOrientation</type>
-                <workPreferenceScoreRange>-10~-1</workPreferenceScoreRange>
-                <typeMultiplier>1~0.1</typeMultiplier> <!-- The more logical the stronger the effect -->
-                <priority>5</priority>
-                <description>I like intellectual jobs</description>
             </li>
             <li Class="Autonomy.PriorityGiver" Name="AverageDrugSynthesisSpeed">
                 <condition>ComparedStats</condition>
@@ -1665,14 +1420,6 @@
                     </li>
                 </rangeDatas>
             </li>
-            <li Class="Autonomy.PriorityGiver" Name="LogicalEnjoy">
-                <condition>BaseType</condition>
-                <type>CognitiveOrientation</type>
-                <workPreferenceScoreRange>-10~-1</workPreferenceScoreRange> <!-- Logical side -->
-                <typeMultiplier>1~0.1</typeMultiplier> <!-- The more logical the stronger the effect -->
-                <priority>5</priority>
-                <description>I enjoy cleaning</description>
-            </li>
             <li Class="Autonomy.PriorityGiver" Name="CasualEnjoy">
                 <condition>BaseType</condition>
                 <type>WorkApproach</type>
@@ -1699,22 +1446,6 @@
                 <condition>SurroundingsFilthy</condition>
                 <priority>-10~0</priority> <!-- Range depends on the level of filth seen by pawn -->
                 <description>It's hard to do this in a dirty space</description>
-            </li>
-            <li Class="Autonomy.PriorityGiver" Name="LogicalEnjoy">
-                <condition>BaseType</condition>
-                <type>CognitiveOrientation</type>
-                <workPreferenceScoreRange>-10~-1</workPreferenceScoreRange>
-                <typeMultiplier>1~0.1</typeMultiplier> <!-- The more logical the stronger the effect -->
-                <priority>15</priority>
-                <description>I enjoy logical tasks</description>
-            </li>
-            <li Class="Autonomy.PriorityGiver" Name="CasualEnjoy">
-                <condition>BaseType</condition>
-                <type>WorkEnvironmentAesthetic</type>
-                <workPreferenceScoreRange>-10~-1</workPreferenceScoreRange>
-                <typeMultiplier>0.1~1</typeMultiplier>
-                <priority>-5</priority>
-                <description>I prefer outdoors jobs</description>
             </li>
             <li Class="Autonomy.PriorityGiver" Name="AverageResearchSpeed">
                 <condition>ComparedStats</condition>
@@ -1835,14 +1566,6 @@
                 <typeMultiplier>0.5~2</typeMultiplier> <!-- The more cooperative the stronger the effect -->
                 <priority>0~10</priority>
                 <description>Children want a teacher</description>
-            </li>
-            <li Class="Autonomy.PriorityGiver" Name="CommunalEnjoy">
-                <condition>BaseType</condition>
-                <type>SocialPreference</type>
-                <workPreferenceScoreRange>0~10</workPreferenceScoreRange> <!-- Communal side -->
-                <typeMultiplier>0.1~2</typeMultiplier> <!-- The more communal the stronger the effect -->
-                <priority>10</priority>
-                <description>I enjoy caring for children</description>
             </li>
             <li Class="Autonomy.PriorityGiver" Name="childrenCount">
                 <condition>BasedOnInfoRange</condition>

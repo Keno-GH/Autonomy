@@ -1131,6 +1131,14 @@
     <Operation Class="PatchOperationAdd" Name="HaulingPriorityGivers">
         <xpath>Defs/WorkTypeDef[defName="Hauling"]/modExtensions/li[@Class="Autonomy.PriorityGiverExtension"]/priorityGivers</xpath>
         <value>
+            <li Class="Autonomy.PriorityGiver" Name="StrictEnjoy">
+                <condition>BaseType</condition>
+                <type>WorkApproach</type>
+                <workPreferenceScoreRange>-10~-1</workPreferenceScoreRange>
+                <typeMultiplier>1~0.1</typeMultiplier> <!-- The more disciplined the stronger the effect -->
+                <priority>5</priority>
+                <description>Order is important</description>
+            </li>
             <li Class="Autonomy.PriorityGiver" Name="ThingsDeteriorating">
                 <condition>BasedOnInfoRange</condition>
                 <infoRange>

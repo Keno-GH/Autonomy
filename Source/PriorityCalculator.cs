@@ -33,6 +33,7 @@ namespace Autonomy
                 MapInfo = mapInfo,
                 PawnInfo = pawnInfo,
                 Pawn = pawn,
+                WorkTypeDef = workTypeDef, // Set the WorkTypeDef
                 ConditionPriorities = new Dictionary<string, int>()
             };
 
@@ -106,6 +107,7 @@ namespace Autonomy
         public Dictionary<string, float> MapInfo { get; set; }
         public Dictionary<string, float> PawnInfo { get; set; }
         public Pawn Pawn { get; set; }
+        public WorkTypeDef WorkTypeDef { get; set; } // Added WorkTypeDef
         public Dictionary<string, int> ConditionPriorities { get; set; }
     }
 }

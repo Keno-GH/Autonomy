@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
+using RimWorld;
+using System;
 using Verse;
 
 namespace Autonomy
@@ -8,73 +10,102 @@ namespace Autonomy
     {
         public static Dictionary<string, int> CalculateWorkDrivePreferences(Pawn pawn)
         {
-            Dictionary<string, int> workDrivePreferences = new Dictionary<string, int>();
+            var (preferences, _) = CalculateWorkDrivePreferencesWithInfluences(pawn);
+            return preferences;
+        }
 
-            // Initialize all workDrivePreferences to 0
-            IEnumerable<WorkdrivePreferenceAxisDef> allWorkDriveAxes = DefDatabase<WorkdrivePreferenceAxisDef>.AllDefsListForReading;
-            foreach (WorkdrivePreferenceAxisDef axis in allWorkDriveAxes)
+        public static (Dictionary<string, int> preferences, Dictionary<string, List<string>> influences) CalculateWorkDrivePreferencesWithInfluences(Pawn pawn)
+        {
+            var preferences = new Dictionary<string, int>();
+            var influences = new Dictionary<string, List<string>>();
+
+            foreach (var axisDef in DefDatabase<WorkdrivePreferenceAxisDef>.AllDefs)
             {
-                workDrivePreferences[axis.defName] = 0;
+                preferences[axisDef.defName] = 0;
+                influences[axisDef.defName] = new List<string>();
             }
 
-            foreach (var trait in pawn.story.traits.allTraits)
+            // Process Traits
+            if (pawn.story?.traits != null)
             {
-                var extension = trait.def.GetModExtension<WorkDriveGiverExtension>();
-                if (extension != null)
+                foreach (var trait in pawn.story.traits.allTraits)
                 {
-                    // Handle base workDriveGivers
-                    if (extension.workDriveGivers != null)
+                    var extension = trait.def.GetModExtension<WorkDriveGiverExtension>();
+                    if (extension != null)
                     {
-                        foreach (var giver in extension.workDriveGivers)
-                        {
-                            if (!workDrivePreferences.ContainsKey(giver.workDrivePreferenceAxis))
-                            {
-                                Log.Warning($"Work drive preference axis '{giver.workDrivePreferenceAxis}' not found for trait '{trait.def.defName}'. Current work drive preference axes are: {string.Join(", ", workDrivePreferences.Keys)}");
-                                continue;
-                            }
-                            workDrivePreferences[giver.workDrivePreferenceAxis] += giver.value;
-                        }
-                    }
+                        string sourceDetail = $"Has trait: {trait.LabelCap}";
+                        List<WorkDriveGiver> giversToApply = new List<WorkDriveGiver>();
 
-                    // Handle degree data for spectrum traits
-                    if (extension.degreeDatas != null)
-                    {
-                        foreach (var degreeData in extension.degreeDatas)
+                        if (extension.degreeDatas != null && extension.degreeDatas.Any(dd => dd.degree == trait.Degree))
                         {
-                            if (degreeData.degree != trait.Degree)
-                            {
-                                continue;
-                            }
-                            foreach (var giver in degreeData.workDriveGivers)
-                            {
-                                workDrivePreferences[giver.workDrivePreferenceAxis] += giver.value;
-                            }
+                            // Use degree-specific givers if present and matching
+                            giversToApply.AddRange(extension.degreeDatas.First(dd => dd.degree == trait.Degree).workDriveGivers);
                         }
+                        else if (extension.workDriveGivers != null)
+                        {
+                            // Fallback to general givers if no degree-specific ones match or exist
+                            giversToApply.AddRange(extension.workDriveGivers);
+                        }
+                        
+                        ApplyGivers(giversToApply, preferences, influences, sourceDetail);
                     }
                 }
             }
 
-            // Ensure no work drive axis has a value greater than 10 or less than -10
-            foreach (string key in workDrivePreferences.Keys.ToList())
+            // Process Genes
+            if (pawn.genes != null)
             {
-                if (workDrivePreferences[key] > 10)
+                foreach (var gene in pawn.genes.GenesListForReading)
                 {
-                    workDrivePreferences[key] = 10;
-                }
-                else if (workDrivePreferences[key] < -10)
-                {
-                    workDrivePreferences[key] = -10;
+                    var extension = gene.def.GetModExtension<WorkDriveGiverExtension>();
+                    if (extension != null && extension.workDriveGivers != null)
+                    {
+                        string sourceDetail = $"Has gene: {gene.LabelCap}";
+                        ApplyGivers(extension.workDriveGivers, preferences, influences, sourceDetail);
+                    }
                 }
             }
 
-            // Debug print the work drive results
-            /* Log.Message($"Work drive preferences for {pawn.Name}:");
-            foreach (var kvp in workDrivePreferences)
+            // Process Ideology Precepts
+            if (pawn.Ideo != null)
             {
-                Log.Message($"{kvp.Key}: {kvp.Value}");
-            } */
+                foreach (var precept in pawn.Ideo.PreceptsListForReading)
+                {
+                    var extension = precept.def.GetModExtension<WorkDriveGiverExtension>();
+                    if (extension != null && extension.workDriveGivers != null)
+                    {
+                        string sourceDetail = $"Ideology precept: {precept.LabelCap}";
+                        ApplyGivers(extension.workDriveGivers, preferences, influences, sourceDetail);
+                    }
+                }
+            }
+            
+            // Placeholder for Backstory check - requires similar logic if backstories can have WorkDriveGiverExtension
 
-            return workDrivePreferences;
+            var clampedPreferences = new Dictionary<string, int>();
+            foreach (var pref in preferences)
+            {
+                clampedPreferences[pref.Key] = Math.Max(-10, Math.Min(10, pref.Value));
+            }
+
+            return (clampedPreferences, influences);
+        }
+
+        private static void ApplyGivers(List<WorkDriveGiver> givers, Dictionary<string, int> preferences, Dictionary<string, List<string>> influences, string sourceDetail)
+        {
+            if (givers == null) return;
+
+            foreach (var giver in givers)
+            {
+                if (preferences.ContainsKey(giver.workDrivePreferenceAxis))
+                {
+                    preferences[giver.workDrivePreferenceAxis] += giver.value;
+                    if (!influences[giver.workDrivePreferenceAxis].Contains(sourceDetail))
+                    {
+                        influences[giver.workDrivePreferenceAxis].Add(sourceDetail);
+                    }
+                }
+            }
         }
     }
 }

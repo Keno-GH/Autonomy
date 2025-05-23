@@ -184,4 +184,76 @@ namespace Autonomy
         }
     }
 
+    // Patch for adding a custom stat to the pawn's info card (Stats tab)
+    [HarmonyPatch(typeof(RimWorld.StatsReportUtility), "StatsToDraw", new Type[] { typeof(Verse.Thing) })]
+    public static class StatsReportUtility_StatsToDraw_Patch
+    {
+        public static void Postfix(ref IEnumerable<StatDrawEntry> __result, Thing thing)
+        {
+            if (thing is Pawn pawn && pawn.IsColonist)
+            {
+                List<StatDrawEntry> entries = new List<StatDrawEntry>(__result);
+
+                // Calculate work drive preferences and their influences
+                var (workDrives, workDriveInfluences) = WorkDriveCalculator.CalculateWorkDrivePreferencesWithInfluences(pawn);
+                StringBuilder workDrivesValueString = new StringBuilder();
+                StringBuilder workDrivesReportString = new StringBuilder();
+
+                workDrivesReportString.AppendLine("The pawn's work drives and the factors influencing them (traits, genes, ideology, etc.).");
+                workDrivesReportString.AppendLine(); // Add a blank line for spacing
+
+                foreach (var kvp in workDrives)
+                {
+                    WorkdrivePreferenceAxisDef axisDef = DefDatabase<WorkdrivePreferenceAxisDef>.GetNamed(kvp.Key, false);
+                    string keyLabel = axisDef != null ? axisDef.label : kvp.Key;
+                    string valueLabel;
+
+                    if (axisDef != null && axisDef.workDrivesStepLabels != null && axisDef.workDrivesStepLabels.Count == 4)
+                    {
+                        int value = kvp.Value;
+                        if (value >= -10 && value <= -4) valueLabel = axisDef.workDrivesStepLabels[0];
+                        else if (value >= -3 && value <= 0) valueLabel = axisDef.workDrivesStepLabels[1];
+                        else if (value >= 1 && value <= 4) valueLabel = axisDef.workDrivesStepLabels[2];
+                        else if (value >= 5 && value <= 10) valueLabel = axisDef.workDrivesStepLabels[3];
+                        else valueLabel = value.ToString();
+                    }
+                    else
+                    {
+                        valueLabel = kvp.Value.ToString();
+                    }
+                    workDrivesValueString.AppendLine(valueLabel); // This will be the concise value shown on the left
+                    workDrivesReportString.AppendLine($"{keyLabel}: {valueLabel}");
+
+                    // Append influences for this work drive axis
+                    if (workDriveInfluences.TryGetValue(kvp.Key, out List<string> influences) && influences.Any())
+                    {
+                        workDrivesReportString.AppendLine("  Has this work drive because:");
+                        foreach (var influence in influences)
+                        {
+                            workDrivesReportString.AppendLine($"  - {influence}");
+                        }
+                    }
+                    else
+                    {
+                        workDrivesReportString.AppendLine("  Influences: None specific.");
+                    }
+                    workDrivesReportString.AppendLine(); // Add a blank line after each work drive for readability
+                }
+
+                StatDrawEntry workDriveEntry = new StatDrawEntry(
+                    StatCategoryDefOf.Basics, 
+                    "Work Drives",      
+                    workDrivesValueString.ToString().TrimEnd(),      
+                    workDrivesReportString.ToString().TrimEnd(), 
+                    9998,                     
+                    null,                     // overrideReportTitle
+                    null,                     // hyperlinks
+                    false                     // forceUnfinalizedMode
+                );
+                entries.Add(workDriveEntry);
+
+                __result = entries;
+            }
+        }
+    }
 }

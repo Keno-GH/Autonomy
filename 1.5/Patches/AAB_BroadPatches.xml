@@ -260,4 +260,15 @@
         </value>
     </Operation>
 
+    <Operation Class="PatchOperationAdd" Name="IdeologyOpposedWorkGiver">
+        <xpath>Defs/WorkTypeDef/modExtensions/li[@Class="Autonomy.PriorityGiverExtension"]/priorityGivers</xpath>
+        <value>
+            <li Class="Autonomy.PriorityGiver" Name="IdeologyOpposedWork">
+                <condition>IdeologyOpposedWork</condition> <!-- This should match the defName in PriorityGiverDefs.xml -->
+                <priority>-100</priority> <!-- Strong negative priority -->
+                <description>This work is opposed by my ideology, I will not do it willingly.</description>
+            </li>
+        </value>
+    </Operation>
+
 </Patch>

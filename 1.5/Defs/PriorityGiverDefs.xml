@@ -68,4 +68,9 @@
         <workerClass>PriorityWorker_Passion</workerClass>
         <allowedForSlaves>false</allowedForSlaves>
     </Autonomy.PriorityGiverDef>
+    <Autonomy.PriorityGiverDef>
+        <defName>IdeologyOpposedWork</defName>
+        <workerClass>Autonomy.Workers.IdeologyOpposedWorkWorker</workerClass>
+        <allowedForSlaves>true</allowedForSlaves>
+    </Autonomy.PriorityGiverDef>
 </Defs>

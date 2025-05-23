@@ -30,8 +30,6 @@ Free Will is an excellent mod that heavily inspired Autonomy. The key motivation
 
 # TODO
 
-* Consider ideology hated work
-* Add temperature based conditions
 * Add many WorkdriveGivers to precepts, traits, backstories, and genes
 * Add a default priorityGiver that is controlled by settings, so players can force a specific worktype to be higher for everyone.
 * Automatically enable the numeric priority system and permantently disable the check based one- I don't expect no one using this mod using the simpler system.

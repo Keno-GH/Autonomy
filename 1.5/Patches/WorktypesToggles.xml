@@ -162,6 +162,12 @@
                 <workType>AutonomySlaughtering</workType>
             </value>
         </Operation>
+        <Operation Class="PatchOperationAdd">
+            <xpath>/Defs/PreceptDef[opposedWorkTypes/li[text()="Hunting"]]/opposedWorkTypes</xpath>
+            <value>
+                <li>AutonomySlaughtering</li>
+            </value>
+        </Operation>
     </caseTrue>
     <caseFalse>
         <Operation Class="XmlExtensions.PatchOperationAttributeSet">

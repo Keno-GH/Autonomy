@@ -87,9 +87,9 @@
 |------|-------------|
 | `flat` | Use flat comparison |
 | `sum` | Add all values |
-| `average` | Average of values |
-| `maximum` | Highest value |
-| `minimum` | Lowest value |
+| `avg` | Average of values |
+| `max` | Highest value |
+| `min` | Lowest value |
 | `bestOf` | Best result |
 | `worstOf` | Worst result |
 

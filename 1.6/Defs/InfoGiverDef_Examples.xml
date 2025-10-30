@@ -72,7 +72,7 @@
 		<description>Calculates the average mood of all colonists</description>
 		
 		<sourceType>pawnNeed</sourceType>
-		<calculation>average</calculation>
+		<calculation>avg</calculation>
 		
 		<targetNeed>Mood</targetNeed>
 		
@@ -117,7 +117,7 @@
 		<description>Assesses current threat level based on raids, hostile pawns, and map conditions</description>
 		
 		<sourceType>mapCondition</sourceType>
-		<calculation>maximum</calculation>
+		<calculation>max</calculation>
 		
 		<!-- Threat indicators -->
 		<conditions>
@@ -170,7 +170,7 @@
 		<description>Finds the highest cooking skill among all colonists</description>
 		
 		<sourceType>pawnStat</sourceType>
-		<calculation>maximum</calculation>
+		<calculation>max</calculation>
 		
 		<targetStat>Cooking</targetStat>
 		
@@ -225,7 +225,7 @@
 		<description>Assesses how much the colony needs recreation activities</description>
 		
 		<sourceType>pawnNeed</sourceType>
-		<calculation>average</calculation>
+		<calculation>avg</calculation>
 		
 		<targetNeed>Joy</targetNeed>
 		

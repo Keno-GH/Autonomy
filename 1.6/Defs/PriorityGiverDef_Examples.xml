@@ -118,7 +118,7 @@
 			<li>
 				<type>infoGiver</type>
 				<infoDefName>InjuredColonistCount</infoDefName>
-				<calculation>average</calculation>
+				<calculation>avg</calculation>
 			</li>
 		</conditions>
 		

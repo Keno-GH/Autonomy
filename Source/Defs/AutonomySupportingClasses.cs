@@ -29,9 +29,9 @@ namespace Autonomy
     public enum CalculationType
     {
         Sum,        // Add all values
-        Average,    // Average of all values
-        Maximum,    // Highest value
-        Minimum,    // Lowest value
+        Avg,        // Average of all values
+        Max,        // Highest value
+        Min,        // Lowest value
         Count,      // Count of items
         Flat,       // Use flat comparison value
         BestOf,     // Best result from multiple sources

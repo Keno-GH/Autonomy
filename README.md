@@ -2,29 +2,28 @@
 
 [![RimWorld](https://img.shields.io/badge/RimWorld-1.6-green.svg)](https://rimworldgame.com/)
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![Development Status](https://img.shields.io/badge/Status-In%20Development-yellow.svg)](https://github.com/Keno-GH/Autonomy/projects)
 
-A revolutionary RimWorld mod that allows colonists to autonomously manage their work priorities based on colony needs, personal traits, and current conditions. Built with a powerful XML-driven system that's highly modular and extensible.
+This RimWorld mod introduces a system where colonists manage their work priorities based on their own free will. The mod includes complex systems for evaluating colony needs and conditions, but its core focus is on how each colonist interprets this information. Their personalities, interests, and individual perspectives shape their decisions, resulting in varied and personal responses.
 
 ## 🎯 **Vision**
 
-Autonomy transforms RimWorld's work management from micromanagement to intelligent automation. Colonists analyze their surroundings, assess colony needs, and adjust their work priorities accordingly - all while maintaining their unique personalities and preferences.
+Autonomy is designed to make colonists feel more alive. Colonists respond to a changing world by weighing their surroundings through their own personalities and interests. They adjust their work priorities not only to meet the needs of the colony, but also according to what they personally consider important. Leading to a more dynamic and responsive colony experience.
 
 ## ✨ **Key Features**
 
 ### 🧠 **Intelligent Decision Making**
 - **Dynamic Priority Calculation**: Colonists evaluate colony conditions and adjust priorities in real-time
-- **Personality Integration**: Traits influence how colonists prioritize different types of work
+- **Personality Integration**: Personality from Rimpsyches PersonalityDefs and InterestDomainDefs influences work prioritization
 - **Contextual Awareness**: Weather, threats, resources, and colony needs all factor into decisions
 
 ### 🔧 **Modular XML System**
 - **PriorityGiverDefs**: Define how colony conditions translate to work priority adjustments
-- **InfoGiverDefs**: Modular data collection from various game systems
+- **InfoGiverDefs**: Modular data collection from various game systems, meant to be expandable and patchable.
 - **Easy Customization**: All logic defined through XML for easy modification and mod compatibility
 
 ### 🌐 **Mod Compatibility**
-- **ThingCategoryDef Support**: Automatic compatibility with modded items
-- **Dynamic Weather Analysis**: Works with any weather mod without patches
+- **ThingCategoryDef Support**: Automatic compatibility with modded items by using ThingCategoryDefs instead of ThingDefs where possible.
+- **Dynamic Weather Analysis**: Uses weather properties to ensure compatibility with any weather mod
 - **Extensible Framework**: Other mods can add their own priority logic
 
 ## 📋 **Current Development Status**
@@ -67,42 +66,16 @@ Map Analysis → Pawn Analysis → Priority Calculation → Work Assignment
 - **[InfoGiverDef](1.6/Defs/InfoGiverDef_Examples.xml)**: Modular data collection definitions
 - **[Filtering System](XML_REFERENCE.md#advanced-filtering-system)**: Advanced condition evaluation
 
-## 📖 **Documentation**
+## 📖 **Documentation for Modders**
 
-### **For Players**
-- **[Installation Guide](../../wiki/Installation)** - How to install and configure
-- **[User Guide](../../wiki/User-Guide)** - Understanding how the mod works
-- **[FAQ](../../wiki/FAQ)** - Common questions and troubleshooting
+- **[XML Reference Guide](XML_REFERENCE.md)** – Complete reference for all XML definitions
+- **[Architecture Documentation](ARCHITECTURE.md)** – System design and concepts
+- **[API Documentation](../../wiki/API)** – For advanced modders and plugin developers
 
-### **For Modders**
-- **[XML Reference Guide](XML_REFERENCE.md)** - Complete XML definition reference
-- **[Architecture Documentation](ARCHITECTURE.md)** - System design and concepts
-- **[API Documentation](../../wiki/API)** - For advanced modders and plugin developers
-
-### **For Developers**
-- **[Development Setup](../../wiki/Development-Setup)** - Setting up the development environment
-- **[Contributing Guidelines](CONTRIBUTING.md)** - How to contribute to the project
-- **[Code Style Guide](../../wiki/Code-Style)** - Coding standards and practices
-
-## 🚀 **Quick Start**
-
-### **For Players**
-1. Install the mod from the Steam Workshop (coming soon)
-2. Ensure you have Harmony installed
-3. Add to your mod list and start a new game or load existing save
-4. Watch as your colonists begin making smarter work decisions!
-
-### **For Modders**
-1. Check out the [XML Reference Guide](XML_REFERENCE.md)
-2. Look at the [example definitions](1.6/Defs/)
-3. Create your own PriorityGiverDefs and InfoGiverDefs
-4. Share your creations with the community!
-
-### **For Developers**
-1. Clone this repository
-2. Follow the [Development Setup Guide](../../wiki/Development-Setup)
-3. Check out the [current TODO](TODO.md) for contribution opportunities
-4. Read the [Contributing Guidelines](CONTRIBUTING.md)
+For development and contributions:
+- **[Development Setup](../../wiki/Development-Setup)** – Setting up the development environment
+- **[Contributing Guidelines](CONTRIBUTING.md)** – How to contribute to the project
+- **[Code Style Guide](../../wiki/Code-Style)** – Coding standards and practices
 
 ## 🤝 **Contributing**
 
@@ -151,12 +124,12 @@ More examples available in our [XML Reference Guide](XML_REFERENCE.md).
 - **[Steam Workshop](https://steamcommunity.com/sharedfiles/filedetails/?id=TODO)** (Coming Soon)
 - **[GitHub Repository](https://github.com/Keno-GH/Autonomy)**
 - **[Wiki Documentation](../../wiki)**
-- **[Discord Community](https://discord.gg/TODO)** (Coming Soon)
 - **[Bug Reports](https://github.com/Keno-GH/Autonomy/issues)**
 
 ## 📄 **License**
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+Basically, do whatever you want with it, let other's do the same.
 
 ## 👏 **Acknowledgments**
 
@@ -167,6 +140,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ---
 
-**Made with ❤️ for the RimWorld community**
-
-*For support, questions, or just to chat about the mod, join our [Discord](https://discord.gg/TODO) or check out the [discussions](https://github.com/Keno-GH/Autonomy/discussions)!*
+**Made with coffee for the RimWorld community**

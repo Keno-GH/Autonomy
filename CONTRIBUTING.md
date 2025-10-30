@@ -8,11 +8,12 @@ Thank you for your interest in contributing to the Autonomy mod! This document p
 - Use the [GitHub Issues](https://github.com/Keno-GH/Autonomy/issues) page
 - Include your RimWorld version, mod list, and steps to reproduce
 - Attach logs if possible (`Player.log` or `Unity Player.log`)
+- Reporting bugs in the steam workshop is allowed but GitHub is preferred for tracking
 
 ### 💡 **Feature Suggestions**
 - Open an issue with the `enhancement` label
 - Describe the use case and expected behavior
-- Consider how it fits with the mod's philosophy of intelligent automation
+- Consider how it fits with the mod's philosophy and vision
 
 ### 📝 **Documentation**
 - Improve existing documentation

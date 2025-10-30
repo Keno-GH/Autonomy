@@ -1,0 +1,71 @@
+# RimWorld Mod - Autonomy
+
+# Build outputs
+1.6/Assemblies/*.dll
+1.6/Assemblies/*.pdb
+*.dll
+*.pdb
+
+# Visual Studio Code
+.vscode/build/
+.vscode/obj/
+.vscode/*.cache
+*.sln
+
+# Rider
+.idea/
+
+# Visual Studio
+bin/
+obj/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Build results
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+build/
+bld/
+[Bb]in/
+[Oo]bj/
+
+# MSBuild Binary and Structured Log
+*.binlog
+
+# .NET
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# Logs
+*.log
+logs/
+
+# OS files
+Thumbs.db
+.DS_Store
+*.tmp
+*.temp
+
+# RimWorld specific
+About/PublishedFileId.txt
+About/ModDependencies.xml.bak
+
+# Backup files
+*.bak
+*.backup
+*~
+
+# IDE files
+*.swp
+*.swo
+
+# Local testing files
+test_scenarios/
+debug_saves/

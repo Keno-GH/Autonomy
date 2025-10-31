@@ -11,12 +11,6 @@ namespace Autonomy
     /// </summary>
     public class PriorityGiverDef : Def
     {
-        [NoTranslate]
-        public string label;
-        
-        [NoTranslate]
-        public string description;
-        
         /// <summary>
         /// Conditions that determine when and how this priority giver activates
         /// </summary>
@@ -65,12 +59,6 @@ namespace Autonomy
     /// </summary>
     public class InfoGiverDef : Def
     {
-        [NoTranslate]
-        public string label;
-        
-        [NoTranslate] 
-        public string description;
-        
         /// <summary>
         /// What type of data source to query
         /// </summary>
@@ -79,7 +67,7 @@ namespace Autonomy
         /// <summary>
         /// How to calculate the final result from collected data
         /// </summary>
-        public CalculationType calculation = CalculationType.Sum;
+        public CalculationType calculation = CalculationType.sum;
         
         /// <summary>
         /// Target stat for pawnStat sourceType
@@ -100,11 +88,6 @@ namespace Autonomy
         /// Target ThingCategoryDefs for itemCount sourceType (better mod compatibility)
         /// </summary>
         public List<string> targetCategories = new List<string>();
-        
-        /// <summary>
-        /// Target materials for constructionCount sourceType
-        /// </summary>
-        public List<string> targetMaterials = new List<string>();
         
         /// <summary>
         /// Weather property for weather sourceType (moveSpeedMultiplier, accuracyMultiplier, etc.)
@@ -143,29 +126,29 @@ namespace Autonomy
             // Validate required fields based on source type
             switch (sourceType)
             {
-                case InfoSourceType.PawnStat:
+                case InfoSourceType.pawnStat:
                     if (targetStat.NullOrEmpty())
-                        Log.Error($"InfoGiverDef {defName} with sourceType PawnStat requires targetStat");
+                        Log.Error($"InfoGiverDef {defName} with sourceType pawnStat requires targetStat");
                     break;
                     
-                case InfoSourceType.PawnNeed:
+                case InfoSourceType.pawnNeed:
                     if (targetNeed.NullOrEmpty())
-                        Log.Error($"InfoGiverDef {defName} with sourceType PawnNeed requires targetNeed");
+                        Log.Error($"InfoGiverDef {defName} with sourceType pawnNeed requires targetNeed");
                     break;
                     
-                case InfoSourceType.ItemCount:
+                case InfoSourceType.itemCount:
                     if (targetItems.NullOrEmpty() && targetCategories.NullOrEmpty())
-                        Log.Error($"InfoGiverDef {defName} with sourceType ItemCount requires either targetItems or targetCategories");
+                        Log.Error($"InfoGiverDef {defName} with sourceType itemCount requires either targetItems or targetCategories");
                     break;
                     
-                case InfoSourceType.ConstructionCount:
-                    if (targetMaterials.NullOrEmpty())
-                        Log.Error($"InfoGiverDef {defName} with sourceType ConstructionCount requires targetMaterials");
+                case InfoSourceType.constructionCount:
+                    if (targetItems.NullOrEmpty() && targetCategories.NullOrEmpty())
+                        Log.Error($"InfoGiverDef {defName} with sourceType constructionCount requires either targetItems or targetCategories");
                     break;
                     
-                case InfoSourceType.Weather:
+                case InfoSourceType.weather:
                     if (weatherProperty.NullOrEmpty())
-                        Log.Error($"InfoGiverDef {defName} with sourceType Weather requires weatherProperty");
+                        Log.Error($"InfoGiverDef {defName} with sourceType weather requires weatherProperty");
                     break;
             }
             
@@ -204,7 +187,7 @@ namespace Autonomy
         /// <summary>
         /// How to calculate this condition
         /// </summary>
-        public CalculationType calculation = CalculationType.Flat;
+        public CalculationType calculation = CalculationType.flat;
         
         /// <summary>
         /// Flat value for comparison
@@ -253,12 +236,12 @@ namespace Autonomy
         /// <summary>
         /// Parsed operator from offset string
         /// </summary>
-        public OffsetOperator OperatorType { get; private set; }
+        public OffsetOperator OperatorType;
         
         /// <summary>
         /// Parsed value from offset string
         /// </summary>
-        public float Value { get; private set; }
+        public float Value;
 
         public void PostLoad()
         {

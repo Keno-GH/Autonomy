@@ -69,3 +69,5 @@ About/ModDependencies.xml.bak
 # Local testing files
 test_scenarios/
 debug_saves/
+logoutput.md
+wiki.diff

@@ -14,13 +14,13 @@ namespace Autonomy
     /// </summary>
     public enum InfoSourceType
     {
-        PawnStat,           // Individual pawn statistics
-        PawnNeed,           // Individual pawn needs (hunger, joy, etc.)
-        PawnCount,          // Count of pawns meeting criteria
-        ItemCount,          // Count of items/resources
-        ConstructionCount,  // Count of construction projects
-        MapCondition,       // Map-level conditions and threats
-        Weather            // Weather conditions
+        pawnStat,           // Individual pawn statistics
+        pawnNeed,           // Individual pawn needs (hunger, joy, etc.)
+        pawnCount,          // Count of pawns meeting criteria
+        itemCount,          // Count of items/resources
+        constructionCount,  // Count of construction projects
+        mapCondition,       // Map-level conditions and threats
+        weather            // Weather conditions
     }
 
     /// <summary>
@@ -28,15 +28,15 @@ namespace Autonomy
     /// </summary>
     public enum CalculationType
     {
-        Sum,        // Add all values
-        Avg,        // Average of all values
-        Max,        // Highest value
-        Min,        // Lowest value
-        Count,      // Count of items
-        Flat,       // Use flat comparison value
-        BestOf,     // Best result from multiple sources
-        WorstOf,    // Worst result from multiple sources
-        Weighted    // Weighted calculation
+        sum,        // Add all values
+        avg,        // Average of all values
+        max,        // Highest value
+        min,        // Lowest value
+        count,      // Count of items
+        flat,       // Use flat comparison value
+        bestOf,     // Best result from multiple sources
+        worstOf,    // Worst result from multiple sources
+        weighted    // Weighted calculation
     }
 
     /// <summary>
@@ -44,10 +44,10 @@ namespace Autonomy
     /// </summary>
     public enum ConditionType
     {
-        Stat,       // Check pawn statistics
-        InfoGiver,  // Use InfoGiverDef results
-        Flat,       // Compare against fixed values
-        MapStat     // Check map-level statistics
+        stat,       // Check pawn statistics
+        infoGiver,  // Use InfoGiverDef results
+        flat,       // Compare against fixed values
+        mapStat     // Check map-level statistics
     }
 
     /// <summary>

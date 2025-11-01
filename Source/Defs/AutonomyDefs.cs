@@ -70,6 +70,12 @@ namespace Autonomy
         public CalculationType calculation = CalculationType.sum;
         
         /// <summary>
+        /// Whether this InfoGiver should be evaluated more frequently (400 ticks instead of 2000)
+        /// Use for urgent matters like hostiles, fires, or other time-critical conditions
+        /// </summary>
+        public bool isUrgent = false;
+        
+        /// <summary>
         /// Target stat for pawnStat sourceType
         /// </summary>
         public string targetStat;

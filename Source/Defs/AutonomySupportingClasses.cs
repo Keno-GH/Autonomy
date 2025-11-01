@@ -93,6 +93,7 @@ namespace Autonomy
         
         // Dynamic property filtering with comparators
         public string severity;                             // e.g., ">0.5", "<=0.8", "=1.0"
+        public string severityRange;                        // e.g., "0.8~1.0" for range filtering
         public string deltaImmunitySeverity;               // Special: immunity vs severity comparison
         
         // Add more dynamic property filters as needed

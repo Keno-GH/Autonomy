@@ -71,3 +71,10 @@ test_scenarios/
 debug_saves/
 logoutput.md
 wiki.diff
+
+# Ignore decompiled files and GitHub folder
+Decompiled/
+.github/
+URGENT_SYSTEM_FEATURES.md
+XML_REFERENCE.md
+XML_REFERENCE.md

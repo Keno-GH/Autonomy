@@ -13,10 +13,28 @@ namespace Autonomy
     {
         private Dictionary<string, float> lastResults = new Dictionary<string, float>();
         private int ticksSinceLastUpdate = 0;
+        private int ticksSinceLastUrgentUpdate = 0;
         private const int UPDATE_INTERVAL = 2000; // Update every 2000 ticks (~33 seconds)
+        private const int URGENT_UPDATE_INTERVAL = 400; // Urgent updates every 400 ticks (~6.7 seconds)
 
         public InfoGiverManager(Map map) : base(map)
         {
+        }
+
+        /// <summary>
+        /// Get the latest result for an InfoGiver
+        /// </summary>
+        public float GetLastResult(string infoGiverDefName)
+        {
+            return lastResults.TryGetValue(infoGiverDefName, out float value) ? value : 0f;
+        }
+
+        /// <summary>
+        /// Get all InfoGiver results for UI display
+        /// </summary>
+        public Dictionary<string, float> GetAllResults()
+        {
+            return new Dictionary<string, float>(lastResults);
         }
 
         public override void MapComponentTick()
@@ -24,10 +42,41 @@ namespace Autonomy
             base.MapComponentTick();
             
             ticksSinceLastUpdate++;
+            ticksSinceLastUrgentUpdate++;
+            
+            // Check urgent InfoGivers every 400 ticks
+            if (ticksSinceLastUrgentUpdate >= URGENT_UPDATE_INTERVAL)
+            {
+                ticksSinceLastUrgentUpdate = 0;
+                EvaluateUrgentInfoGivers();
+            }
+            
+            // Check all InfoGivers every 2000 ticks
             if (ticksSinceLastUpdate >= UPDATE_INTERVAL)
             {
                 ticksSinceLastUpdate = 0;
                 EvaluateAllInfoGivers();
+            }
+        }
+
+        private void EvaluateUrgentInfoGivers()
+        {
+            var infoGivers = DefDatabase<InfoGiverDef>.AllDefs.Where(ig => ig.isUrgent);
+            
+            foreach (var infoGiver in infoGivers)
+            {
+                try
+                {
+                    float result = EvaluateInfoGiver(infoGiver);
+                    lastResults[infoGiver.defName] = result;
+                    
+                    // Log urgent results with different prefix
+                    Log.Message($"[Autonomy-Urgent] {infoGiver.label}: {result:F2}");
+                }
+                catch (Exception e)
+                {
+                    Log.Error($"[Autonomy] Error evaluating urgent InfoGiver {infoGiver.defName}: {e.Message}");
+                }
             }
         }
 
@@ -42,8 +91,9 @@ namespace Autonomy
                     float result = EvaluateInfoGiver(infoGiver);
                     lastResults[infoGiver.defName] = result;
                     
-                    // Log the result for now
-                    Log.Message($"[Autonomy] {infoGiver.label}: {result:F2} ({infoGiver.description})");
+                    // Log the result with appropriate prefix
+                    string prefix = infoGiver.isUrgent ? "[Autonomy-Urgent]" : "[Autonomy]";
+                    Log.Message($"{prefix} {infoGiver.label}: {result:F2} ({infoGiver.description})");
                 }
                 catch (Exception e)
                 {
@@ -293,6 +343,12 @@ namespace Autonomy
                     if (!EvaluateComparison(hediff.Severity, filter.severity)) continue;
                 }
                 
+                // Check severity range if specified
+                if (!filter.severityRange.NullOrEmpty())
+                {
+                    if (!EvaluateSeverityRange(hediff.Severity, filter.severityRange)) continue;
+                }
+                
                 // If we get here, this hediff matches all criteria
                 return true;
             }
@@ -335,6 +391,33 @@ namespace Autonomy
                 // Try direct parsing as equality
                 if (float.TryParse(comparison, out float threshold))
                     return Math.Abs(value - threshold) < 0.01f;
+            }
+            
+            return true; // Default to true if can't parse
+        }
+
+        private bool EvaluateSeverityRange(float value, string rangeStr)
+        {
+            if (rangeStr.NullOrEmpty()) return true;
+            
+            // Parse range format like "0.8~1.0"
+            if (rangeStr.Contains("~"))
+            {
+                string[] parts = rangeStr.Split('~');
+                if (parts.Length == 2 && 
+                    float.TryParse(parts[0], out float min) && 
+                    float.TryParse(parts[1], out float max))
+                {
+                    return value >= min && value <= max;
+                }
+            }
+            else
+            {
+                // If no ~ found, treat as exact value
+                if (float.TryParse(rangeStr, out float exactValue))
+                {
+                    return Math.Abs(value - exactValue) < 0.01f;
+                }
             }
             
             return true; // Default to true if can't parse

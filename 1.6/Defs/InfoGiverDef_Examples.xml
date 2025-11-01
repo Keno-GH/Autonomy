@@ -8,6 +8,7 @@
 		
 		<sourceType>itemCount</sourceType>
 		<calculation>sum</calculation>
+		<isUrgent>false</isUrgent> <!-- Normal evaluation - not time critical -->
 		
 		<!-- Target ThingCategoryDefs for better mod compatibility -->
 		<targetCategories>
@@ -310,6 +311,7 @@
 		
 		<sourceType>itemCount</sourceType>
 		<calculation>sum</calculation>
+		<isUrgent>false</isUrgent>
 		
 		<!-- Use categories for better mod compatibility -->
 		<targetCategories>
@@ -321,4 +323,78 @@
 			<excludeForbidden>true</excludeForbidden>
 		</filters>
 	</Autonomy.InfoGiverDef>
+
+	<!-- URGENT INFOGIVER EXAMPLES - These evaluate every 400 ticks for time-critical situations -->
+	
+	<!-- Example: Urgent hostile detection -->
+	<Autonomy.InfoGiverDef>
+		<defName>HostileThreats</defName>
+		<label>Hostile threats on map</label>
+		<description>Counts hostile pawns currently on the map - urgent evaluation for defense priorities</description>
+		
+		<sourceType>pawnCount</sourceType>
+		<calculation>sum</calculation>
+		<isUrgent>true</isUrgent> <!-- URGENT: Evaluate every 400 ticks -->
+		
+		<filters>
+			<include>
+				<li>hostile</li>
+			</include>
+		</filters>
+	</Autonomy.InfoGiverDef>
+	
+	<!-- Example: Urgent downed colonist detection -->
+	<Autonomy.InfoGiverDef>
+		<defName>DownedColonists</defName>
+		<label>Downed colonists</label>
+		<description>Counts downed colonists requiring immediate medical attention - urgent evaluation</description>
+		
+		<sourceType>pawnCount</sourceType>
+		<calculation>sum</calculation>
+		<isUrgent>true</isUrgent> <!-- URGENT: Medical emergencies need fast response -->
+		
+		<filters>
+			<include>
+				<li>colonist</li>
+			</include>
+			<hediffs>
+				<li>
+					<hediffClass>Hediff_Injury</hediffClass>
+					<severityRange>0.8~1.0</severityRange>
+				</li>
+			</hediffs>
+		</filters>
+	</Autonomy.InfoGiverDef>
+	
+	<!-- Example: Urgent map condition monitoring -->
+	<Autonomy.InfoGiverDef>
+		<defName>ToxicFalloutThreat</defName>
+		<label>Toxic fallout active</label>
+		<description>Monitors for active toxic fallout - urgent evaluation to adjust priorities quickly</description>
+		
+		<sourceType>mapCondition</sourceType>
+		<calculation>max</calculation>
+		<isUrgent>true</isUrgent> <!-- URGENT: Environmental threats need immediate response -->
+		
+		<conditions>
+			<li>
+				<type>ToxicFallout</type>
+				<weight>1.0</weight>
+			</li>
+		</conditions>
+	</Autonomy.InfoGiverDef>
+	
+	<!-- Example: Urgent weather monitoring -->
+	<Autonomy.InfoGiverDef>
+		<defName>ExtremeWeatherThreat</defName>
+		<label>Extreme weather conditions</label>
+		<description>Monitors for extreme weather requiring immediate priority adjustments</description>
+		
+		<sourceType>weather</sourceType>
+		<calculation>max</calculation>
+		<isUrgent>true</isUrgent> <!-- URGENT: Weather changes need quick adaptation -->
+		
+		<weatherProperty>weatherintensity</weatherProperty>
+	</Autonomy.InfoGiverDef>
+
 </Defs>

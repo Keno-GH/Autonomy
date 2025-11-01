@@ -40,6 +40,7 @@
     
     <sourceType>itemCount</sourceType>
     <calculation>sum</calculation>
+    <isUrgent>false</isUrgent> <!-- Set to true for urgent matters like hostiles/fires -->
     
     <!-- Use categories for better mod compatibility -->
     <targetCategories>
@@ -93,17 +94,48 @@
 | `bestOf` | Best result |
 | `worstOf` | Worst result |
 
+### InfoGiverDef Fields
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `defName` | string | ✓ | Unique identifier |
+| `label` | string | ✓ | Display name |
+| `description` | string | ✓ | Explanation text |
+| `sourceType` | enum | ✓ | Type of data to collect |
+| `calculation` | enum | ✗ | How to calculate result (default: sum) |
+| `isUrgent` | bool | ✗ | Update every 400 ticks instead of 2000 (default: false) |
+| `targetStat` | string | * | Required for pawnStat sourceType |
+| `targetNeed` | string | * | Required for pawnNeed sourceType |
+| `weatherProperty` | string | * | Required for weather sourceType |
+| `targetItems` | List | * | Items to target (alternative to categories) |
+| `targetCategories` | List | * | Thing categories to target |
+| `conditions` | List | * | Required for mapCondition sourceType |
+| `filters` | object | ✗ | Advanced filtering options |
+
 ### InfoGiver Source Types
 
-| Type | Description | Required Fields |
-|------|-------------|-----------------|
-| `itemCount` | Count items | `targetItems` OR `targetCategories` |
-| `pawnCount` | Count pawns | `filters` |
-| `pawnStat` | Pawn statistics | `targetStat` |
-| `pawnNeed` | Pawn needs | `targetNeed` |
-| `constructionCount` | Construction projects | `targetMaterials` |
-| `mapCondition` | Map conditions | `conditions` |
-| `weather` | Weather assessment | `weatherProperty` |
+| Type | Description | Required Fields | Suggested for Urgent |
+|------|-------------|-----------------|---------------------|
+| `itemCount` | Count items | `targetItems` OR `targetCategories` | Medical supplies, ammo |
+| `pawnCount` | Count pawns | `filters` | Hostiles, downed colonists |
+| `pawnStat` | Pawn statistics | `targetStat` | Combat readiness |
+| `pawnNeed` | Pawn needs | `targetNeed` | Critical needs |
+| `constructionCount` | Construction projects | `targetItems` OR `targetCategories` | Defenses, power |
+| `mapCondition` | Map conditions | `conditions` | ✓ Toxic fallout, raids |
+| `weather` | Weather assessment | `weatherProperty` | ✓ Extreme temperatures |
+
+### Update Frequency
+
+The `isUrgent` field controls how often InfoGivers are evaluated:
+
+- **Normal (isUrgent=false)**: Every 2000 ticks (~33 seconds) - suitable for resources, general statistics
+- **Urgent (isUrgent=true)**: Every 400 ticks (~6.7 seconds) - suitable for threats, emergencies, time-critical conditions
+
+Use urgent evaluation sparingly to avoid performance impact. Ideal for:
+- Enemy pawn detection
+- Fire/emergency response  
+- Critical resource shortages
+- Immediate threat assessment
 
 ### Advanced Filtering System
 
@@ -132,6 +164,10 @@
             <severity>&gt;0.5</severity>  <!-- XML escaped > -->
         </li>
         <li>
+            <hediffClass>Hediff_Injury</hediffClass>
+            <severityRange>0.8~1.0</severityRange>  <!-- Range format -->
+        </li>
+        <li>
             <hediffClass>HediffWithComps</hediffClass>
             <hasComps>HediffCompProperties_Immunizable</hasComps>
             <deltaImmunitySeverity>&lt;0</deltaImmunitySeverity>
@@ -141,6 +177,10 @@
 ```
 
 #### Hediff Filter Comparators
+| Field | Format | Description |
+|-------|--------|-------------|
+| `severity` | `>0.5`, `<=0.8`, `=1.0` | Single value comparison |
+| `severityRange` | `0.8~1.0` | Range comparison (min~max) |
 | Operator | XML Escaped | Description |
 |----------|-------------|-------------|
 | `>` | `&gt;` | Greater than |

@@ -12,14 +12,15 @@ namespace Autonomy
     public class PriorityGiverDef : Def
     {
         /// <summary>
+        /// Whether this PriorityGiver should be evaluated more frequently (400 ticks instead of 2000)
+        /// Use for urgent matters that require quick priority adjustments
+        /// </summary>
+        public bool isUrgent = false;
+        
+        /// <summary>
         /// Conditions that determine when and how this priority giver activates
         /// </summary>
         public List<PriorityCondition> conditions = new List<PriorityCondition>();
-        
-        /// <summary>
-        /// Personality trait-based modifications to condition results
-        /// </summary>
-        public List<PersonalityOffset> personalityOffsets = new List<PersonalityOffset>();
         
         /// <summary>
         /// Maps condition results to actual priority values
@@ -277,6 +278,8 @@ namespace Autonomy
         }
     }
 
+    // PersonalityOffset functionality removed as requested by user
+    /*
     /// <summary>
     /// Personality trait offset for condition results
     /// </summary>
@@ -365,6 +368,7 @@ namespace Autonomy
             }
         }
     }
+    */
 
     /// <summary>
     /// Maps condition results to priority values

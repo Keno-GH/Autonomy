@@ -148,8 +148,8 @@ namespace Autonomy
                     float result = EvaluateInfoGiver(infoGiver);
                     lastResults[infoGiver.defName] = result;
                     
-                    // Log urgent results with different prefix
-                    Log.Message($"[Autonomy-Urgent] {infoGiver.label}: {result:F2}");
+                    // InfoGiver logging disabled - now logging PriorityGivers instead
+                    // Log.Message($"[Autonomy-Urgent] {infoGiver.label}: {result:F2}");
                 }
                 catch (Exception e)
                 {
@@ -169,9 +169,9 @@ namespace Autonomy
                     float result = EvaluateInfoGiver(infoGiver);
                     lastResults[infoGiver.defName] = result;
                     
-                    // Log the result with appropriate prefix
-                    string prefix = infoGiver.isUrgent ? "[Autonomy-Urgent]" : "[Autonomy]";
-                    Log.Message($"{prefix} {infoGiver.label}: {result:F2} ({infoGiver.description})");
+                    // InfoGiver logging disabled - now logging PriorityGivers instead
+                    // string prefix = infoGiver.isUrgent ? "[Autonomy-Urgent]" : "[Autonomy]";
+                    // Log.Message($"{prefix} {infoGiver.label}: {result:F2} ({infoGiver.description})");
                 }
                 catch (Exception e)
                 {

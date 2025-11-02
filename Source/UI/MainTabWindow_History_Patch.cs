@@ -50,7 +50,6 @@ namespace Autonomy
                         // Increase Y so the quick-search box sits lower (below tabs)
                         Vector2 newVal = new Vector2(old.x, 52f);
                         searchBarField.SetValue(null, newVal);
-                        Log.Message($"[Autonomy] Adjusted MainTabWindow_History.SearchBarOffset to {newVal}");
                     }
                 }
                 catch (System.Exception e)
@@ -157,11 +156,9 @@ namespace Autonomy
                 bool alreadyAdded = tabs.Any(tab => tab.label == "Autonomy");
                     if (!alreadyAdded)
                     {
-                        Log.Message("[Autonomy] Adding Autonomy tab to History window");
                         // Add our Autonomy tab to the existing tabs
                         tabs.Add(new TabRecord("Autonomy", delegate
                         {
-                            Log.Message("[Autonomy] Autonomy tab clicked - setting autonomyTabSelected = true");
                             // Record the built-in curTab value at the moment of selection so we can
                             // detect later if the player switched to a built-in tab.
                             try
@@ -195,7 +192,6 @@ namespace Autonomy
             // Check if our Autonomy tab is selected
             if (autonomyTabSelected)
             {
-                Log.Message("[Autonomy] Rendering Autonomy tab content");
                 // Create content area like other tabs do
                 Rect contentRect = rect;
                 contentRect.yMin += 45f; // Same offset as other tabs
@@ -207,7 +203,6 @@ namespace Autonomy
 
         private static void DoAutonomyTabContent(Rect rect)
         {
-            Log.Message($"[Autonomy] DoAutonomyTabContent called with rect: {rect}");
             Widgets.BeginGroup(rect);
 
             // Use margin-based layout so elements adapt to different window sizes

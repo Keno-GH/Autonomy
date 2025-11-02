@@ -51,6 +51,8 @@ namespace Autonomy
         mapStat     // Check map-level statistics
     }
 
+    // OffsetOperator enum commented out with PersonalityOffset functionality
+    /*
     /// <summary>
     /// Mathematical operations for personality offsets
     /// </summary>
@@ -60,6 +62,7 @@ namespace Autonomy
         Subtract,   // -
         Multiply    // x
     }
+    */
 
     /// <summary>
     /// Filters for InfoGiver data collection - modular and extensible

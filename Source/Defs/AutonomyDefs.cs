@@ -67,7 +67,7 @@ namespace Autonomy
         /// <summary>
         /// How to calculate the final result from collected data
         /// </summary>
-        public CalculationType calculation = CalculationType.sum;
+        public CalculationType calculation = CalculationType.Sum;
         
         /// <summary>
         /// Whether this InfoGiver should be evaluated more frequently (400 ticks instead of 2000)
@@ -124,6 +124,20 @@ namespace Autonomy
         /// Whether to invert the final value (useful for needs where lower = higher priority)
         /// </summary>
         public bool invertValue;
+        
+        /// <summary>
+        /// Whether this InfoGiver tracks data by location/room
+        /// When true, the InfoGiver will store separate values for different rooms/areas
+        /// and can be queried with a specific location context
+        /// </summary>
+        public bool isLocalizable = false;
+        
+        /// <summary>
+        /// Whether this InfoGiver tracks data by individual pawn
+        /// When true, the InfoGiver will store individual pawn values and distances from averages
+        /// and can be queried with a specific pawn context
+        /// </summary>
+        public bool isIndividualizable = false;
 
         public override void ResolveReferences()
         {
@@ -193,7 +207,7 @@ namespace Autonomy
         /// <summary>
         /// How to calculate this condition
         /// </summary>
-        public CalculationType calculation = CalculationType.flat;
+        public CalculationType calculation = CalculationType.Flat;
         
         /// <summary>
         /// Flat value for comparison
@@ -209,6 +223,25 @@ namespace Autonomy
         /// Range for infoGiver results
         /// </summary>
         public FloatRange infoRange;
+        
+        /// <summary>
+        /// Request localized data from InfoGiver (if supported)
+        /// When true, queries data specific to the pawn's current location/room
+        /// </summary>
+        public bool requestLocalizedData = false;
+        
+        /// <summary>
+        /// Request individualized data from InfoGiver (if supported)
+        /// When true, queries the individual pawn's value instead of the global result
+        /// </summary>
+        public bool requestIndividualData = false;
+        
+        /// <summary>
+        /// Request distance from global value for individualized InfoGivers
+        /// When true, returns how far the pawn's value is from the group average
+        /// (positive = above average, negative = below average)
+        /// </summary>
+        public bool requestDistanceFromGlobal = false;
 
         public void ResolveReferences()
         {
@@ -219,6 +252,26 @@ namespace Autonomy
                 if (infoDef == null)
                 {
                     Log.Error($"PriorityCondition references unknown InfoGiverDef: {infoDefName}");
+                    return;
+                }
+                
+                // Validate localized data request
+                if (requestLocalizedData && !infoDef.isLocalizable)
+                {
+                    Log.Error($"PriorityCondition requests localized data from InfoGiver {infoDefName}, but it is not localizable");
+                }
+                
+                // Validate individualized data requests
+                if ((requestIndividualData || requestDistanceFromGlobal) && !infoDef.isIndividualizable)
+                {
+                    Log.Error($"PriorityCondition requests individualized data from InfoGiver {infoDefName}, but it is not individualizable");
+                }
+                
+                // Validate that distance request implies individual data
+                if (requestDistanceFromGlobal && !requestIndividualData)
+                {
+                    Log.Warning($"PriorityCondition requests distance from global but not individual data for {infoDefName}. Setting requestIndividualData to true.");
+                    requestIndividualData = true;
                 }
             }
         }

@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+	<!-- Example: PriorityGiver using localized filth data -->
+	<Autonomy.PriorityGiverDef>
+		<defName>CleanPriorityByRoom</defName>
+		<label>Room-specific cleaning priority</label>
+		<description>Increases cleaning priority based on filth level in the pawn's current room</description>
+		
+		<conditions>
+			<li>
+				<type>infoGiver</type>
+				<infoDefName>RoomFilthLevel</infoDefName>
+				<calculation>Flat</calculation>
+				<infoRange>0~20</infoRange>
+				<requestLocalizedData>true</requestLocalizedData>
+			</li>
+		</conditions>
+		
+		<priorityRanges>
+			<li>
+				<validRange>0~2</validRange>
+				<priority>1</priority>
+				<description>Clean room - low cleaning priority</description>
+			</li>
+			<li>
+				<validRange>3~7</validRange>
+				<priority>2</priority>
+				<description>Slightly dirty - moderate cleaning priority</description>
+			</li>
+			<li>
+				<validRange>8~15</validRange>
+				<priority>3</priority>
+				<description>Dirty room - high cleaning priority</description>
+			</li>
+			<li>
+				<validRange>16~20</validRange>
+				<priority>4</priority>
+				<description>Very dirty - urgent cleaning priority</description>
+			</li>
+		</priorityRanges>
+		
+		<targetWorkTypes>
+			<li>Cleaning</li>
+		</targetWorkTypes>
+	</Autonomy.PriorityGiverDef>
+
+	<!-- Example: PriorityGiver using individualized joy data -->
+	<Autonomy.PriorityGiverDef>
+		<defName>RecreationPriorityByPersonalNeed</defName>
+		<label>Personal recreation priority</label>
+		<description>Adjusts recreation priority based on the individual pawn's joy level compared to colony average</description>
+		
+		<conditions>
+			<li>
+				<type>infoGiver</type>
+				<infoDefName>IndividualColonyRecreationNeed</infoDefName>
+				<calculation>Flat</calculation>
+				<infoRange>-1.0~1.0</infoRange>
+				<requestDistanceFromGlobal>true</requestDistanceFromGlobal>
+			</li>
+		</conditions>
+		
+		<!-- Personality trait modifications -->
+		<personalityOffsets>
+			<li>
+				<name>Jogger</name>
+				<offset>+1</offset>
+			</li>
+			<li>
+				<name>Ascetic</name>
+				<offset>-1</offset>
+			</li>
+		</personalityOffsets>
+		
+		<priorityRanges>
+			<li>
+				<validRange>0.2~1.0</validRange>
+				<priority>1</priority>
+				<description>Above average joy - low recreation priority</description>
+			</li>
+			<li>
+				<validRange>-0.1~0.2</validRange>
+				<priority>2</priority>
+				<description>Near average joy - moderate recreation priority</description>
+			</li>
+			<li>
+				<validRange>-0.3~-0.1</validRange>
+				<priority>3</priority>
+				<description>Below average joy - high recreation priority</description>
+			</li>
+			<li>
+				<validRange>-1.0~-0.3</validRange>
+				<priority>4</priority>
+				<description>Much below average - urgent recreation priority</description>
+			</li>
+		</priorityRanges>
+		
+		<targetWorkTypes>
+			<li>Recreation</li>
+		</targetWorkTypes>
+	</Autonomy.PriorityGiverDef>
+
+	<!-- Example: PriorityGiver for construction based on personal skill vs colony average -->
+	<Autonomy.PriorityGiverDef>
+		<defName>ConstructionPriorityBySkill</defName>
+		<label>Skill-based construction priority</label>
+		<description>Adjusts construction priority based on how the pawn's construction skill compares to colony average</description>
+		
+		<conditions>
+			<li>
+				<type>infoGiver</type>
+				<infoDefName>ColonyConstructionSkill</infoDefName>
+				<calculation>Flat</calculation>
+				<infoRange>-10~10</infoRange>
+				<requestDistanceFromGlobal>true</requestDistanceFromGlobal>
+			</li>
+		</conditions>
+		
+		<priorityRanges>
+			<li>
+				<validRange>5~10</validRange>
+				<priority>4</priority>
+				<description>Much above average skill - high construction priority</description>
+			</li>
+			<li>
+				<validRange>2~5</validRange>
+				<priority>3</priority>
+				<description>Above average skill - moderate construction priority</description>
+			</li>
+			<li>
+				<validRange>-2~2</validRange>
+				<priority>2</priority>
+				<description>Average skill - normal construction priority</description>
+			</li>
+			<li>
+				<validRange>-10~-2</validRange>
+				<priority>1</priority>
+				<description>Below average skill - low construction priority</description>
+			</li>
+		</priorityRanges>
+		
+		<targetWorkTypes>
+			<li>Construction</li>
+		</targetWorkTypes>
+	</Autonomy.PriorityGiverDef>
+
+	<!-- Example: Medical priority based on injured pawns in current room -->
+	<Autonomy.PriorityGiverDef>
+		<defName>LocalizedMedicalPriority</defName>
+		<label>Room-based medical priority</label>
+		<description>Increases medical priority when there are injured pawns in the current room</description>
+		
+		<conditions>
+			<li>
+				<type>infoGiver</type>
+				<infoDefName>RoomInjuredPawns</infoDefName>
+				<calculation>Flat</calculation>
+				<infoRange>0~10</infoRange>
+				<requestLocalizedData>true</requestLocalizedData>
+			</li>
+		</conditions>
+		
+		<priorityRanges>
+			<li>
+				<validRange>0~0</validRange>
+				<priority>1</priority>
+				<description>No injured pawns in room - low medical priority</description>
+			</li>
+			<li>
+				<validRange>1~2</validRange>
+				<priority>3</priority>
+				<description>Some injured pawns in room - high medical priority</description>
+			</li>
+			<li>
+				<validRange>3~10</validRange>
+				<priority>4</priority>
+				<description>Many injured pawns in room - urgent medical priority</description>
+			</li>
+		</priorityRanges>
+		
+		<targetWorkTypes>
+			<li>Doctor</li>
+		</targetWorkTypes>
+	</Autonomy.PriorityGiverDef>
+
+</Defs>

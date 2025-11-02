@@ -12,6 +12,8 @@ namespace Autonomy
     public class InfoGiverManager : MapComponent
     {
         private Dictionary<string, float> lastResults = new Dictionary<string, float>();
+        private Dictionary<string, LocationalData> locationalData = new Dictionary<string, LocationalData>();
+        private Dictionary<string, IndividualData> individualData = new Dictionary<string, IndividualData>();
         private int ticksSinceLastUpdate = 0;
         private int ticksSinceLastUrgentUpdate = 0;
         private const int UPDATE_INTERVAL = 2000; // Update every 2000 ticks (~33 seconds)
@@ -27,6 +29,82 @@ namespace Autonomy
         public float GetLastResult(string infoGiverDefName)
         {
             return lastResults.TryGetValue(infoGiverDefName, out float value) ? value : 0f;
+        }
+
+        /// <summary>
+        /// Get InfoGiver result with context (localized/individualized)
+        /// </summary>
+        public float GetLastResult(string infoGiverDefName, InfoGiverQueryContext context)
+        {
+            var infoDef = DefDatabase<InfoGiverDef>.GetNamedSilentFail(infoGiverDefName);
+            if (infoDef == null) return GetLastResult(infoGiverDefName);
+            
+            // Handle individualized InfoGivers
+            if (infoDef.isIndividualizable && context.requestingPawn != null)
+            {
+                // Ensure individualized data exists
+                if (!individualData.ContainsKey(infoGiverDefName) && CanBeIndividualized(infoDef.sourceType))
+                {
+                    CollectIndividualizedData(infoDef);
+                }
+                
+                if (individualData.TryGetValue(infoGiverDefName, out IndividualData indData))
+                {
+                    if (context.requestDistanceFromGlobal)
+                    {
+                        return indData.GetSignedDistanceFromGlobal(context.requestingPawn);
+                    }
+                    else if (context.requestIndividualData)
+                    {
+                        return indData.GetPawnValue(context.requestingPawn);
+                    }
+                }
+            }
+            
+            // Handle localized InfoGivers
+            if (infoDef.isLocalizable && context.location.HasValue)
+            {
+                // Ensure localized data exists
+                if (!locationalData.ContainsKey(infoGiverDefName) && CanBeLocalized(infoDef.sourceType))
+                {
+                    CollectLocalizedData(infoDef);
+                }
+                
+                if (locationalData.TryGetValue(infoGiverDefName, out LocationalData locData))
+                {
+                    if (context.requestLocalizedData)
+                    {
+                        Room room = map.regionGrid.GetValidRegionAt(context.location.Value)?.Room;
+                        // Treat "None" rooms as outside areas
+                        if (ShouldIgnoreRoom(room))
+                        {
+                            room = null;
+                        }
+                        return locData.GetRoomValue(room);
+                    }
+                }
+            }
+            
+            // Fall back to global result
+            return GetLastResult(infoGiverDefName);
+        }
+
+        /// <summary>
+        /// Get InfoGiver result based on PriorityCondition request flags
+        /// </summary>
+        public float GetLastResult(string infoGiverDefName, PriorityCondition condition, Pawn requestingPawn = null)
+        {
+            // Build query context from condition flags
+            var context = new InfoGiverQueryContext
+            {
+                requestingPawn = requestingPawn,
+                location = requestingPawn?.Position,
+                requestIndividualData = condition.requestIndividualData,
+                requestDistanceFromGlobal = condition.requestDistanceFromGlobal,
+                requestLocalizedData = condition.requestLocalizedData
+            };
+            
+            return GetLastResult(infoGiverDefName, context);
         }
 
         /// <summary>
@@ -104,33 +182,70 @@ namespace Autonomy
 
         private float EvaluateInfoGiver(InfoGiverDef def)
         {
+            float result = 0f;
+            
             switch (def.sourceType)
             {
                 case InfoSourceType.itemCount:
-                    return EvaluateItemCount(def);
+                    result = EvaluateItemCount(def);
+                    break;
                 
                 case InfoSourceType.pawnCount:
-                    return EvaluatePawnCount(def);
+                    result = EvaluatePawnCount(def);
+                    break;
                     
                 case InfoSourceType.pawnStat:
-                    return EvaluatePawnStat(def);
+                    result = EvaluatePawnStat(def);
+                    break;
                     
                 case InfoSourceType.pawnNeed:
-                    return EvaluatePawnNeed(def);
+                    result = EvaluatePawnNeed(def);
+                    break;
                     
                 case InfoSourceType.constructionCount:
-                    return EvaluateConstructionCount(def);
+                    result = EvaluateConstructionCount(def);
+                    break;
                     
                 case InfoSourceType.mapCondition:
-                    return EvaluateMapCondition(def);
+                    result = EvaluateMapCondition(def);
+                    break;
                     
                 case InfoSourceType.weather:
-                    return EvaluateWeather(def);
+                    result = EvaluateWeather(def);
+                    break;
                     
                 default:
                     Log.Warning($"[Autonomy] Unknown sourceType {def.sourceType} for InfoGiver {def.defName}");
                     return 0f;
             }
+            
+            // Handle localized and individualized data collection for applicable source types
+            if (def.isLocalizable && CanBeLocalized(def.sourceType))
+            {
+                CollectLocalizedData(def);
+            }
+            
+            if (def.isIndividualizable && CanBeIndividualized(def.sourceType))
+            {
+                CollectIndividualizedData(def);
+            }
+            
+            return result;
+        }
+        
+        private bool CanBeLocalized(InfoSourceType sourceType)
+        {
+            // These source types can be tracked by location
+            return sourceType == InfoSourceType.itemCount || 
+                   sourceType == InfoSourceType.pawnCount ||
+                   sourceType == InfoSourceType.constructionCount;
+        }
+        
+        private bool CanBeIndividualized(InfoSourceType sourceType)
+        {
+            // These source types can be tracked by individual pawn
+            return sourceType == InfoSourceType.pawnStat || 
+                   sourceType == InfoSourceType.pawnNeed;
         }
 
         private float EvaluateItemCount(InfoGiverDef def)
@@ -793,22 +908,22 @@ namespace Autonomy
 
             switch (calculation)
             {
-                case CalculationType.sum:
+                case CalculationType.Sum:
                     return values.Sum();
                     
-                case CalculationType.avg:
+                case CalculationType.Avg:
                     return values.Average();
                     
-                case CalculationType.max:
+                case CalculationType.Max:
                     return values.Max();
                     
-                case CalculationType.min:
+                case CalculationType.Min:
                     return values.Min();
                     
-                case CalculationType.count:
+                case CalculationType.Count:
                     return values.Count;
                     
-                case CalculationType.flat:
+                case CalculationType.Flat:
                     return values.FirstOrDefault();
                     
                 default:
@@ -823,6 +938,256 @@ namespace Autonomy
         public float GetInfoGiverResult(string defName)
         {
             return lastResults.TryGetValue(defName, out float result) ? result : 0f;
+        }
+
+        /// <summary>
+        /// Collect localized data for InfoGivers that support it
+        /// </summary>
+        private void CollectLocalizedData(InfoGiverDef def)
+        {
+            if (!locationalData.ContainsKey(def.defName))
+            {
+                locationalData[def.defName] = new LocationalData();
+            }
+            
+            var locData = locationalData[def.defName];
+            locData.roomData.Clear();
+            locData.cellData.Clear();
+            
+            switch (def.sourceType)
+            {
+                case InfoSourceType.itemCount:
+                    CollectLocalizedItemData(def, locData);
+                    break;
+                case InfoSourceType.pawnCount:
+                    CollectLocalizedPawnData(def, locData);
+                    break;
+                case InfoSourceType.constructionCount:
+                    CollectLocalizedConstructionData(def, locData);
+                    break;
+            }
+            
+            locData.globalValue = lastResults.TryGetValue(def.defName, out float globalVal) ? globalVal : 0f;
+        }
+
+        /// <summary>
+        /// Collect individualized data for InfoGivers that support it
+        /// </summary>
+        private void CollectIndividualizedData(InfoGiverDef def)
+        {
+            if (!individualData.ContainsKey(def.defName))
+            {
+                individualData[def.defName] = new IndividualData();
+            }
+            
+            var indData = individualData[def.defName];
+            indData.pawnValues.Clear();
+            indData.calculationType = def.calculation;
+            
+            switch (def.sourceType)
+            {
+                case InfoSourceType.pawnStat:
+                    CollectIndividualPawnStatData(def, indData);
+                    break;
+                case InfoSourceType.pawnNeed:
+                    CollectIndividualPawnNeedData(def, indData);
+                    break;
+            }
+            
+            indData.RecalculateGlobalValue();
+        }
+
+        private void CollectLocalizedItemData(InfoGiverDef def, LocationalData locData)
+        {
+            var items = new List<Thing>();
+            
+            // Collect items based on targeting
+            if (!def.targetItems.NullOrEmpty())
+            {
+                foreach (string itemDefName in def.targetItems)
+                {
+                    var thingDef = DefDatabase<ThingDef>.GetNamedSilentFail(itemDefName);
+                    if (thingDef != null)
+                    {
+                        items.AddRange(map.listerThings.ThingsOfDef(thingDef));
+                    }
+                }
+            }
+            
+            if (!def.targetCategories.NullOrEmpty())
+            {
+                foreach (string categoryDefName in def.targetCategories)
+                {
+                    var categoryDef = DefDatabase<ThingCategoryDef>.GetNamedSilentFail(categoryDefName);
+                    if (categoryDef != null)
+                    {
+                        var thingDefs = DefDatabase<ThingDef>.AllDefs.Where(td => 
+                            td.thingCategories != null && td.thingCategories.Contains(categoryDef));
+                        
+                        foreach (var thingDef in thingDefs)
+                        {
+                            items.AddRange(map.listerThings.ThingsOfDef(thingDef));
+                        }
+                    }
+                }
+            }
+            
+            // Apply filters
+            items = ApplyItemFilters(items, def.filters);
+            
+            // Group by room and calculate values, ignoring "None" rooms
+            var roomGroups = items.GroupBy(item => 
+            {
+                Room room = map.regionGrid.GetValidRegionAt(item.Position)?.Room;
+                if (ShouldIgnoreRoom(room))
+                {
+                    return -1; // Treat as outside if room should be ignored
+                }
+                return room?.ID ?? -1; // -1 for outside
+            });
+            
+            foreach (var group in roomGroups)
+            {
+                var roomItems = group.ToList();
+                var values = roomItems.Select(item => (float)item.stackCount).ToList();
+                float roomValue = CalculateResult(values, def.calculation);
+                locData.roomData[group.Key] = roomValue;
+            }
+        }
+
+        private void CollectLocalizedPawnData(InfoGiverDef def, LocationalData locData)
+        {
+            var pawns = new List<Pawn>();
+            var allPawns = map.mapPawns.AllPawns;
+            pawns = ApplyPawnTypeFilters(allPawns, def.filters);
+            
+            if (def.filters?.hediffs != null && def.filters.hediffs.Count > 0)
+            {
+                pawns = ApplyHediffFilters(pawns, def.filters.hediffs);
+            }
+            
+            // Group by room and calculate values, ignoring "None" rooms
+            var roomGroups = pawns.GroupBy(pawn => 
+            {
+                Room room = map.regionGrid.GetValidRegionAt(pawn.Position)?.Room;
+                if (ShouldIgnoreRoom(room))
+                {
+                    return -1; // Treat as outside if room should be ignored
+                }
+                return room?.ID ?? -1; // -1 for outside
+            });
+            
+            foreach (var group in roomGroups)
+            {
+                var roomPawns = group.ToList();
+                var values = roomPawns.Select(p => 1f).ToList();
+                float roomValue = CalculateResult(values, def.calculation);
+                locData.roomData[group.Key] = roomValue;
+            }
+        }
+
+        private void CollectLocalizedConstructionData(InfoGiverDef def, LocationalData locData)
+        {
+            var allThings = map.listerThings.AllThings;
+            var constructionItems = allThings
+                .Where(t => t is Blueprint_Build || t is Frame)
+                .ToList();
+                
+            // Group by room and calculate values, ignoring "None" rooms
+            var roomGroups = constructionItems.GroupBy(item => 
+            {
+                Room room = map.regionGrid.GetValidRegionAt(item.Position)?.Room;
+                if (ShouldIgnoreRoom(room))
+                {
+                    return -1; // Treat as outside if room should be ignored
+                }
+                return room?.ID ?? -1; // -1 for outside
+            });
+            
+            foreach (var group in roomGroups)
+            {
+                var roomItems = group.ToList();
+                var values = new List<float>();
+                
+                foreach (var item in roomItems)
+                {
+                    if (item is Blueprint_Build blueprint)
+                    {
+                        float materialCount = CountConstructionMaterials(blueprint, def);
+                        if (materialCount > 0) values.Add(materialCount);
+                    }
+                    else if (item is Frame frame)
+                    {
+                        float materialCount = CountFrameMaterials(frame, def);
+                        if (materialCount > 0) values.Add(materialCount);
+                    }
+                }
+                
+                if (values.Count > 0)
+                {
+                    float roomValue = CalculateResult(values, def.calculation);
+                    locData.roomData[group.Key] = roomValue;
+                }
+            }
+        }
+
+        private void CollectIndividualPawnStatData(InfoGiverDef def, IndividualData indData)
+        {
+            if (def.targetStat.NullOrEmpty())
+            {
+                Log.Warning($"[Autonomy] PawnStat InfoGiver {def.defName} missing targetStat");
+                return;
+            }
+
+            var pawns = new List<Pawn>();
+            var allPawns = map.mapPawns.AllPawns;
+            pawns = ApplyPawnTypeFilters(allPawns, def.filters);
+            
+            foreach (var pawn in pawns)
+            {
+                float statValue = GetPawnStatValue(pawn, def.targetStat);
+                if (statValue >= 0) // Only include valid stat values
+                {
+                    indData.SetPawnValue(pawn, statValue);
+                }
+            }
+        }
+
+        private void CollectIndividualPawnNeedData(InfoGiverDef def, IndividualData indData)
+        {
+            if (def.targetNeed.NullOrEmpty())
+            {
+                Log.Warning($"[Autonomy] PawnNeed InfoGiver {def.defName} missing targetNeed");
+                return;
+            }
+
+            var pawns = new List<Pawn>();
+            var allPawns = map.mapPawns.AllPawns;
+            pawns = ApplyPawnTypeFilters(allPawns, def.filters);
+            
+            foreach (var pawn in pawns)
+            {
+                float needValue = GetPawnNeedValue(pawn, def.targetNeed);
+                if (needValue >= 0) // Only include valid need values
+                {
+                    indData.SetPawnValue(pawn, needValue);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Check if a room should be ignored for localized data collection
+        /// </summary>
+        private bool ShouldIgnoreRoom(Room room)
+        {
+            // Ignore null rooms (outside areas are handled separately with room ID -1)
+            if (room == null) return false;
+            
+            // Ignore rooms with "None" role or empty/meaningless spaces
+            if (room.Role == null) return true;
+            
+            string roleLabel = room.Role.LabelCap;
+            return roleLabel == "None" || roleLabel.ToLower() == "none";
         }
     }
 }

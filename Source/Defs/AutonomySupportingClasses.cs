@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Verse;
 using RimWorld;
 
@@ -28,15 +29,15 @@ namespace Autonomy
     /// </summary>
     public enum CalculationType
     {
-        sum,        // Add all values
-        avg,        // Average of all values
-        max,        // Highest value
-        min,        // Lowest value
-        count,      // Count of items
-        flat,       // Use flat comparison value
-        bestOf,     // Best result from multiple sources
-        worstOf,    // Worst result from multiple sources
-        weighted    // Weighted calculation
+        Sum,        // Add all values
+        Avg,        // Average of all values
+        Max,        // Highest value
+        Min,        // Lowest value
+        Count,      // Count of items
+        Flat,       // Use flat comparison value
+        BestOf,     // Best result from multiple sources
+        WorstOf,    // Worst result from multiple sources
+        Weighted    // Weighted calculation
     }
 
     /// <summary>
@@ -250,5 +251,194 @@ namespace Autonomy
             Scribe_Values.Look(ref logPriorityChanges, "logPriorityChanges", false);
             base.ExposeData();
         }
+    }
+
+    /// <summary>
+    /// Tracks location-specific data for localizable InfoGivers
+    /// </summary>
+    public class LocationalData
+    {
+        /// <summary>
+        /// Room ID to data mapping (room index or null for outside)
+        /// </summary>
+        public Dictionary<int, float> roomData = new Dictionary<int, float>();
+        
+        /// <summary>
+        /// Cell position to data mapping for fine-grained location tracking
+        /// </summary>
+        public Dictionary<IntVec3, float> cellData = new Dictionary<IntVec3, float>();
+        
+        /// <summary>
+        /// The overall/global value for this InfoGiver
+        /// </summary>
+        public float globalValue = 0f;
+        
+        /// <summary>
+        /// Get data for a specific room
+        /// </summary>
+        public float GetRoomValue(Room room)
+        {
+            if (room == null) return GetOutsideValue();
+            return roomData.TryGetValue(room.ID, out float value) ? value : 0f;
+        }
+        
+        /// <summary>
+        /// Get data for outside areas (null room)
+        /// </summary>
+        public float GetOutsideValue()
+        {
+            return roomData.TryGetValue(-1, out float value) ? value : 0f;
+        }
+        
+        /// <summary>
+        /// Set data for a specific room
+        /// </summary>
+        public void SetRoomValue(Room room, float value)
+        {
+            int roomId = room?.ID ?? -1;
+            roomData[roomId] = value;
+        }
+        
+        /// <summary>
+        /// Get data for a specific cell
+        /// </summary>
+        public float GetCellValue(IntVec3 cell)
+        {
+            return cellData.TryGetValue(cell, out float value) ? value : 0f;
+        }
+        
+        /// <summary>
+        /// Set data for a specific cell
+        /// </summary>
+        public void SetCellValue(IntVec3 cell, float value)
+        {
+            cellData[cell] = value;
+        }
+    }
+
+    /// <summary>
+    /// Tracks individual pawn data for individualizable InfoGivers
+    /// </summary>
+    public class IndividualData
+    {
+        /// <summary>
+        /// Pawn ID to individual value mapping
+        /// </summary>
+        public Dictionary<int, float> pawnValues = new Dictionary<int, float>();
+        
+        /// <summary>
+        /// The global/average value for this InfoGiver
+        /// </summary>
+        public float globalValue = 0f;
+        
+        /// <summary>
+        /// Calculation type used to determine the global value
+        /// </summary>
+        public CalculationType calculationType = CalculationType.Avg;
+        
+        /// <summary>
+        /// Get individual value for a specific pawn
+        /// </summary>
+        public float GetPawnValue(Pawn pawn)
+        {
+            if (pawn?.thingIDNumber == null) return globalValue;
+            return pawnValues.TryGetValue(pawn.thingIDNumber, out float value) ? value : globalValue;
+        }
+        
+        /// <summary>
+        /// Set individual value for a specific pawn
+        /// </summary>
+        public void SetPawnValue(Pawn pawn, float value)
+        {
+            if (pawn?.thingIDNumber != null)
+            {
+                pawnValues[pawn.thingIDNumber] = value;
+            }
+        }
+        
+        /// <summary>
+        /// Get distance from global value for a specific pawn
+        /// </summary>
+        public float GetDistanceFromGlobal(Pawn pawn)
+        {
+            float pawnValue = GetPawnValue(pawn);
+            return Math.Abs(pawnValue - globalValue);
+        }
+        
+        /// <summary>
+        /// Get signed distance from global value for a specific pawn (positive = above global, negative = below)
+        /// </summary>
+        public float GetSignedDistanceFromGlobal(Pawn pawn)
+        {
+            float pawnValue = GetPawnValue(pawn);
+            return pawnValue - globalValue;
+        }
+        
+        /// <summary>
+        /// Calculate global value from individual pawn values
+        /// </summary>
+        public void RecalculateGlobalValue()
+        {
+            if (pawnValues.Count == 0)
+            {
+                globalValue = 0f;
+                return;
+            }
+            
+            var values = pawnValues.Values.ToList();
+            
+            switch (calculationType)
+            {
+                case CalculationType.Sum:
+                    globalValue = values.Sum();
+                    break;
+                case CalculationType.Avg:
+                    globalValue = values.Average();
+                    break;
+                case CalculationType.Max:
+                    globalValue = values.Max();
+                    break;
+                case CalculationType.Min:
+                    globalValue = values.Min();
+                    break;
+                case CalculationType.Count:
+                    globalValue = values.Count;
+                    break;
+                default:
+                    globalValue = values.Average();
+                    break;
+            }
+        }
+    }
+
+    /// <summary>
+    /// Context for InfoGiver queries
+    /// </summary>
+    public class InfoGiverQueryContext
+    {
+        /// <summary>
+        /// The requesting pawn (for individualized queries)
+        /// </summary>
+        public Pawn requestingPawn = null;
+        
+        /// <summary>
+        /// The location context (for localized queries)
+        /// </summary>
+        public IntVec3? location = null;
+        
+        /// <summary>
+        /// Whether to request individual pawn data
+        /// </summary>
+        public bool requestIndividualData = false;
+        
+        /// <summary>
+        /// Whether to request distance from global value
+        /// </summary>
+        public bool requestDistanceFromGlobal = false;
+        
+        /// <summary>
+        /// Whether to request localized data
+        /// </summary>
+        public bool requestLocalizedData = false;
     }
 }

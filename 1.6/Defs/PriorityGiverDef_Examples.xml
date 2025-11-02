@@ -11,7 +11,7 @@
 			<li>
 				<type>mapStat</type>
 				<name>MealCount</name>
-				<calculation>flat</calculation>
+				<calculation>Flat</calculation>
 				<flatValue>10</flatValue>
 				<infoDefName>ColonyMealCounter</infoDefName>
 			</li>
@@ -70,7 +70,7 @@
 			<li>
 				<type>infoGiver</type>
 				<infoDefName>StoneBlockDemand</infoDefName>
-				<calculation>bestOf</calculation>
+				<calculation>BestOf</calculation>
 			</li>
 		</conditions>
 		
@@ -118,7 +118,7 @@
 			<li>
 				<type>infoGiver</type>
 				<infoDefName>InjuredColonistCount</infoDefName>
-				<calculation>avg</calculation>
+				<calculation>Avg</calculation>
 			</li>
 		</conditions>
 		
@@ -165,7 +165,7 @@
 			<li>
 				<type>stat</type>
 				<stat>Intellectual</stat>
-				<calculation>flat</calculation>
+				<calculation>Flat</calculation>
 				<flatValue>8</flatValue>
 			</li>
 		</conditions>

@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+	<!-- Example: Localizable InfoGiver - Filth per room -->
+	<Autonomy.InfoGiverDef>
+		<defName>RoomFilthLevel</defName>
+		<label>Room filth level</label>
+		<description>Tracks filth levels per room, allowing pawns to react to their current room's cleanliness</description>
+		
+		<sourceType>itemCount</sourceType>
+		<calculation>Count</calculation>
+		<isLocalizable>true</isLocalizable>
+		
+		<!-- Target filth items -->
+		<targetItems>
+			<li>Filth_Dirt</li>
+			<li>Filth_Blood</li>
+			<li>Filth_Vomit</li>
+			<li>Filth_AnimalFilth</li>
+			<li>Filth_Trash</li>
+		</targetItems>
+	</Autonomy.InfoGiverDef>
+
+	<!-- Example: Localizable InfoGiver - Colonists per room -->
+	<Autonomy.InfoGiverDef>
+		<defName>RoomColonistCount</defName>
+		<label>Room colonist count</label>
+		<description>Tracks number of colonists in each room for social interaction priorities</description>
+		
+		<sourceType>pawnCount</sourceType>
+		<calculation>Count</calculation>
+		<isLocalizable>true</isLocalizable>
+		
+		<filters>
+			<include>
+				<li>player</li>
+			</include>
+			<exclude>
+				<li>downed</li>
+				<li>dead</li>
+			</exclude>
+		</filters>
+	</Autonomy.InfoGiverDef>
+
+	<!-- Example: Individualizable InfoGiver - Colonist joy levels -->
+	<Autonomy.InfoGiverDef>
+		<defName>IndividualColonyRecreationNeed</defName>
+		<label>Colony recreation need (individualizable)</label>
+		<description>Tracks individual colonist joy levels and distances from colony average</description>
+		
+		<sourceType>pawnNeed</sourceType>
+		<calculation>Avg</calculation>
+		<isIndividualizable>true</isIndividualizable>
+		
+		<targetNeed>Joy</targetNeed>
+		
+		<filters>
+			<include>
+				<li>player</li>
+			</include>
+			<exclude>
+				<li>downed</li>
+				<li>dead</li>
+			</exclude>
+		</filters>
+	</Autonomy.InfoGiverDef>
+
+	<!-- Example: Individualizable InfoGiver - Colonist construction skill -->
+	<Autonomy.InfoGiverDef>
+		<defName>ColonyConstructionSkill</defName>
+		<label>Colony construction skill (individualizable)</label>
+		<description>Tracks individual colonist construction skills and distances from colony average</description>
+		
+		<sourceType>pawnStat</sourceType>
+		<calculation>Avg</calculation>
+		<isIndividualizable>true</isIndividualizable>
+		
+		<targetStat>Construction</targetStat>
+		
+		<filters>
+			<include>
+				<li>player</li>
+			</include>
+			<exclude>
+				<li>downed</li>
+				<li>dead</li>
+			</exclude>
+		</filters>
+	</Autonomy.InfoGiverDef>
+
+	<!-- Example: Both localizable and individualizable - Injured pawns per room -->
+	<Autonomy.InfoGiverDef>
+		<defName>RoomInjuredPawns</defName>
+		<label>Injured pawns (room-specific)</label>
+		<description>Tracks injured pawns by room for localized medical priorities</description>
+		
+		<sourceType>pawnCount</sourceType>
+		<calculation>Count</calculation>
+		<isLocalizable>true</isLocalizable>
+		
+		<filters>
+			<include>
+				<li>player</li>
+			</include>
+			
+			<hediffs>
+				<li>
+					<hediffClass>Hediff_Injury</hediffClass>
+					<tendable>true</tendable>
+					<hediffTended>false</hediffTended>
+				</li>
+			</hediffs>
+		</filters>
+	</Autonomy.InfoGiverDef>
+
+</Defs>

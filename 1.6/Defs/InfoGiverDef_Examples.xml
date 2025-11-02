@@ -7,7 +7,7 @@
 		<description>Counts total number of meals available in the colony</description>
 		
 		<sourceType>itemCount</sourceType>
-		<calculation>sum</calculation>
+		<calculation>Sum</calculation>
 		<isUrgent>false</isUrgent> <!-- Normal evaluation - not time critical -->
 		
 		<!-- Target ThingCategoryDefs for better mod compatibility -->
@@ -37,7 +37,7 @@
 		<description>Counts colonists with injuries, missing parts, or untended illnesses requiring medical attention</description>
 		
 		<sourceType>pawnCount</sourceType>
-		<calculation>count</calculation>
+		<calculation>Count</calculation>
 		
 		<!-- Advanced hediff-based filtering -->
 		<filters>
@@ -73,7 +73,7 @@
 		<description>Calculates the average mood of all colonists</description>
 		
 		<sourceType>pawnNeed</sourceType>
-		<calculation>avg</calculation>
+		<calculation>Avg</calculation>
 		
 		<targetNeed>Mood</targetNeed>
 		
@@ -91,7 +91,7 @@
 		<description>Estimates stone block demand based on designated construction projects</description>
 		
 		<sourceType>constructionCount</sourceType>
-		<calculation>sum</calculation>
+		<calculation>Sum</calculation>
 		
 		<!-- Target construction materials using categories for mod compatibility -->
 		<targetCategories>
@@ -118,7 +118,7 @@
 		<description>Assesses current threat level based on raids, hostile pawns, and map conditions</description>
 		
 		<sourceType>mapCondition</sourceType>
-		<calculation>max</calculation>
+		<calculation>Max</calculation>
 		
 		<!-- Threat indicators -->
 		<conditions>
@@ -145,7 +145,7 @@
 		<description>Monitors steel reserves in stockpiles</description>
 		
 		<sourceType>itemCount</sourceType>
-		<calculation>sum</calculation>
+		<calculation>Sum</calculation>
 		
 		<targetItems>
 			<li>Steel</li>
@@ -171,7 +171,7 @@
 		<description>Finds the highest cooking skill among all colonists</description>
 		
 		<sourceType>pawnStat</sourceType>
-		<calculation>max</calculation>
+		<calculation>Max</calculation>
 		
 		<targetStat>Cooking</targetStat>
 		
@@ -199,7 +199,7 @@
 		<description>Assesses current weather impact on movement speed for outdoor work planning</description>
 		
 		<sourceType>weather</sourceType>
-		<calculation>weighted</calculation>
+		<calculation>Weighted</calculation>
 		
 		<!-- Use actual weather properties instead of hardcoded weather types -->
 		<weatherProperty>moveSpeedMultiplier</weatherProperty>
@@ -213,7 +213,7 @@
 		<description>Assesses current weather impact on shooting accuracy for combat readiness</description>
 		
 		<sourceType>weather</sourceType>
-		<calculation>weighted</calculation>
+		<calculation>Weighted</calculation>
 		
 		<weatherProperty>accuracyMultiplier</weatherProperty>
 		<invertValue>true</invertValue> <!-- Lower accuracy = higher impact -->
@@ -226,7 +226,7 @@
 		<description>Assesses how much the colony needs recreation activities</description>
 		
 		<sourceType>pawnNeed</sourceType>
-		<calculation>avg</calculation>
+		<calculation>Avg</calculation>
 		
 		<targetNeed>Joy</targetNeed>
 		
@@ -247,7 +247,7 @@
 		<description>Counts total number of colonists for dynamic scaling calculations</description>
 		
 		<sourceType>pawnCount</sourceType>
-		<calculation>count</calculation>
+		<calculation>Count</calculation>
 		
 		<filters>
 			<include>
@@ -263,7 +263,7 @@
 		<description>Counts colonists with high severity diseases that are tendable but untended</description>
 		
 		<sourceType>pawnCount</sourceType>
-		<calculation>count</calculation>
+		<calculation>Count</calculation>
 		
 		<filters>
 			<include>
@@ -286,7 +286,7 @@
 		<description>Counts colonists whose disease severity is rising faster than their immunity</description>
 		
 		<sourceType>pawnCount</sourceType>
-		<calculation>count</calculation>
+		<calculation>Count</calculation>
 		
 		<filters>
 			<include>
@@ -310,7 +310,7 @@
 		<description>Counts raw food available for cooking</description>
 		
 		<sourceType>itemCount</sourceType>
-		<calculation>sum</calculation>
+		<calculation>Sum</calculation>
 		<isUrgent>false</isUrgent>
 		
 		<!-- Use categories for better mod compatibility -->
@@ -333,7 +333,7 @@
 		<description>Counts hostile pawns currently on the map - urgent evaluation for defense priorities</description>
 		
 		<sourceType>pawnCount</sourceType>
-		<calculation>sum</calculation>
+		<calculation>Sum</calculation>
 		<isUrgent>true</isUrgent> <!-- URGENT: Evaluate every 400 ticks -->
 		
 		<filters>
@@ -350,7 +350,7 @@
 		<description>Counts downed colonists requiring immediate medical attention - urgent evaluation</description>
 		
 		<sourceType>pawnCount</sourceType>
-		<calculation>sum</calculation>
+		<calculation>Sum</calculation>
 		<isUrgent>true</isUrgent> <!-- URGENT: Medical emergencies need fast response -->
 		
 		<filters>
@@ -373,7 +373,7 @@
 		<description>Monitors for active toxic fallout - urgent evaluation to adjust priorities quickly</description>
 		
 		<sourceType>mapCondition</sourceType>
-		<calculation>max</calculation>
+		<calculation>Max</calculation>
 		<isUrgent>true</isUrgent> <!-- URGENT: Environmental threats need immediate response -->
 		
 		<conditions>
@@ -391,7 +391,7 @@
 		<description>Monitors for extreme weather requiring immediate priority adjustments</description>
 		
 		<sourceType>weather</sourceType>
-		<calculation>max</calculation>
+		<calculation>Max</calculation>
 		<isUrgent>true</isUrgent> <!-- URGENT: Weather changes need quick adaptation -->
 		
 		<weatherProperty>weatherintensity</weatherProperty>

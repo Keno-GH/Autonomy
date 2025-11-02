@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <!-- Minor Passion Giver -->
+    <Autonomy.PassionGiverDef>
+        <defName>MinorPassion</defName>
+        <label>Minor Passion</label>
+        <description>This pawn has a minor passion for the work type.</description>
+        <passionName>Minor</passionName>
+        <onlyWhenActive>true</onlyWhenActive>
+        <priorityResult>
+            <priority>3</priority>
+            <description>I like to do this</description>
+        </priorityResult>
+    </Autonomy.PassionGiverDef>
+
+    <!-- Major Passion Giver -->
+    <Autonomy.PassionGiverDef>
+        <defName>MajorPassion</defName>
+        <label>Major Passion</label>
+        <description>This pawn has a major passion for the work type.</description>
+        <passionName>Major</passionName>
+        <onlyWhenActive>true</onlyWhenActive>
+        <priorityResult>
+            <priority>7</priority>
+            <description>I love to do this</description>
+        </priorityResult>
+    </Autonomy.PassionGiverDef>
+
+    <!-- VSE Apathy Passion Giver -->
+    <Autonomy.PassionGiverDef MayRequire="vanillaexpanded.skills">
+        <defName>VSE_ApathyPassion</defName>
+        <label>VSE Apathy Passion</label>
+        <description>This pawn has apathy for the work type.</description>
+        <passionName>VSE_Apathy</passionName>
+        <onlyWhenActive>true</onlyWhenActive>
+        <priorityResult>
+            <priority>-5</priority>
+            <description>I have no interest in this</description>
+        </priorityResult>
+    </Autonomy.PassionGiverDef>
+
+    <!-- VSE Natural Passion Giver -->
+    <Autonomy.PassionGiverDef MayRequire="vanillaexpanded.skills">
+        <defName>VSE_NaturalPassion</defName>
+        <label>VSE Natural Passion</label>
+        <description>This pawn has a natural talent for the work type.</description>
+        <passionName>VSE_Natural</passionName>
+        <onlyWhenActive>true</onlyWhenActive>
+        <priorityResult>
+            <priority>9</priority>
+            <description>I was born for this</description>
+        </priorityResult>
+    </Autonomy.PassionGiverDef>
+
+    <!-- VSE Critical Passion Giver -->
+    <Autonomy.PassionGiverDef MayRequire="vanillaexpanded.skills">
+        <defName>VSE_CriticalPassion</defName>
+        <label>VSE Critical Passion</label>
+        <description>This pawn lives for this work type.</description>
+        <passionName>VSE_Critical</passionName>
+        <onlyWhenActive>true</onlyWhenActive>
+        <priorityResult>
+            <priority>20</priority>
+            <description>I live for this</description>
+        </priorityResult>
+    </Autonomy.PassionGiverDef>
+
+    <!-- Alpha Skills Passion Givers -->
+    <Autonomy.PassionGiverDef MayRequire="sarg.alphaskills">
+        <defName>AS_DrunkenPassion</defName>
+        <label>Alpha Skills Drunken Passion</label>
+        <description>This pawn has a drunken passion for the work type.</description>
+        <passionName>AS_DrunkenPassion</passionName>
+        <onlyWhenActive>true</onlyWhenActive>
+        <priorityResult>
+            <priority>3</priority>
+            <description>I like to do this</description>
+        </priorityResult>
+    </Autonomy.PassionGiverDef>
+
+    <Autonomy.PassionGiverDef MayRequire="sarg.alphaskills">
+        <defName>AS_DrunkenPassion_Active</defName>
+        <label>Alpha Skills Drunken Passion Active</label>
+        <description>This pawn has an active drunken passion for the work type.</description>
+        <passionName>AS_DrunkenPassion_Active</passionName>
+        <onlyWhenActive>true</onlyWhenActive>
+        <priorityResult>
+            <priority>15</priority>
+            <description>The ideas flow like the alcohol</description>
+        </priorityResult>
+    </Autonomy.PassionGiverDef>
+
+    <Autonomy.PassionGiverDef MayRequire="sarg.alphaskills">
+        <defName>AS_FrozenPassion</defName>
+        <label>Alpha Skills Frozen Passion</label>
+        <description>This pawn has a frozen passion for the work type.</description>
+        <passionName>AS_FrozenPassion</passionName>
+        <onlyWhenActive>true</onlyWhenActive>
+        <priorityResult>
+            <priority>-7</priority>
+            <description>This doesn't drive me at all</description>
+        </priorityResult>
+    </Autonomy.PassionGiverDef>
+
+    <Autonomy.PassionGiverDef MayRequire="sarg.alphaskills">
+        <defName>AS_SynergisticPassion</defName>
+        <label>Alpha Skills Synergistic Passion</label>
+        <description>This pawn has a synergistic passion for the work type.</description>
+        <passionName>AS_SynergisticPassion</passionName>
+        <onlyWhenActive>true</onlyWhenActive>
+        <priorityResult>
+            <priority>3</priority>
+            <description>I like to do this</description>
+        </priorityResult>
+    </Autonomy.PassionGiverDef>
+
+    <Autonomy.PassionGiverDef MayRequire="sarg.alphaskills">
+        <defName>AS_NightPassion</defName>
+        <label>Alpha Skills Night Passion</label>
+        <description>This pawn has a night passion for the work type.</description>
+        <passionName>AS_NightPassion</passionName>
+        <onlyWhenActive>true</onlyWhenActive>
+        <priorityResult>
+            <priority>3</priority>
+            <description>I like to do this</description>
+        </priorityResult>
+    </Autonomy.PassionGiverDef>
+
+    <Autonomy.PassionGiverDef MayRequire="sarg.alphaskills">
+        <defName>AS_NightPassion_Active</defName>
+        <label>Alpha Skills Night Passion Active</label>
+        <description>This pawn has an active night passion for the work type.</description>
+        <passionName>AS_NightPassion_Active</passionName>
+        <onlyWhenActive>true</onlyWhenActive>
+        <priorityResult>
+            <priority>15</priority>
+            <description>Night is the perfect time for this</description>
+        </priorityResult>
+    </Autonomy.PassionGiverDef>
+
+    <Autonomy.PassionGiverDef MayRequire="sarg.alphaskills">
+        <defName>AS_YouthPassion</defName>
+        <label>Alpha Skills Youth Passion</label>
+        <description>This pawn has a youth passion for the work type.</description>
+        <passionName>AS_YouthPassion</passionName>
+        <onlyWhenActive>true</onlyWhenActive>
+        <priorityResult>
+            <priority>20</priority>
+            <description>This is so great</description>
+        </priorityResult>
+    </Autonomy.PassionGiverDef>
+
+    <Autonomy.PassionGiverDef MayRequire="sarg.alphaskills">
+        <defName>AS_DedicatedPassion</defName>
+        <label>Alpha Skills Dedicated Passion</label>
+        <description>This pawn has a dedicated passion for the work type.</description>
+        <passionName>AS_DedicatedPassion</passionName>
+        <onlyWhenActive>true</onlyWhenActive>
+        <priorityResult>
+            <priority>5</priority>
+            <description>I love to do this</description>
+        </priorityResult>
+    </Autonomy.PassionGiverDef>
+
+    <Autonomy.PassionGiverDef MayRequire="sarg.alphaskills">
+        <defName>AS_ObsessivePassion</defName>
+        <label>Alpha Skills Obsessive Passion</label>
+        <description>This pawn has an obsessive passion for the work type.</description>
+        <passionName>AS_ObsessivePassion</passionName>
+        <onlyWhenActive>true</onlyWhenActive>
+        <priorityResult>
+            <priority>5</priority>
+            <description>I need to do this</description>
+        </priorityResult>
+    </Autonomy.PassionGiverDef>
+
+    <Autonomy.PassionGiverDef MayRequire="sarg.alphaskills">
+        <defName>AS_VengefulPassion</defName>
+        <label>Alpha Skills Vengeful Passion</label>
+        <description>This pawn has a vengeful passion for the work type.</description>
+        <passionName>AS_VengefulPassion</passionName>
+        <onlyWhenActive>true</onlyWhenActive>
+        <priorityResult>
+            <priority>3</priority>
+            <description>I like to do this</description>
+        </priorityResult>
+    </Autonomy.PassionGiverDef>
+
+    <Autonomy.PassionGiverDef MayRequire="sarg.alphaskills">
+        <defName>AS_VengefulPassion_Active</defName>
+        <label>Alpha Skills Vengeful Passion Active</label>
+        <description>This pawn has an active vengeful passion for the work type.</description>
+        <passionName>AS_VengefulPassion_Active</passionName>
+        <onlyWhenActive>true</onlyWhenActive>
+        <priorityResult>
+            <priority>20</priority>
+            <description>I have to do this. It's now or never</description>
+        </priorityResult>
+    </Autonomy.PassionGiverDef>
+
+    <Autonomy.PassionGiverDef MayRequire="sarg.alphaskills">
+        <defName>AS_ForbiddenPassion</defName>
+        <label>Alpha Skills Forbidden Passion</label>
+        <description>This pawn has a forbidden passion for the work type.</description>
+        <passionName>AS_ForbiddenPassion</passionName>
+        <onlyWhenActive>true</onlyWhenActive>
+        <priorityResult>
+            <priority>11</priority>
+            <description>Spite fuels me to do this</description>
+        </priorityResult>
+    </Autonomy.PassionGiverDef>
+
+    <Autonomy.PassionGiverDef MayRequire="sarg.alphaskills">
+        <defName>AS_NomadicPassion</defName>
+        <label>Alpha Skills Nomadic Passion</label>
+        <description>This pawn has a nomadic passion for the work type.</description>
+        <passionName>AS_NomadicPassion</passionName>
+        <onlyWhenActive>true</onlyWhenActive>
+        <priorityResult>
+            <priority>3</priority>
+            <description>I like to do this</description>
+        </priorityResult>
+    </Autonomy.PassionGiverDef>
+
+    <Autonomy.PassionGiverDef MayRequire="sarg.alphaskills">
+        <defName>AS_NomadicPassion_Active</defName>
+        <label>Alpha Skills Nomadic Passion Active</label>
+        <description>This pawn has an active nomadic passion for the work type.</description>
+        <passionName>AS_NomadicPassion_Active</passionName>
+        <onlyWhenActive>true</onlyWhenActive>
+        <priorityResult>
+            <priority>13</priority>
+            <description>I thrive at this when traveling</description>
+        </priorityResult>
+    </Autonomy.PassionGiverDef>
+</Defs>

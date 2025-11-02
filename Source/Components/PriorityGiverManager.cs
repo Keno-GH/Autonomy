@@ -19,8 +19,8 @@ namespace Autonomy
         private int ticksSinceLastUpdate = 0;
         private int ticksSinceLastUrgentUpdate = 0;
         
-        private const int UPDATE_INTERVAL = 2000; // Normal evaluation every 2000 ticks
-        private const int URGENT_UPDATE_INTERVAL = 400; // Urgent evaluation every 400 ticks
+        private const int UPDATE_INTERVAL = 100; // Normal evaluation every 100 ticks (~1.7 seconds) - for testing
+        private const int URGENT_UPDATE_INTERVAL = 10; // Urgent evaluation every 10 ticks (~0.17 seconds) - for testing
 
         public PriorityGiverManager(Map map) : base(map)
         {

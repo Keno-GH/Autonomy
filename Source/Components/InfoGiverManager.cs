@@ -16,8 +16,8 @@ namespace Autonomy
         private Dictionary<string, IndividualData> individualData = new Dictionary<string, IndividualData>();
         private int ticksSinceLastUpdate = 0;
         private int ticksSinceLastUrgentUpdate = 0;
-        private const int UPDATE_INTERVAL = 2000; // Update every 2000 ticks (~33 seconds)
-        private const int URGENT_UPDATE_INTERVAL = 400; // Urgent updates every 400 ticks (~6.7 seconds)
+        private const int UPDATE_INTERVAL = 100; // Update every 100 ticks (~1.7 seconds) - for testing
+        private const int URGENT_UPDATE_INTERVAL = 10; // Urgent updates every 10 ticks (~0.17 seconds) - for testing
 
         public InfoGiverManager(Map map) : base(map)
         {

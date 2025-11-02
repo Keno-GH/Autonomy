@@ -467,5 +467,46 @@ namespace Autonomy
         }
     }
 
+    /// <summary>
+    /// Defines passion-based priority adjustments for work types
+    /// </summary>
+    public class PassionGiverDef : Def
+    {
+        /// <summary>
+        /// Name of the passion to match (e.g., "Minor", "Major")
+        /// </summary>
+        public string passionName;
+        
+        /// <summary>
+        /// Whether this passion giver only applies when the passion is "active" 
+        /// (relevant for mod passions that have special activation conditions)
+        /// </summary>
+        public bool onlyWhenActive = true;
+        
+        /// <summary>
+        /// Priority result when this passion applies
+        /// </summary>
+        public PassionPriorityResult priorityResult = new PassionPriorityResult();
+
+        public override void ResolveReferences()
+        {
+            base.ResolveReferences();
+            
+            if (passionName.NullOrEmpty())
+            {
+                Log.Error($"PassionGiverDef {defName} requires passionName");
+            }
+        }
+    }
+
+    /// <summary>
+    /// Result data for passion-based priority calculation
+    /// </summary>
+    public class PassionPriorityResult
+    {
+        public int priority = 0;
+        public string description = "";
+    }
+
     // Supporting classes and enums are now in AutonomySupportingClasses.cs
 }

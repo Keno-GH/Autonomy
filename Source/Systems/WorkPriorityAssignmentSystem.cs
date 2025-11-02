@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using RimWorld;
 using Verse;
 
@@ -126,6 +127,10 @@ namespace Autonomy.Systems
                     }
                 }
             }
+            
+            // Step 4: Add passion-based priority at WorkType level
+            var passionResults = EvaluatePassionPriorityForWorkType(pawn, workType, usedPriorityGivers);
+            result.PriorityGiverResults.AddRange(passionResults);
 
             result.TotalPriority = result.WorkGiverSum + result.PriorityGiverResults.Sum(p => p.Priority);
             
@@ -179,6 +184,212 @@ namespace Autonomy.Systems
             result.TotalPriority = result.PriorityGiverResults.Where(p => !p.IsDeduplication).Sum(p => p.Priority);
             
             return result;
+        }
+        
+        /// <summary>
+        /// Evaluate passion-based priority for a WorkType
+        /// </summary>
+        private List<PriorityGiverResult> EvaluatePassionPriorityForWorkType(Pawn pawn, WorkTypeDef workType, HashSet<string> usedPriorityGivers)
+        {
+            var results = new List<PriorityGiverResult>();
+            
+            // Check if this WorkType has relevant skills
+            if (workType.relevantSkills == null || !workType.relevantSkills.Any()) return results;
+            
+            // Get the highest passion among relevant skills
+            int highestPassion = 0;
+            string passionName = "None";
+            SkillDef bestSkill = null;
+            
+            foreach (var skillDef in workType.relevantSkills)
+            {
+                var skillRecord = pawn.skills.GetSkill(skillDef);
+                if (skillRecord != null)
+                {
+                    string currentPassionName = GetPassionName(skillRecord);
+                    int currentPassionValue = GetPassionPriorityValue(currentPassionName);
+                    
+                    if (Math.Abs(currentPassionValue) > Math.Abs(highestPassion))
+                    {
+                        highestPassion = currentPassionValue;
+                        passionName = currentPassionName;
+                        bestSkill = skillDef;
+                    }
+                }
+            }
+            
+            if (passionName != "None" && bestSkill != null)
+            {
+                // Find matching PassionGiver
+                var passionGiver = DefDatabase<PassionGiverDef>.AllDefs.FirstOrDefault(pg => pg.passionName == passionName);
+                
+                if (passionGiver != null)
+                {
+                    string passionKey = $"Passion_{passionName}_{workType.defName}";
+                    bool isDeduplication = usedPriorityGivers.Contains(passionKey);
+                    
+                    var priorityResult = new PriorityGiverResult
+                    {
+                        PriorityGiver = null, // No direct PriorityGiver, this is passion-based
+                        Priority = passionGiver.priorityResult.priority,
+                        Description = passionGiver.priorityResult.description,
+                        IsDeduplication = isDeduplication
+                    };
+                    
+                    results.Add(priorityResult);
+                    
+                    if (!isDeduplication)
+                    {
+                        usedPriorityGivers.Add(passionKey);
+                    }
+                }
+            }
+            
+            return results;
+        }
+        
+        /// <summary>
+        /// Get passion name from skill record (supports vanilla, VSE, and Alpha Skills)
+        /// </summary>
+        private string GetPassionName(SkillRecord skillRecord)
+        {
+            // Check for Alpha Skills first (more specific)
+            if (ModsConfig.IsActive("sarg.alphaskills"))
+            {
+                return GetAlphaSkillsPassionName(skillRecord);
+            }
+            // Check for VSE
+            else if (ModsConfig.IsActive("vanillaexpanded.skills"))
+            {
+                return GetVSEPassionName(skillRecord);
+            }
+            else
+            {
+                // Vanilla passion handling
+                return GetVanillaPassionName((int)skillRecord.passion);
+            }
+        }
+        
+        /// <summary>
+        /// Get Alpha Skills passion name using passion labels
+        /// </summary>
+        private string GetAlphaSkillsPassionName(SkillRecord skillRecord)
+        {
+            try
+            {
+                // Alpha Skills also uses SkillUI.GetLabel but with more complex label patterns
+                string passionLabel = RimWorld.SkillUI.GetLabel(skillRecord.passion).ToLower();
+                
+                // Map Alpha Skills passion labels to our defNames
+                switch (passionLabel)
+                {
+                    // Vanilla passions (Alpha Skills preserves these)
+                    case "none":
+                        return "None";
+                    case "interested":
+                        return "Minor";
+                    case "burning":
+                        return "Major";
+                    
+                    // Alpha Skills specific passions
+                    case "drunken":
+                        return "AS_DrunkenPassion";
+                    case "drunken (active)":
+                        return "AS_DrunkenPassion_Active";
+                    case "frozen":
+                        return "AS_FrozenPassion";
+                    case "synergistic":
+                        return "AS_SynergisticPassion";
+                    case "night":
+                        return "AS_NightPassion";
+                    case "night (active)":
+                        return "AS_NightPassion_Active";
+                    case "youth":
+                        return "AS_YouthPassion";
+                    case "dedicated":
+                        return "AS_DedicatedPassion";
+                    case "obsessive":
+                        return "AS_ObsessivePassion";
+                    case "vengeful":
+                        return "AS_VengefulPassion";
+                    case "vengeful (active)":
+                        return "AS_VengefulPassion_Active";
+                    case "forbidden":
+                        return "AS_ForbiddenPassion";
+                    case "nomadic":
+                        return "AS_NomadicPassion";
+                    case "nomadic (active)":
+                        return "AS_NomadicPassion_Active";
+                    
+                    default:
+                        Log.Warning($"[Autonomy] Unknown Alpha Skills passion label: '{passionLabel}', falling back to vanilla");
+                        return GetVanillaPassionName((int)skillRecord.passion);
+                }
+            }
+            catch (Exception e)
+            {
+                Log.Error($"[Autonomy] Failed to get Alpha Skills passion via label: {e.Message}");
+                return GetVanillaPassionName((int)skillRecord.passion);
+            }
+        }
+        
+        /// <summary>
+        /// Get VSE passion name using passion labels
+        /// </summary>
+        private string GetVSEPassionName(SkillRecord skillRecord)
+        {
+            try
+            {
+                // Use SkillUI.GetLabel to get the passion label, which works for both vanilla and VSE
+                string passionLabel = RimWorld.SkillUI.GetLabel(skillRecord.passion).ToLower();
+                
+                // Map VSE passion labels to our defNames
+                switch (passionLabel)
+                {
+                    case "none":
+                        return "None";
+                    case "interested":
+                        return "Minor";
+                    case "burning":
+                        return "Major";
+                    case "apathy":
+                        return "VSE_Apathy";
+                    case "natural":
+                        return "VSE_Natural";
+                    case "critical":
+                        return "VSE_Critical";
+                    default:
+                        Log.Warning($"[Autonomy] Unknown passion label: '{passionLabel}', falling back to vanilla");
+                        return GetVanillaPassionName((int)skillRecord.passion);
+                }
+            }
+            catch (Exception e)
+            {
+                Log.Error($"[Autonomy] Failed to get VSE passion via label: {e.Message}");
+                return GetVanillaPassionName((int)skillRecord.passion);
+            }
+        }
+        
+        /// <summary>
+        /// Convert vanilla passion enum value to name
+        /// </summary>
+        private string GetVanillaPassionName(int passionValue)
+        {
+            switch (passionValue)
+            {
+                case 1: return "Minor";
+                case 2: return "Major";
+                default: return "None";
+            }
+        }
+        
+        /// <summary>
+        /// Get priority value for passion comparison (higher absolute value = higher priority)
+        /// </summary>
+        private int GetPassionPriorityValue(string passionName)
+        {
+            var passionGiver = DefDatabase<PassionGiverDef>.AllDefs.FirstOrDefault(pg => pg.passionName == passionName);
+            return passionGiver?.priorityResult.priority ?? 0;
         }
 
         private void AssignPriorityLevels(Pawn pawn, Dictionary<WorkTypeDef, WorkTypePriorityResult> workTypePriorities)

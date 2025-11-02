@@ -97,6 +97,11 @@ namespace Autonomy
         public List<string> targetCategories = new List<string>();
         
         /// <summary>
+        /// Target ThingClass names for itemCount sourceType (e.g., "Filth" for all filth types)
+        /// </summary>
+        public List<string> targetThingClasses = new List<string>();
+        
+        /// <summary>
         /// Weather property for weather sourceType (moveSpeedMultiplier, accuracyMultiplier, etc.)
         /// </summary>
         public string weatherProperty;
@@ -158,13 +163,13 @@ namespace Autonomy
                     break;
                     
                 case InfoSourceType.itemCount:
-                    if (targetItems.NullOrEmpty() && targetCategories.NullOrEmpty())
-                        Log.Error($"InfoGiverDef {defName} with sourceType itemCount requires either targetItems or targetCategories");
+                    if (targetItems.NullOrEmpty() && targetCategories.NullOrEmpty() && targetThingClasses.NullOrEmpty())
+                        Log.Error($"InfoGiverDef {defName} with sourceType itemCount requires either targetItems, targetCategories, or targetThingClasses");
                     break;
                     
                 case InfoSourceType.constructionCount:
-                    if (targetItems.NullOrEmpty() && targetCategories.NullOrEmpty())
-                        Log.Error($"InfoGiverDef {defName} with sourceType constructionCount requires either targetItems or targetCategories");
+                    if (targetItems.NullOrEmpty() && targetCategories.NullOrEmpty() && targetThingClasses.NullOrEmpty())
+                        Log.Error($"InfoGiverDef {defName} with sourceType constructionCount requires either targetItems, targetCategories, or targetThingClasses");
                     break;
                     
                 case InfoSourceType.weather:

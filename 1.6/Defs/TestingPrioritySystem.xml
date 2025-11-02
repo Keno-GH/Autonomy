@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <!-- Construction Skill InfoGiver -->
+    <Autonomy.InfoGiverDef>
+        <defName>ConstructionSkillAverage</defName>
+        <label>Construction skill average</label>
+        <description>Tracks each pawn's construction skill individually for personalized construction priority</description>
+        <isLocalizable>false</isLocalizable>
+        <isIndividualizable>true</isIndividualizable>
+        <calculation>Avg</calculation>
+        <isUrgent>false</isUrgent>
+        <sourceType>pawnStat</sourceType>
+        <targetStat>Construction</targetStat>
+    </Autonomy.InfoGiverDef>
+
+    <!-- Construction Priority Giver -->
+    <Autonomy.PriorityGiverDef>
+        <defName>ConstructionSkillPriority</defName>
+        <label>Construction skill-based priority</label>
+        <description>Adjusts construction priority based on individual pawn's construction skill vs colony average</description>
+        <isUrgent>false</isUrgent>
+        
+        <conditions>
+            <li>
+                <type>infoGiver</type>
+                <infoDefName>ConstructionSkillAverage</infoDefName>
+                <calculation>Flat</calculation>
+                <infoRange>-999~999</infoRange>
+                <requestLocalizedData>false</requestLocalizedData>
+                <requestIndividualData>true</requestIndividualData>
+                <requestDistanceFromGlobal>true</requestDistanceFromGlobal>
+            </li>
+        </conditions>
+        
+        <priorityRanges>
+            <li>
+                <validRange>-999~0</validRange>
+                <priority>-5</priority>
+                <description>I'm below average at construction</description>
+            </li>
+            <li>
+                <validRange>0.1~999</validRange>
+                <priority>5</priority>
+                <description>I'm above average at construction</description>
+            </li>
+        </priorityRanges>
+        
+        <!-- <targetWorkTypes>
+            <li>Construction</li>
+        </targetWorkTypes> -->
+
+        <targetWorkGivers>
+            <li>ConstructFinishFrames</li>
+            <li>Deconstruct</li>
+            <li>Repair</li>
+            <li>ConstructSmoothFloors</li>
+            <li>ConstructSmoothWalls</li>
+        </targetWorkGivers>
+
+    </Autonomy.PriorityGiverDef>
+
+    <!-- Filth Count InfoGiver -->
+    <Autonomy.InfoGiverDef>
+        <defName>CurrentRoomFilthCount</defName>
+        <label>Filth count in current room</label>
+        <description>Tracks the amount of filth in each pawn's current room for personalized cleaning priority</description>
+        <isLocalizable>true</isLocalizable>
+        <isIndividualizable>false</isIndividualizable>
+        <calculation>Count</calculation>
+        <isUrgent>false</isUrgent>
+        <sourceType>itemCount</sourceType>
+        
+        <targetThingClasses>
+            <li>Filth</li>
+        </targetThingClasses>
+        
+        <filters>
+            <homeAreaOnly>true</homeAreaOnly>
+        </filters>
+    </Autonomy.InfoGiverDef>
+
+    <!-- Cleaning Priority Giver -->
+    <Autonomy.PriorityGiverDef>
+        <defName>FilthCleaningPriority</defName>
+        <label>Filth-based cleaning priority</label>
+        <description>Adjusts cleaning priority based on filth count in pawn's current room</description>
+        <isUrgent>false</isUrgent>
+        
+        <conditions>
+            <li>
+                <type>infoGiver</type>
+                <infoDefName>CurrentRoomFilthCount</infoDefName>
+                <calculation>Flat</calculation>
+                <infoRange>0~999</infoRange>
+                <requestLocalizedData>true</requestLocalizedData>
+                <requestIndividualData>false</requestIndividualData>
+                <requestDistanceFromGlobal>false</requestDistanceFromGlobal>
+            </li>
+        </conditions>
+        
+        <priorityRanges>
+            <li>
+                <validRange>0~0</validRange>
+                <priority>0</priority>
+                <description>Room is clean</description>
+            </li>
+            <li>
+                <validRange>1~3</validRange>
+                <priority>2</priority>
+                <description>Light filth in room</description>
+            </li>
+            <li>
+                <validRange>4~8</validRange>
+                <priority>5</priority>
+                <description>Moderate filth in room</description>
+            </li>
+            <li>
+                <validRange>9~999</validRange>
+                <priority>8</priority>
+                <description>Heavy filth in room</description>
+            </li>
+        </priorityRanges>
+        
+        <targetWorkGivers>
+            <li>CleanFilth</li>
+        </targetWorkGivers>
+
+    </Autonomy.PriorityGiverDef>
+</Defs>

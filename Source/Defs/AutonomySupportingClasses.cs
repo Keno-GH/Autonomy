@@ -79,6 +79,7 @@ namespace Autonomy
         // Item filtering
         public bool stockpileOnly = false;
         public bool excludeForbidden = true;
+        public bool homeAreaOnly = false;
 
         // Construction filtering
         public bool onlyDesignated = true;

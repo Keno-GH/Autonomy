@@ -282,6 +282,24 @@ namespace Autonomy
                     }
                 }
             }
+            
+            if (!def.targetThingClasses.NullOrEmpty())
+            {
+                foreach (string thingClassName in def.targetThingClasses)
+                {
+                    // Find all ThingDefs whose thingClass matches the target class name
+                    var thingDefs = DefDatabase<ThingDef>.AllDefs.Where(td => 
+                        td.thingClass != null && 
+                        (td.thingClass.Name == thingClassName || 
+                         td.thingClass.Name.EndsWith(thingClassName) ||
+                         IsSubclassOfType(td.thingClass, thingClassName)));
+                    
+                    foreach (var thingDef in thingDefs)
+                    {
+                        items.AddRange(map.listerThings.ThingsOfDef(thingDef));
+                    }
+                }
+            }
 
             // Apply filters
             items = ApplyItemFilters(items, def.filters);
@@ -289,6 +307,28 @@ namespace Autonomy
             // Calculate result based on calculation type
             var values = items.Select(item => (float)item.stackCount).ToList();
             return CalculateResult(values, def.calculation);
+        }
+
+        /// <summary>
+        /// Safely checks if a type is a subclass of a named type
+        /// </summary>
+        private bool IsSubclassOfType(Type type, string typeName)
+        {
+            try
+            {
+                Type currentType = type.BaseType;
+                while (currentType != null)
+                {
+                    if (currentType.Name == typeName)
+                        return true;
+                    currentType = currentType.BaseType;
+                }
+                return false;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         private List<Thing> ApplyItemFilters(List<Thing> items, InfoFilters filters)
@@ -304,6 +344,15 @@ namespace Autonomy
                 {
                     var zone = map.zoneManager.ZoneAt(item.Position) as Zone_Stockpile;
                     return zone != null;
+                });
+            }
+
+            // Filter by home area only
+            if (filters.homeAreaOnly)
+            {
+                filtered = filtered.Where(item => 
+                {
+                    return map.areaManager.Home[item.Position];
                 });
             }
 
@@ -1028,6 +1077,24 @@ namespace Autonomy
                         {
                             items.AddRange(map.listerThings.ThingsOfDef(thingDef));
                         }
+                    }
+                }
+            }
+            
+            if (!def.targetThingClasses.NullOrEmpty())
+            {
+                foreach (string thingClassName in def.targetThingClasses)
+                {
+                    // Find all ThingDefs whose thingClass matches the target class name
+                    var thingDefs = DefDatabase<ThingDef>.AllDefs.Where(td => 
+                        td.thingClass != null && 
+                        (td.thingClass.Name == thingClassName || 
+                         td.thingClass.Name.EndsWith(thingClassName) ||
+                         IsSubclassOfType(td.thingClass, thingClassName)));
+                    
+                    foreach (var thingDef in thingDefs)
+                    {
+                        items.AddRange(map.listerThings.ThingsOfDef(thingDef));
                     }
                 }
             }

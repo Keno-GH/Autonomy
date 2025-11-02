@@ -13,6 +13,7 @@ namespace Autonomy
     public class PriorityGiverManager : MapComponent
     {
         private InfoGiverManager infoGiverManager;
+        private Autonomy.Systems.WorkPriorityAssignmentSystem workPrioritySystem;
         
         // Tick tracking for evaluation frequency
         private int ticksSinceLastUpdate = 0;
@@ -24,6 +25,16 @@ namespace Autonomy
         public PriorityGiverManager(Map map) : base(map)
         {
             this.infoGiverManager = map.GetComponent<InfoGiverManager>();
+            // Don't get workPrioritySystem here - get it lazily when needed
+        }
+        
+        private Autonomy.Systems.WorkPriorityAssignmentSystem GetWorkPrioritySystem()
+        {
+            if (workPrioritySystem == null)
+            {
+                workPrioritySystem = map.GetComponent<Autonomy.Systems.WorkPriorityAssignmentSystem>();
+            }
+            return workPrioritySystem;
         }
 
         public override void MapComponentTick()
@@ -82,6 +93,17 @@ namespace Autonomy
                 {
                     Log.Error($"[Autonomy] Error evaluating PriorityGiver {priorityGiver.defName}: {e.Message}");
                 }
+            }
+            
+            // After all PriorityGivers are evaluated, recalculate work priorities
+            var workPrioritySystem = GetWorkPrioritySystem();
+            if (workPrioritySystem != null)
+            {
+                workPrioritySystem.RecalculateWorkPriorities();
+            }
+            else
+            {
+                Log.Error("[Autonomy] workPrioritySystem is NULL - cannot recalculate work priorities!");
             }
         }
 

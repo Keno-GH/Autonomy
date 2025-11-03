@@ -247,21 +247,30 @@ namespace Autonomy.Systems
         /// </summary>
         private string GetPassionName(SkillRecord skillRecord)
         {
-            // Check for VSE first (base system that Alpha Skills extends)
+            // If VSE is active, try VSE first
             if (ModsConfig.IsActive("vanillaexpanded.skills"))
             {
-                return GetVSEPassionName(skillRecord);
+                string vseResult = GetVSEPassionName(skillRecord);
+                // If VSE recognized the passion, use it
+                if (vseResult != null)
+                {
+                    return vseResult;
+                }
             }
-            // Fall back to Alpha Skills if only Alpha Skills is present (unlikely but possible)
-            else if (ModsConfig.IsActive("sarg.alphaskills"))
+            
+            // If Alpha Skills is active and VSE didn't recognize it, try Alpha Skills
+            if (ModsConfig.IsActive("sarg.alphaskills"))
             {
-                return GetAlphaSkillsPassionName(skillRecord);
+                string alphaResult = GetAlphaSkillsPassionName(skillRecord);
+                // If Alpha Skills recognized the passion, use it
+                if (alphaResult != null)
+                {
+                    return alphaResult;
+                }
             }
-            else
-            {
-                // Vanilla passion handling
-                return GetVanillaPassionName((int)skillRecord.passion);
-            }
+            
+            // Fall back to vanilla passion handling
+            return GetVanillaPassionName((int)skillRecord.passion);
         }
         
         /// <summary>
@@ -316,14 +325,14 @@ namespace Autonomy.Systems
                         return "AS_NomadicPassion_Active";
                     
                     default:
-                        Log.Warning($"[Autonomy] Unknown Alpha Skills passion label: '{passionLabel}', falling back to vanilla");
-                        return GetVanillaPassionName((int)skillRecord.passion);
+                        // Return null to indicate Alpha Skills doesn't recognize this passion
+                        return null;
                 }
             }
             catch (Exception e)
             {
                 Log.Error($"[Autonomy] Failed to get Alpha Skills passion via label: {e.Message}");
-                return GetVanillaPassionName((int)skillRecord.passion);
+                return null;
             }
         }
         
@@ -353,14 +362,14 @@ namespace Autonomy.Systems
                     case "critical":
                         return "VSE_Critical";
                     default:
-                        Log.Warning($"[Autonomy] Unknown passion label: '{passionLabel}', falling back to vanilla");
-                        return GetVanillaPassionName((int)skillRecord.passion);
+                        // Return null to indicate VSE doesn't recognize this passion
+                        return null;
                 }
             }
             catch (Exception e)
             {
                 Log.Error($"[Autonomy] Failed to get VSE passion via label: {e.Message}");
-                return GetVanillaPassionName((int)skillRecord.passion);
+                return null;
             }
         }
         

@@ -543,6 +543,11 @@ namespace Autonomy
         public bool onlyWhenActive = true;
         
         /// <summary>
+        /// Conditions that determine personality-based multipliers for this passion giver
+        /// </summary>
+        public List<PriorityCondition> conditions = new List<PriorityCondition>();
+        
+        /// <summary>
         /// Priority result when this passion applies
         /// </summary>
         public PassionPriorityResult priorityResult = new PassionPriorityResult();
@@ -554,6 +559,12 @@ namespace Autonomy
             if (passionName.NullOrEmpty())
             {
                 Log.Error($"PassionGiverDef {defName} requires passionName");
+            }
+            
+            // Resolve and validate condition references
+            foreach (var condition in conditions)
+            {
+                condition.ResolveReferences();
             }
         }
     }

@@ -7,6 +7,60 @@
         <description>This pawn has a minor passion for the work type.</description>
         <passionName>Minor</passionName>
         <onlyWhenActive>true</onlyWhenActive>
+        
+        <conditions>
+            <li>
+                <type>personalityOffset</type>
+                <personalityDefName>Rimpsyche_Openness</personalityDefName>
+                <personalityMultipliers>
+                    <li>
+                        <personalityRange>-1.0~-0.3</personalityRange>
+                        <multiplier>1.2</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.3~1.0</personalityRange>
+                        <multiplier>0.8</multiplier>
+                    </li>
+                </personalityMultipliers>
+            </li>
+            <li>
+                <type>personalityOffset</type>
+                <personalityDefName>Rimpsyche_Inquisitiveness</personalityDefName>
+                <personalityMultipliers>
+                    <li>
+                        <personalityRange>-1.0~-0.3</personalityRange>
+                        <multiplier>1.2</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.3~1.0</personalityRange>
+                        <multiplier>0.8</multiplier>
+                    </li>
+                </personalityMultipliers>
+            </li>
+            <li>
+                <type>personalityOffset</type>
+                <personalityDefName>Rimpsyche_Passion</personalityDefName>
+                <personalityMultipliers>
+                    <li>
+                        <personalityRange>-1.0~-0.5</personalityRange>
+                        <multiplier>0.5</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>-0.51~-0.1</personalityRange>
+                        <multiplier>0.75</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.1~0.5</personalityRange>
+                        <multiplier>1.5</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.51~1.0</personalityRange>
+                        <multiplier>2</multiplier>
+                    </li>
+                </personalityMultipliers>
+            </li>
+        </conditions>
+        
         <priorityResult>
             <priority>3</priority>
             <description>I like to do this</description>
@@ -20,6 +74,60 @@
         <description>This pawn has a major passion for the work type.</description>
         <passionName>Major</passionName>
         <onlyWhenActive>true</onlyWhenActive>
+        
+        <conditions>
+            <li>
+                <type>personalityOffset</type>
+                <personalityDefName>Rimpsyche_Openness</personalityDefName>
+                <personalityMultipliers>
+                    <li>
+                        <personalityRange>-1.0~-0.3</personalityRange>
+                        <multiplier>1.2</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.3~1.0</personalityRange>
+                        <multiplier>0.8</multiplier>
+                    </li>
+                </personalityMultipliers>
+            </li>
+            <li>
+                <type>personalityOffset</type>
+                <personalityDefName>Rimpsyche_Inquisitiveness</personalityDefName>
+                <personalityMultipliers>
+                    <li>
+                        <personalityRange>-1.0~-0.3</personalityRange>
+                        <multiplier>1.2</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.3~1.0</personalityRange>
+                        <multiplier>0.8</multiplier>
+                    </li>
+                </personalityMultipliers>
+            </li>
+            <li>
+                <type>personalityOffset</type>
+                <personalityDefName>Rimpsyche_Passion</personalityDefName>
+                <personalityMultipliers>
+                    <li>
+                        <personalityRange>-1.0~-0.5</personalityRange>
+                        <multiplier>0.5</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>-0.51~-0.1</personalityRange>
+                        <multiplier>0.75</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.1~0.5</personalityRange>
+                        <multiplier>1.5</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.51~1.0</personalityRange>
+                        <multiplier>2</multiplier>
+                    </li>
+                </personalityMultipliers>
+            </li>
+        </conditions>
+        
         <priorityResult>
             <priority>7</priority>
             <description>I love to do this</description>
@@ -33,6 +141,24 @@
         <description>This pawn has apathy for the work type.</description>
         <passionName>VSE_Apathy</passionName>
         <onlyWhenActive>true</onlyWhenActive>
+
+        <conditions>
+            <li>
+                <type>personalityOffset</type>
+                <personalityDefName>Rimpsyche_Inquisitiveness</personalityDefName>
+                <personalityMultipliers>
+                    <li>
+                        <personalityRange>-1.0~-0.3</personalityRange>
+                        <multiplier>1.5</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.3~1.0</personalityRange>
+                        <multiplier>0.5</multiplier>
+                    </li>
+                </personalityMultipliers>
+            </li>
+        </conditions>
+        
         <priorityResult>
             <priority>-5</priority>
             <description>I have no interest in this</description>
@@ -46,6 +172,60 @@
         <description>This pawn has a natural talent for the work type.</description>
         <passionName>VSE_Natural</passionName>
         <onlyWhenActive>true</onlyWhenActive>
+        
+        <conditions>
+            <li>
+                <type>personalityOffset</type>
+                <personalityDefName>Rimpsyche_Openness</personalityDefName>
+                <personalityMultipliers>
+                    <li>
+                        <personalityRange>-1.0~-0.3</personalityRange>
+                        <multiplier>1.2</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.3~1.0</personalityRange>
+                        <multiplier>0.8</multiplier>
+                    </li>
+                </personalityMultipliers>
+            </li>
+            <li>
+                <type>personalityOffset</type>
+                <personalityDefName>Rimpsyche_Inquisitiveness</personalityDefName>
+                <personalityMultipliers>
+                    <li>
+                        <personalityRange>-1.0~-0.3</personalityRange>
+                        <multiplier>1.2</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.3~1.0</personalityRange>
+                        <multiplier>0.8</multiplier>
+                    </li>
+                </personalityMultipliers>
+            </li>
+            <li>
+                <type>personalityOffset</type>
+                <personalityDefName>Rimpsyche_Passion</personalityDefName>
+                <personalityMultipliers>
+                    <li>
+                        <personalityRange>-1.0~-0.5</personalityRange>
+                        <multiplier>0.5</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>-0.51~-0.1</personalityRange>
+                        <multiplier>0.75</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.1~0.5</personalityRange>
+                        <multiplier>1.5</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.51~1.0</personalityRange>
+                        <multiplier>2</multiplier>
+                    </li>
+                </personalityMultipliers>
+            </li>
+        </conditions>
+
         <priorityResult>
             <priority>9</priority>
             <description>I was born for this</description>
@@ -59,6 +239,74 @@
         <description>This pawn lives for this work type.</description>
         <passionName>VSE_Critical</passionName>
         <onlyWhenActive>true</onlyWhenActive>
+        
+        <conditions>
+            <li>
+                <type>personalityOffset</type>
+                <personalityDefName>Rimpsyche_Openness</personalityDefName>
+                <personalityMultipliers>
+                    <li>
+                        <personalityRange>-1.0~-0.3</personalityRange>
+                        <multiplier>1.1</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.3~1.0</personalityRange>
+                        <multiplier>0.9</multiplier>
+                    </li>
+                </personalityMultipliers>
+            </li>
+            <li>
+                <type>personalityOffset</type>
+                <personalityDefName>Rimpsyche_Inquisitiveness</personalityDefName>
+                <personalityMultipliers>
+                    <li>
+                        <personalityRange>-1.0~-0.3</personalityRange>
+                        <multiplier>1.1</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.3~1.0</personalityRange>
+                        <multiplier>0.9</multiplier>
+                    </li>
+                </personalityMultipliers>
+            </li>
+            <li>
+                <type>personalityOffset</type>
+                <personalityDefName>Rimpsyche_Focus</personalityDefName>
+                <personalityMultipliers>
+                    <li>
+                        <personalityRange>-1.0~-0.3</personalityRange>
+                        <multiplier>0.8</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.3~1.0</personalityRange>
+                        <multiplier>1.1</multiplier>
+                    </li>
+                </personalityMultipliers>
+            </li>
+            <li>
+                <type>personalityOffset</type>
+                <personalityDefName>Rimpsyche_Passion</personalityDefName>
+                <personalityMultipliers>
+                    <li>
+                        <personalityRange>-1.0~-0.5</personalityRange>
+                        <multiplier>0.5</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>-0.51~-0.1</personalityRange>
+                        <multiplier>0.75</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.1~0.5</personalityRange>
+                        <multiplier>1.5</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.51~1.0</personalityRange>
+                        <multiplier>2</multiplier>
+                    </li>
+                </personalityMultipliers>
+            </li>
+        </conditions>
+
         <priorityResult>
             <priority>20</priority>
             <description>I live for this</description>
@@ -72,6 +320,60 @@
         <description>This pawn has a drunken passion for the work type.</description>
         <passionName>AS_DrunkenPassion</passionName>
         <onlyWhenActive>true</onlyWhenActive>
+        
+        <conditions>
+            <li>
+                <type>personalityOffset</type>
+                <personalityDefName>Rimpsyche_Openness</personalityDefName>
+                <personalityMultipliers>
+                    <li>
+                        <personalityRange>-1.0~-0.3</personalityRange>
+                        <multiplier>1.2</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.3~1.0</personalityRange>
+                        <multiplier>0.8</multiplier>
+                    </li>
+                </personalityMultipliers>
+            </li>
+            <li>
+                <type>personalityOffset</type>
+                <personalityDefName>Rimpsyche_Inquisitiveness</personalityDefName>
+                <personalityMultipliers>
+                    <li>
+                        <personalityRange>-1.0~-0.3</personalityRange>
+                        <multiplier>1.2</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.3~1.0</personalityRange>
+                        <multiplier>0.8</multiplier>
+                    </li>
+                </personalityMultipliers>
+            </li>
+            <li>
+                <type>personalityOffset</type>
+                <personalityDefName>Rimpsyche_Passion</personalityDefName>
+                <personalityMultipliers>
+                    <li>
+                        <personalityRange>-1.0~-0.5</personalityRange>
+                        <multiplier>0.5</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>-0.51~-0.1</personalityRange>
+                        <multiplier>0.75</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.1~0.5</personalityRange>
+                        <multiplier>1.5</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.51~1.0</personalityRange>
+                        <multiplier>2</multiplier>
+                    </li>
+                </personalityMultipliers>
+            </li>
+        </conditions>
+
         <priorityResult>
             <priority>3</priority>
             <description>I like to do this</description>
@@ -84,6 +386,60 @@
         <description>This pawn has an active drunken passion for the work type.</description>
         <passionName>AS_DrunkenPassion_Active</passionName>
         <onlyWhenActive>true</onlyWhenActive>
+        
+        <conditions>
+            <li>
+                <type>personalityOffset</type>
+                <personalityDefName>Rimpsyche_Openness</personalityDefName>
+                <personalityMultipliers>
+                    <li>
+                        <personalityRange>-1.0~-0.3</personalityRange>
+                        <multiplier>1.5</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.3~1.0</personalityRange>
+                        <multiplier>0.8</multiplier>
+                    </li>
+                </personalityMultipliers>
+            </li>
+            <li>
+                <type>personalityOffset</type>
+                <personalityDefName>Rimpsyche_Passion</personalityDefName>
+                <personalityMultipliers>
+                    <li>
+                        <personalityRange>-1.0~-0.5</personalityRange>
+                        <multiplier>0.5</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>-0.51~-0.1</personalityRange>
+                        <multiplier>0.75</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.1~0.5</personalityRange>
+                        <multiplier>1.5</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.51~1.0</personalityRange>
+                        <multiplier>2</multiplier>
+                    </li>
+                </personalityMultipliers>
+            </li>
+            <li>
+                <type>personalityOffset</type>
+                <personalityDefName>Rimpsyche_Spontaneity</personalityDefName>
+                <personalityMultipliers>
+                    <li>
+                        <personalityRange>-1.0~-0.3</personalityRange>
+                        <multiplier>0.7</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.3~1.0</personalityRange>
+                        <multiplier>1.3</multiplier>
+                    </li>
+                </personalityMultipliers>
+            </li>
+        </conditions>
+
         <priorityResult>
             <priority>15</priority>
             <description>The ideas flow like the alcohol</description>
@@ -108,6 +464,61 @@
         <description>This pawn has a synergistic passion for the work type.</description>
         <passionName>AS_SynergisticPassion</passionName>
         <onlyWhenActive>true</onlyWhenActive>
+        
+        <conditions>
+            <li>
+                <type>personalityOffset</type>
+                <personalityDefName>Rimpsyche_Openness</personalityDefName>
+                <personalityMultipliers>
+                    <li>
+                        <personalityRange>-1.0~-0.3</personalityRange>
+                        <multiplier>1</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.3~1.0</personalityRange>
+                        <multiplier>0.9</multiplier>
+                    </li>
+                </personalityMultipliers>
+            </li>
+            
+            <li>
+                <type>personalityOffset</type>
+                <personalityDefName>Rimpsyche_Inquisitiveness</personalityDefName>
+                <personalityMultipliers>
+                    <li>
+                        <personalityRange>-1.0~-0.3</personalityRange>
+                        <multiplier>1</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.3~1.0</personalityRange>
+                        <multiplier>0.9</multiplier>
+                    </li>
+                </personalityMultipliers>
+            </li>
+            <li>
+                <type>personalityOffset</type>
+                <personalityDefName>Rimpsyche_Passion</personalityDefName>
+                <personalityMultipliers>
+                    <li>
+                        <personalityRange>-1.0~-0.5</personalityRange>
+                        <multiplier>0.5</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>-0.51~-0.1</personalityRange>
+                        <multiplier>0.75</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.1~0.5</personalityRange>
+                        <multiplier>1.5</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.51~1.0</personalityRange>
+                        <multiplier>2</multiplier>
+                    </li>
+                </personalityMultipliers>
+            </li>
+        </conditions>
+
         <priorityResult>
             <priority>3</priority>
             <description>I like to do this</description>
@@ -120,6 +531,60 @@
         <description>This pawn has a night passion for the work type.</description>
         <passionName>AS_NightPassion</passionName>
         <onlyWhenActive>true</onlyWhenActive>
+        
+        <conditions>
+            <li>
+                <type>personalityOffset</type>
+                <personalityDefName>Rimpsyche_Openness</personalityDefName>
+                <personalityMultipliers>
+                    <li>
+                        <personalityRange>-1.0~-0.3</personalityRange>
+                        <multiplier>1.2</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.3~1.0</personalityRange>
+                        <multiplier>0.8</multiplier>
+                    </li>
+                </personalityMultipliers>
+            </li>
+            <li>
+                <type>personalityOffset</type>
+                <personalityDefName>Rimpsyche_Inquisitiveness</personalityDefName>
+                <personalityMultipliers>
+                    <li>
+                        <personalityRange>-1.0~-0.3</personalityRange>
+                        <multiplier>1.2</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.3~1.0</personalityRange>
+                        <multiplier>0.8</multiplier>
+                    </li>
+                </personalityMultipliers>
+            </li>
+            <li>
+                <type>personalityOffset</type>
+                <personalityDefName>Rimpsyche_Passion</personalityDefName>
+                <personalityMultipliers>
+                    <li>
+                        <personalityRange>-1.0~-0.5</personalityRange>
+                        <multiplier>0.5</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>-0.51~-0.1</personalityRange>
+                        <multiplier>0.75</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.1~0.5</personalityRange>
+                        <multiplier>1.5</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.51~1.0</personalityRange>
+                        <multiplier>2</multiplier>
+                    </li>
+                </personalityMultipliers>
+            </li>
+        </conditions>
+        
         <priorityResult>
             <priority>3</priority>
             <description>I like to do this</description>
@@ -132,6 +597,74 @@
         <description>This pawn has an active night passion for the work type.</description>
         <passionName>AS_NightPassion_Active</passionName>
         <onlyWhenActive>true</onlyWhenActive>
+        
+        <conditions>
+            <li>
+                <type>personalityOffset</type>
+                <personalityDefName>Rimpsyche_Openness</personalityDefName>
+                <personalityMultipliers>
+                    <li>
+                        <personalityRange>-1.0~-0.3</personalityRange>
+                        <multiplier>1.5</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.3~1.0</personalityRange>
+                        <multiplier>0.9</multiplier>
+                    </li>
+                </personalityMultipliers>
+            </li>
+            <li>
+                <type>personalityOffset</type>
+                <personalityDefName>Rimpsyche_Inquisitiveness</personalityDefName>
+                <personalityMultipliers>
+                    <li>
+                        <personalityRange>-1.0~-0.3</personalityRange>
+                        <multiplier>1.2</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.3~1.0</personalityRange>
+                        <multiplier>0.8</multiplier>
+                    </li>
+                </personalityMultipliers>
+            </li>
+            <li>
+                <type>personalityOffset</type>
+                <personalityDefName>Rimpsyche_Passion</personalityDefName>
+                <personalityMultipliers>
+                    <li>
+                        <personalityRange>-1.0~-0.5</personalityRange>
+                        <multiplier>0.5</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>-0.51~-0.1</personalityRange>
+                        <multiplier>0.75</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.1~0.5</personalityRange>
+                        <multiplier>1.5</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.51~1.0</personalityRange>
+                        <multiplier>2</multiplier>
+                    </li>
+                </personalityMultipliers>
+            </li>
+            <li>
+                <type>personalityOffset</type>
+                <personalityDefName>Rimpsyche_Spontaneity</personalityDefName>
+                <personalityMultipliers>
+                    <li>
+                        <personalityRange>-1.0~-0.3</personalityRange>
+                        <multiplier>0.7</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.3~1.0</personalityRange>
+                        <multiplier>1.3</multiplier>
+                    </li>
+                </personalityMultipliers>
+            </li>
+        </conditions>
+
         <priorityResult>
             <priority>15</priority>
             <description>Night is the perfect time for this</description>
@@ -144,6 +677,74 @@
         <description>This pawn has a youth passion for the work type.</description>
         <passionName>AS_YouthPassion</passionName>
         <onlyWhenActive>true</onlyWhenActive>
+        
+        <conditions>
+            <li>
+                <type>personalityOffset</type>
+                <personalityDefName>Rimpsyche_Openness</personalityDefName>
+                <personalityMultipliers>
+                    <li>
+                        <personalityRange>-1.0~-0.3</personalityRange>
+                        <multiplier>1.3</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.3~1.0</personalityRange>
+                        <multiplier>0.7</multiplier>
+                    </li>
+                </personalityMultipliers>
+            </li>
+            <li>
+                <type>personalityOffset</type>
+                <personalityDefName>Rimpsyche_Inquisitiveness</personalityDefName>
+                <personalityMultipliers>
+                    <li>
+                        <personalityRange>-1.0~-0.3</personalityRange>
+                        <multiplier>1.3</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.3~1.0</personalityRange>
+                        <multiplier>0.7</multiplier>
+                    </li>
+                </personalityMultipliers>
+            </li>
+            <li>
+                <type>personalityOffset</type>
+                <personalityDefName>Rimpsyche_Focus</personalityDefName>
+                <personalityMultipliers>
+                    <li>
+                        <personalityRange>-1.0~-0.3</personalityRange>
+                        <multiplier>0.8</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.3~1.0</personalityRange>
+                        <multiplier>1.1</multiplier>
+                    </li>
+                </personalityMultipliers>
+            </li>
+            <li>
+                <type>personalityOffset</type>
+                <personalityDefName>Rimpsyche_Passion</personalityDefName>
+                <personalityMultipliers>
+                    <li>
+                        <personalityRange>-1.0~-0.5</personalityRange>
+                        <multiplier>0.5</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>-0.51~-0.1</personalityRange>
+                        <multiplier>0.75</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.1~0.5</personalityRange>
+                        <multiplier>1.5</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.51~1.0</personalityRange>
+                        <multiplier>2</multiplier>
+                    </li>
+                </personalityMultipliers>
+            </li>
+        </conditions>
+
         <priorityResult>
             <priority>20</priority>
             <description>This is so great</description>
@@ -156,6 +757,60 @@
         <description>This pawn has a dedicated passion for the work type.</description>
         <passionName>AS_DedicatedPassion</passionName>
         <onlyWhenActive>true</onlyWhenActive>
+        
+        <conditions>
+            <li>
+                <type>personalityOffset</type>
+                <personalityDefName>Rimpsyche_Openness</personalityDefName>
+                <personalityMultipliers>
+                    <li>
+                        <personalityRange>-1.0~-0.3</personalityRange>
+                        <multiplier>1.1</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.3~1.0</personalityRange>
+                        <multiplier>0.7</multiplier>
+                    </li>
+                </personalityMultipliers>
+            </li>
+            <li>
+                <type>personalityOffset</type>
+                <personalityDefName>Rimpsyche_Inquisitiveness</personalityDefName>
+                <personalityMultipliers>
+                    <li>
+                        <personalityRange>-1.0~-0.3</personalityRange>
+                        <multiplier>1.1</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.3~1.0</personalityRange>
+                        <multiplier>0.7</multiplier>
+                    </li>
+                </personalityMultipliers>
+            </li>
+            <li>
+                <type>personalityOffset</type>
+                <personalityDefName>Rimpsyche_Passion</personalityDefName>
+                <personalityMultipliers>
+                    <li>
+                        <personalityRange>-1.0~-0.5</personalityRange>
+                        <multiplier>0.5</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>-0.51~-0.1</personalityRange>
+                        <multiplier>0.75</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.1~0.5</personalityRange>
+                        <multiplier>1.5</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.51~1.0</personalityRange>
+                        <multiplier>2</multiplier>
+                    </li>
+                </personalityMultipliers>
+            </li>
+        </conditions>
+        
         <priorityResult>
             <priority>5</priority>
             <description>I love to do this</description>
@@ -168,6 +823,74 @@
         <description>This pawn has an obsessive passion for the work type.</description>
         <passionName>AS_ObsessivePassion</passionName>
         <onlyWhenActive>true</onlyWhenActive>
+        
+        <conditions>
+            <li>
+                <type>personalityOffset</type>
+                <personalityDefName>Rimpsyche_Openness</personalityDefName>
+                <personalityMultipliers>
+                    <li>
+                        <personalityRange>-1.0~-0.3</personalityRange>
+                        <multiplier>1.5</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.3~1.0</personalityRange>
+                        <multiplier>1</multiplier>
+                    </li>
+                </personalityMultipliers>
+            </li>
+            <li>
+                <type>personalityOffset</type>
+                <personalityDefName>Rimpsyche_Inquisitiveness</personalityDefName>
+                <personalityMultipliers>
+                    <li>
+                        <personalityRange>-1.0~-0.3</personalityRange>
+                        <multiplier>1.5</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.3~1.0</personalityRange>
+                        <multiplier>1</multiplier>
+                    </li>
+                </personalityMultipliers>
+            </li>
+            <li>
+                <type>personalityOffset</type>
+                <personalityDefName>Rimpsyche_Focus</personalityDefName>
+                <personalityMultipliers>
+                    <li>
+                        <personalityRange>-1.0~-0.3</personalityRange>
+                        <multiplier>0.8</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.3~1.0</personalityRange>
+                        <multiplier>1.1</multiplier>
+                    </li>
+                </personalityMultipliers>
+            </li>
+            <li>
+                <type>personalityOffset</type>
+                <personalityDefName>Rimpsyche_Passion</personalityDefName>
+                <personalityMultipliers>
+                    <li>
+                        <personalityRange>-1.0~-0.5</personalityRange>
+                        <multiplier>0.5</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>-0.51~-0.1</personalityRange>
+                        <multiplier>0.75</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.1~0.5</personalityRange>
+                        <multiplier>1.5</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.51~1.0</personalityRange>
+                        <multiplier>2</multiplier>
+                    </li>
+                </personalityMultipliers>
+            </li>
+        </conditions>
+
         <priorityResult>
             <priority>5</priority>
             <description>I need to do this</description>
@@ -180,6 +903,61 @@
         <description>This pawn has a vengeful passion for the work type.</description>
         <passionName>AS_VengefulPassion</passionName>
         <onlyWhenActive>true</onlyWhenActive>
+        
+        <conditions>
+            <li>
+                <type>personalityOffset</type>
+                <personalityDefName>Rimpsyche_Openness</personalityDefName>
+                <personalityMultipliers>
+                    <li>
+                        <personalityRange>-1.0~-0.3</personalityRange>
+                        <multiplier>1.2</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.3~1.0</personalityRange>
+                        <multiplier>0.8</multiplier>
+                    </li>
+                </personalityMultipliers>
+            </li>
+            
+            <li>
+                <type>personalityOffset</type>
+                <personalityDefName>Rimpsyche_Inquisitiveness</personalityDefName>
+                <personalityMultipliers>
+                    <li>
+                        <personalityRange>-1.0~-0.3</personalityRange>
+                        <multiplier>1.2</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.3~1.0</personalityRange>
+                        <multiplier>0.8</multiplier>
+                    </li>
+                </personalityMultipliers>
+            </li>
+            <li>
+                <type>personalityOffset</type>
+                <personalityDefName>Rimpsyche_Passion</personalityDefName>
+                <personalityMultipliers>
+                    <li>
+                        <personalityRange>-1.0~-0.5</personalityRange>
+                        <multiplier>0.5</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>-0.51~-0.1</personalityRange>
+                        <multiplier>0.75</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.1~0.5</personalityRange>
+                        <multiplier>1.5</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.51~1.0</personalityRange>
+                        <multiplier>2</multiplier>
+                    </li>
+                </personalityMultipliers>
+            </li>
+        </conditions>
+
         <priorityResult>
             <priority>3</priority>
             <description>I like to do this</description>
@@ -192,6 +970,102 @@
         <description>This pawn has an active vengeful passion for the work type.</description>
         <passionName>AS_VengefulPassion_Active</passionName>
         <onlyWhenActive>true</onlyWhenActive>
+        
+        <conditions>
+            <li>
+                <type>personalityOffset</type>
+                <personalityDefName>Rimpsyche_Openness</personalityDefName>
+                <personalityMultipliers>
+                    <li>
+                        <personalityRange>-1.0~-0.3</personalityRange>
+                        <multiplier>1.2</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.3~1.0</personalityRange>
+                        <multiplier>0.8</multiplier>
+                    </li>
+                </personalityMultipliers>
+            </li>
+            <li>
+                <type>personalityOffset</type>
+                <personalityDefName>Rimpsyche_Inquisitiveness</personalityDefName>
+                <personalityMultipliers>
+                    <li>
+                        <personalityRange>-1.0~-0.3</personalityRange>
+                        <multiplier>1.2</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.3~1.0</personalityRange>
+                        <multiplier>0.8</multiplier>
+                    </li>
+                </personalityMultipliers>
+            </li>
+            <li>
+                <type>personalityOffset</type>
+                <personalityDefName>Rimpsyche_Aggressiveness</personalityDefName>
+                <personalityMultipliers>
+                    <li>
+                        <personalityRange>-1.0~-0.3</personalityRange>
+                        <multiplier>0.8</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.3~1.0</personalityRange>
+                        <multiplier>2</multiplier>
+                    </li>
+                </personalityMultipliers>
+            </li>
+            <li>
+                <type>personalityOffset</type>
+                <personalityDefName>Rimpsyche_Passion</personalityDefName>
+                <personalityMultipliers>
+                    <li>
+                        <personalityRange>-1.0~-0.5</personalityRange>
+                        <multiplier>0.5</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>-0.51~-0.1</personalityRange>
+                        <multiplier>0.75</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.1~0.5</personalityRange>
+                        <multiplier>1.5</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.51~1.0</personalityRange>
+                        <multiplier>2</multiplier>
+                    </li>
+                </personalityMultipliers>
+            </li>
+            <li>
+                <type>personalityOffset</type>
+                <personalityDefName>Rimpsyche_Spontaneity</personalityDefName>
+                <personalityMultipliers>
+                    <li>
+                        <personalityRange>-1.0~-0.3</personalityRange>
+                        <multiplier>0.7</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.3~1.0</personalityRange>
+                        <multiplier>1.3</multiplier>
+                    </li>
+                </personalityMultipliers>
+            </li>
+            <li>
+                <type>personalityOffset</type>
+                <personalityDefName>Rimpsyche_Tenacity</personalityDefName>
+                <personalityMultipliers>
+                    <li>
+                        <personalityRange>-1.0~-0.3</personalityRange>
+                        <multiplier>0.5</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.3~1.0</personalityRange>
+                        <multiplier>1.2</multiplier>
+                    </li>
+                </personalityMultipliers>
+            </li>
+        </conditions>
+
         <priorityResult>
             <priority>20</priority>
             <description>I have to do this. It's now or never</description>
@@ -204,9 +1078,77 @@
         <description>This pawn has a forbidden passion for the work type.</description>
         <passionName>AS_ForbiddenPassion</passionName>
         <onlyWhenActive>true</onlyWhenActive>
+        
+        <conditions>
+            <li>
+                <type>personalityOffset</type>
+                <personalityDefName>Rimpsyche_Openness</personalityDefName>
+                <personalityMultipliers>
+                    <li>
+                        <personalityRange>-1.0~-0.3</personalityRange>
+                        <multiplier>0.5</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.3~1.0</personalityRange>
+                        <multiplier>1.2</multiplier>
+                    </li>
+                </personalityMultipliers>
+            </li>
+            <li>
+                <type>personalityOffset</type>
+                <personalityDefName>Rimpsyche_Inquisitiveness</personalityDefName>
+                <personalityMultipliers>
+                    <li>
+                        <personalityRange>-1.0~-0.3</personalityRange>
+                        <multiplier>1</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.3~1.0</personalityRange>
+                        <multiplier>1.5</multiplier>
+                    </li>
+                </personalityMultipliers>
+            </li>
+            <li>
+                <type>personalityOffset</type>
+                <personalityDefName>Rimpsyche_Aggressiveness</personalityDefName>
+                <personalityMultipliers>
+                    <li>
+                        <personalityRange>-1.0~-0.3</personalityRange>
+                        <multiplier>0.5</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.3~1.0</personalityRange>
+                        <multiplier>1.5</multiplier>
+                    </li>
+                </personalityMultipliers>
+            </li>
+            <li>
+                <type>personalityOffset</type>
+                <personalityDefName>Rimpsyche_Passion</personalityDefName>
+                <personalityMultipliers>
+                    <li>
+                        <personalityRange>-1.0~-0.5</personalityRange>
+                        <multiplier>0.5</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>-0.51~-0.1</personalityRange>
+                        <multiplier>0.75</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.1~0.5</personalityRange>
+                        <multiplier>1.5</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.51~1.0</personalityRange>
+                        <multiplier>2</multiplier>
+                    </li>
+                </personalityMultipliers>
+            </li>
+        </conditions>
+
         <priorityResult>
-            <priority>11</priority>
-            <description>Spite fuels me to do this</description>
+            <priority>9</priority>
+            <description>It's wrong, but I want it anyways</description>
         </priorityResult>
     </Autonomy.PassionGiverDef>
 
@@ -216,6 +1158,60 @@
         <description>This pawn has a nomadic passion for the work type.</description>
         <passionName>AS_NomadicPassion</passionName>
         <onlyWhenActive>true</onlyWhenActive>
+        
+        <conditions>
+            <li>
+                <type>personalityOffset</type>
+                <personalityDefName>Rimpsyche_Openness</personalityDefName>
+                <personalityMultipliers>
+                    <li>
+                        <personalityRange>-1.0~-0.3</personalityRange>
+                        <multiplier>1.2</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.3~1.0</personalityRange>
+                        <multiplier>0.8</multiplier>
+                    </li>
+                </personalityMultipliers>
+            </li>
+            <li>
+                <type>personalityOffset</type>
+                <personalityDefName>Rimpsyche_Inquisitiveness</personalityDefName>
+                <personalityMultipliers>
+                    <li>
+                        <personalityRange>-1.0~-0.3</personalityRange>
+                        <multiplier>1.2</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.3~1.0</personalityRange>
+                        <multiplier>0.8</multiplier>
+                    </li>
+                </personalityMultipliers>
+            </li>
+            <li>
+                <type>personalityOffset</type>
+                <personalityDefName>Rimpsyche_Passion</personalityDefName>
+                <personalityMultipliers>
+                    <li>
+                        <personalityRange>-1.0~-0.5</personalityRange>
+                        <multiplier>0.5</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>-0.51~-0.1</personalityRange>
+                        <multiplier>0.75</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.1~0.5</personalityRange>
+                        <multiplier>1.5</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.51~1.0</personalityRange>
+                        <multiplier>2</multiplier>
+                    </li>
+                </personalityMultipliers>
+            </li>
+        </conditions>
+
         <priorityResult>
             <priority>3</priority>
             <description>I like to do this</description>
@@ -228,9 +1224,471 @@
         <description>This pawn has an active nomadic passion for the work type.</description>
         <passionName>AS_NomadicPassion_Active</passionName>
         <onlyWhenActive>true</onlyWhenActive>
+        
+        <conditions>
+            <li>
+                <type>personalityOffset</type>
+                <personalityDefName>Rimpsyche_Openness</personalityDefName>
+                <personalityMultipliers>
+                    <li>
+                        <personalityRange>-1.0~-0.3</personalityRange>
+                        <multiplier>1.2</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.3~1.0</personalityRange>
+                        <multiplier>0.8</multiplier>
+                    </li>
+                </personalityMultipliers>
+            </li>
+            <li>
+                <type>personalityOffset</type>
+                <personalityDefName>Rimpsyche_Inquisitiveness</personalityDefName>
+                <personalityMultipliers>
+                    <li>
+                        <personalityRange>-1.0~-0.3</personalityRange>
+                        <multiplier>1.2</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.3~1.0</personalityRange>
+                        <multiplier>0.8</multiplier>
+                    </li>
+                </personalityMultipliers>
+            </li>
+            <li>
+                <type>personalityOffset</type>
+                <personalityDefName>Rimpsyche_Passion</personalityDefName>
+                <personalityMultipliers>
+                    <li>
+                        <personalityRange>-1.0~-0.5</personalityRange>
+                        <multiplier>0.5</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>-0.51~-0.1</personalityRange>
+                        <multiplier>0.75</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.1~0.5</personalityRange>
+                        <multiplier>1.5</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.51~1.0</personalityRange>
+                        <multiplier>2</multiplier>
+                    </li>
+                </personalityMultipliers>
+            </li>
+            <li>
+                <type>personalityOffset</type>
+                <personalityDefName>Rimpsyche_Spontaneity</personalityDefName>
+                <personalityMultipliers>
+                    <li>
+                        <personalityRange>-1.0~-0.3</personalityRange>
+                        <multiplier>0.7</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.3~1.0</personalityRange>
+                        <multiplier>1.3</multiplier>
+                    </li>
+                </personalityMultipliers>
+            </li>
+        </conditions>
+
         <priorityResult>
             <priority>13</priority>
             <description>I thrive at this when traveling</description>
         </priorityResult>
     </Autonomy.PassionGiverDef>
+
+    <Autonomy.PassionGiverDef>
+        <defName>AS_SanguinePassion</defName>
+        <label>Alpha Skills Sanguine Passion</label>
+        <description>This pawn learns faster when their hemogen levels are high.</description>
+        <passionName>AS_SanguinePassion</passionName>
+        
+        <conditions>
+            <li>
+                <type>personalityOffset</type>
+                <personalityDefName>Rimpsyche_Openness</personalityDefName>
+                <personalityMultipliers>
+                    <li>
+                        <personalityRange>-1.0~-0.3</personalityRange>
+                        <multiplier>1.2</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.3~1.0</personalityRange>
+                        <multiplier>0.8</multiplier>
+                    </li>
+                </personalityMultipliers>
+            </li>
+            <li>
+                <type>personalityOffset</type>
+                <personalityDefName>Rimpsyche_Inquisitiveness</personalityDefName>
+                <personalityMultipliers>
+                    <li>
+                        <personalityRange>-1.0~-0.3</personalityRange>
+                        <multiplier>1.2</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.3~1.0</personalityRange>
+                        <multiplier>0.8</multiplier>
+                    </li>
+                </personalityMultipliers>
+            </li>
+            <li>
+                <type>personalityOffset</type>
+                <personalityDefName>Rimpsyche_Passion</personalityDefName>
+                <personalityMultipliers>
+                    <li>
+                        <personalityRange>-1.0~-0.5</personalityRange>
+                        <multiplier>0.5</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>-0.51~-0.1</personalityRange>
+                        <multiplier>0.75</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.1~0.5</personalityRange>
+                        <multiplier>1.5</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.51~1.0</personalityRange>
+                        <multiplier>2</multiplier>
+                    </li>
+                </personalityMultipliers>
+            </li>
+        </conditions>
+
+        <priorityResult>
+            <priority>3</priority>
+            <description>I like to do this</description>
+        </priorityResult>
+        
+    </Autonomy.PassionGiverDef>
+
+    <Autonomy.PassionGiverDef>
+        <defName>AS_SanguinePassion_Active</defName>
+        <label>Alpha Skills Sanguine Passion Active</label>
+        <description>This pawn learns much faster when their hemogen levels are high.</description>
+        <passionName>AS_SanguinePassion_Active</passionName>
+        
+        <conditions>
+            <li>
+                <type>personalityOffset</type>
+                <personalityDefName>Rimpsyche_Openness</personalityDefName>
+                <personalityMultipliers>
+                    <li>
+                        <personalityRange>-1.0~-0.3</personalityRange>
+                        <multiplier>1.5</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.3~1.0</personalityRange>
+                        <multiplier>0.8</multiplier>
+                    </li>
+                </personalityMultipliers>
+            </li>
+            <li>
+                <type>personalityOffset</type>
+                <personalityDefName>Rimpsyche_Passion</personalityDefName>
+                <personalityMultipliers>
+                    <li>
+                        <personalityRange>-1.0~-0.5</personalityRange>
+                        <multiplier>0.5</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>-0.51~-0.1</personalityRange>
+                        <multiplier>0.75</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.1~0.5</personalityRange>
+                        <multiplier>1.5</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.51~1.0</personalityRange>
+                        <multiplier>2</multiplier>
+                    </li>
+                </personalityMultipliers>
+            </li>
+            <li>
+                <type>personalityOffset</type>
+                <personalityDefName>Rimpsyche_Spontaneity</personalityDefName>
+                <personalityMultipliers>
+                    <li>
+                        <personalityRange>-1.0~-0.3</personalityRange>
+                        <multiplier>0.7</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.3~1.0</personalityRange>
+                        <multiplier>1.3</multiplier>
+                    </li>
+                </personalityMultipliers>
+            </li>
+        </conditions>
+
+        <priorityResult>
+            <priority>9</priority>
+            <description>The blood flows</description>
+        </priorityResult>
+    </Autonomy.PassionGiverDef>
+
+    <Autonomy.PassionGiverDef>
+        <defName>AS_ToxicPassion</defName>
+        <label>Alpha Skills Toxic Passion</label>
+        <description>This pawn learns faster in polluted terrain</description>
+        <passionName>AS_ToxicPassion</passionName>
+        
+        <conditions>
+            <li>
+                <type>personalityOffset</type>
+                <personalityDefName>Rimpsyche_Openness</personalityDefName>
+                <personalityMultipliers>
+                    <li>
+                        <personalityRange>-1.0~-0.3</personalityRange>
+                        <multiplier>1.2</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.3~1.0</personalityRange>
+                        <multiplier>0.8</multiplier>
+                    </li>
+                </personalityMultipliers>
+            </li>
+            <li>
+                <type>personalityOffset</type>
+                <personalityDefName>Rimpsyche_Inquisitiveness</personalityDefName>
+                <personalityMultipliers>
+                    <li>
+                        <personalityRange>-1.0~-0.3</personalityRange>
+                        <multiplier>1.2</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.3~1.0</personalityRange>
+                        <multiplier>0.8</multiplier>
+                    </li>
+                </personalityMultipliers>
+            </li>
+            <li>
+                <type>personalityOffset</type>
+                <personalityDefName>Rimpsyche_Passion</personalityDefName>
+                <personalityMultipliers>
+                    <li>
+                        <personalityRange>-1.0~-0.5</personalityRange>
+                        <multiplier>0.5</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>-0.51~-0.1</personalityRange>
+                        <multiplier>0.75</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.1~0.5</personalityRange>
+                        <multiplier>1.5</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.51~1.0</personalityRange>
+                        <multiplier>2</multiplier>
+                    </li>
+                </personalityMultipliers>
+            </li>
+        </conditions>
+
+        <priorityResult>
+            <priority>3</priority>
+            <description>I like to do this</description>
+        </priorityResult>
+        
+    </Autonomy.PassionGiverDef>
+
+    <Autonomy.PassionGiverDef>
+        <defName>AS_ToxicPassion_Active</defName>
+        <label>Alpha Skills Toxic Passion Active</label>
+        <description>This pawn learns much faster in polluted terrain</description>
+        <passionName>AS_ToxicPassion_Active</passionName>
+        
+        <conditions>
+            <li>
+                <type>personalityOffset</type>
+                <personalityDefName>Rimpsyche_Openness</personalityDefName>
+                <personalityMultipliers>
+                    <li>
+                        <personalityRange>-1.0~-0.3</personalityRange>
+                        <multiplier>1.5</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.3~1.0</personalityRange>
+                        <multiplier>0.8</multiplier>
+                    </li>
+                </personalityMultipliers>
+            </li>
+            <li>
+                <type>personalityOffset</type>
+                <personalityDefName>Rimpsyche_Passion</personalityDefName>
+                <personalityMultipliers>
+                    <li>
+                        <personalityRange>-1.0~-0.5</personalityRange>
+                        <multiplier>0.5</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>-0.51~-0.1</personalityRange>
+                        <multiplier>0.75</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.1~0.5</personalityRange>
+                        <multiplier>1.5</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.51~1.0</personalityRange>
+                        <multiplier>2</multiplier>
+                    </li>
+                </personalityMultipliers>
+            </li>
+            <li>
+                <type>personalityOffset</type>
+                <personalityDefName>Rimpsyche_Spontaneity</personalityDefName>
+                <personalityMultipliers>
+                    <li>
+                        <personalityRange>-1.0~-0.3</personalityRange>
+                        <multiplier>0.7</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.3~1.0</personalityRange>
+                        <multiplier>1.3</multiplier>
+                    </li>
+                </personalityMultipliers>
+            </li>
+        </conditions>
+
+        <priorityResult>
+            <priority>9</priority>
+            <description>The decay is inspiring me</description>
+        </priorityResult>
+    </Autonomy.PassionGiverDef>
+
+    <Autonomy.PassionGiverDef>
+        <defName>AS_PainDrivenPassion</defName>
+        <label>Alpha Skills Pain Driven Passion</label>
+        <description>This pawn learns faster when in pain.</description>
+        <passionName>AS_PainDrivenPassion</passionName>
+        
+        <conditions>
+            <li>
+                <type>personalityOffset</type>
+                <personalityDefName>Rimpsyche_Openness</personalityDefName>
+                <personalityMultipliers>
+                    <li>
+                        <personalityRange>-1.0~-0.3</personalityRange>
+                        <multiplier>1.2</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.3~1.0</personalityRange>
+                        <multiplier>0.8</multiplier>
+                    </li>
+                </personalityMultipliers>
+            </li>
+            <li>
+                <type>personalityOffset</type>
+                <personalityDefName>Rimpsyche_Inquisitiveness</personalityDefName>
+                <personalityMultipliers>
+                    <li>
+                        <personalityRange>-1.0~-0.3</personalityRange>
+                        <multiplier>1.2</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.3~1.0</personalityRange>
+                        <multiplier>0.8</multiplier>
+                    </li>
+                </personalityMultipliers>
+            </li>
+            <li>
+                <type>personalityOffset</type>
+                <personalityDefName>Rimpsyche_Passion</personalityDefName>
+                <personalityMultipliers>
+                    <li>
+                        <personalityRange>-1.0~-0.5</personalityRange>
+                        <multiplier>0.5</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>-0.51~-0.1</personalityRange>
+                        <multiplier>0.75</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.1~0.5</personalityRange>
+                        <multiplier>1.5</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.51~1.0</personalityRange>
+                        <multiplier>2</multiplier>
+                    </li>
+                </personalityMultipliers>
+            </li>
+        </conditions>
+
+        <priorityResult>
+            <priority>3</priority>
+            <description>I like to do this</description>
+        </priorityResult>
+        
+    </Autonomy.PassionGiverDef>
+
+    <Autonomy.PassionGiverDef>
+        <defName>AS_PainDrivenPassion_Active</defName>
+        <label>Alpha Skills Pain Driven Passion Active</label>
+        <description>This pawn learns much faster when in pain.</description>
+        <passionName>AS_PainDrivenPassion_Active</passionName>
+        
+        <conditions>
+            <li>
+                <type>personalityOffset</type>
+                <personalityDefName>Rimpsyche_Openness</personalityDefName>
+                <personalityMultipliers>
+                    <li>
+                        <personalityRange>-1.0~-0.3</personalityRange>
+                        <multiplier>1.5</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.3~1.0</personalityRange>
+                        <multiplier>0.8</multiplier>
+                    </li>
+                </personalityMultipliers>
+            </li>
+            <li>
+                <type>personalityOffset</type>
+                <personalityDefName>Rimpsyche_Passion</personalityDefName>
+                <personalityMultipliers>
+                    <li>
+                        <personalityRange>-1.0~-0.5</personalityRange>
+                        <multiplier>0.5</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>-0.51~-0.1</personalityRange>
+                        <multiplier>0.75</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.1~0.5</personalityRange>
+                        <multiplier>1.5</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.51~1.0</personalityRange>
+                        <multiplier>2</multiplier>
+                    </li>
+                </personalityMultipliers>
+            </li>
+            <li>
+                <type>personalityOffset</type>
+                <personalityDefName>Rimpsyche_Spontaneity</personalityDefName>
+                <personalityMultipliers>
+                    <li>
+                        <personalityRange>-1.0~-0.3</personalityRange>
+                        <multiplier>0.7</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.3~1.0</personalityRange>
+                        <multiplier>1.3</multiplier>
+                    </li>
+                </personalityMultipliers>
+            </li>
+        </conditions>
+
+        <priorityResult>
+            <priority>9</priority>
+            <description>The pain inspires me</description>
+        </priorityResult>
+    </Autonomy.PassionGiverDef>
+
 </Defs>

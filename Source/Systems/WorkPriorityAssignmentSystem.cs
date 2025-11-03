@@ -222,10 +222,19 @@ namespace Autonomy.Systems
                     string passionKey = $"Passion_{passionName}_{workType.defName}";
                     bool isDeduplication = usedPriorityGivers.Contains(passionKey);
                     
+                    // Calculate base priority
+                    int basePriority = passionGiver.priorityResult.priority;
+                    
+                    // Apply personality multiplier
+                    float personalityMultiplier = EvaluatePassionPersonalityMultiplier(passionGiver, pawn);
+                    int adjustedPriority = (int)(basePriority * personalityMultiplier + 0.5f);
+                    
+                    Log.Message($"[Autonomy] DEBUG: Passion {passionName} for {pawn.Name}: base={basePriority}, multiplier={personalityMultiplier}, final={adjustedPriority}");
+                    
                     var priorityResult = new PriorityGiverResult
                     {
                         PriorityGiver = null, // No direct PriorityGiver, this is passion-based
-                        Priority = passionGiver.priorityResult.priority,
+                        Priority = adjustedPriority,
                         Description = passionGiver.priorityResult.description,
                         IsDeduplication = isDeduplication
                     };
@@ -384,6 +393,175 @@ namespace Autonomy.Systems
                 case 2: return "Major";
                 default: return "None";
             }
+        }
+        
+        /// <summary>
+        /// Evaluates personality-based multipliers for a passion giver
+        /// </summary>
+        private float EvaluatePassionPersonalityMultiplier(PassionGiverDef passionGiver, Pawn pawn)
+        {
+            float personalityMultiplier = 1.0f;
+            
+            Log.Message($"[Autonomy] DEBUG: Evaluating passion personality for {pawn.Name} with passion {passionGiver.passionName}");
+            
+            if (passionGiver.conditions.NullOrEmpty())
+            {
+                Log.Message($"[Autonomy] DEBUG: No conditions found for {passionGiver.passionName}");
+                return personalityMultiplier; // No conditions to evaluate
+            }
+            
+            Log.Message($"[Autonomy] DEBUG: Found {passionGiver.conditions.Count} conditions for {passionGiver.passionName}");
+            
+            foreach (var condition in passionGiver.conditions)
+            {
+                Log.Message($"[Autonomy] DEBUG: Processing condition type: {condition.type}");
+                if (condition.type == ConditionType.personalityOffset)
+                {
+                    // Apply personality multiplier
+                    float conditionMultiplier = EvaluatePersonalityMultiplier(condition, pawn);
+                    Log.Message($"[Autonomy] DEBUG: Personality multiplier for {condition.personalityDefName}: {conditionMultiplier}");
+                    personalityMultiplier *= conditionMultiplier;
+                }
+            }
+            
+            Log.Message($"[Autonomy] DEBUG: Final personality multiplier for {pawn.Name}: {personalityMultiplier}");
+            return personalityMultiplier;
+        }
+        
+        /// <summary>
+        /// Evaluates personality-based multipliers for a given condition and pawn
+        /// </summary>
+        private float EvaluatePersonalityMultiplier(PriorityCondition condition, Pawn pawn)
+        {
+            Log.Message($"[Autonomy] DEBUG: EvaluatePersonalityMultiplier for {pawn.Name}, personality: {condition.personalityDefName}");
+            
+            // Check if RimPsyche mod is available
+            if (!ModsConfig.IsActive("maux36.rimpsyche"))
+            {
+                Log.Message($"[Autonomy] DEBUG: RimPsyche mod not active");
+                return 1.0f; // No multiplier if mod not available
+            }
+
+            try
+            {
+                // Use reflection to get the personality value safely
+                var compPsyche = GetRimPsycheComponent(pawn);
+                if (compPsyche == null)
+                {
+                    Log.Message($"[Autonomy] DEBUG: No RimPsyche component found for {pawn.Name}");
+                    return 1.0f; // No personality component
+                }
+
+                // Get personality value using reflection
+                float personalityValue = GetPersonalityValue(compPsyche, condition.personalityDefName);
+                Log.Message($"[Autonomy] DEBUG: Personality value for {condition.personalityDefName}: {personalityValue}");
+                
+                // Find matching multiplier range
+                foreach (var multiplier in condition.personalityMultipliers)
+                {
+                    Log.Message($"[Autonomy] DEBUG: Checking range {multiplier.personalityRange.min}~{multiplier.personalityRange.max} (multiplier: {multiplier.multiplier})");
+                    if (multiplier.personalityRange.Includes(personalityValue))
+                    {
+                        Log.Message($"[Autonomy] DEBUG: Range match! Returning multiplier: {multiplier.multiplier}");
+                        return multiplier.multiplier;
+                    }
+                }
+                
+                Log.Message($"[Autonomy] DEBUG: No range matched for personality value {personalityValue}");
+            }
+            catch (Exception e)
+            {
+                Log.Warning($"[Autonomy] Failed to evaluate personality multiplier for {condition.personalityDefName} on pawn {pawn.Name}: {e.Message}");
+            }
+
+            return 1.0f; // Default multiplier if no range matches
+        }
+
+        /// <summary>
+        /// Safely gets the RimPsyche component using reflection
+        /// </summary>
+        private object GetRimPsycheComponent(Pawn pawn)
+        {
+            try
+            {
+                // Get the extension method type
+                var extensionType = GenTypes.GetTypeInAnyAssembly("Maux36.RimPsyche.PawnExtensions");
+                if (extensionType == null) 
+                {
+                    Log.Message($"[Autonomy] DEBUG: PawnExtensions type not found");
+                    return null;
+                }
+
+                // Get the compPsyche extension method
+                var compPsycheMethod = extensionType.GetMethod("compPsyche", 
+                    System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static);
+                if (compPsycheMethod == null) 
+                {
+                    Log.Message($"[Autonomy] DEBUG: compPsyche method not found");
+                    return null;
+                }
+
+                // Call the extension method
+                var result = compPsycheMethod.Invoke(null, new object[] { pawn });
+                Log.Message($"[Autonomy] DEBUG: Successfully got RimPsyche component: {result != null}");
+                return result;
+            }
+            catch (Exception e)
+            {
+                Log.Warning($"[Autonomy] Exception getting RimPsyche component: {e.Message}");
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Gets a personality value using reflection
+        /// </summary>
+        private float GetPersonalityValue(object compPsyche, string personalityDefName)
+        {
+            try
+            {
+                Log.Message($"[Autonomy] DEBUG: Getting personality value for {personalityDefName}");
+                
+                // Get the Personality property
+                var personalityProperty = compPsyche.GetType().GetProperty("Personality");
+                if (personalityProperty == null)
+                {
+                    Log.Message($"[Autonomy] DEBUG: Personality property not found on RimPsyche component");
+                    return 0f;
+                }
+
+                var personalityTracker = personalityProperty.GetValue(compPsyche);
+                if (personalityTracker == null)
+                {
+                    Log.Message($"[Autonomy] DEBUG: PersonalityTracker is null");
+                    return 0f;
+                }
+
+                // Get the GetPersonality method
+                var getPersonalityMethod = personalityTracker.GetType().GetMethod("GetPersonality", 
+                    new Type[] { typeof(string) });
+                if (getPersonalityMethod == null)
+                {
+                    Log.Message($"[Autonomy] DEBUG: GetPersonality method not found on PersonalityTracker");
+                    return 0f;
+                }
+
+                // Call GetPersonality with the defName
+                var result = getPersonalityMethod.Invoke(personalityTracker, new object[] { personalityDefName });
+                if (result is float personalityValue)
+                {
+                    Log.Message($"[Autonomy] DEBUG: Successfully got personality value: {personalityValue}");
+                    return personalityValue;
+                }
+                
+                Log.Message($"[Autonomy] DEBUG: GetPersonality returned non-float result: {result}");
+            }
+            catch (Exception e)
+            {
+                Log.Warning($"[Autonomy] Failed to get personality value for {personalityDefName}: {e.Message}");
+            }
+
+            return 0f;
         }
         
         /// <summary>

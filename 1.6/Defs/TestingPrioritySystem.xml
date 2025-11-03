@@ -11,6 +11,16 @@
         <isUrgent>false</isUrgent>
         <sourceType>pawnStat</sourceType>
         <targetStat>Construction</targetStat>
+        
+        <filters>
+            <include>
+                <li>player</li>
+            </include>
+            <exclude>
+                <li>dead</li>
+                <li>downed</li>
+            </exclude>
+        </filters>
     </Autonomy.InfoGiverDef>
 
     <!-- Construction Priority Giver -->
@@ -123,6 +133,143 @@
         
         <targetWorkGivers>
             <li>CleanFilth</li>
+        </targetWorkGivers>
+
+    </Autonomy.PriorityGiverDef>
+
+    <!-- Construction Speed InfoGiver -->
+    <Autonomy.InfoGiverDef>
+        <defName>ConstructionSpeedAverage</defName>
+        <label>Construction speed average</label>
+        <description>Tracks each pawn's construction speed individually for personalized construction priority</description>
+        <isLocalizable>false</isLocalizable>
+        <isIndividualizable>true</isIndividualizable>
+        <calculation>Avg</calculation>
+        <isUrgent>false</isUrgent>
+        <sourceType>pawnStat</sourceType>
+        <targetStat>ConstructionSpeed</targetStat>
+        
+        <filters>
+            <include>
+                <li>player</li>
+            </include>
+            <exclude>
+                <li>dead</li>
+                <li>downed</li>
+            </exclude>
+        </filters>
+    </Autonomy.InfoGiverDef>
+
+    <!-- Construction Speed Priority Giver -->
+    <Autonomy.PriorityGiverDef>
+        <defName>ConstructionSpeedPriority</defName>
+        <label>Construction speed priority</label>
+        <description>Adjust construction priority based on construction speed vs colony average</description>
+        <isUrgent>false</isUrgent>
+        
+        <conditions>
+            <li>
+                <type>infoGiver</type>
+                <infoDefName>ConstructionSpeedAverage</infoDefName>
+                <calculation>Flat</calculation>
+                <infoRange>0~999</infoRange>
+                <requestLocalizedData>false</requestLocalizedData>
+                <requestIndividualData>true</requestIndividualData>
+                <requestDistanceFromGlobal>false</requestDistanceFromGlobal>
+            </li>
+        </conditions>
+        
+        <priorityRanges>
+            <li>
+                <validRange>0~0.25</validRange>
+                <priority>-10~-5</priority>
+                <description>I am very slow at construction</description>
+            </li>
+            <li>
+                <validRange>0.26~0.75</validRange>
+                <priority>-5~0</priority>
+                <description>I am slow at construction</description>
+            </li>
+            <li>
+                <validRange>0.76~1</validRange>
+                <priority>0~5</priority>
+                <description>I am average speed at construction</description>
+            </li>
+            <li>
+                <validRange>1.01~2</validRange>
+                <priority>5~15</priority>
+                <description>I am fast at construction</description>
+            </li>
+            <li>
+                <validRange>2.01~999</validRange>
+                <priority>15</priority>
+                <description>I am very fast at construction</description>
+            </li>
+        </priorityRanges>
+        
+        <targetWorkGivers>
+            <li>ConstructFinishFrames</li>
+            <li>Deconstruct</li>
+            <li>Repair</li>
+            <li>ConstructSmoothFloors</li>
+            <li>ConstructSmoothWalls</li>
+        </targetWorkGivers>
+
+    </Autonomy.PriorityGiverDef>
+
+    <!-- Construction Speed Comparative Priority Giver -->
+    <Autonomy.PriorityGiverDef>
+        <defName>ConstructionSpeedComparativePriority</defName>
+        <label>Construction speed comparative priority</label>
+        <description>Adjust construction priority based on how much faster or slower than colony average</description>
+        <isUrgent>false</isUrgent>
+        
+        <conditions>
+            <li>
+                <type>infoGiver</type>
+                <infoDefName>ConstructionSpeedAverage</infoDefName>
+                <calculation>Flat</calculation>
+                <infoRange>-999~999</infoRange>
+                <requestLocalizedData>false</requestLocalizedData>
+                <requestIndividualData>true</requestIndividualData>
+                <requestDistanceFromGlobal>true</requestDistanceFromGlobal>
+            </li>
+        </conditions>
+        
+        <priorityRanges>
+            <li>
+                <validRange>-999~-0.5</validRange>
+                <priority>-15~-8</priority>
+                <description>I am much slower than average at construction</description>
+            </li>
+            <li>
+                <validRange>-0.49~-0.25</validRange>
+                <priority>-8~-3</priority>
+                <description>I am slower than average at construction</description>
+            </li>
+            <li>
+                <validRange>-0.24~0.24</validRange>
+                <priority>-3~3</priority>
+                <description>I am average speed at construction</description>
+            </li>
+            <li>
+                <validRange>0.25~0.5</validRange>
+                <priority>3~8</priority>
+                <description>I am faster than average at construction</description>
+            </li>
+            <li>
+                <validRange>0.51~999</validRange>
+                <priority>8~20</priority>
+                <description>I am much faster than average at construction</description>
+            </li>
+        </priorityRanges>
+        
+        <targetWorkGivers>
+            <li>ConstructFinishFrames</li>
+            <li>Deconstruct</li>
+            <li>Repair</li>
+            <li>ConstructSmoothFloors</li>
+            <li>ConstructSmoothWalls</li>
         </targetWorkGivers>
 
     </Autonomy.PriorityGiverDef>

@@ -465,6 +465,39 @@ namespace Autonomy
         {
             return PriorityRangeParsed.RandomInRange;
         }
+        
+        /// <summary>
+        /// Get interpolated priority based on where the value falls within the valid range
+        /// For example, if validRange is 1~2 and priority is 10~20:
+        /// - value 1.0 returns 10
+        /// - value 1.5 returns 15  
+        /// - value 2.0 returns 20
+        /// </summary>
+        public int GetInterpolatedPriority(float value)
+        {
+            // Clamp value to valid range
+            value = UnityEngine.Mathf.Clamp(value, ValidRangeParsed.min, ValidRangeParsed.max);
+            
+            // If the valid range is a single point, return the single priority
+            if (UnityEngine.Mathf.Approximately(ValidRangeParsed.min, ValidRangeParsed.max))
+            {
+                return PriorityRangeParsed.min;
+            }
+            
+            // If the priority range is a single point, return that priority
+            if (PriorityRangeParsed.min == PriorityRangeParsed.max)
+            {
+                return PriorityRangeParsed.min;
+            }
+            
+            // Calculate interpolation factor (0.0 to 1.0)
+            float t = (value - ValidRangeParsed.min) / (ValidRangeParsed.max - ValidRangeParsed.min);
+            
+            // Interpolate between min and max priority
+            float interpolatedPriority = UnityEngine.Mathf.Lerp(PriorityRangeParsed.min, PriorityRangeParsed.max, t);
+            
+            return UnityEngine.Mathf.RoundToInt(interpolatedPriority);
+        }
     }
 
     /// <summary>

@@ -145,7 +145,7 @@ namespace Autonomy
                     {
                         if (range.Contains(infoValue))
                         {
-                            return range.GetRandomPriority();
+                            return range.GetInterpolatedPriority(infoValue);
                         }
                     }
                 }

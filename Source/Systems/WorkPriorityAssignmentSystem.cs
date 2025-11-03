@@ -134,12 +134,6 @@ namespace Autonomy.Systems
 
             result.TotalPriority = result.WorkGiverSum + result.PriorityGiverResults.Sum(p => p.Priority);
             
-            // Only log if there's actually a priority change
-            if (result.TotalPriority != 0)
-            {
-                Log.Message($"[Autonomy] {pawn.NameShortColored} - {workType.labelShort}: Total priority {result.TotalPriority}");
-            }
-            
             return result;
         }
 
@@ -253,15 +247,15 @@ namespace Autonomy.Systems
         /// </summary>
         private string GetPassionName(SkillRecord skillRecord)
         {
-            // Check for Alpha Skills first (more specific)
-            if (ModsConfig.IsActive("sarg.alphaskills"))
-            {
-                return GetAlphaSkillsPassionName(skillRecord);
-            }
-            // Check for VSE
-            else if (ModsConfig.IsActive("vanillaexpanded.skills"))
+            // Check for VSE first (base system that Alpha Skills extends)
+            if (ModsConfig.IsActive("vanillaexpanded.skills"))
             {
                 return GetVSEPassionName(skillRecord);
+            }
+            // Fall back to Alpha Skills if only Alpha Skills is present (unlikely but possible)
+            else if (ModsConfig.IsActive("sarg.alphaskills"))
+            {
+                return GetAlphaSkillsPassionName(skillRecord);
             }
             else
             {
@@ -334,7 +328,7 @@ namespace Autonomy.Systems
         }
         
         /// <summary>
-        /// Get VSE passion name using passion labels
+        /// Get VSE passion name using passion labels (also handles Alpha Skills extensions)
         /// </summary>
         private string GetVSEPassionName(SkillRecord skillRecord)
         {
@@ -411,8 +405,6 @@ namespace Autonomy.Systems
                 
                 // Apply priority to pawn's work settings
                 pawn.workSettings.SetPriority(workType, priorityLevel);
-                
-                Log.Message($"[Autonomy] {pawn.NameShortColored} - {workType.labelShort}: Assigned priority {priorityLevel}");
             }
         }
 
@@ -499,7 +491,7 @@ namespace Autonomy.Systems
 
     public class PriorityGiverResult
     {
-        public PriorityGiverDef PriorityGiver;
+        public Autonomy.PriorityGiverDef PriorityGiver;
         public int Priority;
         public string Description;
         public bool IsDeduplication; // True if this priority was already counted for another WorkGiver

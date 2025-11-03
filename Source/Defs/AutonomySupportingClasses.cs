@@ -45,10 +45,11 @@ namespace Autonomy
     /// </summary>
     public enum ConditionType
     {
-        stat,       // Check pawn statistics
-        infoGiver,  // Use InfoGiverDef results
-        flat,       // Compare against fixed values
-        mapStat     // Check map-level statistics
+        stat,           // Check pawn statistics
+        infoGiver,      // Use InfoGiverDef results
+        flat,           // Compare against fixed values
+        mapStat,        // Check map-level statistics
+        personalityOffset // Apply personality-based multipliers to priority
     }
 
     // OffsetOperator enum commented out with PersonalityOffset functionality
@@ -109,6 +110,22 @@ namespace Autonomy
             // Parse severity and other numeric comparisons
             // This will be implemented in the evaluation engine
         }
+    }
+
+    /// <summary>
+    /// Maps personality value ranges to priority multipliers
+    /// </summary>
+    public class PersonalityMultiplier
+    {
+        /// <summary>
+        /// Range of personality values (-1 to 1)
+        /// </summary>
+        public FloatRange personalityRange;
+        
+        /// <summary>
+        /// Multiplier to apply to final priority when personality is in this range
+        /// </summary>
+        public float multiplier = 1.0f;
     }
 
     /// <summary>

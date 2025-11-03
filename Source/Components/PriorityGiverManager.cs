@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using RimWorld;
 using Verse;
+using UnityEngine;
 
 namespace Autonomy
 {
@@ -117,7 +118,6 @@ namespace Autonomy
                 try
                 {
                     int priority = EvaluatePriorityGiverForPawn(def, pawn);
-                    Log.Message($"{logPrefix} {def.label} for {pawn.NameShortColored}: {priority} priority");
                 }
                 catch (Exception e)
                 {
@@ -132,20 +132,32 @@ namespace Autonomy
         /// </summary>
         public int EvaluatePriorityGiverForPawn(PriorityGiverDef def, Pawn pawn)
         {
+            int basePriority = 3; // Default priority
+            float personalityMultiplier = 1.0f;
+            
             // Evaluate each condition for the specific pawn
             foreach (var condition in def.conditions)
             {
                 try
                 {
-                    // Get the InfoGiver result for this condition with pawn context
-                    float infoValue = infoGiverManager.GetLastResult(condition.infoDefName, condition, pawn);
-                    
-                    // Find matching priority range
-                    foreach (var range in def.priorityRanges)
+                    if (condition.type == ConditionType.personalityOffset)
                     {
-                        if (range.Contains(infoValue))
+                        // Handle personality-based multipliers
+                        personalityMultiplier *= EvaluatePersonalityMultiplier(condition, pawn);
+                    }
+                    else
+                    {
+                        // Handle regular InfoGiver conditions
+                        float infoValue = infoGiverManager.GetLastResult(condition.infoDefName, condition, pawn);
+                        
+                        // Find matching priority range
+                        foreach (var range in def.priorityRanges)
                         {
-                            return range.GetInterpolatedPriority(infoValue);
+                            if (range.Contains(infoValue))
+                            {
+                                basePriority = range.GetInterpolatedPriority(infoValue);
+                                break;
+                            }
                         }
                     }
                 }
@@ -155,8 +167,8 @@ namespace Autonomy
                 }
             }
             
-            // Return default priority if no conditions match
-            return 3;
+            // Apply personality multiplier to base priority and return
+            return Mathf.RoundToInt(basePriority * personalityMultiplier);
         }
 
         /// <summary>
@@ -182,6 +194,106 @@ namespace Autonomy
             }
             
             return results;
+        }
+
+        /// <summary>
+        /// Evaluates personality-based multipliers for a given condition and pawn
+        /// </summary>
+        private float EvaluatePersonalityMultiplier(PriorityCondition condition, Pawn pawn)
+        {
+            // Check if RimPsyche mod is available
+            if (!ModsConfig.IsActive("maux36.rimpsyche"))
+            {
+                return 1.0f; // No multiplier if mod not available
+            }
+
+            try
+            {
+                // Use reflection to get the personality value safely
+                var compPsyche = GetRimPsycheComponent(pawn);
+                if (compPsyche == null)
+                {
+                    return 1.0f; // No personality component
+                }
+
+                // Get personality value using reflection
+                float personalityValue = GetPersonalityValue(compPsyche, condition.personalityDefName);
+                
+                // Find matching multiplier range
+                foreach (var multiplier in condition.personalityMultipliers)
+                {
+                    if (multiplier.personalityRange.Includes(personalityValue))
+                    {
+                        return multiplier.multiplier;
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Log.Warning($"[Autonomy] Failed to evaluate personality multiplier for {condition.personalityDefName} on pawn {pawn.Name}: {e.Message}");
+            }
+
+            return 1.0f; // Default multiplier if no range matches
+        }
+
+        /// <summary>
+        /// Safely gets the RimPsyche component using reflection
+        /// </summary>
+        private object GetRimPsycheComponent(Pawn pawn)
+        {
+            try
+            {
+                // Get the extension method type
+                var extensionType = GenTypes.GetTypeInAnyAssembly("Maux36.RimPsyche.PawnExtensions");
+                if (extensionType == null) return null;
+
+                // Get the compPsyche extension method
+                var method = extensionType.GetMethod("compPsyche", 
+                    System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static);
+                if (method == null) return null;
+
+                // Call the extension method
+                return method.Invoke(null, new object[] { pawn });
+            }
+            catch (Exception e)
+            {
+                Log.Warning($"[Autonomy] Exception getting RimPsyche component: {e.Message}");
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Gets personality value using reflection
+        /// </summary>
+        private float GetPersonalityValue(object compPsyche, string personalityDefName)
+        {
+            try
+            {
+                // Get the Personality property
+                var personalityProperty = compPsyche.GetType().GetProperty("Personality");
+                if (personalityProperty == null) return 0f;
+
+                var personalityTracker = personalityProperty.GetValue(compPsyche);
+                if (personalityTracker == null) return 0f;
+
+                // Get the GetPersonality method
+                var getPersonalityMethod = personalityTracker.GetType().GetMethod("GetPersonality", 
+                    new Type[] { typeof(string) });
+                if (getPersonalityMethod == null) return 0f;
+
+                // Call GetPersonality with the defName
+                var result = getPersonalityMethod.Invoke(personalityTracker, new object[] { personalityDefName });
+                if (result is float personalityValue)
+                {
+                    return personalityValue;
+                }
+            }
+            catch (Exception e)
+            {
+                Log.Warning($"[Autonomy] Failed to get personality value for {personalityDefName}: {e.Message}");
+            }
+
+            return 0f;
         }
 
         #endregion

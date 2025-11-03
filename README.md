@@ -13,7 +13,8 @@ Autonomy is designed to make colonists feel more alive. Colonists respond to a c
 
 ### 🧠 **Intelligent Decision Making**
 - **Dynamic Priority Calculation**: Colonists evaluate colony conditions and adjust priorities in real-time
-- **Personality Integration**: Personality from Rimpsyches PersonalityDefs and InterestDomainDefs influences work prioritization
+- **Personality Integration**: Personality from [RimPsyche](https://github.com/jagerguy36/Rimpsyche) PersonalityDefs influences work prioritization through multipliers
+- **Passion-Based Priorities**: Skills and passions (including VSE and Alpha Skills) affect work preferences with proper mod hierarchy support
 - **Contextual Awareness**: Weather, threats, resources, and colony needs all factor into decisions
 
 ### 🔧 **Modular XML System**
@@ -113,6 +114,61 @@ See our [Contributing Guidelines](CONTRIBUTING.md) for details on how to get inv
     
     <targetWorkTypes>
         <li>Doctor</li>
+    </targetWorkTypes>
+</Autonomy.PriorityGiverDef>
+```
+
+### **Personality-Based Construction Priority (RimPsyche Integration)**
+```xml
+<Autonomy.PriorityGiverDef MayRequire="maux36.rimpsyche">
+    <defName>ConfidenceBasedConstruction</defName>
+    <label>Confidence-based construction priority</label>
+    <description>Confident colonists prioritize construction more highly</description>
+    
+    <conditions>
+        <li>
+            <type>infoGiver</type>
+            <infoDefName>ConstructionSpeed</infoDefName>
+            <requestIndividualData>true</requestIndividualData>
+            <requestDistanceFromGlobal>true</requestDistanceFromGlobal>
+        </li>
+        <li>
+            <type>personalityOffset</type>
+            <personalityDefName>Rimpsyche_Confidence</personalityDefName>
+            <personalityMultipliers>
+                <li>
+                    <personalityRange>
+                        <min>-1.0</min>
+                        <max>-0.5</max>
+                    </personalityRange>
+                    <multiplier>0.5</multiplier> <!-- Low confidence: 50% priority -->
+                </li>
+                <li>
+                    <personalityRange>
+                        <min>0.5</min>
+                        <max>1.0</max>
+                    </personalityRange>
+                    <multiplier>1.5</multiplier> <!-- High confidence: 150% priority -->
+                </li>
+            </personalityMultipliers>
+        </li>
+    </conditions>
+    
+    <priorityRanges>
+        <li>
+            <validRange>
+                <min>0.01</min>
+                <max>1.0</max>
+            </validRange>
+            <priority>
+                <min>1</min>
+                <max>2</max>
+            </priority>
+        </li>
+    </priorityRanges>
+    
+    <targetWorkTypes>
+        <li>Construction</li>
     </targetWorkTypes>
 </Autonomy.PriorityGiverDef>
 ```

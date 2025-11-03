@@ -249,6 +249,18 @@ namespace Autonomy
         /// </summary>
         public bool requestDistanceFromGlobal = false;
 
+        /// <summary>
+        /// Personality DefName for personalityOffset condition type
+        /// Example: "Rimpsyche_Confidence"
+        /// </summary>
+        public string personalityDefName;
+        
+        /// <summary>
+        /// Personality value ranges and their corresponding multipliers
+        /// Each range maps a personality score range to a priority multiplier
+        /// </summary>
+        public List<PersonalityMultiplier> personalityMultipliers = new List<PersonalityMultiplier>();
+
         public void ResolveReferences()
         {
             // Validate InfoGiver reference if used
@@ -278,6 +290,20 @@ namespace Autonomy
                 {
                     Log.Warning($"PriorityCondition requests distance from global but not individual data for {infoDefName}. Setting requestIndividualData to true.");
                     requestIndividualData = true;
+                }
+            }
+            
+            // Validate personalityOffset condition
+            if (type == ConditionType.personalityOffset)
+            {
+                if (personalityDefName.NullOrEmpty())
+                {
+                    Log.Error($"PriorityCondition with personalityOffset type requires personalityDefName");
+                }
+                
+                if (personalityMultipliers.NullOrEmpty())
+                {
+                    Log.Error($"PriorityCondition with personalityOffset type requires personalityMultipliers");
                 }
             }
         }

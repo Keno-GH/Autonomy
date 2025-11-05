@@ -134,8 +134,18 @@ namespace Autonomy
         /// </summary>
         public int EvaluatePriorityGiverForPawn(PriorityGiverDef def, Pawn pawn)
         {
+            var result = EvaluatePriorityGiverForPawnWithDescription(def, pawn);
+            return result.priority;
+        }
+
+        /// <summary>
+        /// Evaluates a PriorityGiver for a specific pawn and returns both priority and description
+        /// </summary>
+        public (int priority, string description) EvaluatePriorityGiverForPawnWithDescription(PriorityGiverDef def, Pawn pawn)
+        {
             int basePriority = 3; // Default priority
             float personalityMultiplier = 1.0f;
+            string matchedDescription = null;
             
             // Evaluate each condition for the specific pawn
             foreach (var condition in def.conditions)
@@ -158,6 +168,7 @@ namespace Autonomy
                             if (range.Contains(infoValue))
                             {
                                 basePriority = range.GetInterpolatedPriority(infoValue);
+                                matchedDescription = range.description; // Store the description
                                 break;
                             }
                         }
@@ -169,8 +180,12 @@ namespace Autonomy
                 }
             }
             
-            // Apply personality multiplier to base priority and return
-            return Mathf.RoundToInt(basePriority * personalityMultiplier);
+            // Apply personality multiplier to base priority
+            int finalPriority = Mathf.RoundToInt(basePriority * personalityMultiplier);
+            
+            // Return both the final priority and the matched description
+            string description = matchedDescription ?? $"Priority {finalPriority}";
+            return (finalPriority, description);
         }
 
         /// <summary>

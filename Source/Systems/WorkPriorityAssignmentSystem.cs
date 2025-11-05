@@ -114,12 +114,12 @@ namespace Autonomy.Systems
                 {
                     try
                     {
-                        int priority = priorityGiverManager.EvaluatePriorityGiverForPawn(priorityGiver, pawn);
+                        var (priority, description) = priorityGiverManager.EvaluatePriorityGiverForPawnWithDescription(priorityGiver, pawn);
                         var priorityResult = new PriorityGiverResult
                         {
                             PriorityGiver = priorityGiver,
                             Priority = priority,
-                            Description = GetPriorityDescription(priorityGiver, priority),
+                            Description = description,
                             IsDeduplication = false
                         };
                         result.PriorityGiverResults.Add(priorityResult);
@@ -159,14 +159,14 @@ namespace Autonomy.Systems
             {
                 try
                 {
-                    int priority = priorityGiverManager.EvaluatePriorityGiverForPawn(priorityGiver, pawn);
+                    var (priority, description) = priorityGiverManager.EvaluatePriorityGiverForPawnWithDescription(priorityGiver, pawn);
                     bool isDeduplication = usedPriorityGivers.Contains(priorityGiver.defName);
                     
                     var priorityResult = new PriorityGiverResult
                     {
                         PriorityGiver = priorityGiver,
                         Priority = priority,
-                        Description = GetPriorityDescription(priorityGiver, priority),
+                        Description = description,
                         IsDeduplication = isDeduplication
                     };
                     

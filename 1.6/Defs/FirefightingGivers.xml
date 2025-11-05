@@ -1,0 +1,257 @@
+<Defs>
+
+    <!-- Firefighting Average Movespeed Priority Giver -->
+    <Autonomy.PriorityGiverDef>
+        <defName>FirefightingMovespeedPriority</defName>
+        <label>Firefighting movespeed priority</label>
+        <description>Adjusts firefighting work priority based on pawn's movespeed</description>
+        <isUrgent>true</isUrgent>
+        
+        <conditions>
+            <li>
+                <type>infoGiver</type>
+                <infoDefName>MovespeedInfoGiver</infoDefName>
+                <calculation>Flat</calculation>
+                <infoRange>-999~999</infoRange>
+                <requestLocalizedData>false</requestLocalizedData>
+                <requestIndividualData>true</requestIndividualData>
+                <requestDistanceFromGlobal>true</requestDistanceFromGlobal>
+            </li>
+			<li>
+				<type>personalityOffset</type>
+				<personalityDefName>Rimpsyche_Competitiveness</personalityDefName>
+				<personalityMultipliers>
+					<li>
+						<personalityRange>-1.0~-0.5</personalityRange>
+						<multiplier>0.75</multiplier>
+					</li>
+					<li>
+						<personalityRange>-0.49~0.0</personalityRange>
+						<multiplier>0.9</multiplier>
+					</li>
+					<li>
+						<personalityRange>0.01~0.5</personalityRange>
+						<multiplier>1.25</multiplier>
+					</li>
+					<li>
+						<personalityRange>0.51~1.0</personalityRange>
+						<multiplier>1.5</multiplier>
+					</li>
+				</personalityMultipliers>
+			</li>
+            
+        </conditions>
+        
+        <priorityRanges>
+            <li>
+                <validRange>-999~0</validRange>
+                <priority>-5</priority>
+                <description>I'm below average at movespeed</description>
+            </li>
+            <li>
+                <validRange>0.01~999</validRange>
+                <priority>5</priority>
+                <description>I'm above average at movespeed</description>
+            </li>
+        </priorityRanges>
+        
+        <targetWorkGivers>
+            <li>FightFires</li>
+        </targetWorkGivers>
+    </Autonomy.PriorityGiverDef>
+
+    <!-- Fires in home area InfoGiver -->
+    <Autonomy.InfoGiverDef>
+        <defName>FiresInHomeArea</defName>
+        <label>Fires in home area</label>
+        <description>Counts the number of fires in the home area for urgent firefighting priority</description>
+        <isLocalizable>false</isLocalizable>
+        <isIndividualizable>false</isIndividualizable>
+        <calculation>Count</calculation>
+        <isUrgent>true</isUrgent>
+        <sourceType>itemCount</sourceType>
+        
+        <targetThingClasses>
+            <li>Fire</li>
+        </targetThingClasses>
+        
+        <filters>
+            <homeAreaOnly>true</homeAreaOnly>
+        </filters>
+    </Autonomy.InfoGiverDef>
+
+    <!-- Firefighting Urgent Priority Giver -->
+    <Autonomy.PriorityGiverDef>
+        <defName>FirefightingUrgentPriority</defName>
+        <label>Firefighting urgent priority</label>
+        <description>Increases firefighting priority when there are fires in the home area</description>
+        <isUrgent>true</isUrgent>
+        
+        <conditions>
+            <li>
+                <type>infoGiver</type>
+                <infoDefName>FiresInHomeArea</infoDefName>
+                <calculation>Flat</calculation>
+                <infoRange>1~999</infoRange>
+                <requestLocalizedData>false</requestLocalizedData>
+                <requestIndividualData>false</requestIndividualData>
+                <requestDistanceFromGlobal>false</requestDistanceFromGlobal>
+            </li>
+			<li>
+				<type>personalityOffset</type>
+				<personalityDefName>Rimpsyche_Bravery</personalityDefName>
+				<personalityMultipliers>
+					<li>
+						<personalityRange>-1.0~-0.5</personalityRange>
+						<multiplier>0.25</multiplier>
+					</li>
+					<li>
+						<personalityRange>-0.49~0.0</personalityRange>
+						<multiplier>0.75</multiplier>
+					</li>
+					<li>
+						<personalityRange>0.01~0.5</personalityRange>
+						<multiplier>1.25</multiplier>
+					</li>
+					<li>
+						<personalityRange>0.51~1.0</personalityRange>
+						<multiplier>1.5</multiplier>
+					</li>
+				</personalityMultipliers>
+			</li>
+			<li>
+				<type>personalityOffset</type>
+				<personalityDefName>Rimpsyche_Tension</personalityDefName>
+				<personalityMultipliers>
+					<li>
+						<personalityRange>-1.0~-0.5</personalityRange>
+						<multiplier>0.25</multiplier>
+					</li>
+					<li>
+						<personalityRange>-0.49~0.0</personalityRange>
+						<multiplier>0.75</multiplier>
+					</li>
+					<li>
+						<personalityRange>0.01~0.5</personalityRange>
+						<multiplier>1.5</multiplier>
+					</li>
+					<li>
+						<personalityRange>0.51~1.0</personalityRange>
+						<multiplier>2</multiplier>
+					</li>
+				</personalityMultipliers>
+			</li>
+			<li>
+				<type>personalityOffset</type>
+				<personalityDefName>Rimpsyche_Tenacity</personalityDefName>
+				<personalityMultipliers>
+					<li>
+						<personalityRange>-1.0~-0.5</personalityRange>
+						<multiplier>0.25</multiplier>
+					</li>
+					<li>
+						<personalityRange>-0.49~0.0</personalityRange>
+						<multiplier>0.75</multiplier>
+					</li>
+					<li>
+						<personalityRange>0.01~0.5</personalityRange>
+						<multiplier>1</multiplier>
+					</li>
+					<li>
+						<personalityRange>0.51~1.0</personalityRange>
+						<multiplier>1</multiplier>
+					</li>
+				</personalityMultipliers>
+			</li>
+			<li>
+				<type>personalityOffset</type>
+				<personalityDefName>Rimpsyche_Stability</personalityDefName>
+				<personalityMultipliers>
+					<li>
+						<personalityRange>-1.0~-0.5</personalityRange>
+						<multiplier>0.25</multiplier>
+					</li>
+					<li>
+						<personalityRange>-0.49~0.0</personalityRange>
+						<multiplier>0.75</multiplier>
+					</li>
+					<li>
+						<personalityRange>0.01~0.5</personalityRange>
+						<multiplier>1</multiplier>
+					</li>
+					<li>
+						<personalityRange>0.51~1.0</personalityRange>
+						<multiplier>1</multiplier>
+					</li>
+				</personalityMultipliers>
+			</li>
+			<li>
+				<type>personalityOffset</type>
+				<personalityDefName>Rimpsyche_Deliberation</personalityDefName>
+				<personalityMultipliers>
+					<li>
+						<personalityRange>-1.0~-0.5</personalityRange>
+						<multiplier>0.5</multiplier>
+					</li>
+					<li>
+						<personalityRange>-0.49~0.0</personalityRange>
+						<multiplier>0.75</multiplier>
+					</li>
+					<li>
+						<personalityRange>0.01~0.5</personalityRange>
+						<multiplier>1.5</multiplier>
+					</li>
+					<li>
+						<personalityRange>0.51~1.0</personalityRange>
+						<multiplier>2</multiplier>
+					</li>
+				</personalityMultipliers>
+			</li>
+			<li>
+				<type>personalityOffset</type>
+				<personalityDefName>Rimpsyche_Discipline</personalityDefName>
+				<personalityMultipliers>
+					<li>
+						<personalityRange>-1.0~-0.5</personalityRange>
+						<multiplier>1</multiplier>
+					</li>
+					<li>
+						<personalityRange>-0.49~0.0</personalityRange>
+						<multiplier>1</multiplier>
+					</li>
+					<li>
+						<personalityRange>0.01~0.5</personalityRange>
+						<multiplier>1.5</multiplier>
+					</li>
+					<li>
+						<personalityRange>0.51~1.0</personalityRange>
+						<multiplier>2</multiplier>
+					</li>
+				</personalityMultipliers>
+			</li>
+        </conditions>
+        
+        <priorityRanges>
+            <li>
+                <validRange>0</validRange>
+                <priority>0</priority>
+                <description>No fires</description>
+            </li>
+            <li>
+                <validRange>1~20</validRange>
+                <priority>10~60</priority>
+                <description>We have a fire</description>
+            </li>
+            <li>
+                <validRange>20~999</validRange>
+                <priority>60~60</priority>
+                <description>We have a fire</description>
+            </li>
+        </priorityRanges>
+        
+        <targetWorkGivers>
+            <li>FightFires</li>
+        </targetWorkGivers>
+    </Autonomy.PriorityGiverDef>
+
+</Defs>

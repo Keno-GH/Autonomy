@@ -1,0 +1,24 @@
+<Defs>
+	<!-- Movespeed infogiver -->
+	<Autonomy.InfoGiverDef>
+		<defName>MovespeedInfoGiver</defName>
+		<label>Movespeed average</label>
+		<description>Tracks each pawn's movespeed individually for personalized movespeed priority</description>
+		<isLocalizable>false</isLocalizable>
+		<isIndividualizable>true</isIndividualizable>
+		<calculation>Avg</calculation>
+		<isUrgent>false</isUrgent>
+		<sourceType>pawnStat</sourceType>
+		<targetStat>ConstructionSpeed</targetStat>
+        
+		<filters>
+			<include>
+				<li>player</li>
+			</include>
+			<exclude>
+				<li>dead</li>
+				<li>downed</li>
+			</exclude>
+		</filters>
+	</Autonomy.InfoGiverDef>
+</Defs>

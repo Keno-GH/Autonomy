@@ -5,7 +5,7 @@
         <defName>FirefightingMovespeedPriority</defName>
         <label>Firefighting movespeed priority</label>
         <description>Adjusts firefighting work priority based on pawn's movespeed</description>
-        <isUrgent>true</isUrgent>
+        <isUrgent>false</isUrgent>
         
         <conditions>
             <li>
@@ -246,6 +246,312 @@
                 <validRange>20~999</validRange>
                 <priority>60~60</priority>
                 <description>We have a fire</description>
+            </li>
+        </priorityRanges>
+        
+        <targetWorkGivers>
+            <li>FightFires</li>
+        </targetWorkGivers>
+    </Autonomy.PriorityGiverDef>
+
+    <!-- Pyrophobia Gene InfoGiver -->
+    <Autonomy.InfoGiverDef>
+        <defName>PyrophobiaGeneInfoGiver</defName>
+        <label>Pyrophobia gene</label>
+        <description>Checks if pawn has genes with FireTerror mental break (pyrophobia)</description>
+        <isLocalizable>false</isLocalizable>
+        <isIndividualizable>true</isIndividualizable>
+        <calculation>Count</calculation>
+        <isUrgent>true</isUrgent>
+        <sourceType>geneCount</sourceType>
+        
+        <targetMentalBreakDef>FireTerror</targetMentalBreakDef>
+        
+        <filters>
+            <include>
+                <li>player</li>
+            </include>
+            <exclude>
+                <li>dead</li>
+                <li>downed</li>
+            </exclude>
+        </filters>
+    </Autonomy.InfoGiverDef>
+
+    <!-- Firefighting Pyrophobia Priority Giver -->
+    <Autonomy.PriorityGiverDef>
+        <defName>FirefightingPyrophobiaPriority</defName>
+        <label>Firefighting pyrophobia avoidance</label>
+        <description>Reduces firefighting priority for pawns with pyrophobia gene</description>
+        <isUrgent>false</isUrgent>
+        
+        <conditions>
+            <li>
+                <type>infoGiver</type>
+                <infoDefName>PyrophobiaGeneInfoGiver</infoDefName>
+                <calculation>Flat</calculation>
+                <infoRange>0~999</infoRange>
+                <requestLocalizedData>false</requestLocalizedData>
+                <requestIndividualData>true</requestIndividualData>
+                <requestDistanceFromGlobal>false</requestDistanceFromGlobal>
+            </li>
+            <li>
+                <type>personalityOffset</type>
+                <personalityDefName>Rimpsyche_Bravery</personalityDefName>
+                <personalityMultipliers>
+                    <li>
+                        <personalityRange>-1.0~-0.5</personalityRange>
+                        <multiplier>1.5</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>-0.49~0.0</personalityRange>
+                        <multiplier>1.25</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.01~0.5</personalityRange>
+                        <multiplier>0.75</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.51~1.0</personalityRange>
+                        <multiplier>0.5</multiplier>
+                    </li>
+                </personalityMultipliers>
+            </li>
+            <li>
+                <type>personalityOffset</type>
+                <personalityDefName>Rimpsyche_Tension</personalityDefName>
+                <personalityMultipliers>
+                    <li>
+                        <personalityRange>-1.0~-0.5</personalityRange>
+                        <multiplier>0.75</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>-0.49~0.0</personalityRange>
+                        <multiplier>0.9</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.01~0.5</personalityRange>
+                        <multiplier>1.25</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.51~1.0</personalityRange>
+                        <multiplier>1.5</multiplier>
+                    </li>
+                </personalityMultipliers>
+            </li>
+            <li>
+                <type>personalityOffset</type>
+                <personalityDefName>Rimpsyche_Stability</personalityDefName>
+                <personalityMultipliers>
+                    <li>
+                        <personalityRange>-1.0~-0.5</personalityRange>
+                        <multiplier>1.5</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>-0.49~0.0</personalityRange>
+                        <multiplier>1.25</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.01~0.5</personalityRange>
+                        <multiplier>0.9</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.51~1.0</personalityRange>
+                        <multiplier>0.75</multiplier>
+                    </li>
+                </personalityMultipliers>
+            </li>
+        </conditions>
+        
+        <priorityRanges>
+            <li>
+                <validRange>0</validRange>
+                <priority>0</priority>
+                <description>I don't have pyrophobia</description>
+            </li>
+            <li>
+                <validRange>1~999</validRange>
+                <priority>-15</priority>
+                <description>Fires terrify me</description>
+            </li>
+        </priorityRanges>
+        
+        <targetWorkGivers>
+            <li>FightFires</li>
+        </targetWorkGivers>
+    </Autonomy.PriorityGiverDef>
+
+    <!-- Fire Weakness (Tinderskin) Gene InfoGiver -->
+    <Autonomy.InfoGiverDef>
+        <defName>FireWeaknessGeneInfoGiver</defName>
+        <label>Fire weakness gene damage factor</label>
+        <description>Sums the Flame damage factor from genes (e.g., tinderskin's 4x fire damage)</description>
+        <isLocalizable>false</isLocalizable>
+        <isIndividualizable>true</isIndividualizable>
+        <calculation>Sum</calculation>
+        <isUrgent>false</isUrgent>
+        <sourceType>geneCount</sourceType>
+        
+        <targetDamageFactor>Flame</targetDamageFactor>
+        
+        <filters>
+            <include>
+                <li>player</li>
+            </include>
+            <exclude>
+                <li>dead</li>
+                <li>downed</li>
+            </exclude>
+        </filters>
+    </Autonomy.InfoGiverDef>
+
+    <!-- Firefighting Fire Weakness Priority Giver -->
+    <Autonomy.PriorityGiverDef>
+        <defName>FirefightingFireWeaknessPriority</defName>
+        <label>Firefighting fire weakness avoidance</label>
+        <description>Reduces firefighting priority for pawns with fire weakness genes like tinderskin</description>
+        <isUrgent>false</isUrgent>
+        
+        <conditions>
+            <li>
+                <type>infoGiver</type>
+                <infoDefName>FireWeaknessGeneInfoGiver</infoDefName>
+                <calculation>Flat</calculation>
+                <infoRange>0~999</infoRange>
+                <requestLocalizedData>false</requestLocalizedData>
+                <requestIndividualData>true</requestIndividualData>
+                <requestDistanceFromGlobal>false</requestDistanceFromGlobal>
+            </li>
+            <li>
+                <type>personalityOffset</type>
+                <personalityDefName>Rimpsyche_Bravery</personalityDefName>
+                <personalityMultipliers>
+                    <li>
+                        <personalityRange>-1.0~-0.5</personalityRange>
+                        <multiplier>1.5</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>-0.49~0.0</personalityRange>
+                        <multiplier>1.25</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.01~0.5</personalityRange>
+                        <multiplier>0.9</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.51~1.0</personalityRange>
+                        <multiplier>0.75</multiplier>
+                    </li>
+                </personalityMultipliers>
+            </li>
+            <li>
+                <type>personalityOffset</type>
+                <personalityDefName>Rimpsyche_Tension</personalityDefName>
+                <personalityMultipliers>
+                    <li>
+                        <personalityRange>-1.0~-0.5</personalityRange>
+                        <multiplier>0.75</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>-0.49~0.0</personalityRange>
+                        <multiplier>0.9</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.01~0.5</personalityRange>
+                        <multiplier>1.25</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.51~1.0</personalityRange>
+                        <multiplier>1.5</multiplier>
+                    </li>
+                </personalityMultipliers>
+            </li>
+            <li>
+                <type>personalityOffset</type>
+                <personalityDefName>Rimpsyche_Deliberation</personalityDefName>
+                <personalityMultipliers>
+                    <li>
+                        <personalityRange>-1.0~-0.5</personalityRange>
+                        <multiplier>0.5</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>-0.49~0.0</personalityRange>
+                        <multiplier>0.75</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.01~0.5</personalityRange>
+                        <multiplier>1.5</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.51~1.0</personalityRange>
+                        <multiplier>2</multiplier>
+                    </li>
+                </personalityMultipliers>
+            </li>
+            <li>
+                <type>personalityOffset</type>
+                <personalityDefName>Rimpsyche_Stability</personalityDefName>
+                <personalityMultipliers>
+                    <li>
+                        <personalityRange>-1.0~-0.5</personalityRange>
+                        <multiplier>1.5</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>-0.49~0.0</personalityRange>
+                        <multiplier>1.25</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.01~0.5</personalityRange>
+                        <multiplier>0.9</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.51~1.0</personalityRange>
+                        <multiplier>0.75</multiplier>
+                    </li>
+                </personalityMultipliers>
+            </li>
+        </conditions>
+        
+        <priorityRanges>
+            <li>
+                <validRange>0</validRange>
+                <priority>20</priority>
+                <description>I am immune to fire damage</description>
+            </li>
+            <li>
+                <validRange>0.01~0.50</validRange>
+                <priority>15</priority>
+                <description>I am very resistant to fire damage</description>
+            </li>
+            <li>
+                <validRange>0.51~0.99</validRange>
+                <priority>10</priority>
+                <description>I am resistant to fire damage</description>
+            </li>
+            <li>
+                <validRange>1</validRange>
+                <priority>0</priority>
+                <description>I don't have fire weakness</description>
+            </li>
+            <li>
+                <validRange>1.01~1.5</validRange>
+                <priority>-5</priority>
+                <description>I'm slightly vulnerable to fire damage</description>
+            </li>
+            <li>
+                <validRange>1.51~2.5</validRange>
+                <priority>-10</priority>
+                <description>I'm vulnerable to fire damage</description>
+            </li>
+            <li>
+                <validRange>2.51~3.5</validRange>
+                <priority>-13</priority>
+                <description>I'm very vulnerable to fire damage</description>
+            </li>
+            <li>
+                <validRange>3.51~999</validRange>
+                <priority>-15</priority>
+                <description>I'm extremely vulnerable to fire damage</description>
             </li>
         </priorityRanges>
         

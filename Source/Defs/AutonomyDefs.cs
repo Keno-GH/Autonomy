@@ -112,6 +112,42 @@ namespace Autonomy
         public List<MapCondition> conditions = new List<MapCondition>();
         
         /// <summary>
+        /// Target gene defNames for geneCount sourceType
+        /// </summary>
+        public List<string> targetGenes = new List<string>();
+        
+        /// <summary>
+        /// Target gene classes for geneCount sourceType (e.g., "Gene_Hemogen")
+        /// </summary>
+        public List<string> targetGeneClasses = new List<string>();
+        
+        /// <summary>
+        /// Target mentalBreakDef for genes (filters genes that have this mental break)
+        /// </summary>
+        public string targetMentalBreakDef;
+        
+        /// <summary>
+        /// Filter genes by biostatMet value (e.g., ">=2" for genes with met 2+)
+        /// </summary>
+        public string filterBiostatMet;
+        
+        /// <summary>
+        /// Filter genes by biostatCpx value (e.g., ">=3" for genes with complexity 3+)
+        /// </summary>
+        public string filterBiostatCpx;
+        
+        /// <summary>
+        /// Filter genes by biostatArc value (e.g., ">=1" for archite genes)
+        /// </summary>
+        public string filterBiostatArc;
+        
+        /// <summary>
+        /// Target damage type for gene damage factor filtering (e.g., "Flame", "Blunt")
+        /// When set, returns the sum of damage factors for this damage type from matching genes
+        /// </summary>
+        public string targetDamageFactor;
+        
+        /// <summary>
         /// Filters to apply when collecting data
         /// </summary>
         public InfoFilters filters = new InfoFilters();
@@ -175,6 +211,14 @@ namespace Autonomy
                 case InfoSourceType.weather:
                     if (weatherProperty.NullOrEmpty())
                         Log.Error($"InfoGiverDef {defName} with sourceType weather requires weatherProperty");
+                    break;
+                    
+                case InfoSourceType.geneCount:
+                    if (targetGenes.NullOrEmpty() && targetGeneClasses.NullOrEmpty() && 
+                        targetMentalBreakDef.NullOrEmpty() && filterBiostatMet.NullOrEmpty() && 
+                        filterBiostatCpx.NullOrEmpty() && filterBiostatArc.NullOrEmpty() &&
+                        targetDamageFactor.NullOrEmpty())
+                        Log.Error($"InfoGiverDef {defName} with sourceType geneCount requires at least one gene targeting criterion");
                     break;
             }
             

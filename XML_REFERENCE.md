@@ -110,6 +110,13 @@
 | `targetItems` | List | * | Items to target (alternative to categories) |
 | `targetCategories` | List | * | Thing categories to target |
 | `conditions` | List | * | Required for mapCondition sourceType |
+| `targetGenes` | List | * | Gene defNames for geneCount sourceType |
+| `targetGeneClasses` | List | * | Gene class names for geneCount sourceType |
+| `targetMentalBreakDef` | string | * | Mental break def for gene filtering |
+| `targetDamageFactor` | string | * | Damage type for gene damage factor sum (e.g., "Flame") |
+| `filterBiostatMet` | string | * | Filter genes by biostatMet (e.g., ">=2") |
+| `filterBiostatCpx` | string | * | Filter genes by biostatCpx (e.g., ">=3") |
+| `filterBiostatArc` | string | * | Filter genes by biostatArc (e.g., ">=1") |
 | `filters` | object | ✗ | Advanced filtering options |
 
 ### InfoGiver Source Types
@@ -123,6 +130,9 @@
 | `constructionCount` | Construction projects | `targetItems` OR `targetCategories` | Defenses, power |
 | `mapCondition` | Map conditions | `conditions` | ✓ Toxic fallout, raids |
 | `weather` | Weather assessment | `weatherProperty` | ✓ Extreme temperatures |
+| `geneCount` | Count genes in pawns | Gene targeting fields* | Gene-dependent tasks |
+
+*Gene targeting fields: `targetGenes`, `targetGeneClasses`, `targetMentalBreakDef`, `filterBiostatMet`, `filterBiostatCpx`, `filterBiostatArc`
 
 ### Update Frequency
 
@@ -370,6 +380,170 @@ Priority medical work when colonists have severe, untended injuries.
 </Autonomy.PriorityGiverDef>
 ```
 
+## Gene-Based Priority Example
+
+### Pyrophobia Gene Detection
+Reduce firefighting priority for pawns with pyrophobia (FireTerror mental break):
+
+```xml
+<!-- InfoGiver: Detect pyrophobia gene -->
+<Autonomy.InfoGiverDef>
+    <defName>PyrophobiaGeneInfoGiver</defName>
+    <label>Pyrophobia gene</label>
+    <description>Checks if pawn has genes with FireTerror mental break</description>
+    <isLocalizable>false</isLocalizable>
+    <isIndividualizable>true</isIndividualizable>
+    <calculation>Count</calculation>
+    <isUrgent>true</isUrgent>
+    <sourceType>geneCount</sourceType>
+    
+    <targetMentalBreakDef>FireTerror</targetMentalBreakDef>
+    
+    <filters>
+        <include>
+            <li>player</li>
+        </include>
+        <exclude>
+            <li>dead</li>
+            <li>downed</li>
+        </exclude>
+    </filters>
+</Autonomy.InfoGiverDef>
+
+<!-- PriorityGiver: Reduce firefighting priority -->
+<Autonomy.PriorityGiverDef>
+    <defName>FirefightingPyrophobiaPriority</defName>
+    <label>Firefighting pyrophobia avoidance</label>
+    <description>Reduces firefighting priority for pawns with pyrophobia gene</description>
+    <isUrgent>true</isUrgent>
+    
+    <conditions>
+        <li>
+            <type>infoGiver</type>
+            <infoDefName>PyrophobiaGeneInfoGiver</infoDefName>
+            <calculation>Flat</calculation>
+            <infoRange>0~999</infoRange>
+            <requestIndividualData>true</requestIndividualData>
+        </li>
+        <!-- Personality: brave pawns resist fear more -->
+        <li>
+            <type>personalityOffset</type>
+            <personalityDefName>Rimpsyche_Bravery</personalityDefName>
+            <personalityMultipliers>
+                <li>
+                    <personalityRange>-1.0~-0.5</personalityRange>
+                    <multiplier>1.5</multiplier>
+                </li>
+                <li>
+                    <personalityRange>0.51~1.0</personalityRange>
+                    <multiplier>0.5</multiplier>
+                </li>
+            </personalityMultipliers>
+        </li>
+    </conditions>
+    
+    <priorityRanges>
+        <li>
+            <validRange>0</validRange>
+            <priority>0</priority>
+            <description>I don't have pyrophobia</description>
+        </li>
+        <li>
+            <validRange>1~999</validRange>
+            <priority>-20</priority>
+            <description>Fires terrify me</description>
+        </li>
+    </priorityRanges>
+    
+    <targetWorkGivers>
+        <li>FightFires</li>
+    </targetWorkGivers>
+</Autonomy.PriorityGiverDef>
+```
+
+### Other Gene Targeting Examples
+
+```xml
+<!-- Target specific genes by defName -->
+<targetGenes>
+    <li>Hemogenic</li>
+    <li>Deathless</li>
+</targetGenes>
+
+<!-- Target genes by class -->
+<targetGeneClasses>
+    <li>Gene_Hemogen</li>
+    <li>Gene_Healing</li>
+</targetGeneClasses>
+
+<!-- Filter by biostat values -->
+<filterBiostatArc>>=1</filterBiostatArc> <!-- Archite genes only -->
+<filterBiostatCpx>>=3</filterBiostatCpx> <!-- High complexity -->
+<filterBiostatMet>>=4</filterBiostatMet> <!-- High metabolic cost -->
+
+<!-- Target damage factors (returns sum of factors) -->
+<targetDamageFactor>Flame</targetDamageFactor> <!-- Fire weakness genes like tinderskin (4x) -->
+```
+
+### Fire Weakness (Damage Factor) Example
+
+```xml
+<!-- InfoGiver: Sum Flame damage factors -->
+<Autonomy.InfoGiverDef>
+    <defName>FireWeaknessGeneInfoGiver</defName>
+    <label>Fire weakness gene damage factor</label>
+    <sourceType>geneCount</sourceType>
+    <calculation>Sum</calculation>
+    <isIndividualizable>true</isIndividualizable>
+    <isUrgent>true</isUrgent>
+    
+    <targetDamageFactor>Flame</targetDamageFactor>
+    
+    <filters>
+        <include>
+            <li>player</li>
+        </include>
+    </filters>
+</Autonomy.InfoGiverDef>
+
+<!-- PriorityGiver: Scaled avoidance based on vulnerability -->
+<Autonomy.PriorityGiverDef>
+    <defName>FirefightingFireWeaknessPriority</defName>
+    <label>Fire weakness avoidance</label>
+    <isUrgent>true</isUrgent>
+    
+    <conditions>
+        <li>
+            <type>infoGiver</type>
+            <infoDefName>FireWeaknessGeneInfoGiver</infoDefName>
+            <requestIndividualData>true</requestIndividualData>
+        </li>
+    </conditions>
+    
+    <priorityRanges>
+        <li>
+            <validRange>0</validRange>
+            <priority>0</priority>
+            <description>No fire weakness</description>
+        </li>
+        <li>
+            <validRange>1.5~2.5</validRange>
+            <priority>-10</priority>
+            <description>Vulnerable to fire</description>
+        </li>
+        <li>
+            <validRange>3.5~999</validRange>
+            <priority>-30</priority>
+            <description>Extremely vulnerable (tinderskin)</description>
+        </li>
+    </priorityRanges>
+    
+    <targetWorkGivers>
+        <li>FightFires</li>
+    </targetWorkGivers>
+</Autonomy.PriorityGiverDef>
+```
+
 ## Tips and Best Practices
 
 1. **Start Simple**: Begin with flat value conditions before using InfoGivers
@@ -378,6 +552,8 @@ Priority medical work when colonists have severe, untended injuries.
 4. **Consider Balance**: Avoid making priorities too aggressive
 5. **Plan for Edge Cases**: Consider what happens with extreme values
 6. **Use Personality Wisely**: Not every priority needs personality offsets
+7. **Gene Targeting**: Use `targetMentalBreakDef` for behavior-related genes, biostat filters for balance
+8. **Always Individualizable**: Remember that `geneCount` is always tracked per pawn
 7. **Optimize Performance**: Prefer simple conditions when possible
 
 ## Common Mistakes

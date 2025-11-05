@@ -21,7 +21,8 @@ namespace Autonomy
         itemCount,          // Count of items/resources
         constructionCount,  // Count of construction projects
         mapCondition,       // Map-level conditions and threats
-        weather            // Weather conditions
+        weather,            // Weather conditions
+        geneCount           // Count of genes in individual pawns (always individualizable)
     }
 
     /// <summary>

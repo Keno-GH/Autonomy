@@ -214,6 +214,10 @@ namespace Autonomy
                     result = EvaluateWeather(def);
                     break;
                     
+                case InfoSourceType.geneCount:
+                    result = EvaluateGeneCount(def);
+                    break;
+                    
                 default:
                     Log.Warning($"[Autonomy] Unknown sourceType {def.sourceType} for InfoGiver {def.defName}");
                     return 0f;
@@ -245,7 +249,8 @@ namespace Autonomy
         {
             // These source types can be tracked by individual pawn
             return sourceType == InfoSourceType.pawnStat || 
-                   sourceType == InfoSourceType.pawnNeed;
+                   sourceType == InfoSourceType.pawnNeed ||
+                   sourceType == InfoSourceType.geneCount;
         }
 
         private float EvaluateItemCount(InfoGiverDef def)
@@ -969,6 +974,286 @@ namespace Autonomy
             }
         }
 
+        private float EvaluateGeneCount(InfoGiverDef def)
+        {
+            var pawns = new List<Pawn>();
+            
+            // Start with all pawns on the map
+            var allPawns = map.mapPawns.AllPawns;
+            
+            // Apply basic pawn type filters
+            pawns = ApplyPawnTypeFilters(allPawns, def.filters);
+            
+            // Get gene counts from qualified pawns
+            var values = new List<float>();
+            
+            foreach (var pawn in pawns)
+            {
+                float geneCount = GetPawnGeneCount(pawn, def);
+                values.Add(geneCount);
+            }
+            
+            return CalculateResult(values, def.calculation);
+        }
+
+        private float GetPawnGeneCount(Pawn pawn, InfoGiverDef def)
+        {
+            // Check if pawn has genes
+            if (pawn.genes == null) return 0f;
+            
+            var genes = pawn.genes.GenesListForReading;
+            if (genes == null || genes.Count == 0) return 0f;
+            
+            // If targeting damage factors, return sum of damage factors
+            if (!def.targetDamageFactor.NullOrEmpty())
+            {
+                return GetPawnGeneDamageFactor(pawn, def.targetDamageFactor, def);
+            }
+            
+            // Otherwise, return count of matching genes
+            int matchCount = 0;
+            
+            foreach (var gene in genes)
+            {
+                if (GeneMatchesFilter(gene, def))
+                {
+                    matchCount++;
+                }
+            }
+            
+            return matchCount;
+        }
+
+        private float GetPawnGeneDamageFactor(Pawn pawn, string damageType, InfoGiverDef def)
+        {
+            if (pawn.genes == null) return 0f;
+            
+            var genes = pawn.genes.GenesListForReading;
+            if (genes == null || genes.Count == 0) return 0f;
+            
+            // Get the DamageDef for the target damage type
+            var damageDef = DefDatabase<DamageDef>.GetNamedSilentFail(damageType);
+            if (damageDef == null)
+            {
+                Log.Warning($"[Autonomy] Unknown damage type: {damageType}");
+                return 0f;
+            }
+            
+            float totalFactor = 0f;
+            
+            foreach (var gene in genes)
+            {
+                if (gene?.def?.damageFactors == null) continue;
+                
+                // Check if this gene matches other filters (if any)
+                if (!GeneMatchesOtherFilters(gene, def)) continue;
+                
+                // Check if gene has damage factor for this damage type
+                var damageFactor = gene.def.damageFactors.FirstOrDefault(df => df.damageDef == damageDef);
+                if (damageFactor != null)
+                {
+                    // Add the factor value (e.g., 4.0 for tinderskin Flame damage)
+                    totalFactor += damageFactor.factor;
+                }
+            }
+            
+            return totalFactor;
+        }
+
+        private bool GeneMatchesFilter(Gene gene, InfoGiverDef def)
+        {
+            if (gene?.def == null) return false;
+            
+            var geneDef = gene.def;
+            bool matches = false;
+            
+            // Check if we have any targeting criteria
+            bool hasCriteria = false;
+            
+            // Check damage factor targeting
+            if (!def.targetDamageFactor.NullOrEmpty())
+            {
+                hasCriteria = true;
+                if (geneDef.damageFactors != null)
+                {
+                    var damageDef = DefDatabase<DamageDef>.GetNamedSilentFail(def.targetDamageFactor);
+                    if (damageDef != null)
+                    {
+                        if (geneDef.damageFactors.Any(df => df.damageDef == damageDef))
+                        {
+                            matches = true;
+                        }
+                    }
+                }
+            }
+            
+            // Check target genes by defName
+            if (!def.targetGenes.NullOrEmpty())
+            {
+                hasCriteria = true;
+                if (def.targetGenes.Contains(geneDef.defName))
+                {
+                    matches = true;
+                }
+            }
+            
+            // Check target gene classes
+            if (!def.targetGeneClasses.NullOrEmpty())
+            {
+                hasCriteria = true;
+                var geneClass = gene.GetType().Name;
+                if (def.targetGeneClasses.Any(className => 
+                    geneClass == className || 
+                    geneClass.EndsWith(className) ||
+                    IsSubclassOfTypeName(gene.GetType(), className)))
+                {
+                    matches = true;
+                }
+            }
+            
+            // Check mentalBreakDef
+            if (!def.targetMentalBreakDef.NullOrEmpty())
+            {
+                hasCriteria = true;
+                if (geneDef.mentalBreakDef != null && geneDef.mentalBreakDef.defName == def.targetMentalBreakDef)
+                {
+                    matches = true;
+                }
+            }
+            
+            // Check biostat filters
+            if (!def.filterBiostatMet.NullOrEmpty())
+            {
+                hasCriteria = true;
+                if (!EvaluateComparison(geneDef.biostatMet, def.filterBiostatMet))
+                {
+                    return false; // Failed filter
+                }
+            }
+            
+            if (!def.filterBiostatCpx.NullOrEmpty())
+            {
+                hasCriteria = true;
+                if (!EvaluateComparison(geneDef.biostatCpx, def.filterBiostatCpx))
+                {
+                    return false; // Failed filter
+                }
+            }
+            
+            if (!def.filterBiostatArc.NullOrEmpty())
+            {
+                hasCriteria = true;
+                if (!EvaluateComparison(geneDef.biostatArc, def.filterBiostatArc))
+                {
+                    return false; // Failed filter
+                }
+            }
+            
+            // If we had targeting criteria (genes/classes/mentalBreak/damageFactor), return matches result
+            // Otherwise if we only had biostat filters, consider it a match if it passed all filters
+            if (!def.targetGenes.NullOrEmpty() || !def.targetGeneClasses.NullOrEmpty() || 
+                !def.targetMentalBreakDef.NullOrEmpty() || !def.targetDamageFactor.NullOrEmpty())
+            {
+                return matches;
+            }
+            else if (hasCriteria)
+            {
+                // Only biostat filters were specified, and we passed them all
+                return true;
+            }
+            
+            return false;
+        }
+
+        /// <summary>
+        /// Helper method to check non-damage-factor filters for genes (used when summing damage factors)
+        /// </summary>
+        private bool GeneMatchesOtherFilters(Gene gene, InfoGiverDef def)
+        {
+            if (gene?.def == null) return false;
+            
+            var geneDef = gene.def;
+            
+            // Check target genes by defName
+            if (!def.targetGenes.NullOrEmpty())
+            {
+                if (!def.targetGenes.Contains(geneDef.defName))
+                {
+                    return false;
+                }
+            }
+            
+            // Check target gene classes
+            if (!def.targetGeneClasses.NullOrEmpty())
+            {
+                var geneClass = gene.GetType().Name;
+                if (!def.targetGeneClasses.Any(className => 
+                    geneClass == className || 
+                    geneClass.EndsWith(className) ||
+                    IsSubclassOfTypeName(gene.GetType(), className)))
+                {
+                    return false;
+                }
+            }
+            
+            // Check mentalBreakDef
+            if (!def.targetMentalBreakDef.NullOrEmpty())
+            {
+                if (geneDef.mentalBreakDef == null || geneDef.mentalBreakDef.defName != def.targetMentalBreakDef)
+                {
+                    return false;
+                }
+            }
+            
+            // Check biostat filters
+            if (!def.filterBiostatMet.NullOrEmpty())
+            {
+                if (!EvaluateComparison(geneDef.biostatMet, def.filterBiostatMet))
+                {
+                    return false;
+                }
+            }
+            
+            if (!def.filterBiostatCpx.NullOrEmpty())
+            {
+                if (!EvaluateComparison(geneDef.biostatCpx, def.filterBiostatCpx))
+                {
+                    return false;
+                }
+            }
+            
+            if (!def.filterBiostatArc.NullOrEmpty())
+            {
+                if (!EvaluateComparison(geneDef.biostatArc, def.filterBiostatArc))
+                {
+                    return false;
+                }
+            }
+            
+            // If no other filters were specified, return true (all genes match)
+            // Otherwise, we passed all the filters
+            return true;
+        }
+
+        private bool IsSubclassOfTypeName(Type type, string typeName)
+        {
+            try
+            {
+                Type currentType = type.BaseType;
+                while (currentType != null)
+                {
+                    if (currentType.Name == typeName)
+                        return true;
+                    currentType = currentType.BaseType;
+                }
+                return false;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
         private float CalculateResult(List<float> values, CalculationType calculation)
         {
             if (values.Count == 0) return 0f;
@@ -1058,6 +1343,9 @@ namespace Autonomy
                     break;
                 case InfoSourceType.pawnNeed:
                     CollectIndividualPawnNeedData(def, indData);
+                    break;
+                case InfoSourceType.geneCount:
+                    CollectIndividualGeneCountData(def, indData);
                     break;
             }
             
@@ -1257,6 +1545,19 @@ namespace Autonomy
                 {
                     indData.SetPawnValue(pawn, needValue);
                 }
+            }
+        }
+
+        private void CollectIndividualGeneCountData(InfoGiverDef def, IndividualData indData)
+        {
+            var pawns = new List<Pawn>();
+            var allPawns = map.mapPawns.AllPawns;
+            pawns = ApplyPawnTypeFilters(allPawns, def.filters);
+            
+            foreach (var pawn in pawns)
+            {
+                float geneCount = GetPawnGeneCount(pawn, def);
+                indData.SetPawnValue(pawn, geneCount);
             }
         }
 

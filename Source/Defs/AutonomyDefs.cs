@@ -578,5 +578,192 @@ namespace Autonomy
         public string description = "";
     }
 
+    /// <summary>
+    /// Defines skill-based priority adjustments for work types
+    /// Similar to PassionGiver but based on skill level instead of passion
+    /// </summary>
+    public class SkillGiverDef : Def
+    {
+        /// <summary>
+        /// Whether this SkillGiver should be evaluated more frequently (400 ticks instead of 2000)
+        /// Use for urgent matters that require quick priority adjustments
+        /// </summary>
+        public bool isUrgent = false;
+        
+        /// <summary>
+        /// How to calculate skill-based priority
+        /// none: Use skill level directly with priority ranges (default)
+        /// order: Compare against colony to determine competitive rank-based priority
+        /// </summary>
+        public SkillCalculationType calculation = SkillCalculationType.none;
+        
+        /// <summary>
+        /// Target skills to check ("All" for all skills)
+        /// </summary>
+        public List<string> targetSkills = new List<string>();
+        
+        /// <summary>
+        /// Target WorkTypeDefs this skill giver affects ("All" for all work types)
+        /// </summary>
+        public List<string> targetWorkTypes = new List<string>();
+        
+        /// <summary>
+        /// Conditions that determine personality-based multipliers for this skill giver
+        /// </summary>
+        public List<PriorityCondition> conditions = new List<PriorityCondition>();
+        
+        /// <summary>
+        /// Maps skill level ranges to priority values
+        /// </summary>
+        public List<SkillPriorityRange> priorityRanges = new List<SkillPriorityRange>();
+
+        public override void ResolveReferences()
+        {
+            base.ResolveReferences();
+            
+            // Validate that we have target skills
+            if (targetSkills.NullOrEmpty())
+            {
+                Log.Error($"SkillGiverDef {defName} must have targetSkills defined");
+            }
+            
+            // Validate that we have target work types
+            if (targetWorkTypes.NullOrEmpty())
+            {
+                Log.Error($"SkillGiverDef {defName} must have targetWorkTypes defined");
+            }
+            
+            // Validate that we have priority ranges
+            if (priorityRanges.NullOrEmpty())
+            {
+                Log.Error($"SkillGiverDef {defName} must have priorityRanges defined");
+            }
+            
+            // Resolve and validate condition references
+            foreach (var condition in conditions)
+            {
+                condition.ResolveReferences();
+            }
+            
+            // Post-load priority ranges
+            foreach (var range in priorityRanges)
+            {
+                range.PostLoad();
+            }
+        }
+    }
+
+    /// <summary>
+    /// Maps skill level ranges to priority values for SkillGivers
+    /// </summary>
+    public class SkillPriorityRange
+    {
+        /// <summary>
+        /// Range of skill levels this applies to (format: "min~max")
+        /// </summary>
+        public string skillLevelRange;
+        
+        /// <summary>
+        /// Priority to assign (can be single int or range "min~max")
+        /// </summary>
+        public string priority;
+        
+        /// <summary>
+        /// Description shown to player
+        /// </summary>
+        public string description;
+
+        /// <summary>
+        /// Parsed skill level range
+        /// </summary>
+        public IntRange SkillLevelRangeParsed { get; private set; }
+        
+        /// <summary>
+        /// Parsed priority range
+        /// </summary>
+        public IntRange PriorityRangeParsed { get; private set; }
+
+        public void PostLoad()
+        {
+            ParseRanges();
+        }
+
+        private void ParseRanges()
+        {
+            // Parse skillLevelRange
+            SkillLevelRangeParsed = ParseIntRange(skillLevelRange, "skillLevelRange");
+            
+            // Parse priority
+            PriorityRangeParsed = ParseIntRange(priority, "priority");
+        }
+
+        private IntRange ParseIntRange(string rangeStr, string fieldName)
+        {
+            if (rangeStr.NullOrEmpty())
+            {
+                Log.Error($"SkillPriorityRange has empty {fieldName}");
+                return new IntRange(0, 0);
+            }
+
+            if (rangeStr.Contains("~"))
+            {
+                string[] parts = rangeStr.Split('~');
+                if (parts.Length == 2 && 
+                    int.TryParse(parts[0], out int min) && 
+                    int.TryParse(parts[1], out int max))
+                {
+                    return new IntRange(min, max);
+                }
+            }
+            else
+            {
+                if (int.TryParse(rangeStr, out int single))
+                {
+                    return new IntRange(single, single);
+                }
+            }
+
+            Log.Error($"SkillPriorityRange has invalid {fieldName}: {rangeStr}");
+            return new IntRange(0, 0);
+        }
+
+        /// <summary>
+        /// Check if a skill level falls within this range
+        /// </summary>
+        public bool Contains(int skillLevel)
+        {
+            return SkillLevelRangeParsed.Includes(skillLevel);
+        }
+
+        /// <summary>
+        /// Get interpolated priority based on where the skill level falls within the range
+        /// </summary>
+        public int GetInterpolatedPriority(int skillLevel)
+        {
+            // Clamp skill level to valid range
+            skillLevel = UnityEngine.Mathf.Clamp(skillLevel, SkillLevelRangeParsed.min, SkillLevelRangeParsed.max);
+            
+            // If the skill level range is a single point, return the single priority
+            if (SkillLevelRangeParsed.min == SkillLevelRangeParsed.max)
+            {
+                return PriorityRangeParsed.min;
+            }
+            
+            // If the priority range is a single point, return that priority
+            if (PriorityRangeParsed.min == PriorityRangeParsed.max)
+            {
+                return PriorityRangeParsed.min;
+            }
+            
+            // Calculate interpolation factor (0.0 to 1.0)
+            float t = (float)(skillLevel - SkillLevelRangeParsed.min) / (float)(SkillLevelRangeParsed.max - SkillLevelRangeParsed.min);
+            
+            // Interpolate between min and max priority
+            float interpolatedPriority = UnityEngine.Mathf.Lerp(PriorityRangeParsed.min, PriorityRangeParsed.max, t);
+            
+            return UnityEngine.Mathf.RoundToInt(interpolatedPriority);
+        }
+    }
+
     // Supporting classes and enums are now in AutonomySupportingClasses.cs
 }

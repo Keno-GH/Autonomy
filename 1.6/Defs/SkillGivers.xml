@@ -1,0 +1,206 @@
+<Defs>
+
+    <!-- General Skill Special Priority Giver-->
+    <Autonomy.SkillGiverDef>
+        <defName>GeneralSkillSpecialPriority</defName>
+        <label>General skill special priority</label>
+        <description>Adjusts work priority based on pawn's skill associated with worktype</description>
+        <isUrgent>false</isUrgent>
+        <calculation>none</calculation>
+
+        <targetSkills>
+            <li>All</li>
+        </targetSkills>
+
+        <conditions>
+            <li>
+                <type>personalityOffset</type>
+                <personalityDefName>Rimpsyche_Confidence</personalityDefName>
+                <personalityMultipliers>
+                    <li>
+                        <personalityRange>-1.0~-0.3</personalityRange>
+                        <multiplier>0.8</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.3~1.0</personalityRange>
+                        <multiplier>1.2</multiplier>
+                    </li>
+                </personalityMultipliers>
+            </li>
+            <li>
+                <type>personalityOffset</type>
+                <personalityDefName>Rimpsyche_Focus</personalityDefName>
+                <personalityMultipliers>
+                    <li>
+                        <personalityRange>-1.0~-0.3</personalityRange>
+                        <multiplier>0.8</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.3~1.0</personalityRange>
+                        <multiplier>1.2</multiplier>
+                    </li>
+                </personalityMultipliers>
+            </li>
+            <li>
+                <type>personalityOffset</type>
+                <personalityDefName>Rimpsyche_Competitiveness</personalityDefName>
+                <personalityMultipliers>
+                    <li>
+                        <personalityRange>-1.0~-0.51</personalityRange>
+                        <multiplier>1</multiplier> 
+                    </li>
+                    <li>
+                        <personalityRange>-0.5~-0.11</personalityRange>
+                        <multiplier>0.5</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>-0.1~0.1</personalityRange>
+                        <multiplier>0.25</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.11~1.0</personalityRange>
+                        <multiplier>0.0</multiplier> <!-- Disabled for coperatives -->
+                    </li>
+                </personalityMultipliers>
+            </li>
+        </conditions>
+
+        <priorityRanges>
+            <li>
+                <skillLevelRange>0~4</skillLevelRange>
+                <priority>-5~0</priority>
+                <description>I am unskilled at this</description>
+            </li>
+            <li>
+                <skillLevelRange>5~9</skillLevelRange>
+                <priority>0~5</priority>
+                <description>I know how to do this</description>
+            </li>
+            <li>
+                <skillLevelRange>10~14</skillLevelRange>
+                <priority>5~15</priority>
+                <description>I am skilled at this</description>
+            </li>
+            <li>
+                <skillLevelRange>15~19</skillLevelRange>
+                <priority>15~20</priority>
+                <description>I am very good at this</description>
+            </li>
+            <li>
+                <skillLevelRange>20~999</skillLevelRange>
+                <priority>20~20</priority>
+                <description>I am perfect at this</description>
+            </li>
+        </priorityRanges>
+
+        <targetWorkTypes>
+            <li>All</li>
+        </targetWorkTypes>
+    
+    </Autonomy.SkillGiverDef>
+
+    <!-- Competitive/Order-Based Skill Priority Giver-->
+    <Autonomy.SkillGiverDef>
+        <defName>GeneralSkillCompetitivePriority</defName>
+        <label>General skill competitive priority</label>
+        <description>Adjusts work priority based on pawn's skill rank compared to other capable colonists</description>
+        <isUrgent>false</isUrgent>
+        <calculation>order</calculation>
+
+        <targetSkills>
+            <li>All</li>
+        </targetSkills>
+
+        <conditions>
+            <li>
+                <type>personalityOffset</type>
+                <personalityDefName>Rimpsyche_Confidence</personalityDefName>
+                <personalityMultipliers>
+                    <li>
+                        <personalityRange>-1.0~-0.3</personalityRange>
+                        <multiplier>0.8</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.3~1.0</personalityRange>
+                        <multiplier>1.2</multiplier>
+                    </li>
+                </personalityMultipliers>
+            </li>
+            <li>
+                <type>personalityOffset</type>
+                <personalityDefName>Rimpsyche_Focus</personalityDefName>
+                <personalityMultipliers>
+                    <li>
+                        <personalityRange>-1.0~-0.3</personalityRange>
+                        <multiplier>0.8</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.3~1.0</personalityRange>
+                        <multiplier>1.2</multiplier>
+                    </li>
+                </personalityMultipliers>
+            </li>
+            <li>
+                <type>personalityOffset</type>
+                <personalityDefName>Rimpsyche_Competitiveness</personalityDefName>
+                <personalityMultipliers>
+                    <li>
+                        <personalityRange>-1.0~-0.51</personalityRange>
+                        <multiplier>0.0</multiplier> <!-- Disabled for coperatives -->
+                    </li>
+                    <li>
+                        <personalityRange>-0.5~-0.11</personalityRange>
+                        <multiplier>0.25</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>-0.1~0.1</personalityRange>
+                        <multiplier>0.5</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.11~1.0</personalityRange>
+                        <multiplier>1</multiplier>
+                    </li>
+                </personalityMultipliers>
+            </li>
+        </conditions>
+
+        <priorityRanges>
+            <li>
+                <skillLevelRange>0</skillLevelRange>
+                <priority>-5</priority>
+                <description>I am the worst at this</description>
+            </li>
+            <li>
+                <skillLevelRange>1</skillLevelRange>
+                <priority>-5~0</priority>
+                <description>I am below average at this</description>
+            </li>
+            <li>
+                <skillLevelRange>2</skillLevelRange>
+                <priority>0~5</priority>
+                <description>Others are better than me</description>
+            </li>
+            <li>
+                <skillLevelRange>3</skillLevelRange>
+                <priority>5~10</priority>
+                <description>I am average at this</description>
+            </li>
+            <li>
+                <skillLevelRange>4</skillLevelRange>
+                <priority>10~15</priority>
+                <description>I am better than most at this</description>
+            </li>
+            <li>
+                <skillLevelRange>5</skillLevelRange>
+                <priority>15~15</priority>
+                <description>I am the best at this</description>
+            </li>
+        </priorityRanges>
+
+        <targetWorkTypes>
+            <li>All</li>
+        </targetWorkTypes>
+    
+    </Autonomy.SkillGiverDef>
+
+</Defs>

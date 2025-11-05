@@ -41,6 +41,15 @@ namespace Autonomy
     }
 
     /// <summary>
+    /// How to calculate skill-based priority for SkillGivers
+    /// </summary>
+    public enum SkillCalculationType
+    {
+        none,       // Use skill level directly with priority ranges (default behavior)
+        order       // Compare pawn's skill against colony to determine rank-based priority
+    }
+
+    /// <summary>
     /// Types of conditions that can be evaluated
     /// </summary>
     public enum ConditionType

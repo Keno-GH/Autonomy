@@ -630,7 +630,25 @@ namespace Autonomy
             var statDef = DefDatabase<StatDef>.GetNamedSilentFail(statName);
             if (statDef != null)
             {
-                return pawn.GetStatValue(statDef);
+                try
+                {
+                    // Some stats can be disabled for certain pawns (e.g. non-humanoids).
+                    // Query the StatWorker first to avoid attempting to calculate a disabled stat,
+                    // which would log an error inside the RimWorld stat system.
+                    if (statDef.Worker != null && statDef.Worker.IsDisabledFor(pawn))
+                    {
+                        // Return -1 to indicate an invalid/unavailable stat for this pawn
+                        return -1f;
+                    }
+
+                    return pawn.GetStatValue(statDef);
+                }
+                catch (Exception e)
+                {
+                    // Defensive: if something unexpected happens getting the stat, log it and skip the pawn
+                    Log.Warning($"[Autonomy] Exception getting stat '{statName}' for pawn {pawn.LabelShort}: {e.Message}");
+                    return -1f;
+                }
             }
             
             Log.Warning($"[Autonomy] Unknown stat: {statName}");

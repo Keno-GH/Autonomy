@@ -20,8 +20,8 @@ namespace Autonomy
         private int ticksSinceLastUpdate = 0;
         private int ticksSinceLastUrgentUpdate = 0;
         
-        private const int UPDATE_INTERVAL = 100; // Normal evaluation every 100 ticks (~1.7 seconds) - for testing
-        private const int URGENT_UPDATE_INTERVAL = 10; // Urgent evaluation every 10 ticks (~0.17 seconds) - for testing
+        private const int UPDATE_INTERVAL = 200; // Normal evaluation every 2000 ticks (~33 seconds)
+        private const int URGENT_UPDATE_INTERVAL = 40; // Urgent evaluation every 400 ticks (~6.7 seconds)
 
         public PriorityGiverManager(Map map) : base(map)
         {
@@ -110,8 +110,10 @@ namespace Autonomy
 
         private void EvaluatePriorityGiverForAllPawns(PriorityGiverDef def, string logPrefix)
         {
-            // Get all player pawns in the current map - each pawn gets individual evaluation
-            var pawns = map.mapPawns.FreeColonists;
+            // Get all spawned player pawns in the current map - each pawn gets individual evaluation
+            // Use FreeColonistsSpawned to avoid processing pawns in caravans/cryptosleep/etc.
+            // Create a copy with ToList() to prevent "Collection was modified" errors
+            var pawns = map.mapPawns.FreeColonistsSpawned.ToList();
             
             foreach (var pawn in pawns)
             {

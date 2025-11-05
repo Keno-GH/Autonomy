@@ -43,13 +43,17 @@ namespace Autonomy.Systems
         /// </summary>
         public void RecalculateWorkPriorities()
         {
-            var pawns = map.mapPawns.FreeColonists;
+            // Use FreeColonistsSpawned to match the comparison in CalculateOrderBasedPriority
+            // We can't assign work priorities to unspawned pawns anyway
+            // Create a copy with ToList() to prevent "Collection was modified" errors
+            // IMPORTANT: This snapshot is passed down to ensure consistent pawn lists throughout calculation
+            var pawns = map.mapPawns.FreeColonistsSpawned.ToList();
             
             foreach (var pawn in pawns)
             {
                 try
                 {
-                    CalculateAndApplyPriorityForPawn(pawn);
+                    CalculateAndApplyPriorityForPawn(pawn, pawns);
                 }
                 catch (Exception e)
                 {
@@ -58,7 +62,7 @@ namespace Autonomy.Systems
             }
         }
 
-        private void CalculateAndApplyPriorityForPawn(Pawn pawn)
+        private void CalculateAndApplyPriorityForPawn(Pawn pawn, List<Pawn> allPawnsSnapshot)
         {
             var workTypePriorities = new Dictionary<WorkTypeDef, WorkTypePriorityResult>();
             
@@ -67,7 +71,7 @@ namespace Autonomy.Systems
             {
                 if (workType.workGiversByPriority.Any() && !pawn.WorkTypeIsDisabled(workType))
                 {
-                    var result = CalculateWorkTypePriority(pawn, workType);
+                    var result = CalculateWorkTypePriority(pawn, workType, allPawnsSnapshot);
                     // Include ALL work types, even those with 0 priority
                     workTypePriorities[workType] = result;
                 }
@@ -80,7 +84,7 @@ namespace Autonomy.Systems
             pawnWorkTypePriorities[pawn] = workTypePriorities;
         }
 
-        private WorkTypePriorityResult CalculateWorkTypePriority(Pawn pawn, WorkTypeDef workType)
+        private WorkTypePriorityResult CalculateWorkTypePriority(Pawn pawn, WorkTypeDef workType, List<Pawn> allPawnsSnapshot)
         {
             var result = new WorkTypePriorityResult
             {
@@ -131,6 +135,10 @@ namespace Autonomy.Systems
             // Step 4: Add passion-based priority at WorkType level
             var passionResults = EvaluatePassionPriorityForWorkType(pawn, workType, usedPriorityGivers);
             result.PriorityGiverResults.AddRange(passionResults);
+
+            // Step 5: Add skill-based priority at WorkType level
+            var skillResults = EvaluateSkillPriorityForWorkType(pawn, workType, usedPriorityGivers, allPawnsSnapshot);
+            result.PriorityGiverResults.AddRange(skillResults);
 
             result.TotalPriority = result.WorkGiverSum + result.PriorityGiverResults.Sum(p => p.Priority);
             
@@ -229,8 +237,6 @@ namespace Autonomy.Systems
                     float personalityMultiplier = EvaluatePassionPersonalityMultiplier(passionGiver, pawn);
                     int adjustedPriority = (int)(basePriority * personalityMultiplier + 0.5f);
                     
-                    Log.Message($"[Autonomy] DEBUG: Passion {passionName} for {pawn.Name}: base={basePriority}, multiplier={personalityMultiplier}, final={adjustedPriority}");
-                    
                     var priorityResult = new PriorityGiverResult
                     {
                         PriorityGiver = null, // No direct PriorityGiver, this is passion-based
@@ -249,6 +255,231 @@ namespace Autonomy.Systems
             }
             
             return results;
+        }
+        
+        /// <summary>
+        /// Evaluate skill-based priority for a WorkType
+        /// </summary>
+        private List<PriorityGiverResult> EvaluateSkillPriorityForWorkType(Pawn pawn, WorkTypeDef workType, HashSet<string> usedPriorityGivers, List<Pawn> allPawnsSnapshot)
+        {
+            var results = new List<PriorityGiverResult>();
+            
+            // Check if this WorkType has relevant skills
+            if (workType.relevantSkills == null || !workType.relevantSkills.Any())
+            {
+                return results;
+            }
+            
+            // Get all SkillGivers
+            var allSkillGivers = DefDatabase<SkillGiverDef>.AllDefs;
+            
+            foreach (var skillGiver in allSkillGivers)
+            {
+                // Check if this SkillGiver targets this WorkType
+                bool targetsThisWorkType = skillGiver.targetWorkTypes.Contains("All") || 
+                                          skillGiver.targetWorkTypes.Contains(workType.defName);
+                
+                if (!targetsThisWorkType)
+                {
+                    continue;
+                }
+                
+                // Check if any of the workType's skills match the skillGiver's target skills
+                bool hasMatchingSkill = false;
+                SkillDef matchedSkill = null;
+                int matchedSkillLevel = 0;
+                
+                foreach (var skillDef in workType.relevantSkills)
+                {
+                    // Check if this skill is targeted by the SkillGiver
+                    bool targetsThisSkill = skillGiver.targetSkills.Contains("All") || 
+                                           skillGiver.targetSkills.Contains(skillDef.defName);
+                    
+                    if (targetsThisSkill)
+                    {
+                        hasMatchingSkill = true;
+                        matchedSkill = skillDef;
+                        var skillRecord = pawn.skills.GetSkill(skillDef);
+                        if (skillRecord != null)
+                        {
+                            matchedSkillLevel = skillRecord.Level;
+                        }
+                        break; // Only apply once per worktype
+                    }
+                }
+                
+                if (!hasMatchingSkill)
+                {
+                    continue;
+                }
+                
+                // Create unique key for deduplication
+                string skillKey = $"Skill_{skillGiver.defName}_{workType.defName}";
+                bool isDeduplication = usedPriorityGivers.Contains(skillKey);
+                
+                // Calculate priority based on calculation type
+                int basePriority = 0;
+                string description = "";
+                
+                if (skillGiver.calculation == SkillCalculationType.order)
+                {
+                    // Order-based calculation: rank-based priority using priority ranges
+                    var orderResult = CalculateOrderBasedPriority(pawn, workType, matchedSkill, matchedSkillLevel, skillGiver, allPawnsSnapshot);
+                    basePriority = orderResult.priority;
+                    description = orderResult.description;
+                }
+                else // SkillCalculationType.none (default)
+                {
+                    // Standard calculation: use skill level with priority ranges
+                    foreach (var range in skillGiver.priorityRanges)
+                    {
+                        if (range.Contains(matchedSkillLevel))
+                        {
+                            basePriority = range.GetInterpolatedPriority(matchedSkillLevel);
+                            description = range.description;
+                            break;
+                        }
+                    }
+                }
+                
+                // Apply personality multiplier
+                float personalityMultiplier = EvaluateSkillPersonalityMultiplier(skillGiver, pawn);
+                int adjustedPriority = (int)(basePriority * personalityMultiplier + 0.5f);
+                
+                var priorityResult = new PriorityGiverResult
+                {
+                    PriorityGiver = null, // No direct PriorityGiver, this is skill-based
+                    Priority = adjustedPriority,
+                    Description = description,
+                    IsDeduplication = isDeduplication
+                };
+                
+                results.Add(priorityResult);
+                
+                if (!isDeduplication)
+                {
+                    usedPriorityGivers.Add(skillKey);
+                }
+            }
+            
+            return results;
+        }
+        
+        /// <summary>
+        /// Evaluates personality-based multipliers for a skill giver
+        /// </summary>
+        private float EvaluateSkillPersonalityMultiplier(SkillGiverDef skillGiver, Pawn pawn)
+        {
+            float personalityMultiplier = 1.0f;
+            if (skillGiver.conditions.NullOrEmpty())
+            {
+                return personalityMultiplier; // No conditions to evaluate
+            }
+
+            foreach (var condition in skillGiver.conditions)
+            {
+                if (condition.type == ConditionType.personalityOffset)
+                {
+                    // Apply personality multiplier
+                    float conditionMultiplier = EvaluatePersonalityMultiplier(condition, pawn);
+                    personalityMultiplier *= conditionMultiplier;
+                }
+            }
+
+            return personalityMultiplier;
+        }
+        
+        /// <summary>
+        /// Calculate order-based priority by comparing pawn's skill rank against colony
+        /// Uses the SkillGiver's priority ranges based on the pawn's rank position
+        /// </summary>
+        private (int priority, string description) CalculateOrderBasedPriority(Pawn pawn, WorkTypeDef workType, SkillDef skill, int pawnSkillLevel, SkillGiverDef skillGiver, List<Pawn> allPawnsSnapshot)
+        {
+            // Get all capable pawns for comparison
+            var capablePawns = new List<(Pawn p, int level)>();
+            
+            // Always include the calling pawn first (so we never lose them)
+            if (!pawn.WorkTypeIsDisabled(workType))
+            {
+                var callingPawnSkillRecord = pawn.skills.GetSkill(skill);
+                if (callingPawnSkillRecord != null)
+                {
+                    capablePawns.Add((pawn, callingPawnSkillRecord.Level));
+                }
+            }
+            
+            // Use the consistent snapshot of pawns passed from the outer loop
+            // This ensures we're comparing against the same set of pawns that are being processed
+            foreach (var colonist in allPawnsSnapshot)
+            {
+                // Skip if already added (the calling pawn)
+                if (colonist == pawn) continue;
+                
+                // Skip downed pawns
+                if (colonist.Downed) continue;
+                
+                // If urgent, also skip resting pawns
+                if (skillGiver.isUrgent && colonist.jobs?.curJob?.def == RimWorld.JobDefOf.LayDown)
+                {
+                    continue;
+                }
+                
+                // Check if pawn is capable of this work type
+                if (colonist.WorkTypeIsDisabled(workType)) continue;
+                
+                // Get skill level
+                var skillRecord = colonist.skills.GetSkill(skill);
+                if (skillRecord != null)
+                {
+                    capablePawns.Add((colonist, skillRecord.Level));
+                }
+            }
+            
+            // If no capable pawns (calling pawn was filtered out), return neutral
+            if (capablePawns.Count == 0)
+            {
+                return (0, "Not capable of this work");
+            }
+            
+            // If only this pawn is capable, use neutral/default priority from ranges
+            if (capablePawns.Count == 1)
+            {
+                // Use middle of priority ranges
+                if (skillGiver.priorityRanges.Any())
+                {
+                    var midRange = skillGiver.priorityRanges[skillGiver.priorityRanges.Count / 2];
+                    int midPriority = (midRange.PriorityRangeParsed.min + midRange.PriorityRangeParsed.max) / 2;
+                    return (midPriority, "Only capable pawn");
+                }
+                return (0, "Only capable pawn");
+            }
+            
+            // Sort by skill level (descending)
+            capablePawns.Sort((a, b) => b.level.CompareTo(a.level));
+            
+            // Find this pawn's rank (0-based index)
+            int rank = capablePawns.FindIndex(p => p.p == pawn);
+            
+            if (rank < 0)
+            {
+                // Pawn not in list (shouldn't happen, but handle gracefully)
+                return (0, "Not ranked");
+            }
+            
+            int totalPawns = capablePawns.Count;
+            
+            // Map rank to skill level range index
+            // Best (rank 0) → last range (highest skills)
+            // Worst (rank n-1) → first range (lowest skills)
+            float rankPercentile = totalPawns > 1 ? (float)rank / (float)(totalPawns - 1) : 0f;
+            int rangeIndex = (int)((1f - rankPercentile) * (skillGiver.priorityRanges.Count - 1));
+            rangeIndex = UnityEngine.Mathf.Clamp(rangeIndex, 0, skillGiver.priorityRanges.Count - 1);
+            
+            var selectedRange = skillGiver.priorityRanges[rangeIndex];
+            int priority = selectedRange.GetInterpolatedPriority(pawnSkillLevel);
+            string description = selectedRange.description;
+            
+            return (priority, description);
         }
         
         /// <summary>
@@ -401,30 +632,21 @@ namespace Autonomy.Systems
         private float EvaluatePassionPersonalityMultiplier(PassionGiverDef passionGiver, Pawn pawn)
         {
             float personalityMultiplier = 1.0f;
-            
-            Log.Message($"[Autonomy] DEBUG: Evaluating passion personality for {pawn.Name} with passion {passionGiver.passionName}");
-            
             if (passionGiver.conditions.NullOrEmpty())
             {
-                Log.Message($"[Autonomy] DEBUG: No conditions found for {passionGiver.passionName}");
                 return personalityMultiplier; // No conditions to evaluate
             }
-            
-            Log.Message($"[Autonomy] DEBUG: Found {passionGiver.conditions.Count} conditions for {passionGiver.passionName}");
-            
+
             foreach (var condition in passionGiver.conditions)
             {
-                Log.Message($"[Autonomy] DEBUG: Processing condition type: {condition.type}");
                 if (condition.type == ConditionType.personalityOffset)
                 {
                     // Apply personality multiplier
                     float conditionMultiplier = EvaluatePersonalityMultiplier(condition, pawn);
-                    Log.Message($"[Autonomy] DEBUG: Personality multiplier for {condition.personalityDefName}: {conditionMultiplier}");
                     personalityMultiplier *= conditionMultiplier;
                 }
             }
-            
-            Log.Message($"[Autonomy] DEBUG: Final personality multiplier for {pawn.Name}: {personalityMultiplier}");
+
             return personalityMultiplier;
         }
         
@@ -433,12 +655,9 @@ namespace Autonomy.Systems
         /// </summary>
         private float EvaluatePersonalityMultiplier(PriorityCondition condition, Pawn pawn)
         {
-            Log.Message($"[Autonomy] DEBUG: EvaluatePersonalityMultiplier for {pawn.Name}, personality: {condition.personalityDefName}");
-            
             // Check if RimPsyche mod is available
             if (!ModsConfig.IsActive("maux36.rimpsyche"))
             {
-                Log.Message($"[Autonomy] DEBUG: RimPsyche mod not active");
                 return 1.0f; // No multiplier if mod not available
             }
 
@@ -448,26 +667,20 @@ namespace Autonomy.Systems
                 var compPsyche = GetRimPsycheComponent(pawn);
                 if (compPsyche == null)
                 {
-                    Log.Message($"[Autonomy] DEBUG: No RimPsyche component found for {pawn.Name}");
                     return 1.0f; // No personality component
                 }
 
                 // Get personality value using reflection
                 float personalityValue = GetPersonalityValue(compPsyche, condition.personalityDefName);
-                Log.Message($"[Autonomy] DEBUG: Personality value for {condition.personalityDefName}: {personalityValue}");
-                
+
                 // Find matching multiplier range
                 foreach (var multiplier in condition.personalityMultipliers)
                 {
-                    Log.Message($"[Autonomy] DEBUG: Checking range {multiplier.personalityRange.min}~{multiplier.personalityRange.max} (multiplier: {multiplier.multiplier})");
                     if (multiplier.personalityRange.Includes(personalityValue))
                     {
-                        Log.Message($"[Autonomy] DEBUG: Range match! Returning multiplier: {multiplier.multiplier}");
                         return multiplier.multiplier;
                     }
                 }
-                
-                Log.Message($"[Autonomy] DEBUG: No range matched for personality value {personalityValue}");
             }
             catch (Exception e)
             {
@@ -488,7 +701,6 @@ namespace Autonomy.Systems
                 var extensionType = GenTypes.GetTypeInAnyAssembly("Maux36.RimPsyche.PawnExtensions");
                 if (extensionType == null) 
                 {
-                    Log.Message($"[Autonomy] DEBUG: PawnExtensions type not found");
                     return null;
                 }
 
@@ -497,13 +709,11 @@ namespace Autonomy.Systems
                     System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static);
                 if (compPsycheMethod == null) 
                 {
-                    Log.Message($"[Autonomy] DEBUG: compPsyche method not found");
                     return null;
                 }
 
                 // Call the extension method
                 var result = compPsycheMethod.Invoke(null, new object[] { pawn });
-                Log.Message($"[Autonomy] DEBUG: Successfully got RimPsyche component: {result != null}");
                 return result;
             }
             catch (Exception e)
@@ -520,20 +730,16 @@ namespace Autonomy.Systems
         {
             try
             {
-                Log.Message($"[Autonomy] DEBUG: Getting personality value for {personalityDefName}");
-                
                 // Get the Personality property
                 var personalityProperty = compPsyche.GetType().GetProperty("Personality");
                 if (personalityProperty == null)
                 {
-                    Log.Message($"[Autonomy] DEBUG: Personality property not found on RimPsyche component");
                     return 0f;
                 }
 
                 var personalityTracker = personalityProperty.GetValue(compPsyche);
                 if (personalityTracker == null)
                 {
-                    Log.Message($"[Autonomy] DEBUG: PersonalityTracker is null");
                     return 0f;
                 }
 
@@ -542,7 +748,6 @@ namespace Autonomy.Systems
                     new Type[] { typeof(string) });
                 if (getPersonalityMethod == null)
                 {
-                    Log.Message($"[Autonomy] DEBUG: GetPersonality method not found on PersonalityTracker");
                     return 0f;
                 }
 
@@ -550,11 +755,10 @@ namespace Autonomy.Systems
                 var result = getPersonalityMethod.Invoke(personalityTracker, new object[] { personalityDefName });
                 if (result is float personalityValue)
                 {
-                    Log.Message($"[Autonomy] DEBUG: Successfully got personality value: {personalityValue}");
                     return personalityValue;
                 }
                 
-                Log.Message($"[Autonomy] DEBUG: GetPersonality returned non-float result: {result}");
+                // Non-float result
             }
             catch (Exception e)
             {

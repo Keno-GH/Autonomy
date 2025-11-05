@@ -510,9 +510,9 @@
         
         <priorityRanges>
             <li>
-                <validRange>0</validRange>
-                <priority>20</priority>
-                <description>I am immune to fire damage</description>
+                <validRange>0</validRange> <!-- Vanilla default -->
+                <priority>0</priority>
+                <description>I don't have fire weakness</description>
             </li>
             <li>
                 <validRange>0.01~0.50</validRange>
@@ -548,6 +548,173 @@
                 <validRange>3.51~999</validRange>
                 <priority>-15</priority>
                 <description>I'm extremely vulnerable to fire damage</description>
+            </li>
+        </priorityRanges>
+        
+        <targetWorkGivers>
+            <li>FightFires</li>
+        </targetWorkGivers>
+    </Autonomy.PriorityGiverDef>
+
+    <!-- Flammability InfoGiver -->
+	<Autonomy.InfoGiverDef>
+		<defName>PawnFlammabilityAverage</defName>
+		<label>Flammability average</label>
+		<description>Tracks each pawn's flammability individually for personalized firefighting priority</description>
+		<isLocalizable>false</isLocalizable>
+		<isIndividualizable>true</isIndividualizable>
+		<calculation>Avg</calculation>
+		<isUrgent>false</isUrgent>
+		<sourceType>pawnStat</sourceType>
+		<targetStat>Flammability</targetStat>
+        
+		<filters>
+			<include>
+				<li>player</li>
+			</include>
+			<exclude>
+				<li>dead</li>
+				<li>downed</li>
+			</exclude>
+		</filters>
+	</Autonomy.InfoGiverDef>
+
+    <!-- Flammability Priority Giver -->
+        <Autonomy.PriorityGiverDef>
+        <defName>FirefightingFlammabilityPriority</defName>
+        <label>Firefighting flammability adjustment</label>
+        <description>Adjusts firefighting priority for pawns based on their flammability</description>
+        <isUrgent>false</isUrgent>
+        
+        <conditions>
+            <li>
+                <type>infoGiver</type>
+                <infoDefName>PawnFlammabilityAverage</infoDefName>
+                <infoRange>0~999</infoRange>
+                <requestLocalizedData>false</requestLocalizedData>
+                <requestIndividualData>true</requestIndividualData>
+                <requestDistanceFromGlobal>false</requestDistanceFromGlobal>
+            </li>
+            <li>
+                <type>personalityOffset</type>
+                <personalityDefName>Rimpsyche_Bravery</personalityDefName>
+                <personalityMultipliers>
+                    <li>
+                        <personalityRange>-1.0~-0.5</personalityRange>
+                        <multiplier>1.5</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>-0.49~0.0</personalityRange>
+                        <multiplier>1.25</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.01~0.5</personalityRange>
+                        <multiplier>0.9</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.51~1.0</personalityRange>
+                        <multiplier>0.75</multiplier>
+                    </li>
+                </personalityMultipliers>
+            </li>
+            <li>
+                <type>personalityOffset</type>
+                <personalityDefName>Rimpsyche_Tension</personalityDefName>
+                <personalityMultipliers>
+                    <li>
+                        <personalityRange>-1.0~-0.5</personalityRange>
+                        <multiplier>0.75</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>-0.49~0.0</personalityRange>
+                        <multiplier>0.9</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.01~0.5</personalityRange>
+                        <multiplier>1.25</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.51~1.0</personalityRange>
+                        <multiplier>1.5</multiplier>
+                    </li>
+                </personalityMultipliers>
+            </li>
+            <li>
+                <type>personalityOffset</type>
+                <personalityDefName>Rimpsyche_Deliberation</personalityDefName>
+                <personalityMultipliers>
+                    <li>
+                        <personalityRange>-1.0~-0.5</personalityRange>
+                        <multiplier>0.5</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>-0.49~0.0</personalityRange>
+                        <multiplier>0.75</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.01~0.5</personalityRange>
+                        <multiplier>1.5</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.51~1.0</personalityRange>
+                        <multiplier>2</multiplier>
+                    </li>
+                </personalityMultipliers>
+            </li>
+            <li>
+                <type>personalityOffset</type>
+                <personalityDefName>Rimpsyche_Stability</personalityDefName>
+                <personalityMultipliers>
+                    <li>
+                        <personalityRange>-1.0~-0.5</personalityRange>
+                        <multiplier>1.5</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>-0.49~0.0</personalityRange>
+                        <multiplier>1.25</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.01~0.5</personalityRange>
+                        <multiplier>0.9</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.51~1.0</personalityRange>
+                        <multiplier>0.75</multiplier>
+                    </li>
+                </personalityMultipliers>
+            </li>
+        </conditions>
+        
+        <priorityRanges>
+            <li>
+                <validRange>0</validRange>
+                <priority>20</priority>
+                <description>I can't catch on fire</description>
+            </li>
+            <li>
+                <validRange>0.01~0.25</validRange>
+                <priority>15</priority>
+                <description>I am pretty resistant to catching fire</description>
+            </li>
+            <li>
+                <validRange>0.26~0.69</validRange>
+                <priority>10</priority>
+                <description>I am resistant to catching fire</description>
+            </li>
+            <li>
+                <validRange>0.7~1.0</validRange> <!-- Vanilla default -->
+                <priority>0</priority>
+                <description>I don't have fire weakness</description>
+            </li>
+            <li>
+                <validRange>1.01~1.5</validRange>
+                <priority>-5</priority>
+                <description>I'm slightly vulnerable to catching fire</description>
+            </li>
+            <li>
+                <validRange>1.51~999</validRange>
+                <priority>-10</priority>
+                <description>I'm vulnerable to catching fire</description>
             </li>
         </priorityRanges>
         

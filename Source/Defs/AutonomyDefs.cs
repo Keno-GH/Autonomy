@@ -255,11 +255,6 @@ namespace Autonomy
         public string stat;
         
         /// <summary>
-        /// How to calculate this condition
-        /// </summary>
-        public CalculationType calculation = CalculationType.Flat;
-        
-        /// <summary>
         /// Flat value for comparison
         /// </summary>
         public float flatValue;

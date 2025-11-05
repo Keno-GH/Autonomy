@@ -13,7 +13,6 @@
         <li>
             <type>flat</type>
             <flatValue>10</flatValue>
-            <calculation>flat</calculation>
         </li>
     </conditions>
     
@@ -253,7 +252,6 @@ Priority medical work when colonists have severe, untended injuries.
         <li>
             <type>infoGiver</type>
             <infoDefName>SevereInjuryCount</infoDefName>
-            <calculation>flat</calculation>
             <flatValue>1</flatValue>
         </li>
     </conditions>
@@ -312,7 +310,6 @@ Priority medical work when colonists have severe, untended injuries.
         <li>
             <type>infoGiver</type>
             <infoDefName>MealToRawFoodRatio</infoDefName>
-            <calculation>flat</calculation>
             <flatValue>0.5</flatValue>
         </li>
     </conditions>
@@ -354,7 +351,6 @@ Priority medical work when colonists have severe, untended injuries.
         <li>
             <type>infoGiver</type>
             <infoDefName>WeatherMovementImpact</infoDefName>
-            <calculation>flat</calculation>
             <flatValue>0.8</flatValue>
         </li>
     </conditions>
@@ -421,7 +417,6 @@ Reduce firefighting priority for pawns with pyrophobia (FireTerror mental break)
         <li>
             <type>infoGiver</type>
             <infoDefName>PyrophobiaGeneInfoGiver</infoDefName>
-            <calculation>Flat</calculation>
             <infoRange>0~999</infoRange>
             <requestIndividualData>true</requestIndividualData>
         </li>

@@ -34,7 +34,6 @@
 			<li>
 				<type>infoGiver</type>
 				<infoDefName>ConstructionSkillAverage</infoDefName>
-				<calculation>Flat</calculation>
 				<infoRange>-999~999</infoRange>
 				<requestLocalizedData>false</requestLocalizedData>
 				<requestIndividualData>true</requestIndividualData>
@@ -103,7 +102,6 @@
 			<li>
 				<type>infoGiver</type>
 				<infoDefName>ConstructionSpeedAverage</infoDefName>
-				<calculation>Flat</calculation>
 				<infoRange>0~999</infoRange>
 				<requestLocalizedData>false</requestLocalizedData>
 				<requestIndividualData>true</requestIndividualData>
@@ -160,7 +158,6 @@
 			<li>
 				<type>infoGiver</type>
 				<infoDefName>ConstructionSpeedAverage</infoDefName>
-				<calculation>Flat</calculation>
 				<infoRange>-999~999</infoRange>
 				<requestLocalizedData>false</requestLocalizedData>
 				<requestIndividualData>true</requestIndividualData>

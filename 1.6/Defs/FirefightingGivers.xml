@@ -408,8 +408,8 @@
     <!-- Firefighting Fire Weakness Priority Giver -->
     <Autonomy.PriorityGiverDef>
         <defName>FirefightingFireWeaknessPriority</defName>
-        <label>Firefighting fire weakness avoidance</label>
-        <description>Reduces firefighting priority for pawns with fire weakness genes like tinderskin</description>
+        <label>Firefighting fire resistance/weakness adjustment</label>
+        <description>Adjusts firefighting priority for pawns based on fire resistance or weakness genes (e.g., tinderskin, fire resistant)</description>
         <isUrgent>false</isUrgent>
         
         <conditions>

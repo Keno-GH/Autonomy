@@ -21,4 +21,96 @@
 			</exclude>
 		</filters>
 	</Autonomy.InfoGiverDef>
+
+	<!-- Injuries and diseases infogivers -->
+	<!-- Total bleed rate across colony, individualizable -->
+	<Autonomy.InfoGiverDef>
+		<defName>TotalColonyBleedRate</defName>
+		<label>Total colony bleed rate</label>
+		<description>Sums the bleed rate of all bleeding injuries. Indicates medical emergency severity.</description>
+		<sourceType>hediffCount</sourceType>
+        <isIndividualizable>true</isIndividualizable>   
+		<isUrgent>true</isUrgent>
+        
+		<hediffProperty>bleedRate</hediffProperty>
+		<calculation>Sum</calculation>
+		
+		<filters>
+			<include>
+				<li>player</li>
+				<li>prisoner</li>
+				<li>animal</li>
+			</include>
+			<exclude>
+				<li>dead</li>
+			</exclude>
+			<hediffs>
+				<li>
+					<hasBleedRate>true</hasBleedRate>
+				</li>
+			</hediffs>
+		</filters>
+	</Autonomy.InfoGiverDef>
+
+	<!-- Sum of severity for untended injuries with infection chance, individualizable -->
+	<Autonomy.InfoGiverDef>
+		<defName>UntendedInfectionRiskSeverity</defName>
+		<label>Untended infection risk severity</label>
+		<description>Sums the severity of all untended injuries that have infection chance. Higher values indicate more serious medical emergencies.</description>
+		<sourceType>hediffCount</sourceType>
+		<isIndividualizable>true</isIndividualizable>
+		<isUrgent>true</isUrgent>
+
+		<hediffProperty>bleedRate</hediffProperty>
+		<calculation>Sum</calculation>
+		
+		<filters>
+			<include>
+				<li>player</li>
+				<li>prisoner</li>
+				<li>animal</li>
+				<li>guest</li>
+			</include>
+			<exclude>
+				<li>dead</li>
+			</exclude>
+			<hediffs>
+				<li>
+					<tendable>true</tendable>
+					<tended>false</tended>
+					<hasInfectionChance>true</hasInfectionChance>
+				</li>
+			</hediffs>
+		</filters>
+	</Autonomy.InfoGiverDef>
+
+	<!-- Total damage of untended, non bleeding injuries in colony, individualizable -->
+	<Autonomy.InfoGiverDef>
+		<defName>TotalColonyNonBleedingInjuries</defName>
+		<label>Total colony non bleeding injuries</label>
+		<description>Sums the severity of all non bleeding injuries.</description>
+		<sourceType>hediffCount</sourceType>
+        <isIndividualizable>true</isIndividualizable>   
+		<isUrgent>false</isUrgent>        
+		<hediffProperty>severity</hediffProperty>
+		<calculation>Sum</calculation>
+		
+		<filters>
+			<include>
+				<li>player</li>
+				<li>prisoner</li>
+				<li>animal</li>
+			</include>
+			<exclude>
+				<li>dead</li>
+			</exclude>
+			<hediffs>
+				<li>
+                    <hediffClass>Hediff_Injury</hediffClass>
+					<hasBleedRate>false</hasBleedRate>
+				</li>
+			</hediffs>
+		</filters>
+	</Autonomy.InfoGiverDef>
+	
 </Defs>

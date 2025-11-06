@@ -116,7 +116,8 @@
 | `filterBiostatMet` | string | * | Filter genes by biostatMet (e.g., ">=2") |
 | `filterBiostatCpx` | string | * | Filter genes by biostatCpx (e.g., ">=3") |
 | `filterBiostatArc` | string | * | Filter genes by biostatArc (e.g., ">=1") |
-| `filters` | object | ✗ | Advanced filtering options |
+| `hediffProperty` | string | * | Property to extract for hediffCount (severity, bleedRate, infectionChance, etc.) |
+| `filters` | object | ✗ | Advanced filtering options (includes hediff filters) |
 
 ### InfoGiver Source Types
 
@@ -130,8 +131,11 @@
 | `mapCondition` | Map conditions | `conditions` | ✓ Toxic fallout, raids |
 | `weather` | Weather assessment | `weatherProperty` | ✓ Extreme temperatures |
 | `geneCount` | Count genes in pawns | Gene targeting fields* | Gene-dependent tasks |
+| `hediffCount` | Count/measure hediffs | Hediff targeting fields** | ✓ Medical emergencies, diseases |
 
 *Gene targeting fields: `targetGenes`, `targetGeneClasses`, `targetMentalBreakDef`, `filterBiostatMet`, `filterBiostatCpx`, `filterBiostatArc`
+
+**Hediff targeting: Use `filters.hediffs` array with `hediffClass`, `tendable`, `tended`, `hasInfectionChance`, `hasBleedRate`, `isImmunizable` properties
 
 ### Update Frequency
 
@@ -538,6 +542,119 @@ Reduce firefighting priority for pawns with pyrophobia (FireTerror mental break)
     </targetWorkGivers>
 </Autonomy.PriorityGiverDef>
 ```
+
+### HediffCount Example: Medical Emergency Response
+
+Track untended injuries with infection risk and prioritize medical work:
+
+```xml
+<!-- InfoGiver: Sum severity of untended injuries with infection risk -->
+<Autonomy.InfoGiverDef>
+    <defName>UntendedInfectionRiskSeverity</defName>
+    <label>Untended infection risk severity</label>
+    <sourceType>hediffCount</sourceType>
+    <calculation>Sum</calculation>
+    <hediffProperty>severity</hediffProperty>
+    <isIndividualizable>true</isIndividualizable>
+    <isUrgent>true</isUrgent>
+    
+    <filters>
+        <include>
+            <li>player</li>
+            <li>prisoner</li>
+            <li>animal</li>
+        </include>
+        <exclude>
+            <li>dead</li>
+        </exclude>
+        <hediffs>
+            <li>
+                <hediffClass>Hediff_Injury</hediffClass>
+                <tendable>true</tendable>
+                <tended>false</tended>
+                <hasInfectionChance>true</hasInfectionChance>
+            </li>
+        </hediffs>
+    </filters>
+</Autonomy.InfoGiverDef>
+
+<!-- PriorityGiver: Increase medical priority based on infection risk -->
+<Autonomy.PriorityGiverDef>
+    <defName>TendingInfectionRiskPriority</defName>
+    <label>Tending infection risk priority</label>
+    <isUrgent>true</isUrgent>
+    
+    <conditions>
+        <li>
+            <type>infoGiver</type>
+            <infoDefName>UntendedInfectionRiskSeverity</infoDefName>
+            <calculation>Flat</calculation>
+            <requestIndividualData>true</requestIndividualData>
+        </li>
+    </conditions>
+    
+    <priorityRanges>
+        <li>
+            <validRange>0</validRange>
+            <priority>0</priority>
+            <description>No infection risk</description>
+        </li>
+        <li>
+            <validRange>0.01~0.5</validRange>
+            <priority>5</priority>
+            <description>Minor infection risk</description>
+        </li>
+        <li>
+            <validRange>0.51~1.0</validRange>
+            <priority>10</priority>
+            <description>Moderate infection risk</description>
+        </li>
+        <li>
+            <validRange>1.01~999</validRange>
+            <priority>20</priority>
+            <description>Severe infection risk</description>
+        </li>
+    </priorityRanges>
+    
+    <targetWorkGivers>
+        <li>TendPatient</li>
+    </targetWorkGivers>
+</Autonomy.PriorityGiverDef>
+
+<!-- InfoGiver: Track total bleed rate for emergency response -->
+<Autonomy.InfoGiverDef>
+    <defName>TotalColonyBleedRate</defName>
+    <label>Total colony bleed rate</label>
+    <sourceType>hediffCount</sourceType>
+    <calculation>Sum</calculation>
+    <hediffProperty>bleedRate</hediffProperty>
+    <isUrgent>true</isUrgent>
+    
+    <filters>
+        <include>
+            <li>player</li>
+        </include>
+        <exclude>
+            <li>dead</li>
+        </exclude>
+        <hediffs>
+            <li>
+                <hediffClass>Hediff_Injury</hediffClass>
+                <hasBleedRate>true</hasBleedRate>
+            </li>
+        </hediffs>
+    </filters>
+</Autonomy.InfoGiverDef>
+```
+
+**Available hediffProperty values:**
+- `count` - Number of matching hediffs (default)
+- `severity` - Sum of severity values
+- `bleedRate` - Sum of bleed rates (Hediff_Injury only)
+- `infectionChance` - Sum of infection chances
+- `immunityPerDay` - Sum of immunity gain rates
+- `severityPerDay` - Sum of severity change rates
+- `painOffset` - Sum of pain caused
 
 ## Tips and Best Practices
 

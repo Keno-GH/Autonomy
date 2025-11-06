@@ -580,7 +580,7 @@
 	</Autonomy.InfoGiverDef>
 
     <!-- Flammability Priority Giver -->
-        <Autonomy.PriorityGiverDef>
+    <Autonomy.PriorityGiverDef>
         <defName>FirefightingFlammabilityPriority</defName>
         <label>Firefighting flammability adjustment</label>
         <description>Adjusts firefighting priority for pawns based on their flammability</description>

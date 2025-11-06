@@ -22,7 +22,8 @@ namespace Autonomy
         constructionCount,  // Count of construction projects
         mapCondition,       // Map-level conditions and threats
         weather,            // Weather conditions
-        geneCount           // Count of genes in individual pawns (always individualizable)
+        geneCount,          // Count of genes in individual pawns (always individualizable)
+        hediffCount         // Count/measure hediffs in individual pawns (always individualizable)
     }
 
     /// <summary>
@@ -104,7 +105,10 @@ namespace Autonomy
     {
         public string hediffClass;                          // Class name (Hediff_Injury, HediffWithComps, etc.)
         public bool? tendable;                              // Whether hediff is tendable
-        public bool? hediffTended;                          // Whether hediff has been tended
+        public bool? tended;                                // Whether hediff has been tended (changed from hediffTended)
+        public bool? hasInfectionChance;                    // Whether hediff has infection chance
+        public bool? hasBleedRate;                          // Whether hediff has bleed rate
+        public bool? isImmunizable;                         // Whether hediff is immunizable
         public string hasComps;                             // Specific comp class name (HediffCompProperties_Immunizable)
         
         // Dynamic property filtering with comparators

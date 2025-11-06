@@ -148,6 +148,13 @@ namespace Autonomy
         public string targetDamageFactor;
         
         /// <summary>
+        /// Which property to return from matching hediffs for hediffCount sourceType
+        /// Options: "severity", "immunityPerDay", "severityPerDay", "bleedRate", "infectionChance", "painOffset"
+        /// Default is "count" which just counts matching hediffs
+        /// </summary>
+        public string hediffProperty;
+        
+        /// <summary>
         /// Filters to apply when collecting data
         /// </summary>
         public InfoFilters filters = new InfoFilters();
@@ -219,6 +226,11 @@ namespace Autonomy
                         filterBiostatCpx.NullOrEmpty() && filterBiostatArc.NullOrEmpty() &&
                         targetDamageFactor.NullOrEmpty())
                         Log.Error($"InfoGiverDef {defName} with sourceType geneCount requires at least one gene targeting criterion");
+                    break;
+                    
+                case InfoSourceType.hediffCount:
+                    if (filters?.hediffs == null || filters.hediffs.Count == 0)
+                        Log.Error($"InfoGiverDef {defName} with sourceType hediffCount requires at least one hediff filter in filters.hediffs");
                     break;
             }
             

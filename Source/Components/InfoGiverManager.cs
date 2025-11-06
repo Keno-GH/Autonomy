@@ -218,6 +218,10 @@ namespace Autonomy
                     result = EvaluateGeneCount(def);
                     break;
                     
+                case InfoSourceType.hediffCount:
+                    result = EvaluateHediffCount(def);
+                    break;
+                    
                 default:
                     Log.Warning($"[Autonomy] Unknown sourceType {def.sourceType} for InfoGiver {def.defName}");
                     return 0f;
@@ -250,7 +254,8 @@ namespace Autonomy
             // These source types can be tracked by individual pawn
             return sourceType == InfoSourceType.pawnStat || 
                    sourceType == InfoSourceType.pawnNeed ||
-                   sourceType == InfoSourceType.geneCount;
+                   sourceType == InfoSourceType.geneCount ||
+                   sourceType == InfoSourceType.hediffCount;
         }
 
         private float EvaluateItemCount(InfoGiverDef def)
@@ -500,10 +505,45 @@ namespace Autonomy
                 }
                 
                 // Check if tended
-                if (filter.hediffTended.HasValue)
+                if (filter.tended.HasValue)
                 {
                     bool isTended = hediff.IsTended();
-                    if (isTended != filter.hediffTended.Value) continue;
+                    if (isTended != filter.tended.Value) continue;
+                }
+                
+                // Check infection chance
+                if (filter.hasInfectionChance.HasValue)
+                {
+                    bool hasInfectionChance = false;
+                    if (hediff is HediffWithComps hediffWithComps)
+                    {
+                        var infecterComp = hediffWithComps.TryGetComp<HediffComp_Infecter>();
+                        hasInfectionChance = infecterComp != null && infecterComp.Props.infectionChance > 0f;
+                    }
+                    if (hasInfectionChance != filter.hasInfectionChance.Value) continue;
+                }
+                
+                // Check bleed rate
+                if (filter.hasBleedRate.HasValue)
+                {
+                    bool hasBleedRate = false;
+                    if (hediff is Hediff_Injury injury)
+                    {
+                        hasBleedRate = injury.BleedRate > 0f;
+                    }
+                    if (hasBleedRate != filter.hasBleedRate.Value) continue;
+                }
+                
+                // Check immunizable
+                if (filter.isImmunizable.HasValue)
+                {
+                    bool isImmunizable = false;
+                    if (hediff is HediffWithComps immunizableHediff)
+                    {
+                        var immunizableComp = immunizableHediff.TryGetComp<HediffComp_Immunizable>();
+                        isImmunizable = immunizableComp != null;
+                    }
+                    if (isImmunizable != filter.isImmunizable.Value) continue;
                 }
                 
                 // Check severity if specified
@@ -1254,6 +1294,244 @@ namespace Autonomy
             }
         }
 
+        private float EvaluateHediffCount(InfoGiverDef def)
+        {
+            var pawns = new List<Pawn>();
+            
+            // Start with all pawns on the map
+            var allPawns = map.mapPawns.AllPawns;
+            
+            // Apply basic pawn type filters
+            pawns = ApplyPawnTypeFilters(allPawns, def.filters);
+            
+            // Get hediff values from qualified pawns
+            var values = new List<float>();
+            
+            foreach (var pawn in pawns)
+            {
+                float hediffValue = GetPawnHediffValue(pawn, def);
+                values.Add(hediffValue);
+            }
+            
+            return CalculateResult(values, def.calculation);
+        }
+
+        private float GetPawnHediffValue(Pawn pawn, InfoGiverDef def)
+        {
+            // Check if pawn has health/hediffs
+            if (pawn.health?.hediffSet?.hediffs == null) return 0f;
+            
+            var hediffs = pawn.health.hediffSet.hediffs;
+            if (hediffs.Count == 0) return 0f;
+            
+            // Check if we have any hediff filters
+            if (def.filters?.hediffs == null || def.filters.hediffs.Count == 0) return 0f;
+            
+            // Property to extract (default is count)
+            string property = def.hediffProperty.NullOrEmpty() ? "count" : def.hediffProperty.ToLower();
+            
+            float totalValue = 0f;
+            int matchCount = 0;
+            
+            foreach (var hediff in hediffs)
+            {
+                // Check if this hediff matches ANY of the hediff filters
+                bool matchesAnyFilter = false;
+                foreach (var filter in def.filters.hediffs)
+                {
+                    if (HediffMatchesFilter(hediff, filter))
+                    {
+                        matchesAnyFilter = true;
+                        break;
+                    }
+                }
+                
+                if (matchesAnyFilter)
+                {
+                    matchCount++;
+                    
+                    // Extract the requested property value
+                    switch (property)
+                    {
+                        case "count":
+                            totalValue += 1f;
+                            break;
+                            
+                        case "severity":
+                            totalValue += hediff.Severity;
+                            break;
+                            
+                        case "immunityperday":
+                        case "immunity":
+                            if (hediff is HediffWithComps hediffWithComps)
+                            {
+                                var immunizableComp = hediffWithComps.TryGetComp<HediffComp_Immunizable>();
+                                if (immunizableComp != null)
+                                {
+                                    // Calculate immunity gain per day
+                                    float immunityGain = immunizableComp.Props.immunityPerDaySick;
+                                    if (!hediffWithComps.FullyImmune())
+                                    {
+                                        totalValue += immunityGain;
+                                    }
+                                }
+                            }
+                            break;
+                            
+                        case "severityperday":
+                            if (hediff is HediffWithComps hediffComps)
+                            {
+                                var immunizableComp = hediffComps.TryGetComp<HediffComp_Immunizable>();
+                                if (immunizableComp != null)
+                                {
+                                    // Get severity change per day
+                                    float severityPerDay = hediffComps.FullyImmune() 
+                                        ? immunizableComp.Props.severityPerDayImmune 
+                                        : immunizableComp.Props.severityPerDayNotImmune;
+                                    totalValue += severityPerDay;
+                                }
+                            }
+                            break;
+                            
+                        case "bleedrate":
+                            if (hediff is Hediff_Injury injury)
+                            {
+                                totalValue += injury.BleedRate;
+                            }
+                            break;
+                            
+                        case "infectionchance":
+                            if (hediff is HediffWithComps infectionHediff)
+                            {
+                                var infecterComp = infectionHediff.TryGetComp<HediffComp_Infecter>();
+                                if (infecterComp != null)
+                                {
+                                    totalValue += infecterComp.Props.infectionChance;
+                                }
+                            }
+                            break;
+                            
+                        case "painoffset":
+                            totalValue += hediff.PainOffset;
+                            break;
+                            
+                        default:
+                            Log.Warning($"[Autonomy] Unknown hediffProperty: {property}. Using count instead.");
+                            totalValue += 1f;
+                            break;
+                    }
+                }
+            }
+            
+            return totalValue;
+        }
+
+        private bool HediffMatchesFilter(Hediff hediff, HediffFilter filter)
+        {
+            if (hediff == null || filter == null) return false;
+            
+            // Check hediff class filter
+            if (!filter.hediffClass.NullOrEmpty())
+            {
+                bool classMatches = false;
+                string className = filter.hediffClass;
+                
+                // Check exact type name
+                if (hediff.GetType().Name == className)
+                {
+                    classMatches = true;
+                }
+                // Check if it's a subclass
+                else if (IsSubclassOfTypeName(hediff.GetType(), className))
+                {
+                    classMatches = true;
+                }
+                // Check common base classes
+                else if ((className == "Hediff_Injury" && hediff is Hediff_Injury) ||
+                    (className == "Hediff_MissingPart" && hediff is Hediff_MissingPart) ||
+                    (className == "HediffWithComps" && hediff is HediffWithComps))
+                {
+                    classMatches = true;
+                }
+                
+                if (!classMatches)
+                {
+                    return false;
+                }
+            }
+            
+            // Filter by tendable
+            if (filter.tendable.HasValue)
+            {
+                if (hediff.TendableNow() != filter.tendable.Value)
+                {
+                    return false;
+                }
+            }
+            
+            // Filter by tended status
+            if (filter.tended.HasValue)
+            {
+                if (hediff.IsTended() != filter.tended.Value)
+                {
+                    return false;
+                }
+            }
+            
+            // Filter by infection chance
+            if (filter.hasInfectionChance.HasValue)
+            {
+                bool hasInfectionChance = false;
+                
+                if (hediff is HediffWithComps hediffWithComps)
+                {
+                    var infecterComp = hediffWithComps.TryGetComp<HediffComp_Infecter>();
+                    hasInfectionChance = infecterComp != null && infecterComp.Props.infectionChance > 0f;
+                }
+                
+                if (hasInfectionChance != filter.hasInfectionChance.Value)
+                {
+                    return false;
+                }
+            }
+            
+            // Filter by bleed rate
+            if (filter.hasBleedRate.HasValue)
+            {
+                bool hasBleedRate = false;
+                
+                if (hediff is Hediff_Injury injury)
+                {
+                    hasBleedRate = injury.BleedRate > 0f;
+                }
+                
+                if (hasBleedRate != filter.hasBleedRate.Value)
+                {
+                    return false;
+                }
+            }
+            
+            // Filter by immunizable
+            if (filter.isImmunizable.HasValue)
+            {
+                bool isImmunizable = false;
+                
+                if (hediff is HediffWithComps immunizableHediff)
+                {
+                    var immunizableComp = immunizableHediff.TryGetComp<HediffComp_Immunizable>();
+                    isImmunizable = immunizableComp != null;
+                }
+                
+                if (isImmunizable != filter.isImmunizable.Value)
+                {
+                    return false;
+                }
+            }
+            
+            // Passed all filters
+            return true;
+        }
+
         private float CalculateResult(List<float> values, CalculationType calculation)
         {
             if (values.Count == 0) return 0f;
@@ -1346,6 +1624,9 @@ namespace Autonomy
                     break;
                 case InfoSourceType.geneCount:
                     CollectIndividualGeneCountData(def, indData);
+                    break;
+                case InfoSourceType.hediffCount:
+                    CollectIndividualHediffCountData(def, indData);
                     break;
             }
             
@@ -1558,6 +1839,19 @@ namespace Autonomy
             {
                 float geneCount = GetPawnGeneCount(pawn, def);
                 indData.SetPawnValue(pawn, geneCount);
+            }
+        }
+
+        private void CollectIndividualHediffCountData(InfoGiverDef def, IndividualData indData)
+        {
+            var pawns = new List<Pawn>();
+            var allPawns = map.mapPawns.AllPawns;
+            pawns = ApplyPawnTypeFilters(allPawns, def.filters);
+            
+            foreach (var pawn in pawns)
+            {
+                float hediffValue = GetPawnHediffValue(pawn, def);
+                indData.SetPawnValue(pawn, hediffValue);
             }
         }
 

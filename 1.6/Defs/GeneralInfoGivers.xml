@@ -115,4 +115,27 @@
 		</filters>
 	</Autonomy.InfoGiverDef>
 
+	<!-- SocialImpact Stat -->
+	<Autonomy.InfoGiverDef>
+		<defName>SocialImpactInfoGiver</defName>
+		<label>Social Impact</label>
+		<description>Tracks each pawn's Social Impact stat for personalized social priority</description>
+		<isLocalizable>false</isLocalizable>
+		<isIndividualizable>true</isIndividualizable>
+		<calculation>Avg</calculation>
+		<isUrgent>false</isUrgent>
+		<sourceType>pawnStat</sourceType>
+		<targetStat>SocialImpact</targetStat>
+		
+		<filters>
+			<include>
+				<li>player</li>
+			</include>
+			<exclude>
+				<li>dead</li>
+				<li>downed</li>
+			</exclude>
+		</filters>
+	</Autonomy.InfoGiverDef>
+
 </Defs>

@@ -732,5 +732,61 @@
 
 	</Autonomy.PriorityGiverDef>
 
+    <!-- PriorityGiver for rescuing (movespeed)-->
+    <Autonomy.PriorityGiverDef>
+		<defName>RescuingMovespeed</defName>
+        <label>Rescuing (movespeed)</label>
+        <description>Adjust rescue priority based on a pawn's movespeed (how quickly they can carry a downed pawn).</description>
+		<isUrgent>false</isUrgent>
+
+		<conditions>
+			<li>
+				<type>infoGiver</type>
+				<infoDefName>MovespeedInfoGiver</infoDefName>
+				<infoRange>0~999</infoRange>
+				<requestLocalizedData>false</requestLocalizedData>
+				<requestIndividualData>true</requestIndividualData>
+				<requestDistanceFromGlobal>true</requestDistanceFromGlobal>
+			</li>
+		</conditions>
+
+		<priorityRanges>
+			<li>
+				<validRange>-999~-2.01</validRange>
+				<priority>-10</priority>
+				<description>I am very slow</description>
+			</li>
+			<li>
+				<validRange>-2~-1.01</validRange>
+				<priority>-10~-5</priority>
+				<description>I am very slow</description>
+			</li>
+			<li>
+				<validRange>-1~0</validRange>
+				<priority>-5~0</priority>
+				<description>I am slow</description>
+			</li>
+			<li>
+				<validRange>0.01~1</validRange>
+				<priority>5~10</priority>
+				<description>I am fast</description>
+			</li>
+			<li>
+				<validRange>1.01~2</validRange>
+				<priority>10~20</priority>
+				<description>I am very fast</description>
+			</li>
+			<li>
+				<validRange>2.01~999</validRange>
+				<priority>20</priority>
+				<description>I am very fast</description>
+			</li>
+		</priorityRanges>
+
+		<targetWorkGivers>
+            <li>DoctorRescue</li>
+		</targetWorkGivers>
+
+	</Autonomy.PriorityGiverDef>
 
 </Defs>

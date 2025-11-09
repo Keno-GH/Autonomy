@@ -145,6 +145,7 @@ namespace Autonomy
         {
             int basePriority = 3; // Default priority
             float personalityMultiplier = 1.0f;
+            float personalityFlatOffset = 0f;
             string matchedDescription = null;
             
             // Evaluate filter conditions FIRST (outer layer filter)
@@ -176,8 +177,10 @@ namespace Autonomy
                 {
                     if (condition.type == ConditionType.personalityOffset)
                     {
-                        // Handle personality-based multipliers
-                        personalityMultiplier *= EvaluatePersonalityMultiplier(condition, pawn);
+                        // Handle personality-based multipliers and flat offsets
+                        var (conditionMultiplier, conditionFlat) = EvaluatePersonalityMultiplier(condition, pawn);
+                        personalityMultiplier *= conditionMultiplier;
+                        personalityFlatOffset += conditionFlat;
                     }
                     else if (condition.type == ConditionType.infoGiver)
                     {
@@ -203,8 +206,8 @@ namespace Autonomy
                 }
             }
             
-            // Apply personality multiplier to base priority
-            int finalPriority = Mathf.RoundToInt(basePriority * personalityMultiplier);
+            // Apply personality multiplier and flat offset to base priority
+            int finalPriority = Mathf.RoundToInt(basePriority * personalityMultiplier + personalityFlatOffset);
             
             // Return both the final priority and the matched description
             string description = matchedDescription ?? $"Priority {finalPriority}";
@@ -238,13 +241,14 @@ namespace Autonomy
 
         /// <summary>
         /// Evaluates personality-based multipliers for a given condition and pawn
+        /// Returns (multiplier, flatOffset) tuple
         /// </summary>
-        private float EvaluatePersonalityMultiplier(PriorityCondition condition, Pawn pawn)
+        private (float multiplier, float flatOffset) EvaluatePersonalityMultiplier(PriorityCondition condition, Pawn pawn)
         {
             // Check if RimPsyche mod is available
             if (!ModsConfig.IsActive("maux36.rimpsyche"))
             {
-                return 1.0f; // No multiplier if mod not available
+                return (1.0f, 0f); // No multiplier or offset if mod not available
             }
 
             try
@@ -253,7 +257,7 @@ namespace Autonomy
                 var compPsyche = GetRimPsycheComponent(pawn);
                 if (compPsyche == null)
                 {
-                    return 1.0f; // No personality component
+                    return (1.0f, 0f); // No personality component
                 }
 
                 // Get personality value using reflection
@@ -264,7 +268,7 @@ namespace Autonomy
                 {
                     if (multiplier.personalityRange.Includes(personalityValue))
                     {
-                        return multiplier.multiplier;
+                        return (multiplier.multiplier, multiplier.flat);
                     }
                 }
             }
@@ -273,7 +277,7 @@ namespace Autonomy
                 Log.Warning($"[Autonomy] Failed to evaluate personality multiplier for {condition.personalityDefName} on pawn {pawn.Name}: {e.Message}");
             }
 
-            return 1.0f; // Default multiplier if no range matches
+            return (1.0f, 0f); // Default multiplier and no offset if no range matches
         }
 
         /// <summary>

@@ -235,9 +235,9 @@ namespace Autonomy.Systems
                     // Calculate base priority
                     int basePriority = passionGiver.priorityResult.priority;
                     
-                    // Apply personality multiplier
-                    float personalityMultiplier = EvaluatePassionPersonalityMultiplier(passionGiver, pawn);
-                    int adjustedPriority = (int)(basePriority * personalityMultiplier + 0.5f);
+                    // Apply personality multiplier and flat offset
+                    var (personalityMultiplier, personalityFlatOffset) = EvaluatePassionPersonalityMultiplier(passionGiver, pawn);
+                    int adjustedPriority = (int)(basePriority * personalityMultiplier + personalityFlatOffset + 0.5f);
                     
                     var priorityResult = new PriorityGiverResult
                     {
@@ -344,9 +344,9 @@ namespace Autonomy.Systems
                     }
                 }
                 
-                // Apply personality multiplier
-                float personalityMultiplier = EvaluateSkillPersonalityMultiplier(skillGiver, pawn);
-                int adjustedPriority = (int)(basePriority * personalityMultiplier + 0.5f);
+                // Apply personality multiplier and flat offset
+                var (personalityMultiplier, personalityFlatOffset) = EvaluateSkillPersonalityMultiplier(skillGiver, pawn);
+                int adjustedPriority = (int)(basePriority * personalityMultiplier + personalityFlatOffset + 0.5f);
                 
                 var priorityResult = new PriorityGiverResult
                 {
@@ -369,26 +369,30 @@ namespace Autonomy.Systems
         
         /// <summary>
         /// Evaluates personality-based multipliers for a skill giver
+        /// Returns (combinedMultiplier, combinedFlatOffset) tuple
         /// </summary>
-        private float EvaluateSkillPersonalityMultiplier(SkillGiverDef skillGiver, Pawn pawn)
+        private (float multiplier, float flatOffset) EvaluateSkillPersonalityMultiplier(SkillGiverDef skillGiver, Pawn pawn)
         {
             float personalityMultiplier = 1.0f;
+            float personalityFlatOffset = 0f;
+            
             if (skillGiver.conditions.NullOrEmpty())
             {
-                return personalityMultiplier; // No conditions to evaluate
+                return (personalityMultiplier, personalityFlatOffset); // No conditions to evaluate
             }
 
             foreach (var condition in skillGiver.conditions)
             {
                 if (condition.type == ConditionType.personalityOffset)
                 {
-                    // Apply personality multiplier
-                    float conditionMultiplier = EvaluatePersonalityMultiplier(condition, pawn);
+                    // Apply personality multiplier and flat offset
+                    var (conditionMultiplier, conditionFlat) = EvaluatePersonalityMultiplier(condition, pawn);
                     personalityMultiplier *= conditionMultiplier;
+                    personalityFlatOffset += conditionFlat;
                 }
             }
 
-            return personalityMultiplier;
+            return (personalityMultiplier, personalityFlatOffset);
         }
         
         /// <summary>
@@ -630,37 +634,42 @@ namespace Autonomy.Systems
         
         /// <summary>
         /// Evaluates personality-based multipliers for a passion giver
+        /// Returns (combinedMultiplier, combinedFlatOffset) tuple
         /// </summary>
-        private float EvaluatePassionPersonalityMultiplier(PassionGiverDef passionGiver, Pawn pawn)
+        private (float multiplier, float flatOffset) EvaluatePassionPersonalityMultiplier(PassionGiverDef passionGiver, Pawn pawn)
         {
             float personalityMultiplier = 1.0f;
+            float personalityFlatOffset = 0f;
+            
             if (passionGiver.conditions.NullOrEmpty())
             {
-                return personalityMultiplier; // No conditions to evaluate
+                return (personalityMultiplier, personalityFlatOffset); // No conditions to evaluate
             }
 
             foreach (var condition in passionGiver.conditions)
             {
                 if (condition.type == ConditionType.personalityOffset)
                 {
-                    // Apply personality multiplier
-                    float conditionMultiplier = EvaluatePersonalityMultiplier(condition, pawn);
+                    // Apply personality multiplier and flat offset
+                    var (conditionMultiplier, conditionFlat) = EvaluatePersonalityMultiplier(condition, pawn);
                     personalityMultiplier *= conditionMultiplier;
+                    personalityFlatOffset += conditionFlat;
                 }
             }
 
-            return personalityMultiplier;
+            return (personalityMultiplier, personalityFlatOffset);
         }
         
         /// <summary>
         /// Evaluates personality-based multipliers for a given condition and pawn
+        /// Returns (multiplier, flatOffset) tuple
         /// </summary>
-        private float EvaluatePersonalityMultiplier(PriorityCondition condition, Pawn pawn)
+        private (float multiplier, float flatOffset) EvaluatePersonalityMultiplier(PriorityCondition condition, Pawn pawn)
         {
             // Check if RimPsyche mod is available
             if (!ModsConfig.IsActive("maux36.rimpsyche"))
             {
-                return 1.0f; // No multiplier if mod not available
+                return (1.0f, 0f); // No multiplier or offset if mod not available
             }
 
             try
@@ -669,7 +678,7 @@ namespace Autonomy.Systems
                 var compPsyche = GetRimPsycheComponent(pawn);
                 if (compPsyche == null)
                 {
-                    return 1.0f; // No personality component
+                    return (1.0f, 0f); // No personality component
                 }
 
                 // Get personality value using reflection
@@ -680,7 +689,7 @@ namespace Autonomy.Systems
                 {
                     if (multiplier.personalityRange.Includes(personalityValue))
                     {
-                        return multiplier.multiplier;
+                        return (multiplier.multiplier, multiplier.flat);
                     }
                 }
             }
@@ -689,7 +698,7 @@ namespace Autonomy.Systems
                 Log.Warning($"[Autonomy] Failed to evaluate personality multiplier for {condition.personalityDefName} on pawn {pawn.Name}: {e.Message}");
             }
 
-            return 1.0f; // Default multiplier if no range matches
+            return (1.0f, 0f); // Default multiplier and no offset if no range matches
         }
 
         /// <summary>

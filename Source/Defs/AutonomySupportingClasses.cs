@@ -144,6 +144,12 @@ namespace Autonomy
         /// Multiplier to apply to final priority when personality is in this range
         /// </summary>
         public float multiplier = 1.0f;
+        
+        /// <summary>
+        /// Flat offset to add after multiplier is applied
+        /// Applied as: (basePriority * multiplier) + flat
+        /// </summary>
+        public float flat = 0f;
     }
 
     /// <summary>

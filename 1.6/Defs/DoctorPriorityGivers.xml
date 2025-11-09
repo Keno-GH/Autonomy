@@ -587,4 +587,150 @@
 
 	</Autonomy.PriorityGiverDef>
 
+    <!-- Givers for caring (Visiting and other non medical doctoring) -->
+	<!-- PriorityGiver for visiting sick pawns based on social impact -->
+	<Autonomy.PriorityGiverDef>
+		<defName>VisitSickPawnSocialImpactPriorityGiver</defName>
+		<label>Visit sick pawn (social impact)</label>
+		<description>Adjust visiting priority based on social impact info giver</description>
+		<isUrgent>false</isUrgent>
+
+		<conditions>
+			<li>
+				<type>infoGiver</type>
+				<infoDefName>SocialImpactInfoGiver</infoDefName>
+				<infoRange>0.2~999</infoRange>
+				<requestLocalizedData>false</requestLocalizedData>
+				<requestIndividualData>true</requestIndividualData>
+				<requestDistanceFromGlobal>false</requestDistanceFromGlobal>
+			</li>
+			<li>
+				<type>personalityOffset</type>
+				<personalityDefName>Rimpsyche_SelfInterest</personalityDefName>
+				<personalityMultipliers>
+					<li>
+						<personalityRange>-1.0~-0.5</personalityRange>
+						<multiplier>0.85</multiplier>
+					</li>
+					<li>
+						<personalityRange>-0.49~0.0</personalityRange>
+						<multiplier>0.95</multiplier>
+					</li>
+					<li>
+						<personalityRange>0.01~0.5</personalityRange>
+						<multiplier>1.2</multiplier>
+					</li>
+					<li>
+						<personalityRange>0.51~1.0</personalityRange>
+						<multiplier>1.3</multiplier>
+					</li>
+				</personalityMultipliers>
+			</li>
+			<li>
+				<type>personalityOffset</type>
+				<personalityDefName>Rimpsyche_Compassion</personalityDefName>
+				<personalityMultipliers>
+					<li>
+						<personalityRange>-1.0~-0.5</personalityRange>
+						<multiplier>0.5</multiplier>
+					</li>
+					<li>
+						<personalityRange>-0.49~0.0</personalityRange>
+						<multiplier>0.85</multiplier>
+					</li>
+					<li>
+						<personalityRange>0.01~0.5</personalityRange>
+						<multiplier>1.2</multiplier>
+                        <flat>1</flat>
+					</li>
+					<li>
+						<personalityRange>0.51~1.0</personalityRange>
+						<multiplier>1.5</multiplier>
+                        <flat>2</flat>
+					</li>
+				</personalityMultipliers>
+			</li>
+			<li>
+				<type>personalityOffset</type>
+				<personalityDefName>Rimpsyche_Tact</personalityDefName>
+				<personalityMultipliers>
+					<li>
+						<personalityRange>-1.0~-0.5</personalityRange>
+						<multiplier>0.5</multiplier>
+					</li>
+					<li>
+						<personalityRange>-0.49~0.0</personalityRange>
+						<multiplier>0.85</multiplier>
+					</li>
+					<li>
+						<personalityRange>0.01~0.5</personalityRange>
+						<multiplier>1.2</multiplier>
+					</li>
+					<li>
+						<personalityRange>0.51~1.0</personalityRange>
+						<multiplier>1.5</multiplier>
+					</li>
+				</personalityMultipliers>
+			</li>
+			<li>
+				<type>personalityOffset</type>
+				<personalityDefName>Rimpsyche_Confidence</personalityDefName>
+				<personalityMultipliers>
+					<li>
+						<personalityRange>-1.0~-0.5</personalityRange>
+						<multiplier>0.8</multiplier>
+                        <flat>-2</flat>
+					</li>
+					<li>
+						<personalityRange>-0.49~0.0</personalityRange>
+						<multiplier>0.85</multiplier>
+                        <flat>-1</flat>
+					</li>
+					<li>
+						<personalityRange>0.01~0.5</personalityRange>
+						<multiplier>1.1</multiplier>
+					</li>
+					<li>
+						<personalityRange>0.51~1.0</personalityRange>
+						<multiplier>1.2</multiplier>
+					</li>
+				</personalityMultipliers>
+			</li>
+		</conditions>
+
+		<priorityRanges>
+			<li>
+				<validRange>0.2~0.5</validRange>
+				<priority>-10~-5</priority>
+				<description>I hardly can cheer up patients</description>
+			</li>
+			<li>
+				<validRange>0.51~1</validRange>
+				<priority>-5~5</priority>
+				<description>I am ok at cheering up</description>
+			</li>
+			<li>
+				<validRange>1.01~1.5</validRange>
+				<priority>5~10</priority>
+				<description>I am good at cheering up patients</description>
+			</li>
+			<li>
+				<validRange>1.51~2.5</validRange>
+				<priority>10~20</priority>
+				<description>I am very good at cheering up patients</description>
+			</li>
+			<li>
+				<validRange>2.51~999</validRange>
+				<priority>20</priority>
+				<description>I am very good at cheering up patients</description>
+			</li>
+		</priorityRanges>
+
+		<targetWorkGivers>
+			<li>VisitSickPawn</li>
+		</targetWorkGivers>
+
+	</Autonomy.PriorityGiverDef>
+
+
 </Defs>

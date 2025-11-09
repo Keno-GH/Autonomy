@@ -80,6 +80,8 @@
 | `stat` | Check pawn stat | `stat` |
 | `infoGiver` | Use InfoGiver result | `infoDefName` |
 | `mapStat` | Check map statistic | `name` |
+| `personalityOffset` | Apply personality-based multipliers | `personalityDefName`, `personalityMultipliers` |
+| `filter` | Filter pawns (outer layer) - returns 0 priority if pawn doesn't pass | `filters` |
 
 ### Calculation Types
 
@@ -152,7 +154,7 @@ Use urgent evaluation sparingly to avoid performance impact. Ideal for:
 
 ### Advanced Filtering System
 
-#### Pawn Filters
+#### Pawn Filters (for InfoGivers)
 ```xml
 <filters>
     <include>
@@ -165,6 +167,79 @@ Use urgent evaluation sparingly to avoid performance impact. Ideal for:
     </exclude>
 </filters>
 ```
+
+**Available Filter Options:**
+- `player` - Player faction colonists
+- `prisoner` - Prisoners
+- `guest` - Guests
+- `animal` - Player faction animals
+- `hostile` - Hostile faction pawns
+- `slave` - Slaves
+- `dead` - Dead pawns (usually used in exclude)
+- `downed` - Downed pawns (usually used in exclude)
+- `selfTendEnabled` - Pawns with self-tend enabled (player colonists/slaves only)
+- `selfTendDisabled` - Pawns with self-tend disabled (player colonists/slaves only)
+
+#### Filter Conditions in PriorityGivers (Outer Layer Filter)
+
+Filter conditions are a special type of condition that act as an outer layer filter for PriorityGivers. If a pawn fails the filter check, the PriorityGiver returns 0 priority immediately without evaluating other conditions.
+
+**Key Characteristics:**
+- Evaluated FIRST, before all other conditions
+- If filter fails, returns 0 priority (pawn is excluded completely)
+- If filter passes, continues to evaluate other conditions normally
+- Useful for creating specialized priority givers for specific pawn types
+
+**Example: Self-Tend Only Priority**
+```xml
+<Autonomy.PriorityGiverDef>
+    <defName>SelfTendInjuryPriority</defName>
+    <label>Self-tend injury priority</label>
+    <description>Only applies to pawns with self-tend enabled</description>
+    
+    <conditions>
+        <!-- Filter condition - evaluated first -->
+        <li>
+            <type>filter</type>
+            <filters>
+                <include>
+                    <li>selfTendEnabled</li>  <!-- Only pawns with self-tend enabled -->
+                </include>
+            </filters>
+        </li>
+        
+        <!-- Regular conditions - only evaluated if filter passes -->
+        <li>
+            <type>infoGiver</type>
+            <infoDefName>TotalColonyNonBleedingInjuries</infoDefName>
+            <infoRange>0~999</infoRange>
+            <requestIndividualData>true</requestIndividualData>
+        </li>
+    </conditions>
+    
+    <priorityRanges>
+        <li>
+            <validRange>0</validRange>
+            <priority>0</priority>
+            <description>None</description>
+        </li>
+        <li>
+            <validRange>0.01~10</validRange>
+            <priority>5~10</priority>
+            <description>I should tend my wounds</description>
+        </li>
+    </priorityRanges>
+    
+    <targetWorkGivers>
+        <li>DoctorTendToSelf</li>
+    </targetWorkGivers>
+</Autonomy.PriorityGiverDef>
+```
+
+**Use Cases:**
+- Creating separate priority paths for pawns with/without certain settings
+- Targeting specific pawn types (e.g., only slaves, only colonists)
+- Ensuring certain priorities only apply when specific conditions are met
 
 #### Hediff Filters
 ```xml

@@ -108,9 +108,11 @@
 				<li>
                     <hediffClass>Hediff_Injury</hediffClass>
 					<hasBleedRate>false</hasBleedRate>
+					<tendable>true</tendable>
+					<tended>false</tended>
 				</li>
 			</hediffs>
 		</filters>
 	</Autonomy.InfoGiverDef>
-	
+
 </Defs>

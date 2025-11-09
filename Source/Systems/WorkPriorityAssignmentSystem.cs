@@ -92,7 +92,9 @@ namespace Autonomy.Systems
                 WorkGiverResults = new Dictionary<WorkGiverDef, WorkGiverPriorityResult>()
             };
 
-            var usedPriorityGivers = new HashSet<string>(); // Track to prevent double-counting
+            // Track PriorityGivers used within THIS WorkType only to prevent double-counting within the same WorkType
+            // But allow the same PriorityGiver to apply to different WorkTypes
+            var usedPriorityGivers = new HashSet<string>();
 
             // Step 1: Calculate priority for each WorkGiver
             int workGiverSum = 0;

@@ -60,7 +60,8 @@ namespace Autonomy
         infoGiver,      // Use InfoGiverDef results
         flat,           // Compare against fixed values
         mapStat,        // Check map-level statistics
-        personalityOffset // Apply personality-based multipliers to priority
+        personalityOffset, // Apply personality-based multipliers to priority
+        filter          // Filter pawns based on specific criteria (outer layer filter)
     }
 
     // OffsetOperator enum commented out with PersonalityOffset functionality
@@ -82,8 +83,11 @@ namespace Autonomy
     public class InfoFilters
     {
         // Pawn inclusion/exclusion (replaces hardcoded booleans)
-        public List<string> include = new List<string>();     // "player", "guests", "hostiles", "traders"
+        public List<string> include = new List<string>();     // "player", "guests", "hostiles", "traders", "selfTendEnabled", "selfTendDisabled"
         public List<string> exclude = new List<string>();     // Same options as include
+        // Pawn capability checks (AND list). Each entry is a SkillDef name (e.g. "Construction").
+        // A pawn must be capable (not TotallyDisabled) of ALL listed skills to pass this filter.
+        public List<string> capableOf = new List<string>();
 
         // Advanced hediff filtering
         public List<HediffFilter> hediffs = new List<HediffFilter>();
@@ -410,6 +414,50 @@ namespace Autonomy
         }
         
         /// <summary>
+        /// Get normalized distance from global value for a specific pawn
+        /// Returns a value in range [-1, 1] where:
+        /// - +1 = best pawn (highest value)
+        /// - -1 = worst pawn (lowest value)
+        /// - 0 = at global average
+        /// Values are normalized based on the range of all pawn values
+        /// </summary>
+        public float GetNormalizedDistanceFromGlobal(Pawn pawn)
+        {
+            if (pawnValues.Count == 0) return 0f;
+            if (pawnValues.Count == 1) return 0f; // Single pawn is both best and worst, so return 0
+            
+            float pawnValue = GetPawnValue(pawn);
+            
+            // Get min and max values from all pawns
+            float minValue = pawnValues.Values.Min();
+            float maxValue = pawnValues.Values.Max();
+            
+            // If all pawns have same value, return 0
+            if (Math.Abs(maxValue - minValue) < 0.0001f)
+            {
+                return 0f;
+            }
+            
+            // Normalize: convert pawnValue from [minValue, maxValue] to [-1, 1]
+            // where minValue maps to -1, globalValue maps to ~0, and maxValue maps to +1
+            
+            // Calculate range
+            float range = maxValue - minValue;
+            
+            // First normalize to [0, 1] range
+            float normalized01 = (pawnValue - minValue) / range;
+            
+            // Then scale to [-1, 1] range
+            float normalized = (normalized01 * 2f) - 1f;
+            
+            // Clamp to ensure we're in valid range
+            if (normalized < -1f) normalized = -1f;
+            if (normalized > 1f) normalized = 1f;
+            
+            return normalized;
+        }
+        
+        /// <summary>
         /// Calculate global value from individual pawn values
         /// </summary>
         public void RecalculateGlobalValue()
@@ -470,6 +518,11 @@ namespace Autonomy
         /// Whether to request distance from global value
         /// </summary>
         public bool requestDistanceFromGlobal = false;
+        
+        /// <summary>
+        /// Whether to request normalized distance from global value (range [-1, 1])
+        /// </summary>
+        public bool requestNormalizedDistance = false;
         
         /// <summary>
         /// Whether to request localized data

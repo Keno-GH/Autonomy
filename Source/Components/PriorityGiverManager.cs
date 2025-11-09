@@ -147,6 +147,28 @@ namespace Autonomy
             float personalityMultiplier = 1.0f;
             string matchedDescription = null;
             
+            // Evaluate filter conditions FIRST (outer layer filter)
+            // If any filter condition fails, return 0 priority immediately
+            foreach (var condition in def.conditions)
+            {
+                if (condition.type == ConditionType.filter)
+                {
+                    try
+                    {
+                        if (!EvaluateFilterCondition(condition, pawn))
+                        {
+                            // Pawn failed the filter, return 0 priority
+                            return (0, "Does not match filter criteria");
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        Log.Error($"[Autonomy] Error evaluating filter condition for PriorityGiver {def.defName} for pawn {pawn.Name}: {e.Message}");
+                        return (0, "Filter evaluation error");
+                    }
+                }
+            }
+            
             // Evaluate each condition for the specific pawn
             foreach (var condition in def.conditions)
             {
@@ -157,7 +179,7 @@ namespace Autonomy
                         // Handle personality-based multipliers
                         personalityMultiplier *= EvaluatePersonalityMultiplier(condition, pawn);
                     }
-                    else
+                    else if (condition.type == ConditionType.infoGiver)
                     {
                         // Handle regular InfoGiver conditions
                         float infoValue = infoGiverManager.GetLastResult(condition.infoDefName, condition, pawn);
@@ -173,6 +195,7 @@ namespace Autonomy
                             }
                         }
                     }
+                    // filter type already evaluated above, skip here
                 }
                 catch (Exception e)
                 {
@@ -311,6 +334,136 @@ namespace Autonomy
             }
 
             return 0f;
+        }
+
+        /// <summary>
+        /// Evaluates a filter condition to determine if a pawn passes the filter
+        /// Returns true if pawn passes, false if pawn fails
+        /// </summary>
+        private bool EvaluateFilterCondition(PriorityCondition condition, Pawn pawn)
+        {
+            if (condition.filters == null)
+            {
+                Log.Warning($"[Autonomy] Filter condition has no filters defined");
+                return true; // No filters means pass by default
+            }
+
+            // Check inclusion filters
+            if (!condition.filters.include.NullOrEmpty())
+            {
+                bool passedInclusion = false;
+                
+                foreach (string filter in condition.filters.include)
+                {
+                    switch (filter.ToLower())
+                    {
+                        case "player":
+                            if (pawn.Faction == Faction.OfPlayer && pawn.IsColonist)
+                                passedInclusion = true;
+                            break;
+                        case "prisoner":
+                            if (pawn.IsPrisoner)
+                                passedInclusion = true;
+                            break;
+                        case "guest":
+                            if (pawn.guest != null && pawn.guest.GuestStatus == GuestStatus.Guest)
+                                passedInclusion = true;
+                            break;
+                        case "animal":
+                            if (pawn.AnimalOrWildMan() && pawn.Faction == Faction.OfPlayer)
+                                passedInclusion = true;
+                            break;
+                        case "hostile":
+                            if (pawn.Faction != null && pawn.Faction.HostileTo(Faction.OfPlayer))
+                                passedInclusion = true;
+                            break;
+                        case "slave":
+                            if (pawn.IsSlave)
+                                passedInclusion = true;
+                            break;
+                        case "selftendenabled":
+                            // Check if pawn has self-tend enabled
+                            // Only player pawns and slaves can have self-tend
+                            if ((pawn.Faction == Faction.OfPlayer && pawn.IsColonist) || pawn.IsSlave)
+                            {
+                                if (pawn.playerSettings != null && pawn.playerSettings.selfTend)
+                                    passedInclusion = true;
+                            }
+                            break;
+                        case "selftenddisabled":
+                            // Check if pawn has self-tend disabled
+                            // Only player pawns and slaves can have self-tend setting
+                            if ((pawn.Faction == Faction.OfPlayer && pawn.IsColonist) || pawn.IsSlave)
+                            {
+                                if (pawn.playerSettings != null && !pawn.playerSettings.selfTend)
+                                    passedInclusion = true;
+                            }
+                            break;
+                    }
+                }
+                
+                // If we had inclusion filters and none passed, return false
+                if (!passedInclusion)
+                    return false;
+            }
+
+            // Check exclusion filters
+            if (!condition.filters.exclude.NullOrEmpty())
+            {
+                foreach (string filter in condition.filters.exclude)
+                {
+                    switch (filter.ToLower())
+                    {
+                        case "dead":
+                            if (pawn.Dead)
+                                return false;
+                            break;
+                        case "downed":
+                            if (pawn.Downed)
+                                return false;
+                            break;
+                        case "guest":
+                            if (pawn.guest != null && pawn.guest.GuestStatus == GuestStatus.Guest)
+                                return false;
+                            break;
+                        case "prisoner":
+                            if (pawn.IsPrisoner)
+                                return false;
+                            break;
+                        case "animal":
+                            if (pawn.AnimalOrWildMan())
+                                return false;
+                            break;
+                        case "hostile":
+                            if (pawn.Faction != null && pawn.Faction.HostileTo(Faction.OfPlayer))
+                                return false;
+                            break;
+                        case "slave":
+                            if (pawn.IsSlave)
+                                return false;
+                            break;
+                        case "selftendenabled":
+                            // Exclude pawns with self-tend enabled
+                            if ((pawn.Faction == Faction.OfPlayer && pawn.IsColonist) || pawn.IsSlave)
+                            {
+                                if (pawn.playerSettings != null && pawn.playerSettings.selfTend)
+                                    return false;
+                            }
+                            break;
+                        case "selftenddisabled":
+                            // Exclude pawns with self-tend disabled
+                            if ((pawn.Faction == Faction.OfPlayer && pawn.IsColonist) || pawn.IsSlave)
+                            {
+                                if (pawn.playerSettings != null && !pawn.playerSettings.selfTend)
+                                    return false;
+                            }
+                            break;
+                    }
+                }
+            }
+
+            // Pawn passed all filters
+            return true;
         }
 
         #endregion

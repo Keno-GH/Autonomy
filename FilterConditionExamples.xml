@@ -1,0 +1,229 @@
+<!-- Filter Condition Examples for Testing -->
+<!-- These are example definitions to demonstrate the filter condition system -->
+<!-- Copy these to your Defs folder and modify as needed -->
+
+<Defs>
+    <!-- Example 1: Self-Tend Only Filter -->
+    <Autonomy.PriorityGiverDef>
+        <defName>Example_SelfTendFilter</defName>
+        <label>Example: Self-tend only</label>
+        <description>Only applies to pawns with self-tend enabled</description>
+        
+        <conditions>
+            <li>
+                <type>filter</type>
+                <filters>
+                    <include>
+                        <li>selfTendEnabled</li>
+                    </include>
+                </filters>
+            </li>
+            <li>
+                <type>infoGiver</type>
+                <infoDefName>TotalColonyNonBleedingInjuries</infoDefName>
+                <infoRange>0~999</infoRange>
+                <requestIndividualData>true</requestIndividualData>
+            </li>
+        </conditions>
+        
+        <priorityRanges>
+            <li>
+                <validRange>0</validRange>
+                <priority>0</priority>
+                <description>None</description>
+            </li>
+            <li>
+                <validRange>0.01~999</validRange>
+                <priority>10</priority>
+                <description>Should self-tend</description>
+            </li>
+        </priorityRanges>
+        
+        <targetWorkGivers>
+            <li>DoctorTendToSelf</li>
+        </targetWorkGivers>
+    </Autonomy.PriorityGiverDef>
+
+    <!-- Example 2: Multiple Inclusion Filters -->
+    <Autonomy.PriorityGiverDef>
+        <defName>Example_MultipleInclusionFilters</defName>
+        <label>Example: Player or slave only</label>
+        <description>Only applies to player colonists or slaves</description>
+        
+        <conditions>
+            <li>
+                <type>filter</type>
+                <filters>
+                    <include>
+                        <li>player</li>
+                        <li>slave</li>
+                    </include>
+                </filters>
+            </li>
+            <li>
+                <type>flat</type>
+                <flatValue>5</flatValue>
+            </li>
+        </conditions>
+        
+        <priorityRanges>
+            <li>
+                <validRange>0~10</validRange>
+                <priority>5</priority>
+                <description>Standard priority</description>
+            </li>
+        </priorityRanges>
+        
+        <targetWorkTypes>
+            <li>Hauling</li>
+        </targetWorkTypes>
+    </Autonomy.PriorityGiverDef>
+
+    <!-- Example 3: Exclusion Filter -->
+    <Autonomy.PriorityGiverDef>
+        <defName>Example_ExclusionFilter</defName>
+        <label>Example: Not downed</label>
+        <description>Only applies to pawns that are not downed</description>
+        
+        <conditions>
+            <li>
+                <type>filter</type>
+                <filters>
+                    <include>
+                        <li>player</li>
+                    </include>
+                    <exclude>
+                        <li>downed</li>
+                    </exclude>
+                </filters>
+            </li>
+            <li>
+                <type>flat</type>
+                <flatValue>10</flatValue>
+            </li>
+        </conditions>
+        
+        <priorityRanges>
+            <li>
+                <validRange>0~20</validRange>
+                <priority>10</priority>
+                <description>Active pawn priority</description>
+            </li>
+        </priorityRanges>
+        
+        <targetWorkTypes>
+            <li>Construction</li>
+        </targetWorkTypes>
+    </Autonomy.PriorityGiverDef>
+
+    <!-- Example 4: Self-Tend Disabled Filter -->
+    <Autonomy.PriorityGiverDef>
+        <defName>Example_NoSelfTendFilter</defName>
+        <label>Example: Self-tend disabled</label>
+        <description>Only applies to pawns with self-tend disabled (rely on doctors)</description>
+        
+        <conditions>
+            <li>
+                <type>filter</type>
+                <filters>
+                    <include>
+                        <li>selfTendDisabled</li>
+                    </include>
+                </filters>
+            </li>
+            <li>
+                <type>infoGiver</type>
+                <infoDefName>TotalColonyNonBleedingInjuries</infoDefName>
+                <infoRange>0~999</infoRange>
+                <requestIndividualData>true</requestIndividualData>
+            </li>
+        </conditions>
+        
+        <priorityRanges>
+            <li>
+                <validRange>0</validRange>
+                <priority>0</priority>
+                <description>None</description>
+            </li>
+            <li>
+                <validRange>0.01~999</validRange>
+                <priority>15</priority>
+                <description>Need doctor attention</description>
+            </li>
+        </priorityRanges>
+        
+        <targetWorkGivers>
+            <li>PatientGoToBedTreatment</li>
+        </targetWorkGivers>
+    </Autonomy.PriorityGiverDef>
+
+    <!-- Example 5: Combined with Personality Offsets -->
+    <Autonomy.PriorityGiverDef>
+        <defName>Example_FilterWithPersonality</defName>
+        <label>Example: Filter + personality</label>
+        <description>Self-tend filter combined with personality-based priority adjustment</description>
+        
+        <conditions>
+            <!-- Filter first -->
+            <li>
+                <type>filter</type>
+                <filters>
+                    <include>
+                        <li>selfTendEnabled</li>
+                    </include>
+                </filters>
+            </li>
+            
+            <!-- InfoGiver condition -->
+            <li>
+                <type>infoGiver</type>
+                <infoDefName>TotalColonyNonBleedingInjuries</infoDefName>
+                <infoRange>0~999</infoRange>
+                <requestIndividualData>true</requestIndividualData>
+            </li>
+            
+            <!-- Personality modifier -->
+            <li>
+                <type>personalityOffset</type>
+                <personalityDefName>Rimpsyche_SelfInterest</personalityDefName>
+                <personalityMultipliers>
+                    <li>
+                        <personalityRange>-1.0~-0.5</personalityRange>
+                        <multiplier>0.75</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>-0.49~0.5</personalityRange>
+                        <multiplier>1.0</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.51~1.0</personalityRange>
+                        <multiplier>1.5</multiplier>
+                    </li>
+                </personalityMultipliers>
+            </li>
+        </conditions>
+        
+        <priorityRanges>
+            <li>
+                <validRange>0</validRange>
+                <priority>0</priority>
+                <description>None</description>
+            </li>
+            <li>
+                <validRange>0.01~10</validRange>
+                <priority>5~10</priority>
+                <description>Minor self-care</description>
+            </li>
+            <li>
+                <validRange>11~999</validRange>
+                <priority>11~20</priority>
+                <description>Significant self-care</description>
+            </li>
+        </priorityRanges>
+        
+        <targetWorkGivers>
+            <li>DoctorTendToSelf</li>
+        </targetWorkGivers>
+    </Autonomy.PriorityGiverDef>
+
+</Defs>

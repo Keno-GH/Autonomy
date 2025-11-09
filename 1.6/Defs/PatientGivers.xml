@@ -29,7 +29,7 @@
 	</Autonomy.InfoGiverDef> -->
 
     <!-- Severity infection priority giver -->
-    <Autonomy.PriorityGiverDef>
+    <Autonomy.PriorityGiverDef Name="SeverityInfectionChancePriority">
         <defName>SeverityInfectionChancePriority</defName>
         <label>Severity infection chance priority</label>
         <description>Increases priority for bed resting depending on the severity of infectable untended injuries</description>
@@ -78,9 +78,32 @@
         <targetWorkGivers>
             <li>PatientGoToBedEmergencyTreatment</li>
             <li>PatientGoToBedTreatment</li>
+            <!-- <li>DoctorTendToSelf</li>
+            <li>DoctorTendToSelfEmergency</li> -->
         </targetWorkGivers>
     </Autonomy.PriorityGiverDef>
 
+    <Autonomy.PriorityGiverDef ParentName="SeverityInfectionChancePriority">
+        <defName>SeverityInfectionChancePrioritySelfTend</defName>
+        <label>Severity infection chance priority (self-tend)</label>
+        <description>Increases priority for self-tending depending on the severity of infectable untended injuries, only for pawns with self-tend enabled</description>
+
+        <conditions>
+            <li>
+                <type>filter</type>
+                <filters>
+                    <include>
+                        <li>selfTendEnabled</li>
+                    </include>
+                </filters>
+            </li>
+        </conditions>
+
+        <targetWorkGivers>
+            <li>DoctorTendToSelf</li>
+            <li>DoctorTendToSelfEmergency</li>
+        </targetWorkGivers>
+    </Autonomy.PriorityGiverDef>
 
 	<!-- Count of bleeding injuries -->
 	<!-- <Autonomy.InfoGiverDef>
@@ -113,7 +136,7 @@
 	</Autonomy.InfoGiverDef> -->
 
     <!-- Bleed rate priority giver -->
-    <Autonomy.PriorityGiverDef>
+    <Autonomy.PriorityGiverDef Name="BleedRatePriorityGiver">
         <defName>BleedRatePriorityGiver</defName>
         <label>Bleed rate priority giver</label>
         <description>Increases priority for bed resting depending on the severity of untreated bleeding injuries</description>
@@ -165,6 +188,29 @@
         </targetWorkGivers>
     </Autonomy.PriorityGiverDef>
 
+    <Autonomy.PriorityGiverDef ParentName="BleedRatePriorityGiver">
+        <defName>BleedRatePriorityGiverSelfTend</defName>
+        <label>Bleed rate priority giver (self-tend)</label>
+        <description>Increases priority for self-tending depending on the severity of untreated bleeding injuries, only for pawns with self-tend enabled</description>
+
+        <conditions>
+            <li>
+                <type>filter</type>
+                <filters>
+                    <include>
+                        <li>selfTendEnabled</li>
+                    </include>
+                </filters>
+            </li>
+        </conditions>
+
+        <targetWorkGivers>
+            <li>DoctorTendToSelf</li>
+            <li>DoctorTendToSelfEmergency</li>
+        </targetWorkGivers>
+
+    </Autonomy.PriorityGiverDef>
+
 	<!-- Count of immunizable diseases -->
 	<!-- <Autonomy.InfoGiverDef>
 		<defName>ImmunizableDiseaseCount</defName>
@@ -194,7 +240,7 @@
 		</filters>
 	</Autonomy.InfoGiverDef> -->
 
-    <Autonomy.PriorityGiverDef>
+    <Autonomy.PriorityGiverDef Name="NonBleedingInjuryPriorityGiver">
         <defName>NonBleedingInjuryPriorityGiver</defName>
         <label>Non bleeding injury priority giver</label>
         <description>Increases priority for bed resting depending on the severity of untreated non bleeding injuries</description>
@@ -331,6 +377,30 @@
             <li>PatientGoToBedEmergencyTreatment</li>
             <li>PatientGoToBedTreatment</li>
         </targetWorkGivers>
+    </Autonomy.PriorityGiverDef>
+
+    <Autonomy.PriorityGiverDef ParentName="NonBleedingInjuryPriorityGiver">
+        <defName>NonBleedingInjuryPriorityGiverSelfTend</defName>
+        <label>Non bleeding injury priority giver (self-tend)</label>
+        <description>Increases priority for self-tending depending on the severity of untreated non bleeding injuries, only for pawns with self-tend enabled</description>
+
+        <conditions>
+            <!-- Filter: only apply to pawns with self-tend enabled -->
+            <li>
+                <type>filter</type>
+                <filters>
+                    <include>
+                        <li>selfTendEnabled</li>
+                    </include>
+                </filters>
+            </li>
+        </conditions>
+
+        <targetWorkGivers>
+            <li>DoctorTendToSelf</li>
+            <li>DoctorTendToSelfEmergency</li>
+        </targetWorkGivers>
+
     </Autonomy.PriorityGiverDef>
 
 </Defs>

@@ -50,7 +50,11 @@ namespace Autonomy
                 
                 if (individualData.TryGetValue(infoGiverDefName, out IndividualData indData))
                 {
-                    if (context.requestDistanceFromGlobal)
+                    if (context.requestNormalizedDistance)
+                    {
+                        return indData.GetNormalizedDistanceFromGlobal(context.requestingPawn);
+                    }
+                    else if (context.requestDistanceFromGlobal)
                     {
                         return indData.GetSignedDistanceFromGlobal(context.requestingPawn);
                     }
@@ -101,6 +105,7 @@ namespace Autonomy
                 location = requestingPawn?.Position,
                 requestIndividualData = condition.requestIndividualData,
                 requestDistanceFromGlobal = condition.requestDistanceFromGlobal,
+                requestNormalizedDistance = condition.requestNormalizedDistance,
                 requestLocalizedData = condition.requestLocalizedData
             };
             
@@ -455,6 +460,35 @@ namespace Autonomy
                     return true;
                 });
             }
+
+            // Apply capability filters (AND list) - each entry must be a SkillDef name
+            if (!filters.capableOf.NullOrEmpty())
+            {
+                filtered = filtered.Where(pawn =>
+                {
+                    // Pawns without skill tracking fail the capability check
+                    if (pawn.skills == null) return false;
+
+                    foreach (string skillName in filters.capableOf)
+                    {
+                        var skillDef = DefDatabase<SkillDef>.GetNamedSilentFail(skillName);
+                        if (skillDef == null)
+                        {
+                            // If the skill definition doesn't exist, treat as failure to be safe
+                            return false;
+                        }
+
+                        var skill = pawn.skills.GetSkill(skillDef);
+                        if (skill == null) return false;
+
+                        // If the skill is completely disabled (pawn cannot use it), exclude the pawn
+                        if (skill.TotallyDisabled) return false;
+                    }
+
+                    // Passed all capability checks
+                    return true;
+                });
+            }
             
             return filtered.ToList();
         }
@@ -527,9 +561,16 @@ namespace Autonomy
                 if (filter.hasBleedRate.HasValue)
                 {
                     bool hasBleedRate = false;
+                    // Prefer instance-level bleed rate when available (Hediff_Injury),
+                    // otherwise fall back to the HediffDef's injuryProps (for
+                    // Hediff_MissingPart and other non-injury hediff types).
                     if (hediff is Hediff_Injury injury)
                     {
                         hasBleedRate = injury.BleedRate > 0f;
+                    }
+                    else if (hediff.def?.injuryProps != null)
+                    {
+                        hasBleedRate = hediff.def.injuryProps.bleedRate > 0f;
                     }
                     if (hasBleedRate != filter.hasBleedRate.Value) continue;
                 }
@@ -1394,9 +1435,16 @@ namespace Autonomy
                             break;
                             
                         case "bleedrate":
+                            // Prefer the instance bleed rate for injuries, but fall back
+                            // to the HediffDef.injuryProps bleedRate for non-injury
+                            // hediffs such as MissingBodyPart.
                             if (hediff is Hediff_Injury injury)
                             {
                                 totalValue += injury.BleedRate;
+                            }
+                            else if (hediff.def?.injuryProps != null)
+                            {
+                                totalValue += hediff.def.injuryProps.bleedRate;
                             }
                             break;
                             
@@ -1499,12 +1547,17 @@ namespace Autonomy
             if (filter.hasBleedRate.HasValue)
             {
                 bool hasBleedRate = false;
-                
+                // Some hediffs (e.g. Hediff_MissingPart) aren't Hediff_Injury but
+                // can still define bleedRate in their HediffDef.injuryProps.
                 if (hediff is Hediff_Injury injury)
                 {
                     hasBleedRate = injury.BleedRate > 0f;
                 }
-                
+                else if (hediff.def?.injuryProps != null)
+                {
+                    hasBleedRate = hediff.def.injuryProps.bleedRate > 0f;
+                }
+
                 if (hasBleedRate != filter.hasBleedRate.Value)
                 {
                     return false;

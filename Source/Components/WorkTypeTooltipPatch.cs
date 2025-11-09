@@ -39,7 +39,7 @@ namespace Autonomy
                 // Priority calculation header
                 sb.AppendLine($"Priority calculated: {priorityResult.TotalPriority}");
                 
-                // WorkType-specific PriorityGivers
+                // WorkType-specific PriorityGivers (shown once at WorkType level)
                 foreach (var priorityGiverResult in priorityResult.PriorityGiverResults)
                 {
                     if (priorityGiverResult.Priority != 0)
@@ -49,30 +49,45 @@ namespace Autonomy
                     }
                 }
 
-                // Show only the FIRST WorkGiver that has priority changes to avoid clutter
-                var firstWorkGiverWithPriority = priorityResult.WorkGiverResults
-                    .FirstOrDefault(kvp => kvp.Value.PriorityGiverResults.Any(pgr => pgr.Priority != 0));
-                    
-                if (firstWorkGiverWithPriority.Key != null)
+                // Collect all unique PriorityGivers from WorkGivers (deduplicated for tooltip display)
+                var shownPriorityGivers = new System.Collections.Generic.HashSet<string>();
+                
+                foreach (var kvp in priorityResult.WorkGiverResults)
                 {
-                    var workGiver = firstWorkGiverWithPriority.Key;
-                    var workGiverResult = firstWorkGiverWithPriority.Value;
+                    var workGiver = kvp.Key;
+                    var workGiverResult = kvp.Value;
                     
-                    sb.AppendLine($"** {workGiver.label}");
+                    // Only show WorkGivers that have non-zero priority results
+                    if (!workGiverResult.PriorityGiverResults.Any(pgr => pgr.Priority != 0))
+                        continue;
+                    
+                    // Collect lines for this WorkGiver first (to see if we have anything to show after deduplication)
+                    var workGiverLines = new System.Collections.Generic.List<string>();
                     
                     foreach (var priorityGiverResult in workGiverResult.PriorityGiverResults)
                     {
                         if (priorityGiverResult.Priority != 0)
                         {
+                            // Only show each PriorityGiver once per WorkType (tooltip deduplication)
+                            string key = $"{priorityGiverResult.Description}_{priorityGiverResult.Priority}";
+                            if (shownPriorityGivers.Contains(key))
+                                continue;
+                            
+                            shownPriorityGivers.Add(key);
+                            
                             string sign = priorityGiverResult.Priority > 0 ? "+" : "";
                             string line = $"- {priorityGiverResult.Description}: {sign}{priorityGiverResult.Priority}";
                             
-                            if (priorityGiverResult.IsDeduplication)
-                            {
-                                // Grey out deduplicated entries
-                                line = $"<color=grey>{line} (applies only once)</color>";
-                            }
-                            
+                            workGiverLines.Add(line);
+                        }
+                    }
+                    
+                    // Only show the WorkGiver header if we have lines to display
+                    if (workGiverLines.Any())
+                    {
+                        sb.AppendLine($"** {workGiver.label}");
+                        foreach (var line in workGiverLines)
+                        {
                             sb.AppendLine(line);
                         }
                     }

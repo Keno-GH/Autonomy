@@ -301,6 +301,16 @@ namespace Autonomy
         public bool requestDistanceFromGlobal = false;
 
         /// <summary>
+        /// Request normalized distance from global value for individualized InfoGivers
+        /// When true, returns a normalized value in range [-1, 1] where:
+        /// - +1 = best pawn in the group
+        /// - -1 = worst pawn in the group
+        /// - 0 = at the group average
+        /// This is useful for priority ranges that expect normalized relative performance
+        /// </summary>
+        public bool requestNormalizedDistance = false;
+
+        /// <summary>
         /// Personality DefName for personalityOffset condition type
         /// Example: "Rimpsyche_Confidence"
         /// </summary>
@@ -311,6 +321,12 @@ namespace Autonomy
         /// Each range maps a personality score range to a priority multiplier
         /// </summary>
         public List<PersonalityMultiplier> personalityMultipliers = new List<PersonalityMultiplier>();
+
+        /// <summary>
+        /// Filters for filter condition type
+        /// When used, only returns priority if the pawn passes the filter, otherwise returns 0 priority
+        /// </summary>
+        public InfoFilters filters;
 
         public void ResolveReferences()
         {
@@ -342,6 +358,19 @@ namespace Autonomy
                     Log.Warning($"PriorityCondition requests distance from global but not individual data for {infoDefName}. Setting requestIndividualData to true.");
                     requestIndividualData = true;
                 }
+                
+                // Validate that normalized distance request implies individual data
+                if (requestNormalizedDistance && !requestIndividualData)
+                {
+                    Log.Warning($"PriorityCondition requests normalized distance but not individual data for {infoDefName}. Setting requestIndividualData to true.");
+                    requestIndividualData = true;
+                }
+                
+                // Warn if both distance types are requested
+                if (requestDistanceFromGlobal && requestNormalizedDistance)
+                {
+                    Log.Warning($"PriorityCondition requests both raw and normalized distance for {infoDefName}. Using normalized distance.");
+                }
             }
             
             // Validate personalityOffset condition
@@ -355,6 +384,15 @@ namespace Autonomy
                 if (personalityMultipliers.NullOrEmpty())
                 {
                     Log.Error($"PriorityCondition with personalityOffset type requires personalityMultipliers");
+                }
+            }
+            
+            // Validate filter condition
+            if (type == ConditionType.filter)
+            {
+                if (filters == null)
+                {
+                    Log.Error($"PriorityCondition with filter type requires filters");
                 }
             }
         }

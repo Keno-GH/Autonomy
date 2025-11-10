@@ -79,9 +79,26 @@
 | `flat` | Compare to fixed value | `flatValue` |
 | `stat` | Check pawn stat | `stat` |
 | `infoGiver` | Use InfoGiver result | `infoDefName` |
+| `calculation` | Perform math operations between two InfoGivers or values | `infoDefName1` OR `value1`, `infoDefName2` OR `value2`, `operation` |
 | `mapStat` | Check map statistic | `name` |
 | `personalityOffset` | Apply personality-based multipliers | `personalityDefName`, `personalityMultipliers` |
 | `filter` | Filter pawns (outer layer) - returns 0 priority if pawn doesn't pass | `filters` |
+
+#### Calculation Operations
+
+The `calculation` condition type supports the following operations:
+
+| Operation | Formula | Description | Example Use Case |
+|-----------|---------|-------------|------------------|
+| `sub` | `value1 - value2` | Subtraction | Compare immunity vs disease severity |
+| `diff` | `abs(value1 - value2)` | Absolute difference | Temperature deviation from ideal |
+| `sum` | `value1 + value2` | Addition | Combine threat levels |
+| `ratio` | `value1 / value2` | Division | Food per colonist |
+| `max` | `max(value1, value2)` | Maximum value | Enforce minimum priority |
+| `min` | `min(value1, value2)` | Minimum value | Cap maximum priority |
+| `avg` | `(value1 + value2) / 2` | Average | Composite skill level |
+
+**See `CALCULATION_CONDITION_IMPLEMENTATION.md` for detailed examples and usage.**
 
 ### Calculation Types
 

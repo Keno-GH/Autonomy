@@ -323,6 +323,36 @@ namespace Autonomy
         /// </summary>
         public InfoFilters filters;
 
+        // ========== Fields for calculation condition type ==========
+        
+        /// <summary>
+        /// First InfoGiverDef name for calculation condition type
+        /// Can be left empty if using value1 instead
+        /// </summary>
+        public string infoDefName1;
+        
+        /// <summary>
+        /// Second InfoGiverDef name for calculation condition type
+        /// Can be left empty if using value2 instead
+        /// </summary>
+        public string infoDefName2;
+        
+        /// <summary>
+        /// First value for calculation condition type (used if infoDefName1 is empty)
+        /// </summary>
+        public float value1 = 0f;
+        
+        /// <summary>
+        /// Second value for calculation condition type (used if infoDefName2 is empty)
+        /// </summary>
+        public float value2 = 0f;
+        
+        /// <summary>
+        /// Mathematical operation to perform for calculation condition type
+        /// Options: sub, diff, sum, ratio, max, min, avg
+        /// </summary>
+        public CalculationOperation operation = CalculationOperation.sum;
+
         public void ResolveReferences()
         {
             // Validate InfoGiver reference if used
@@ -388,6 +418,71 @@ namespace Autonomy
                 if (filters == null)
                 {
                     Log.Error($"PriorityCondition with filter type requires filters");
+                }
+            }
+            
+            // Validate calculation condition
+            if (type == ConditionType.calculation)
+            {
+                // At least one input must be provided for each operand
+                bool hasInput1 = !infoDefName1.NullOrEmpty() || value1 != 0f;
+                bool hasInput2 = !infoDefName2.NullOrEmpty() || value2 != 0f;
+                
+                if (!hasInput1 && !hasInput2)
+                {
+                    Log.Error($"PriorityCondition with calculation type requires at least infoDefName1/value1 or infoDefName2/value2");
+                }
+                
+                // Validate InfoGiver references
+                if (!infoDefName1.NullOrEmpty())
+                {
+                    var infoDef1 = DefDatabase<InfoGiverDef>.GetNamedSilentFail(infoDefName1);
+                    if (infoDef1 == null)
+                    {
+                        Log.Error($"PriorityCondition calculation references unknown InfoGiverDef: {infoDefName1}");
+                    }
+                    else
+                    {
+                        // Validate localized/individualized data requests for first InfoGiver
+                        if (requestLocalizedData && !infoDef1.isLocalizable)
+                        {
+                            Log.Error($"PriorityCondition calculation requests localized data from InfoGiver {infoDefName1}, but it is not localizable");
+                        }
+                        if ((requestIndividualData || requestDistanceFromGlobal || requestNormalizedDistance) && !infoDef1.isIndividualizable)
+                        {
+                            Log.Error($"PriorityCondition calculation requests individualized data from InfoGiver {infoDefName1}, but it is not individualizable");
+                        }
+                    }
+                }
+                
+                if (!infoDefName2.NullOrEmpty())
+                {
+                    var infoDef2 = DefDatabase<InfoGiverDef>.GetNamedSilentFail(infoDefName2);
+                    if (infoDef2 == null)
+                    {
+                        Log.Error($"PriorityCondition calculation references unknown InfoGiverDef: {infoDefName2}");
+                    }
+                    else
+                    {
+                        // Validate localized/individualized data requests for second InfoGiver
+                        if (requestLocalizedData && !infoDef2.isLocalizable)
+                        {
+                            Log.Error($"PriorityCondition calculation requests localized data from InfoGiver {infoDefName2}, but it is not localizable");
+                        }
+                        if ((requestIndividualData || requestDistanceFromGlobal || requestNormalizedDistance) && !infoDef2.isIndividualizable)
+                        {
+                            Log.Error($"PriorityCondition calculation requests individualized data from InfoGiver {infoDefName2}, but it is not individualizable");
+                        }
+                    }
+                }
+                
+                // Warn about division by zero potential for ratio operation
+                if (operation == CalculationOperation.ratio)
+                {
+                    if (infoDefName2.NullOrEmpty() && value2 == 0f)
+                    {
+                        Log.Error($"PriorityCondition calculation with ratio operation has value2=0, which will cause division by zero");
+                    }
                 }
             }
         }

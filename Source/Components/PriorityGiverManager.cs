@@ -198,6 +198,22 @@ namespace Autonomy
                             }
                         }
                     }
+                    else if (condition.type == ConditionType.calculation)
+                    {
+                        // Handle calculation conditions
+                        float calculationResult = EvaluateCalculationCondition(condition, pawn);
+                        
+                        // Find matching priority range
+                        foreach (var range in def.priorityRanges)
+                        {
+                            if (range.Contains(calculationResult))
+                            {
+                                basePriority = range.GetInterpolatedPriority(calculationResult);
+                                matchedDescription = range.description; // Store the description
+                                break;
+                            }
+                        }
+                    }
                     // filter type already evaluated above, skip here
                 }
                 catch (Exception e)
@@ -468,6 +484,69 @@ namespace Autonomy
 
             // Pawn passed all filters
             return true;
+        }
+
+        /// <summary>
+        /// Evaluates a calculation condition that performs mathematical operations between two values
+        /// Values can come from InfoGivers or be static floats
+        /// </summary>
+        private float EvaluateCalculationCondition(PriorityCondition condition, Pawn pawn)
+        {
+            // Get first value (from InfoGiver or static value)
+            float val1;
+            if (!condition.infoDefName1.NullOrEmpty())
+            {
+                val1 = infoGiverManager.GetLastResult(condition.infoDefName1, condition, pawn);
+            }
+            else
+            {
+                val1 = condition.value1;
+            }
+            
+            // Get second value (from InfoGiver or static value)
+            float val2;
+            if (!condition.infoDefName2.NullOrEmpty())
+            {
+                val2 = infoGiverManager.GetLastResult(condition.infoDefName2, condition, pawn);
+            }
+            else
+            {
+                val2 = condition.value2;
+            }
+            
+            // Perform the specified operation
+            switch (condition.operation)
+            {
+                case CalculationOperation.sub:
+                    return val1 - val2;
+                    
+                case CalculationOperation.diff:
+                    return Mathf.Abs(val1 - val2);
+                    
+                case CalculationOperation.sum:
+                    return val1 + val2;
+                    
+                case CalculationOperation.ratio:
+                    if (Mathf.Approximately(val2, 0f))
+                    {
+                        Log.Warning($"[Autonomy] Division by zero in calculation condition (val1={val1}, val2={val2}). Returning 0.");
+                        return 0f;
+                    }
+                    return val1 / val2;
+                    
+                case CalculationOperation.max:
+                    return Mathf.Max(val1, val2);
+                    
+                case CalculationOperation.min:
+                    return Mathf.Min(val1, val2);
+                    
+                case CalculationOperation.avg:
+                    return (val1 + val2) / 2f;
+                    
+                default:
+                    Log.Error($"[Autonomy] Unknown calculation operation: {condition.operation}");
+                    return 0f;
+            }
         }
 
         #endregion

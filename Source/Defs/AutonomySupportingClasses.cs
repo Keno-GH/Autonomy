@@ -61,7 +61,22 @@ namespace Autonomy
         flat,           // Compare against fixed values
         mapStat,        // Check map-level statistics
         personalityOffset, // Apply personality-based multipliers to priority
-        filter          // Filter pawns based on specific criteria (outer layer filter)
+        filter,         // Filter pawns based on specific criteria (outer layer filter)
+        calculation     // Perform calculations between two InfoGivers or floats
+    }
+
+    /// <summary>
+    /// Mathematical operations for calculation conditions
+    /// </summary>
+    public enum CalculationOperation
+    {
+        sub,    // value1 - value2
+        diff,   // abs(value1 - value2)
+        sum,    // value1 + value2
+        ratio,  // value1 / value2
+        max,    // max(value1, value2)
+        min,    // min(value1, value2)
+        avg     // (value1 + value2) / 2
     }
 
     // OffsetOperator enum commented out with PersonalityOffset functionality

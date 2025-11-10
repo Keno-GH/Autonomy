@@ -69,11 +69,17 @@ Map Analysis → Pawn Analysis → Priority Calculation → Work Assignment
 
 ## 📖 **Documentation for Modders**
 
+### Core Documentation
 - **[XML Reference Guide](XML_REFERENCE.md)** – Complete reference for all XML definitions
 - **[Architecture Documentation](ARCHITECTURE.md)** – System design and concepts
 - **[API Documentation](../../wiki/API)** – For advanced modders and plugin developers
 
-For development and contributions:
+### Feature-Specific Guides
+- **[Calculation Conditions](CALCULATION_CONDITION_IMPLEMENTATION.md)** – Perform math operations between InfoGivers
+- **[Filter Conditions](FILTER_CONDITION_IMPLEMENTATION.md)** – Advanced pawn filtering system
+- **[Personality System](PERSONALITY_SYSTEM.md)** – RimPsyche integration and trait-based priorities
+
+### Development Resources
 - **[Development Setup](../../wiki/Development-Setup)** – Setting up the development environment
 - **[Contributing Guidelines](CONTRIBUTING.md)** – How to contribute to the project
 - **[Code Style Guide](../../wiki/Code-Style)** – Coding standards and practices

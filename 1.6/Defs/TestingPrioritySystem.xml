@@ -37,7 +37,6 @@
             <li>
                 <type>infoGiver</type>
                 <infoDefName>CurrentRoomFilthCount</infoDefName>
-                <infoRange>0~999</infoRange>
                 <requestLocalizedData>true</requestLocalizedData>
                 <requestIndividualData>false</requestIndividualData>
                 <requestDistanceFromGlobal>false</requestDistanceFromGlobal>

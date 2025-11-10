@@ -277,11 +277,6 @@ namespace Autonomy
         public string infoDefName;
         
         /// <summary>
-        /// Range for infoGiver results
-        /// </summary>
-        public FloatRange infoRange;
-        
-        /// <summary>
         /// Request localized data from InfoGiver (if supported)
         /// When true, queries data specific to the pawn's current location/room
         /// </summary>

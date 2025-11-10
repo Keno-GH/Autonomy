@@ -126,7 +126,6 @@ Pass = (No includes OR matches any include)
         <li>
             <type>infoGiver</type>
             <infoDefName>TotalColonyNonBleedingInjuries</infoDefName>
-            <infoRange>0~999</infoRange>
             <requestIndividualData>true</requestIndividualData>
         </li>
     </conditions>

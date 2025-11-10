@@ -39,7 +39,6 @@
             <li>
                 <type>infoGiver</type>
                 <infoDefName>UntendedInfectionRiskSeverity</infoDefName>
-                <infoRange>0~999</infoRange>
                 <requestLocalizedData>false</requestLocalizedData>
                 <requestIndividualData>true</requestIndividualData>
                 <requestDistanceFromGlobal>false</requestDistanceFromGlobal>
@@ -146,7 +145,6 @@
             <li>
                 <type>infoGiver</type>
                 <infoDefName>TotalColonyBleedRate</infoDefName>
-                <infoRange>0~999</infoRange>
                 <requestLocalizedData>false</requestLocalizedData>
                 <requestIndividualData>true</requestIndividualData>
                 <requestDistanceFromGlobal>false</requestDistanceFromGlobal>
@@ -250,7 +248,6 @@
             <li>
                 <type>infoGiver</type>
                 <infoDefName>TotalColonyNonBleedingInjuries</infoDefName>
-                <infoRange>0~999</infoRange>
                 <requestLocalizedData>false</requestLocalizedData>
                 <requestIndividualData>true</requestIndividualData>
                 <requestDistanceFromGlobal>false</requestDistanceFromGlobal>

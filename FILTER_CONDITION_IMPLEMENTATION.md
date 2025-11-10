@@ -104,7 +104,6 @@ This ensures:
         <li>
             <type>infoGiver</type>
             <infoDefName>SomeInfoGiver</infoDefName>
-            <infoRange>0~100</infoRange>
             <requestIndividualData>true</requestIndividualData>
         </li>
     </conditions>

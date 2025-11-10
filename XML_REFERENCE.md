@@ -212,7 +212,6 @@ Filter conditions are a special type of condition that act as an outer layer fil
         <li>
             <type>infoGiver</type>
             <infoDefName>TotalColonyNonBleedingInjuries</infoDefName>
-            <infoRange>0~999</infoRange>
             <requestIndividualData>true</requestIndividualData>
         </li>
     </conditions>
@@ -496,7 +495,6 @@ Reduce firefighting priority for pawns with pyrophobia (FireTerror mental break)
         <li>
             <type>infoGiver</type>
             <infoDefName>PyrophobiaGeneInfoGiver</infoDefName>
-            <infoRange>0~999</infoRange>
             <requestIndividualData>true</requestIndividualData>
         </li>
         <!-- Personality: brave pawns resist fear more -->

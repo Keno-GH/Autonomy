@@ -16,7 +16,6 @@
 3. **Added proper condition structure**:
    - `type`: Set to `infoGiver` for InfoGiver-based conditions
    - `calculation`: Set to `Flat` for direct value comparison
-   - `infoRange`: Define the expected range of InfoGiver values
 4. **Changed range format**: Use `validRange` (e.g., `-50~10`) instead of separate `min`/`max` fields
 
 ### UI Filtering Issue

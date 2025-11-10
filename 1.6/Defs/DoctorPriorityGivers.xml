@@ -18,7 +18,6 @@
             <li>
                 <type>infoGiver</type>
                 <infoDefName>TotalColonyBleedRate</infoDefName>
-                <infoRange>1~999</infoRange>
                 <requestLocalizedData>false</requestLocalizedData>
                 <requestIndividualData>false</requestIndividualData>
                 <requestDistanceFromGlobal>false</requestDistanceFromGlobal>
@@ -94,7 +93,6 @@
             <li>
                 <type>infoGiver</type>
                 <infoDefName>TotalColonyNonBleedingInjuries</infoDefName>
-                <infoRange>1~999</infoRange>
                 <requestLocalizedData>false</requestLocalizedData>
                 <requestIndividualData>false</requestIndividualData>
                 <requestDistanceFromGlobal>false</requestDistanceFromGlobal>
@@ -196,7 +194,6 @@
 			<li>
 				<type>infoGiver</type>
 				<infoDefName>TendQualityAverage</infoDefName>
-				<infoRange>0~999</infoRange>
 				<requestLocalizedData>false</requestLocalizedData>
 				<requestIndividualData>true</requestIndividualData>
 				<requestDistanceFromGlobal>false</requestDistanceFromGlobal>
@@ -299,7 +296,6 @@
 			<li>
 				<type>infoGiver</type>
 				<infoDefName>TendQualityAverage</infoDefName>
-				<infoRange>0~999</infoRange>
 				<requestLocalizedData>false</requestLocalizedData>
 				<requestIndividualData>true</requestIndividualData>
 				<requestNormalizedDistance>true</requestNormalizedDistance>
@@ -461,7 +457,6 @@
 			<li>
 				<type>infoGiver</type>
 				<infoDefName>MedicalSurgerySuccessChanceAverage</infoDefName>
-				<infoRange>-999~999</infoRange>
 				<requestLocalizedData>false</requestLocalizedData>
 				<requestIndividualData>true</requestIndividualData>
 				<requestNormalizedDistance>true</requestNormalizedDistance>
@@ -599,7 +594,6 @@
 			<li>
 				<type>infoGiver</type>
 				<infoDefName>SocialImpactInfoGiver</infoDefName>
-				<infoRange>0.2~999</infoRange>
 				<requestLocalizedData>false</requestLocalizedData>
 				<requestIndividualData>true</requestIndividualData>
 				<requestDistanceFromGlobal>false</requestDistanceFromGlobal>
@@ -743,7 +737,6 @@
 			<li>
 				<type>infoGiver</type>
 				<infoDefName>MovespeedInfoGiver</infoDefName>
-				<infoRange>0~999</infoRange>
 				<requestLocalizedData>false</requestLocalizedData>
 				<requestIndividualData>true</requestIndividualData>
 				<requestDistanceFromGlobal>true</requestDistanceFromGlobal>

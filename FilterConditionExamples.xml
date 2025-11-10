@@ -21,7 +21,6 @@
             <li>
                 <type>infoGiver</type>
                 <infoDefName>TotalColonyNonBleedingInjuries</infoDefName>
-                <infoRange>0~999</infoRange>
                 <requestIndividualData>true</requestIndividualData>
             </li>
         </conditions>
@@ -134,7 +133,6 @@
             <li>
                 <type>infoGiver</type>
                 <infoDefName>TotalColonyNonBleedingInjuries</infoDefName>
-                <infoRange>0~999</infoRange>
                 <requestIndividualData>true</requestIndividualData>
             </li>
         </conditions>
@@ -178,7 +176,6 @@
             <li>
                 <type>infoGiver</type>
                 <infoDefName>TotalColonyNonBleedingInjuries</infoDefName>
-                <infoRange>0~999</infoRange>
                 <requestIndividualData>true</requestIndividualData>
             </li>
             

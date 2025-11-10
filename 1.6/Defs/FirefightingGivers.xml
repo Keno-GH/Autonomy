@@ -11,7 +11,6 @@
             <li>
                 <type>infoGiver</type>
                 <infoDefName>MovespeedInfoGiver</infoDefName>
-                <infoRange>-999~999</infoRange>
                 <requestLocalizedData>false</requestLocalizedData>
                 <requestIndividualData>true</requestIndividualData>
                 <requestDistanceFromGlobal>true</requestDistanceFromGlobal>
@@ -90,7 +89,6 @@
             <li>
                 <type>infoGiver</type>
                 <infoDefName>FiresInHomeArea</infoDefName>
-                <infoRange>1~999</infoRange>
                 <requestLocalizedData>false</requestLocalizedData>
                 <requestIndividualData>false</requestIndividualData>
                 <requestDistanceFromGlobal>false</requestDistanceFromGlobal>
@@ -287,7 +285,6 @@
             <li>
                 <type>infoGiver</type>
                 <infoDefName>PyrophobiaGeneInfoGiver</infoDefName>
-                <infoRange>0~999</infoRange>
                 <requestLocalizedData>false</requestLocalizedData>
                 <requestIndividualData>true</requestIndividualData>
                 <requestDistanceFromGlobal>false</requestDistanceFromGlobal>
@@ -413,7 +410,6 @@
             <li>
                 <type>infoGiver</type>
                 <infoDefName>FireWeaknessGeneInfoGiver</infoDefName>
-                <infoRange>0~999</infoRange>
                 <requestLocalizedData>false</requestLocalizedData>
                 <requestIndividualData>true</requestIndividualData>
                 <requestDistanceFromGlobal>false</requestDistanceFromGlobal>
@@ -590,7 +586,6 @@
             <li>
                 <type>infoGiver</type>
                 <infoDefName>PawnFlammabilityAverage</infoDefName>
-                <infoRange>0~999</infoRange>
                 <requestLocalizedData>false</requestLocalizedData>
                 <requestIndividualData>true</requestIndividualData>
                 <requestDistanceFromGlobal>false</requestDistanceFromGlobal>

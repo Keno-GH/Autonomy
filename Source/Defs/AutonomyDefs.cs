@@ -52,6 +52,12 @@ namespace Autonomy
             {
                 condition.ResolveReferences();
             }
+            
+            // Post-load priority ranges
+            foreach (var range in priorityRanges)
+            {
+                range.PostLoad();
+            }
         }
     }
 
@@ -660,7 +666,9 @@ namespace Autonomy
         /// </summary>
         public bool Contains(float value)
         {
-            return ValidRangeParsed.Includes(value);
+            // Use a small epsilon for floating point comparison tolerance
+            const float epsilon = 0.01f;
+            return value >= ValidRangeParsed.min - epsilon && value <= ValidRangeParsed.max + epsilon;
         }
 
         /// <summary>

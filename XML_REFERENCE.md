@@ -742,9 +742,13 @@ Track untended injuries with infection risk and prioritize medical work:
 - `severity` - Sum of severity values
 - `bleedRate` - Sum of bleed rates (Hediff_Injury only)
 - `infectionChance` - Sum of infection chances
-- `immunityPerDay` - Sum of immunity gain rates
-- `severityPerDay` - Sum of severity change rates
+- `immunityPerDay` - Sum of BASE immunity gain rates (not recommended - use effectiveImmunityPerDay)
+- `effectiveImmunityPerDay` - Sum of ACTUAL immunity gain rates considering pawn stats, bed quality, food, etc. (RECOMMENDED)
+- `severityPerDay` - Sum of BASE severity change rates (not recommended - use effectiveSeverityPerDay)
+- `effectiveSeverityPerDay` - Sum of ACTUAL severity change rates considering all modifiers (RECOMMENDED)
 - `painOffset` - Sum of pain caused
+
+**Important:** For disease management and bed rest priorities, always use `effectiveImmunityPerDay` and `effectiveSeverityPerDay` instead of their base counterparts. The effective versions account for bed quality, food quality, ImmunityGainSpeed stat, tending quality, and other factors that affect disease progression in the actual game.
 
 ## Tips and Best Practices
 

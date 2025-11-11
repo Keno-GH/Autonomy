@@ -1402,6 +1402,10 @@ namespace Autonomy
                             totalValue += hediff.Severity;
                             break;
                             
+                        // ===== BASE IMMUNITY RATE (Not Recommended) =====
+                        // Returns the base immunity gain from hediff definition
+                        // Does NOT consider: ImmunityGainSpeed stat, bed quality, food, needs, tending quality
+                        // Use effectiveImmunityPerDay for accurate disease management
                         case "immunityperday":
                         case "immunity":
                             if (hediff is HediffWithComps hediffWithComps)
@@ -1409,7 +1413,7 @@ namespace Autonomy
                                 var immunizableComp = hediffWithComps.TryGetComp<HediffComp_Immunizable>();
                                 if (immunizableComp != null)
                                 {
-                                    // Calculate immunity gain per day
+                                    // Calculate immunity gain per day (BASE - does not consider stats/needs)
                                     float immunityGain = immunizableComp.Props.immunityPerDaySick;
                                     if (!hediffWithComps.FullyImmune())
                                     {
@@ -1419,17 +1423,57 @@ namespace Autonomy
                             }
                             break;
                             
+                        // ===== EFFECTIVE IMMUNITY RATE (Recommended) =====
+                        // Returns the ACTUAL immunity gain per day considering all game factors
+                        // Uses ImmunityRecord.ImmunityChangePerTick() which includes:
+                        // - Base immunityPerDaySick, ImmunityGainSpeed stat (bed quality, food, tending), random factor
+                        case "effectiveimmunityperday":
+                            // Gets the ACTUAL immunity gain per day after considering pawn stats, needs, bed quality, etc.
+                            if (hediff is HediffWithComps effectiveHediffWithComps)
+                            {
+                                var immunityRecord = pawn.health.immunity.GetImmunityRecord(hediff.def);
+                                if (immunityRecord != null && !effectiveHediffWithComps.FullyImmune())
+                                {
+                                    // ImmunityChangePerTick returns per-tick, multiply by 60000 to get per day
+                                    float effectiveImmunityPerDay = immunityRecord.ImmunityChangePerTick(pawn, sick: true, hediff) * 60000f;
+                                    totalValue += effectiveImmunityPerDay;
+                                }
+                            }
+                            break;
+                            
+                        // ===== BASE SEVERITY RATE (Not Recommended) =====
+                        // Returns the base severity change from hediff definition
+                        // Does NOT consider: random factor, severity modifiers from other hediffs
+                        // Use effectiveSeverityPerDay for accurate disease management
                         case "severityperday":
                             if (hediff is HediffWithComps hediffComps)
                             {
                                 var immunizableComp = hediffComps.TryGetComp<HediffComp_Immunizable>();
                                 if (immunizableComp != null)
                                 {
-                                    // Get severity change per day
+                                    // Get severity change per day (BASE - does not consider stats/needs)
                                     float severityPerDay = hediffComps.FullyImmune() 
                                         ? immunizableComp.Props.severityPerDayImmune 
                                         : immunizableComp.Props.severityPerDayNotImmune;
                                     totalValue += severityPerDay;
+                                }
+                            }
+                            break;
+                            
+                        // ===== EFFECTIVE SEVERITY RATE (Recommended) =====
+                        // Returns the ACTUAL severity change considering all game factors
+                        // Uses HediffComp_Immunizable.SeverityChangePerDay() which includes:
+                        // - Base severity rate, random factor, severity modifiers from other hediffs
+                        case "effectiveseverityperday":
+                            // Gets the ACTUAL severity change per day after considering pawn stats, needs, bed quality, etc.
+                            if (hediff is HediffWithComps effectiveSeverityHediff)
+                            {
+                                var immunizableComp = effectiveSeverityHediff.TryGetComp<HediffComp_Immunizable>();
+                                if (immunizableComp != null)
+                                {
+                                    // SeverityChangePerDay already returns the effective value considering all factors
+                                    float effectiveSeverityPerDay = immunizableComp.SeverityChangePerDay();
+                                    totalValue += effectiveSeverityPerDay;
                                 }
                             }
                             break;

@@ -1,0 +1,365 @@
+<Defs>
+
+	<!-- Effective severity per day for immunizable diseases (considers pawn stats, bed quality, food, etc.) -->
+	<Autonomy.InfoGiverDef>
+		<defName>EffectiveSeverityPerDay</defName>
+		<label>Effective severity per day</label>
+		<description>Sums the effective severity gain per day for all immunizable diseases affecting pawns, considering all factors like bed quality, food, and pawn stats.</description>
+		<sourceType>hediffCount</sourceType>
+		<isIndividualizable>true</isIndividualizable>
+		<isUrgent>true</isUrgent>
+		
+		<hediffProperty>effectiveSeverityPerDay</hediffProperty>
+		<calculation>Sum</calculation>
+		
+		<filters>
+			<include>
+				<li>player</li>
+				<li>prisoner</li>
+				<li>animal</li>
+			</include>
+			<exclude>
+				<li>dead</li>
+			</exclude>
+			<hediffs>
+				<li>
+					<isImmunizable>true</isImmunizable>
+				</li>
+			</hediffs>
+		</filters>
+	</Autonomy.InfoGiverDef>
+
+	<!-- Effective immunization per day for immunizable diseases (considers pawn stats, bed quality, food, etc.) -->
+	<Autonomy.InfoGiverDef>
+		<defName>EffectiveImmunizationPerDay</defName>
+		<label>Effective immunization per day</label>
+		<description>Sums the effective immunization gain per day for all immunizable diseases affecting pawns, considering all factors like ImmunityGainSpeed stat influenced by bed quality, food, and tending.</description>
+		<sourceType>hediffCount</sourceType>
+		<isIndividualizable>true</isIndividualizable>
+		<isUrgent>true</isUrgent>
+		
+		<hediffProperty>effectiveImmunityPerDay</hediffProperty>
+		<calculation>Sum</calculation>
+		
+		<filters>
+			<include>
+				<li>player</li>
+				<li>prisoner</li>
+				<li>animal</li>
+			</include>
+			<exclude>
+				<li>dead</li>
+			</exclude>
+			<hediffs>
+				<li>
+					<isImmunizable>true</isImmunizable>
+				</li>
+			</hediffs>
+		</filters>
+	</Autonomy.InfoGiverDef>
+
+
+    <Autonomy.PriorityGiverDef>
+        <defName>PatientGiverImmunizationVSeverity</defName>
+        <label>Patient bed rest priority based on disease progress</label>
+        <description>Assigns priority to bed rest based on the difference between effective immunity gain and effective severity gain for diseases. Positive values mean immunity is outpacing disease. Uses actual rates considering pawn stats, needs, bed quality, food, and tending.</description>
+        <isUrgent>true</isUrgent>
+
+        <conditions>
+			<li>
+				<type>calculation</type>
+				<infoDefName1>EffectiveImmunizationPerDay</infoDefName1>
+				<infoDefName2>EffectiveSeverityPerDay</infoDefName2>
+                <operation>sub</operation>
+				<requestLocalizedData>false</requestLocalizedData>
+				<requestIndividualData>true</requestIndividualData>
+				<requestDistanceFromGlobal>false</requestDistanceFromGlobal>
+			</li>
+			<li>
+				<type>personalityOffset</type>
+				<personalityDefName>Rimpsyche_Diligence</personalityDefName>
+				<personalityMultipliers>
+					<li>
+						<personalityRange>-1.0~-0.5</personalityRange>
+						<multiplier>1</multiplier>
+					</li>
+					<li>
+						<personalityRange>-0.49~0.0</personalityRange>
+						<multiplier>1</multiplier>
+					</li>
+					<li>
+						<personalityRange>0.01~0.5</personalityRange>
+						<multiplier>0.9</multiplier>
+                        <flat>-2</flat>
+					</li>
+					<li>
+						<personalityRange>0.51~1.0</personalityRange>
+						<multiplier>0.7</multiplier>
+                        <flat>-2</flat>
+					</li>
+				</personalityMultipliers>
+			</li>
+			<li>
+				<type>personalityOffset</type>
+				<personalityDefName>Rimpsyche_Ambition</personalityDefName>
+				<personalityMultipliers>
+					<li>
+						<personalityRange>-1.0~-0.5</personalityRange>
+						<multiplier>1</multiplier>
+					</li>
+					<li>
+						<personalityRange>-0.49~0.0</personalityRange>
+						<multiplier>1</multiplier>
+					</li>
+					<li>
+						<personalityRange>0.01~0.5</personalityRange>
+						<multiplier>0.9</multiplier>
+					</li>
+					<li>
+						<personalityRange>0.51~1.0</personalityRange>
+						<multiplier>0.8</multiplier>
+                        <flat>-1</flat>
+					</li>
+				</personalityMultipliers>
+			</li>
+			<li>
+				<type>personalityOffset</type>
+				<personalityDefName>Rimpsyche_Tenacity</personalityDefName>
+				<personalityMultipliers>
+					<li>
+						<personalityRange>-1.0~-0.5</personalityRange>
+						<multiplier>1.5</multiplier>
+                        <flat>2</flat>
+					</li>
+					<li>
+						<personalityRange>-0.49~0.0</personalityRange>
+						<multiplier>1.25</multiplier>
+                        <flat>1</flat>
+					</li>
+					<li>
+						<personalityRange>0.01~0.5</personalityRange>
+						<multiplier>0.9</multiplier>
+					</li>
+					<li>
+						<personalityRange>0.51~1.0</personalityRange>
+						<multiplier>0.8</multiplier>
+                        <flat>-1</flat>
+					</li>
+				</personalityMultipliers>
+			</li>
+			<li>
+				<type>personalityOffset</type>
+				<personalityDefName>Rimpsyche_Expectation</personalityDefName>
+				<personalityMultipliers>
+					<li>
+						<personalityRange>-1.0~-0.5</personalityRange>
+						<multiplier>0.9</multiplier>
+					</li>
+					<li>
+						<personalityRange>-0.49~0.0</personalityRange>
+						<multiplier>0.95</multiplier>
+					</li>
+					<li>
+						<personalityRange>0.01~0.5</personalityRange>
+						<multiplier>1.1</multiplier>
+					</li>
+					<li>
+						<personalityRange>0.51~1.0</personalityRange>
+						<multiplier>1.2</multiplier>
+					</li>
+				</personalityMultipliers>
+			</li>
+			<li>
+				<type>personalityOffset</type>
+				<personalityDefName>Rimpsyche_SelfInterest</personalityDefName>
+				<personalityMultipliers>
+					<li>
+						<personalityRange>-1.0~-0.5</personalityRange>
+						<multiplier>1</multiplier>
+					</li>
+					<li>
+						<personalityRange>-0.49~0.0</personalityRange>
+						<multiplier>1</multiplier>
+					</li>
+					<li>
+						<personalityRange>0.01~0.5</personalityRange>
+						<multiplier>1</multiplier>
+                        <flat>-3</flat>
+					</li>
+					<li>
+						<personalityRange>0.51~1.0</personalityRange>
+						<multiplier>1</multiplier>
+                        <flat>-7</flat>
+					</li>
+				</personalityMultipliers>
+			</li>
+        </conditions>
+
+        <priorityRanges>
+            <li>
+                <validRange>-999~-0.5</validRange>
+                <priority>50</priority>
+                <description>I really need to rest this illness off</description>
+            </li>
+            <li>
+                <validRange>-0.49~-0.1</validRange>
+                <priority>25</priority>
+                <description>I feel unwell and need some rest</description>
+            </li>
+            <li>
+                <validRange>-0.09~-0.01</validRange>
+                <priority>10</priority>
+                <description>I am not feeling well with this disease</description>
+            </li>
+            <li> 
+                <validRange>0~0</validRange>
+                <priority>-5</priority>
+                <description>I am not sick</description>
+            </li>
+            <li>
+                <validRange>0.01~0.5</validRange>
+                <priority>5</priority>
+                <description>I am recovering from an illness</description>
+            </li>
+            <li>
+                <validRange>0.51~999</validRange>
+                <priority>-5</priority>
+                <description>I can keep working even with this illness</description>
+            </li>
+        </priorityRanges>
+
+        <targetWorkGivers>
+            <li>PatientGoToBedRecuperate</li>
+        </targetWorkGivers>
+
+    </Autonomy.PriorityGiverDef>
+
+    <!-- Sum of severity of illnesses -->
+    <Autonomy.InfoGiverDef>
+        <defName>TotalColonyIllnessSeverity</defName>
+        <label>Total colony illness severity</label>
+        <description>Sums the severity of all immunizable diseases affecting pawns in the colony.</description>
+        <sourceType>hediffCount</sourceType>
+        <isIndividualizable>true</isIndividualizable>
+        <isUrgent>true</isUrgent>
+        
+        <hediffProperty>severity</hediffProperty>
+        <calculation>Sum</calculation>
+        
+        <filters>
+            <include>
+                <li>player</li>
+                <li>prisoner</li>
+                <li>animal</li>
+            </include>
+            <exclude>
+                <li>dead</li>
+            </exclude>
+            <hediffs>
+                <li>
+                    <isImmunizable>true</isImmunizable>
+                </li>
+            </hediffs>
+        </filters>
+    </Autonomy.InfoGiverDef>
+
+	<!-- PriorityGiver for bed recuperate depending on severity of illness -->
+	<Autonomy.PriorityGiverDef>
+		<defName>BedRestIllnessSeverityPriority</defName>
+		<label>Bed rest priority by total illness severity</label>
+		<description>Assigns priority to bed recuperation depending on the total severity of immunizable diseases affecting this pawn (uses individualized TotalColonyIllnessSeverity).</description>
+		<isUrgent>true</isUrgent>
+
+		<conditions>
+			<li>
+				<type>infoGiver</type>
+				<infoDefName>TotalColonyIllnessSeverity</infoDefName>
+				<requestLocalizedData>false</requestLocalizedData>
+				<requestIndividualData>true</requestIndividualData>
+				<requestDistanceFromGlobal>false</requestDistanceFromGlobal>
+			</li>
+			<li>
+				<type>personalityOffset</type>
+				<personalityDefName>Rimpsyche_Tenacity</personalityDefName>
+				<personalityMultipliers>
+					<li>
+						<personalityRange>-1.0~-0.5</personalityRange>
+						<multiplier>0.5</multiplier>
+					</li>
+                    <li>
+                        <personalityRange>-0.49~-0.16</personalityRange>
+                        <multiplier>0.75</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>-0.15~0.15</personalityRange>
+                        <multiplier>1.0</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.16~0.5</personalityRange>
+                        <multiplier>1.25</multiplier>
+                    </li>
+					<li>
+						<personalityRange>0.51~1.0</personalityRange>
+						<multiplier>1.5</multiplier>
+					</li>
+				</personalityMultipliers>
+			</li>
+			<li>
+				<type>personalityOffset</type>
+				<personalityDefName>Rimpsyche_SelfInterest</personalityDefName>
+				<personalityMultipliers>
+					<li>
+						<personalityRange>-1.0~-0.5</personalityRange>
+						<multiplier>0.8</multiplier>
+					</li>
+					<li>
+						<personalityRange>-0.49~0.0</personalityRange>
+						<multiplier>0.9</multiplier>
+					</li>
+					<li>
+						<personalityRange>0.01~0.5</personalityRange>
+						<multiplier>1.1</multiplier>
+					</li>
+					<li>
+						<personalityRange>0.51~1.0</personalityRange>
+						<multiplier>1.2</multiplier>
+					</li>
+				</personalityMultipliers>
+			</li>
+		</conditions>
+
+		<priorityRanges>
+			<li>
+				<validRange>0</validRange>
+				<priority>0</priority>
+				<description>None</description>
+			</li>
+			<li>
+				<validRange>0.01~0.6</validRange>
+				<priority>1~10</priority>
+				<description>I feel a bit ill</description>
+			</li>
+			<li>
+				<validRange>0.61~1</validRange>
+				<priority>11~25</priority>
+				<description>I'm sick and should rest</description>
+			</li>
+			<li>
+				<validRange>1.01~2</validRange>
+				<priority>30~60</priority>
+				<description>I am feeling terrible, I just want to lay down</description>
+			</li>
+			<li>
+				<validRange>2.01~999</validRange>
+				<priority>60~60</priority>
+				<description>I am feeling terrible, I just want to lay down</description>
+			</li>
+		</priorityRanges>
+
+		<targetWorkGivers>
+			<li>PatientGoToBedRecuperate</li>
+		</targetWorkGivers>
+
+	</Autonomy.PriorityGiverDef>
+
+</Defs>

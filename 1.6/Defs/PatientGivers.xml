@@ -1,32 +1,4 @@
 <Defs>
-    <!-- Pawns needing tending for injuries -->
-	<!-- <Autonomy.InfoGiverDef>
-		<defName>InjuredPawnNeedsTending</defName>
-		<label>Injured pawns needing tending</label>
-		<description>Counts all pawns (colonists, prisoners, animals, etc.) with untended injuries that require medical attention.</description>
-		<sourceType>pawnCount</sourceType>
-		<calculation>Count</calculation>
-        <isIndividualizable>true</isIndividualizable>
-        <isUrgent>true</isUrgent>
-		<filters>
-			<include>
-				<li>player</li>
-				<li>prisoner</li>
-				<li>animal</li>
-				<li>guest</li>
-			</include>
-			<exclude>
-				<li>dead</li>
-			</exclude>
-			<hediffs>
-				<li>
-					<hediffClass>Hediff_Injury</hediffClass>
-					<tendable>true</tendable>
-					<tended>false</tended>
-				</li>
-			</hediffs>
-		</filters>
-	</Autonomy.InfoGiverDef> -->
 
     <!-- Severity infection priority giver -->
     <Autonomy.PriorityGiverDef Name="SeverityInfectionChancePriority">
@@ -104,36 +76,6 @@
         </targetWorkGivers>
     </Autonomy.PriorityGiverDef>
 
-	<!-- Count of bleeding injuries -->
-	<!-- <Autonomy.InfoGiverDef>
-		<defName>BleedingInjuryCount</defName>
-		<label>Bleeding injuries</label>
-		<description>Counts all bleeding injuries across all pawns. Critical for emergency medical response.</description>
-		<sourceType>hediffCount</sourceType>
-		<isIndividualizable>true</isIndividualizable>
-		<isUrgent>true</isUrgent>
-
-        <calculation>Count</calculation>
-		
-		<filters>
-			<include>
-				<li>player</li>
-				<li>prisoner</li>
-				<li>animal</li>
-				<li>guest</li>
-			</include>
-			<exclude>
-				<li>dead</li>
-			</exclude>
-			<hediffs>
-				<li>
-					<hediffClass>Hediff_Injury</hediffClass>
-					<hasBleedRate>true</hasBleedRate>
-				</li>
-			</hediffs>
-		</filters>
-	</Autonomy.InfoGiverDef> -->
-
     <!-- Bleed rate priority giver -->
     <Autonomy.PriorityGiverDef Name="BleedRatePriorityGiver">
         <defName>BleedRatePriorityGiver</defName>
@@ -209,8 +151,8 @@
 
     </Autonomy.PriorityGiverDef>
 
-	<!-- Count of immunizable diseases -->
-	<!-- <Autonomy.InfoGiverDef>
+	<!-- Count of immunizable diseases without tending -->
+	<Autonomy.InfoGiverDef>
 		<defName>ImmunizableDiseaseCount</defName>
 		<label>Immunizable diseases</label>
 		<description>Counts all immunizable diseases (plague, flu, etc.) affecting the colony.</description>
@@ -233,10 +175,59 @@
 				<li>
 					<isImmunizable>true</isImmunizable>
 					<tendable>true</tendable>
+					<tended>false</tended>
 				</li>
 			</hediffs>
 		</filters>
-	</Autonomy.InfoGiverDef> -->
+	</Autonomy.InfoGiverDef>
+
+    <!-- Get in bed if you need tending -->
+
+    <Autonomy.PriorityGiverDef Name="ImmunizableDiseasePriority">
+        <defName>ImmunizableDiseasePriority</defName>
+        <label>Immunizable disease priority</label>
+        <description>Increases priority for bed resting depending on the count of immunizable untended diseases (individualized)</description>
+        <isUrgent>true</isUrgent>
+
+        <conditions>
+            <li>
+                <type>infoGiver</type>
+                <infoDefName>ImmunizableDiseaseCount</infoDefName>
+                <requestLocalizedData>false</requestLocalizedData>
+                <requestIndividualData>true</requestIndividualData>
+                <requestDistanceFromGlobal>false</requestDistanceFromGlobal>
+            </li>
+        </conditions>
+
+        <priorityRanges>
+            <li>
+                <validRange>0</validRange>
+                <priority>0</priority>
+                <description>None</description>
+            </li>
+            <li>
+                <validRange>1</validRange>
+                <priority>20</priority>
+                <description>I'm ill, should go to the doctor</description>
+            </li>
+            <li>
+                <validRange>2</validRange>
+                <priority>50</priority>
+                <description>I'm ill, need to go to the doctor</description>
+            </li>
+            <li>
+                <validRange>2~999</validRange>
+                <priority>100</priority>
+                <description>I'm ill, need to go to the doctor</description>
+            </li>
+        </priorityRanges>
+
+        <targetWorkGivers>
+            <li>PatientGoToBedEmergencyTreatment</li>
+            <li>PatientGoToBedTreatment</li>
+        </targetWorkGivers>
+
+    </Autonomy.PriorityGiverDef>
 
     <Autonomy.PriorityGiverDef Name="NonBleedingInjuryPriorityGiver">
         <defName>NonBleedingInjuryPriorityGiver</defName>

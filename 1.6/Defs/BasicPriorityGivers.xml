@@ -1,0 +1,52 @@
+<Defs>
+	<!-- Basic priority giver using movespeed. Uses distance-from-global to prefer nearby fast pawns.
+		 Keeps priorities low and generally positive for both slower and faster pawns. -->
+	<Autonomy.PriorityGiverDef>
+		<defName>MovespeedBasicPriorityGiver</defName>
+		<label>Basic movespeed priority</label>
+		<description>Simple priority based on movespeed; individualized with distance-from-global. Faster pawns get higher priority; slower pawns get slightly less, but values stay low and positive.</description>
+		<isUrgent>false</isUrgent>
+
+		<conditions>
+			<li>
+				<type>infoGiver</type>
+				<infoDefName>MovespeedInfoGiver</infoDefName>
+				<requestLocalizedData>false</requestLocalizedData>
+				<requestIndividualData>true</requestIndividualData>
+				<requestDistanceFromGlobal>true</requestDistanceFromGlobal>
+			</li>
+		</conditions>
+
+		<priorityRanges>
+			<li>
+				<validRange>-999~-0.01</validRange>
+				<priority>1~2</priority>
+				<description>Someone has to do basic tasks</description>
+			</li>
+			<li>
+				<validRange>0</validRange>
+				<priority>2</priority>
+				<description>Someone has to do basic tasks</description>
+			</li>
+			<li>
+				<validRange>0.01~1</validRange>
+				<priority>3~5</priority>
+				<description>Someone has to do basic tasks</description>
+			</li>
+			<li>
+				<validRange>1.01~999</validRange>
+				<priority>6~10</priority>
+				<description>Someone has to do basic tasks</description>
+			</li>
+		</priorityRanges>
+
+		<targetWorkGivers>
+			<li>Flick</li>
+			<li>BasicReleasePrisoner</li>
+			<li>Open</li>
+			<li>EjectFuel</li>
+			<li>ExtractSkull</li>
+		</targetWorkGivers>
+	</Autonomy.PriorityGiverDef>
+    
+</Defs>

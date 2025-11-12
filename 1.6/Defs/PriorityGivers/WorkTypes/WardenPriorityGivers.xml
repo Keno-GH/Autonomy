@@ -1,0 +1,524 @@
+<Defs>
+
+    <!-- Warden Priority Giver based on Negotiation Ability -->
+    <Autonomy.PriorityGiverDef Name="NegotiationAbilityPriorityGiver">
+        <defName>NegotiationAbilityPriorityGiver</defName>
+        <label>Negotiation ability priority</label>
+        <description>Adjusts warden/social priorities based on each pawn's negotiation ability compared to colony average.</description>
+        <isUrgent>false</isUrgent>
+
+        <conditions>
+            <li>
+                <type>infoGiver</type>
+                <infoDefName>NegotiationAbilityInfoGiver</infoDefName>
+                <requestLocalizedData>false</requestLocalizedData>
+                <requestIndividualData>true</requestIndividualData>
+                <requestNormalizedDistance>true</requestNormalizedDistance>
+            </li>
+            <li>
+                <type>personalityOffset</type>
+                <personalityDefName>Rimpsyche_Compassion</personalityDefName>
+                <personalityMultipliers>
+                    <li>
+                        <personalityRange>-1.0~-0.5</personalityRange>
+                        <multiplier>0.5</multiplier>
+                        <flat>-5</flat>
+                    </li>
+                    <li>
+                        <personalityRange>-0.49~0.0</personalityRange>
+                        <multiplier>0.8</multiplier>
+                        <flat>-2</flat>
+                    </li>
+                    <li>
+                        <personalityRange>0.01~0.5</personalityRange>
+                        <multiplier>1.1</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.51~1.0</personalityRange>
+                        <multiplier>1.2</multiplier>
+                    </li>
+                </personalityMultipliers>
+            </li>
+            <li>
+                <type>personalityOffset</type>
+                <personalityDefName>Rimpsyche_Passion</personalityDefName>
+                <personalityMultipliers>
+                    <li>
+                        <personalityRange>-1.0~-0.5</personalityRange>
+                        <multiplier>0.8</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>-0.49~0.0</personalityRange>
+                        <multiplier>0.9</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.01~0.5</personalityRange>
+                        <multiplier>1.1</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.51~1.0</personalityRange>
+                        <multiplier>1.2</multiplier>
+                    </li>
+                </personalityMultipliers>
+            </li>
+            <li>
+                <type>personalityOffset</type>
+                <personalityDefName>Rimpsyche_Talkativeness</personalityDefName>
+                <personalityMultipliers>
+                    <li>
+                        <personalityRange>-1.0~-0.5</personalityRange>
+                        <multiplier>0.8</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>-0.49~0.0</personalityRange>
+                        <multiplier>0.9</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.01~0.5</personalityRange>
+                        <multiplier>1.1</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.51~1.0</personalityRange>
+                        <multiplier>1.2</multiplier>
+                    </li>
+                </personalityMultipliers>
+            </li>
+            <li>
+                <type>personalityOffset</type>
+                <personalityDefName>Rimpsyche_Confidence</personalityDefName>
+                <personalityMultipliers>
+                    <li>
+                        <personalityRange>-1.0~-0.5</personalityRange>
+                        <multiplier>0.8</multiplier>
+                        <flat>-2</flat>
+                    </li>
+                    <li>
+                        <personalityRange>-0.49~0.0</personalityRange>
+                        <multiplier>0.9</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.01~0.5</personalityRange>
+                        <multiplier>1.1</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.51~1.0</personalityRange>
+                        <multiplier>1.2</multiplier>
+                    </li>
+                </personalityMultipliers>
+            </li>
+            <li>
+                <type>personalityOffset</type>
+                <personalityDefName>Rimpsyche_Aggressiveness</personalityDefName>
+                <personalityMultipliers>
+                    <li>
+                        <personalityRange>-1.0~-0.5</personalityRange>
+                        <multiplier>0.8</multiplier>
+                        <flat>-5</flat>
+                    </li>
+                    <li>
+                        <personalityRange>-0.49~0.0</personalityRange>
+                        <multiplier>0.9</multiplier>
+                        <flat>-2</flat>
+                    </li>
+                    <li>
+                        <personalityRange>0.01~0.5</personalityRange>
+                        <multiplier>1.1</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.51~1.0</personalityRange>
+                        <multiplier>1.3</multiplier>
+                    </li>
+                </personalityMultipliers>
+            </li>
+        </conditions>
+
+        <priorityRanges>
+            <li>
+                <validRange>-1~-0.6</validRange>
+                <priority>-10~-7</priority>
+                <description>I'm not suited for handling prisoners</description>
+            </li>
+            <li>
+                <validRange>-0.6~-0.3</validRange>
+                <priority>-7~-3</priority>
+                <description>Prisoners don't listen to me</description>
+            </li>
+            <li>
+                <validRange>-0.3~0.0</validRange>
+                <priority>-3~0</priority>
+                <description>I'm not good at dealing with prisoners</description>
+            </li>
+            <li>
+                <validRange>0.0~0.3</validRange>
+                <priority>0~3</priority>
+                <description>I can manage prisoners effectively</description>
+            </li>
+            <li> 
+                <validRange>0.3~0.6</validRange>
+                <priority>3~5</priority>
+                <description>I'm skilled at prisoner management</description>
+            </li>
+            <li>
+                <validRange>0.6~1.0</validRange>
+                <priority>5~10</priority>
+                <description>I excel at recruiting and suppressing prisoners</description>
+            </li>
+        </priorityRanges>
+
+        <targetWorkGivers>
+            <li>ChatWithPrisoner</li>
+            <li>SuppressSlave</li>
+        </targetWorkGivers>
+
+    </Autonomy.PriorityGiverDef>
+
+    <!-- Warden Priority Giver for Conversion based on Conversion Power -->
+    <Autonomy.PriorityGiverDef Name="ConversionPowerPriorityGiver">
+        <defName>ConversionPowerPriorityGiver</defName>
+        <label>Conversion power priority</label>
+        <description>Adjusts prisoner conversion priorities based on each pawn's conversion power and personality traits suited for ideological conversion.</description>
+        <isUrgent>false</isUrgent>
+
+        <conditions>
+            <li>
+                <type>infoGiver</type>
+                <infoDefName>ConversionPowerInfoGiver</infoDefName>
+                <requestLocalizedData>false</requestLocalizedData>
+                <requestIndividualData>true</requestIndividualData>
+                <requestNormalizedDistance>true</requestNormalizedDistance>
+            </li>
+            <!-- Passionate people are more compelling when converting others to their beliefs -->
+            <li>
+                <type>personalityOffset</type>
+                <personalityDefName>Rimpsyche_Passion</personalityDefName>
+                <personalityMultipliers>
+                    <li>
+                        <personalityRange>-1.0~-0.5</personalityRange>
+                        <multiplier>0.6</multiplier>
+                        <flat>-3</flat>
+                    </li>
+                    <li>
+                        <personalityRange>-0.49~0.0</personalityRange>
+                        <multiplier>0.8</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.01~0.5</personalityRange>
+                        <multiplier>1.2</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.51~1.0</personalityRange>
+                        <multiplier>1.4</multiplier>
+                        <flat>3</flat>
+                    </li>
+                </personalityMultipliers>
+            </li>
+            <!-- Confident people are more effective at imposing their beliefs -->
+            <li>
+                <type>personalityOffset</type>
+                <personalityDefName>Rimpsyche_Confidence</personalityDefName>
+                <personalityMultipliers>
+                    <li>
+                        <personalityRange>-1.0~-0.5</personalityRange>
+                        <multiplier>0.7</multiplier>
+                        <flat>-3</flat>
+                    </li>
+                    <li>
+                        <personalityRange>-0.49~0.0</personalityRange>
+                        <multiplier>0.85</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.01~0.5</personalityRange>
+                        <multiplier>1.15</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.51~1.0</personalityRange>
+                        <multiplier>1.3</multiplier>
+                        <flat>2</flat>
+                    </li>
+                </personalityMultipliers>
+            </li>
+            <!-- Talkative people excel at prolonged ideological discussions -->
+            <li>
+                <type>personalityOffset</type>
+                <personalityDefName>Rimpsyche_Talkativeness</personalityDefName>
+                <personalityMultipliers>
+                    <li>
+                        <personalityRange>-1.0~-0.5</personalityRange>
+                        <multiplier>0.75</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>-0.49~0.0</personalityRange>
+                        <multiplier>0.9</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.01~0.5</personalityRange>
+                        <multiplier>1.15</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.51~1.0</personalityRange>
+                        <multiplier>1.25</multiplier>
+                    </li>
+                </personalityMultipliers>
+            </li>
+            <!-- Principled people care deeply about spreading their moral beliefs -->
+            <li>
+                <type>personalityOffset</type>
+                <personalityDefName>Rimpsyche_Morality</personalityDefName>
+                <personalityMultipliers>
+                    <li>
+                        <personalityRange>-1.0~-0.5</personalityRange>
+                        <multiplier>0.6</multiplier>
+                        <flat>-4</flat>
+                    </li>
+                    <li>
+                        <personalityRange>-0.49~0.0</personalityRange>
+                        <multiplier>0.8</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.01~0.5</personalityRange>
+                        <multiplier>1.2</multiplier>
+                        <flat>2</flat>
+                    </li>
+                    <li>
+                        <personalityRange>0.51~1.0</personalityRange>
+                        <multiplier>1.35</multiplier>
+                        <flat>4</flat>
+                    </li>
+                </personalityMultipliers>
+            </li>
+            <!-- Tenacious people don't give up on converting difficult prisoners -->
+            <li>
+                <type>personalityOffset</type>
+                <personalityDefName>Rimpsyche_Tenacity</personalityDefName>
+                <personalityMultipliers>
+                    <li>
+                        <personalityRange>-1.0~-0.5</personalityRange>
+                        <multiplier>0.75</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>-0.49~0.0</personalityRange>
+                        <multiplier>0.9</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.01~0.5</personalityRange>
+                        <multiplier>1.1</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.51~1.0</personalityRange>
+                        <multiplier>1.25</multiplier>
+                    </li>
+                </personalityMultipliers>
+            </li>
+            <!-- Compassionate people connect better with prisoners emotionally during conversion -->
+            <li>
+                <type>personalityOffset</type>
+                <personalityDefName>Rimpsyche_Compassion</personalityDefName>
+                <personalityMultipliers>
+                    <li>
+                        <personalityRange>-1.0~-0.5</personalityRange>
+                        <multiplier>0.7</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>-0.49~0.0</personalityRange>
+                        <multiplier>0.85</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.01~0.5</personalityRange>
+                        <multiplier>1.15</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.51~1.0</personalityRange>
+                        <multiplier>1.25</multiplier>
+                    </li>
+                </personalityMultipliers>
+            </li>
+            <!-- Optimistic people present their ideology in a more appealing light -->
+            <li>
+                <type>personalityOffset</type>
+                <personalityDefName>Rimpsyche_Optimism</personalityDefName>
+                <personalityMultipliers>
+                    <li>
+                        <personalityRange>-1.0~-0.5</personalityRange>
+                        <multiplier>0.8</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>-0.49~0.0</personalityRange>
+                        <multiplier>0.9</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.01~0.5</personalityRange>
+                        <multiplier>1.1</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.51~1.0</personalityRange>
+                        <multiplier>1.2</multiplier>
+                    </li>
+                </personalityMultipliers>
+            </li>
+        </conditions>
+
+        <priorityRanges>
+            <li>
+                <validRange>-1~-0.6</validRange>
+                <priority>-10~-7</priority>
+                <description>I can't convince others of our beliefs</description>
+            </li>
+            <li>
+                <validRange>-0.6~-0.3</validRange>
+                <priority>-7~-3</priority>
+                <description>Prisoners don't accept my arguments</description>
+            </li>
+            <li>
+                <validRange>-0.3~0.0</validRange>
+                <priority>-3~0</priority>
+                <description>I struggle to sway prisoner beliefs</description>
+            </li>
+            <li>
+                <validRange>0.0~0.3</validRange>
+                <priority>0~3</priority>
+                <description>I can guide prisoners toward our ideology</description>
+            </li>
+            <li> 
+                <validRange>0.3~0.6</validRange>
+                <priority>3~5</priority>
+                <description>I'm effective at converting prisoners</description>
+            </li>
+            <li>
+                <validRange>0.6~1.0</validRange>
+                <priority>5~10</priority>
+                <description>I excel at bringing prisoners to our cause</description>
+            </li>
+        </priorityRanges>
+
+        <targetWorkGivers>
+            <li>ConvertPrisoner</li>
+        </targetWorkGivers>
+
+    </Autonomy.PriorityGiverDef>
+
+    <!-- Infogiver for Prisoner Hunger -->
+    <Autonomy.InfoGiverDef>
+        <defName>PrisonerHungerInfoGiver</defName>
+        <label>Prisoner hunger</label>
+        <description>Tracks the average food need level of all prisoners. Lower values indicate hungrier prisoners (0.0 = starving, 1.0 = full).</description>
+        <isLocalizable>false</isLocalizable>
+        <isIndividualizable>false</isIndividualizable>
+        <calculation>Avg</calculation>
+        <isUrgent>true</isUrgent>
+        <sourceType>pawnNeed</sourceType>
+        <targetNeed>Food</targetNeed>
+
+        <filters>
+            <include>
+                <li>prisoner</li>
+            </include>
+            <exclude>
+                <li>dead</li>
+                <li>downed</li>
+            </exclude>
+        </filters>
+    </Autonomy.InfoGiverDef>
+
+    <!-- Hungry Prisoners Priority Giver -->
+    <Autonomy.PriorityGiverDef Name="HungryPrisonersPriorityGiver">
+        <defName>HungryPrisonersPriorityGiver</defName>
+        <label>Hungry prisoners priority</label>
+        <description>Adjusts feeding priorities based on how hungry prisoners are (lower food need = higher priority).</description>
+        <isUrgent>true</isUrgent>
+
+        <conditions>
+            <li>
+                <type>infoGiver</type>
+                <infoDefName>PrisonerHungerInfoGiver</infoDefName>
+                <requestLocalizedData>false</requestLocalizedData>
+                <requestIndividualData>false</requestIndividualData>
+                <requestNormalizedDistance>false</requestNormalizedDistance>
+            </li>
+            <!-- Compassionate colonists care more about feeding prisoners -->
+            <li>
+                <type>personalityOffset</type>
+                <personalityDefName>Rimpsyche_Compassion</personalityDefName>
+                <personalityMultipliers>
+                    <li>
+                        <personalityRange>-1.0~-0.5</personalityRange>
+                        <multiplier>0.7</multiplier>
+                        <flat>-3</flat>
+                    </li>
+                    <li>
+                        <personalityRange>-0.49~0.0</personalityRange>
+                        <multiplier>0.85</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.01~0.5</personalityRange>
+                        <multiplier>1.15</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.51~1.0</personalityRange>
+                        <multiplier>1.3</multiplier>
+                        <flat>3</flat>
+                    </li>
+                </personalityMultipliers>
+            </li>
+            <!-- More moral colonists prioritize prisoner welfare -->
+            <li>
+                <type>personalityOffset</type>
+                <personalityDefName>Rimpsyche_Morality</personalityDefName>
+                <personalityMultipliers>
+                    <li>
+                        <personalityRange>-1.0~-0.5</personalityRange>
+                        <multiplier>0.8</multiplier>
+                        <flat>-2</flat>
+                    </li>
+                    <li>
+                        <personalityRange>-0.49~0.0</personalityRange>
+                        <multiplier>0.9</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.01~0.5</personalityRange>
+                        <multiplier>1.1</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.51~1.0</personalityRange>
+                        <multiplier>1.2</multiplier>
+                        <flat>2</flat>
+                    </li>
+                </personalityMultipliers>
+            </li>
+        </conditions>
+
+        <priorityRanges>
+            <li>
+                <validRange>0.8~1.0</validRange>
+                <priority>-5~0</priority>
+                <description>Prisoners are well-fed</description>
+            </li>
+            <li>
+                <validRange>0.5~0.79</validRange>
+                <priority>0~3</priority>
+                <description>Prisoners need food soon</description>
+            </li>
+            <li>
+                <validRange>0.3~0.49</validRange>
+                <priority>3~7</priority>
+                <description>Prisoners are getting hungry</description>
+            </li>
+            <li> 
+                <validRange>0.15~0.29</validRange>
+                <priority>7~10</priority>
+                <description>Prisoners are very hungry!</description>
+            </li>
+            <li>
+                <validRange>0~0.14</validRange>
+                <priority>10~15</priority>
+                <description>Our prisoners are starving!</description>
+            </li>
+        </priorityRanges>
+
+        <targetWorkGivers>
+            <li>DeliverFoodToPrisoner</li>
+            <li>FeedPrisoner</li>
+        </targetWorkGivers>
+
+    </Autonomy.PriorityGiverDef>
+
+</Defs>

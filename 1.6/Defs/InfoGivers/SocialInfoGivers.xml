@@ -1,0 +1,72 @@
+<Defs>	
+
+    <!-- SocialImpact Stat -->
+	<Autonomy.InfoGiverDef>
+		<defName>SocialImpactInfoGiver</defName>
+		<label>Social Impact</label>
+		<description>Tracks each pawn's Social Impact stat for personalized social priority</description>
+		<isLocalizable>false</isLocalizable>
+		<isIndividualizable>true</isIndividualizable>
+		<calculation>Avg</calculation>
+		<isUrgent>false</isUrgent>
+		<sourceType>pawnStat</sourceType>
+		<targetStat>SocialImpact</targetStat>
+		
+		<filters>
+			<include>
+				<li>player</li>
+			</include>
+			<exclude>
+				<li>dead</li>
+				<li>downed</li>
+			</exclude>
+		</filters>
+	</Autonomy.InfoGiverDef>
+
+    <!-- Infogiver for Negotiation Ability -->
+    <Autonomy.InfoGiverDef>
+        <defName>NegotiationAbilityInfoGiver</defName>
+        <label>Negotiation ability</label>
+        <description>Tracks each pawn's negotiation ability individually for personalized negotiation and warden priority</description>
+        <isLocalizable>false</isLocalizable>
+        <isIndividualizable>true</isIndividualizable>
+        <calculation>Avg</calculation>
+        <isUrgent>false</isUrgent>
+        <sourceType>pawnStat</sourceType>
+        <targetStat>NegotiationAbility</targetStat>
+
+        <filters>
+            <include>
+                <li>player</li>
+            </include>
+            <exclude>
+                <li>dead</li>
+                <li>downed</li>
+            </exclude>
+        </filters>
+    </Autonomy.InfoGiverDef>
+
+    <!-- Infogiver for Conversion Power -->
+    <Autonomy.InfoGiverDef>
+        <defName>ConversionPowerInfoGiver</defName>
+        <label>Conversion power</label>
+        <description>Tracks each pawn's conversion power individually for personalized prisoner conversion priority</description>
+        <isLocalizable>false</isLocalizable>
+        <isIndividualizable>true</isIndividualizable>
+        <calculation>Avg</calculation>
+        <isUrgent>false</isUrgent>
+        <sourceType>pawnStat</sourceType>
+        <targetStat>ConversionPower</targetStat>
+
+        <filters>
+            <include>
+                <li>player</li>
+            </include>
+            <exclude>
+                <li>dead</li>
+                <li>downed</li>
+            </exclude>
+        </filters>
+    </Autonomy.InfoGiverDef>
+
+</Defs>

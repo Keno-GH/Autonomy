@@ -71,6 +71,7 @@ test_scenarios/
 debug_saves/
 logoutput.md
 wiki.diff
+Temp
 
 # Ignore decompiled files and GitHub folder
 Decompiled/

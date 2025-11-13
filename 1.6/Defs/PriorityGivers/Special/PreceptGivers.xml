@@ -3,7 +3,7 @@
     <Autonomy.PreceptGiverDef>
         <defName>AnimalSlaughterPreceptGiver</defName>
         <label>Animal Slaughter PreceptGiver</label>
-        <description>TODO</description>
+        <description>PreceptGiver for Animal Slaughtering</description>
 
         <priorityResults>
             <li>
@@ -25,9 +25,318 @@
 
         <targetWorkGivers>
 			<li>Slaughter</li>
+        </targetWorkGivers>
+    </Autonomy.PreceptGiverDef>
+
+    <Autonomy.PreceptGiverDef>
+
+        <defName>KillingInnocentAnimalsPreceptGiver</defName>
+        <label>Killing Innocent Animals PreceptGiver</label>
+        <description>PreceptGiver for Killing Innocent Animals</description>
+
+        <priorityResults>
+            <li>
+                <preceptDef>KillingInnocentAnimals_Abhorrent</preceptDef>
+                <priority>-20</priority>
+                <description>To kill an innocent animal is a horrifically inhuman act</description>
+            </li>
+            <li>
+                <preceptDef>KillingInnocentAnimals_Horrible</preceptDef>
+                <priority>-15</priority>
+                <description>To kill an innocent animal is a horrible act</description>
+            </li>
+            <li>
+                <preceptDef>KillingInnocentAnimals_Disapproved</preceptDef>
+                <priority>-10</priority>
+                <description>To kill an innocent animal is an ugly act</description>
+            </li>
+        </priorityResults>
+
+        <targetWorkGivers>
 			<li>HunterHunt</li>
         </targetWorkGivers>
 
     </Autonomy.PreceptGiverDef>
+
+    <Autonomy.PreceptGiverDef>
+
+        <defName>AnimalPersonhoodPreceptGiver</defName>
+        <label>Animal Personhood PreceptGiver</label>
+        <description>PreceptGiver for Animal Personhood</description>
+
+        <priorityResults>
+            <li>
+                <preceptDef>AnimalConnection_Strong</preceptDef>
+                <priority>10</priority>
+                <description>I have a strong connection to our animal friends</description>
+            </li>
+        </priorityResults>
+
+        <targetWorkGivers>
+			<li>Tame</li>
+            <li>Train</li>
+        </targetWorkGivers>
+
+    </Autonomy.PreceptGiverDef>
+
+    <Autonomy.PreceptGiverDef>
+    
+        <defName>MiningPreceptGiver</defName>
+        <label>Mining PreceptGiver</label>
+        <description>PreceptGiver for Mining</description>
+
+        <priorityResults>
+            <li>
+                <preceptDef>Mining_Prohibited</preceptDef>
+                <priority>-20</priority>
+                <description>Mining is absolutely prohibited</description>
+            </li>
+            <li>
+                <preceptDef>Mining_Horrible</preceptDef>
+                <priority>-15</priority>
+                <description>Mining is a horrible act</description>
+            </li>
+            <li>
+                <preceptDef>Mining_Disapproved</preceptDef>
+                <priority>-10</priority>
+                <description>Mining is an ugly act</description>
+            </li>
+            <li>
+                <preceptDef>MiningYield_High</preceptDef>
+                <priority>10</priority>
+                <description>Mining is a good, respectable act</description>
+            </li>
+        </priorityResults>
+
+        <targetWorkGivers>
+			<li>Mine</li>
+            <li>Drill</li>
+        </targetWorkGivers>
+
+    </Autonomy.PreceptGiverDef>
+
+    <Autonomy.PreceptGiverDef>
+
+        <defName>PainPreceptGiver</defName>
+        <label>Pain PreceptGiver</label>
+        <description>PreceptGiver for Pain</description>
+
+        <priorityResults>
+            <li>
+                <preceptDef>Pain_Idealized</preceptDef>
+                <priority>-10</priority>
+                <description>I want the pain to last</description>
+            </li>
+        </priorityResults>
+
+        <targetWorkGivers>
+			<li>PatientGoToBedTreatment</li>
+        </targetWorkGivers>
+
+    </Autonomy.PreceptGiverDef>
+
+    <Autonomy.PreceptGiverDef>
+
+        <defName>PrisonerExecutionPreceptGiver</defName>
+        <label>Prisoner Execution PreceptGiver</label>
+        <description>PreceptGiver for Prisoner Execution</description>
+
+        <priorityResults>
+            <li>
+                <preceptDef>Execution_Abhorrent</preceptDef>
+                <priority>-20</priority>
+                <description>Executing prisoners is inhumane</description>
+            </li>
+            <li>
+                <preceptDef>Execution_Horrible</preceptDef>
+                <priority>-15</priority>
+                <description>Executing prisoner is horrible</description>
+            </li>
+            <li>
+                <preceptDef>Execution_Required</preceptDef>
+                <priority>15</priority>
+                <description>Executing prisoner honors our cause</description>
+            </li>
+        </priorityResults>
+
+        <targetWorkGivers>
+			<li>DoExecution</li>
+        </targetWorkGivers>
+
+    </Autonomy.PreceptGiverDef>
+
+    <Autonomy.PreceptGiverDef>
+
+        <defName>RanchingPreceptGiverPositive</defName>
+        <label>Ranching PreceptGiver</label>
+        <description>PreceptGiver for Ranching</description>
+
+        <priorityResults>
+            <li>
+                <preceptDef>Ranching_Central</preceptDef>
+                <priority>20</priority>
+                <description>Ranching is central to our way of life</description>
+            </li>
+        </priorityResults>
+
+        <targetWorkGivers>
+			<li>Milk</li>
+            <li>Shear</li>
+            <li>Tame</li>
+            <li>Train</li>
+            <li>Slaughter</li>
+            <li>DoBillsButcherFlesh</li>
+        </targetWorkGivers>
+
+    </Autonomy.PreceptGiverDef>
+
+    <Autonomy.PreceptGiverDef>
+
+        <defName>RanchingPreceptGiverNegative</defName>
+        <label>Ranching PreceptGiver</label>
+        <description>PreceptGiver for Ranching</description>
+
+        <priorityResults>
+            <li>
+                <preceptDef>Ranching_Central</preceptDef>
+                <priority>-10</priority>
+                <description>This is wrong, we should only eat animals</description>
+            </li>
+        </priorityResults>
+
+        <targetWorkGivers>
+			<li>GrowerSow</li>
+        </targetWorkGivers>
+
+    </Autonomy.PreceptGiverDef>
+
+    <Autonomy.PreceptGiverDef>
+
+        <defName>SlaveryPreceptGiver</defName>
+        <label>Slavery PreceptGiver</label>
+        <description>PreceptGiver for Slavery</description>
+
+        <priorityResults>
+            <li>
+                <preceptDef>Slavery_Abhorrent</preceptDef>
+                <priority>-20</priority>
+                <description>Slavery is deeply immoral</description>
+            </li>
+            <li>
+                <preceptDef>Slavery_Horrible</preceptDef>
+                <priority>-15</priority>
+                <description>Slavery is horrible</description>
+            </li>
+            <li>
+                <preceptDef>Slavery_Disapproved</preceptDef>
+                <priority>-10</priority>
+                <description>Slavery is an ugly practice</description>
+            </li>
+            <li>
+                <preceptDef>Slavery_Honorable</preceptDef>
+                <priority>15</priority>
+                <description>Slavery honors our cause</description>
+            </li>
+        </priorityResults>
+
+        <targetWorkGivers>
+			<li>ExecuteSlave</li>
+            <li>EnslavePrisoner</li>
+            <li>SuppressSlave</li>
+        </targetWorkGivers>
+
+    </Autonomy.PreceptGiverDef>
+
+    <Autonomy.PreceptGiverDef>
+
+        <defName>TreesPreceptGiver</defName>
+        <label>Trees PreceptGiver</label>
+        <description>PreceptGiver for Trees</description>
+
+        <priorityResults>
+            <li>
+                <preceptDef>Trees_Desired</preceptDef>
+                <priority>10</priority>
+                <description>Nature must be nurtured</description>
+            </li>
+        </priorityResults>
+
+        <targetWorkGivers>
+			<li>GrowerSow</li>
+        </targetWorkGivers>
+
+    </Autonomy.PreceptGiverDef>
+
+    <Autonomy.PreceptGiverDef>
+
+        <defName>GauranlenConnectionPreceptGiver</defName>
+        <label>Gauranlen Connection PreceptGiver</label>
+        <description>PreceptGiver for Gauranlen Connection</description>
+
+        <priorityResults>
+            <li>
+                <preceptDef>GauranlenConnection_Strong</preceptDef>
+                <priority>10</priority>
+                <description>My trees must be nurtured</description>
+            </li>
+        </priorityResults>
+
+        <targetWorkGivers>
+			<li>PruneGauranlenTree</li>
+			<li>ChangeTreeMode</li>
+        </targetWorkGivers>
+
+    </Autonomy.PreceptGiverDef>
+
+    <Autonomy.PreceptGiverDef>
+
+        <defName>CorpsesPreceptGiver</defName>
+        <label>Corpses PreceptGiver</label>
+        <description>PreceptGiver for Corpses</description>
+
+        <priorityResults>
+            <li>
+                <preceptDef>Corpses_DontCare</preceptDef>
+                <priority>10</priority>
+                <description>I don't mind deathcare</description>
+            </li>
+        </priorityResults>
+
+        <targetWorkGivers>
+			<li>HaulCorpses</li>
+			<li>DoBillsCremate</li>
+        </targetWorkGivers>
+
+    </Autonomy.PreceptGiverDef>
+
+    <!-- Disabled, for some reason plant cutting covers tree cutting too :( -->
+    <!--<Autonomy.PreceptGiverDef>
+        <defName>TreeCuttingPrecept Giver</defName>
+        <label>Tree Cutting PreceptGiver</label>
+        <description>PreceptGiver for Tree Cutting</description>
+
+        <priorityResults>
+            <li>
+                <preceptDef>TreeCutting_Prohibited</preceptDef>
+                <priority>-20</priority>
+                <description>Cutting down trees is absolutely prohibited</description>
+            </li>
+            <li>
+                <preceptDef>TreeCutting_Horrible</preceptDef>
+                <priority>-15</priority>
+                <description>To cut down a tree is a horrible thing</description>
+            </li>
+            <li>
+                <preceptDef>TreeCutting_Disapproved</preceptDef>
+                <priority>-10</priority>
+                <description>To cut down a tree is an ugly thing</description>
+            </li>
+        </priorityResults>
+
+        <targetWorkGivers>
+			<li>TreeCutting</li>
+        </targetWorkGivers>
+
+    </Autonomy.PreceptGiverDef> --> 
 
 </Defs>

@@ -1,0 +1,43 @@
+<Defs>
+
+    <!-- Roaming Unenclosed Animals Counter -->
+    <Autonomy.InfoGiverDef>
+        <defName>RoamingUnenclosedAnimals</defName>
+        <label>Roaming unenclosed animals</label>
+        <description>Counts player faction animals that need to be penned (roamers that are not in enclosed pens). These animals will wander away if not brought to an enclosed pen.</description>
+        <sourceType>pawnCount</sourceType>
+        <calculation>Count</calculation>
+        <isUrgent>false</isUrgent>
+        
+        <filters>
+            <pawnFilters>
+                <!-- Player faction animals that need to be penned -->
+                <li>
+                    <race>AnimalAny</race>
+                    <faction>player</faction>
+                    <status>
+                        <li>unpenned</li>
+                    </status>
+                </li>
+            </pawnFilters>
+            <excludePawnFilters>
+                <!-- Exclude dead or downed animals -->
+                <li>
+                    <race>Any</race>
+                    <faction>Any</faction>
+                    <status>
+                        <li>dead</li>
+                    </status>
+                </li>
+                <li>
+                    <race>Any</race>
+                    <faction>Any</faction>
+                    <status>
+                        <li>downed</li>
+                    </status>
+                </li>
+            </excludePawnFilters>
+        </filters>
+    </Autonomy.InfoGiverDef>
+
+</Defs>

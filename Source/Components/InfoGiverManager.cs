@@ -407,8 +407,22 @@ namespace Autonomy
             
             var filtered = allPawns.AsEnumerable();
             
-            // Apply inclusion filters
-            if (!filters.include.NullOrEmpty())
+            // NEW: Apply enhanced pawn filters (List<PawnFilter>)
+            if (!filters.pawnFilters.NullOrEmpty())
+            {
+                filtered = filtered.Where(pawn => 
+                {
+                    // OR logic: pawn passes if it matches ANY PawnFilter
+                    foreach (PawnFilter pawnFilter in filters.pawnFilters)
+                    {
+                        if (PawnMatchesPawnFilter(pawn, pawnFilter))
+                            return true;
+                    }
+                    return false;
+                });
+            }
+            // LEGACY: Apply old string-based inclusion filters (backward compatibility)
+            else if (!filters.include.NullOrEmpty())
             {
                 filtered = filtered.Where(pawn => 
                 {
@@ -437,8 +451,22 @@ namespace Autonomy
                 });
             }
             
-            // Apply exclusion filters
-            if (!filters.exclude.NullOrEmpty())
+            // NEW: Apply enhanced pawn exclusion filters
+            if (!filters.excludePawnFilters.NullOrEmpty())
+            {
+                filtered = filtered.Where(pawn => 
+                {
+                    // Exclude pawn if it matches ANY exclude filter
+                    foreach (PawnFilter excludeFilter in filters.excludePawnFilters)
+                    {
+                        if (PawnMatchesPawnFilter(pawn, excludeFilter))
+                            return false;
+                    }
+                    return true;
+                });
+            }
+            // LEGACY: Apply old string-based exclusion filters (backward compatibility)
+            else if (!filters.exclude.NullOrEmpty())
             {
                 filtered = filtered.Where(pawn => 
                 {
@@ -491,6 +519,147 @@ namespace Autonomy
             }
             
             return filtered.ToList();
+        }
+
+        /// <summary>
+        /// Check if a pawn matches a PawnFilter (all conditions must pass - AND logic)
+        /// </summary>
+        private bool PawnMatchesPawnFilter(Pawn pawn, PawnFilter filter)
+        {
+            // Check race filter
+            if (!filter.race.NullOrEmpty() && filter.race.ToLower() != "any")
+            {
+                string raceLower = filter.race.ToLower();
+                if (raceLower == "humanlike")
+                {
+                    if (!pawn.RaceProps.Humanlike) return false;
+                }
+                else if (raceLower == "animalany")
+                {
+                    if (!pawn.RaceProps.Animal) return false;
+                }
+                else
+                {
+                    // Specific race def name
+                    if (pawn.def.defName != filter.race) return false;
+                }
+            }
+            
+            // Check faction filter
+            if (!filter.faction.NullOrEmpty() && filter.faction.ToLower() != "any")
+            {
+                string factionLower = filter.faction.ToLower();
+                switch (factionLower)
+                {
+                    case "player":
+                        if (pawn.Faction != Faction.OfPlayer) return false;
+                        break;
+                    case "non_player":
+                        if (pawn.Faction == Faction.OfPlayer) return false;
+                        break;
+                    case "hostile":
+                        if (pawn.Faction == null || !pawn.Faction.HostileTo(Faction.OfPlayer)) return false;
+                        break;
+                }
+            }
+            
+            // Check status filters (AND logic - all must pass)
+            if (!filter.status.NullOrEmpty())
+            {
+                foreach (string status in filter.status)
+                {
+                    if (!PawnMatchesStatus(pawn, status))
+                        return false;
+                }
+            }
+            
+            return true;
+        }
+
+        /// <summary>
+        /// Check if a pawn matches a specific status string
+        /// </summary>
+        private bool PawnMatchesStatus(Pawn pawn, string status)
+        {
+            switch (status.ToLower())
+            {
+                case "prisoner":
+                    return pawn.IsPrisoner;
+                case "guest":
+                    return pawn.guest != null && pawn.guest.GuestStatus == GuestStatus.Guest;
+                case "dead":
+                    return pawn.Dead;
+                case "downed":
+                    return pawn.Downed;
+                case "animal":
+                    return pawn.RaceProps.Animal;
+                case "colonist":
+                    return pawn.IsColonist;
+                case "slave":
+                    return pawn.IsSlave;
+                case "roaming":
+                    // Check if animal is a roamer (has RoamMtbDays)
+                    return pawn.Roamer;
+                case "unenclosed":
+                    // Check if animal is not enclosed in a pen
+                    return IsAnimalUnenclosed(pawn);
+                case "unpenned":
+                    // Check if animal needs to be penned (is a roamer AND not enclosed)
+                    return pawn.Roamer && IsAnimalUnenclosed(pawn);
+                case "selftendenabled":
+                    if ((pawn.Faction == Faction.OfPlayer && pawn.IsColonist) || pawn.IsSlave)
+                    {
+                        return pawn.playerSettings != null && pawn.playerSettings.selfTend;
+                    }
+                    return false;
+                case "selftenddisabled":
+                    if ((pawn.Faction == Faction.OfPlayer && pawn.IsColonist) || pawn.IsSlave)
+                    {
+                        return pawn.playerSettings != null && !pawn.playerSettings.selfTend;
+                    }
+                    return false;
+                default:
+                    Log.Warning($"Unknown pawn status filter: {status}");
+                    return false;
+            }
+        }
+
+        /// <summary>
+        /// Check if an animal is not enclosed in a pen
+        /// Returns true if the animal is either:
+        /// 1. Not in any pen district at all
+        /// 2. In a pen district but the pen is unenclosed
+        /// </summary>
+        private bool IsAnimalUnenclosed(Pawn pawn)
+        {
+            if (!pawn.Spawned || pawn.Map == null) return false;
+            if (!pawn.RaceProps.Animal) return false;
+            
+            // Get the district the animal is in
+            District district = pawn.Position.GetDistrict(pawn.Map);
+            if (district == null) return true; // Not in any district means not enclosed
+            
+            // Check all pen markers to see if any of them cover this district and are enclosed
+            foreach (Building penMarker in pawn.Map.listerBuildings.allBuildingsAnimalPenMarkers)
+            {
+                CompAnimalPenMarker comp = penMarker.TryGetComp<CompAnimalPenMarker>();
+                if (comp != null && !comp.PenState.Unenclosed)
+                {
+                    // Check if this enclosed pen contains the pawn's district
+                    if (comp.PenState.ConnectedRegions != null)
+                    {
+                        foreach (Region region in comp.PenState.ConnectedRegions)
+                        {
+                            if (region.District == district)
+                            {
+                                return false; // Animal is in an enclosed pen
+                            }
+                        }
+                    }
+                }
+            }
+            
+            return true; // Not in any enclosed pen
         }
 
         private List<Pawn> ApplyHediffFilters(List<Pawn> pawns, List<HediffFilter> hediffFilters)

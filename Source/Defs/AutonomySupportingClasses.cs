@@ -93,13 +93,45 @@ namespace Autonomy
     */
 
     /// <summary>
+    /// Enhanced pawn filter with race, faction, and status conditions
+    /// Supports chained conditions within a single filter (AND logic)
+    /// Multiple PawnFilters in a list work as OR logic
+    /// </summary>
+    public class PawnFilter
+    {
+        /// <summary>
+        /// Race filter: "Humanlike", "AnimalAny", "Any", or specific race def name
+        /// Default: "Any"
+        /// </summary>
+        public string race = "Any";
+        
+        /// <summary>
+        /// Faction filter: "player", "non_player", "hostile", "Any"
+        /// Default: "Any"
+        /// </summary>
+        public string faction = "Any";
+        
+        /// <summary>
+        /// Status filters (AND logic within this list)
+        /// Examples: "prisoner", "guest", "dead", "downed", "roaming", "unenclosed", "animal", "colonist", "slave"
+        /// </summary>
+        public List<string> status = new List<string>();
+    }
+
+    /// <summary>
     /// Filters for InfoGiver data collection - modular and extensible
     /// </summary>
     public class InfoFilters
     {
-        // Pawn inclusion/exclusion (replaces hardcoded booleans)
-        public List<string> include = new List<string>();     // "player", "guests", "hostiles", "traders", "selfTendEnabled", "selfTendDisabled"
-        public List<string> exclude = new List<string>();     // Same options as include
+        // NEW: Enhanced pawn filters with race, faction, and status
+        public List<PawnFilter> pawnFilters = new List<PawnFilter>();
+        public List<PawnFilter> excludePawnFilters = new List<PawnFilter>();
+        
+        // LEGACY: Simple string inclusion/exclusion (kept for backward compatibility)
+        // "player", "guests", "hostiles", "traders", "selfTendEnabled", "selfTendDisabled", "animal", "prisoner"
+        public List<string> include = new List<string>();
+        public List<string> exclude = new List<string>();
+        
         // Pawn capability checks (AND list). Each entry is a SkillDef name (e.g. "Construction").
         // A pawn must be capable (not TotallyDisabled) of ALL listed skills to pass this filter.
         public List<string> capableOf = new List<string>();

@@ -1,0 +1,33 @@
+<Defs>
+
+    <Autonomy.PreceptGiverDef>
+        <defName>AnimalSlaughterPreceptGiver</defName>
+        <label>Animal Slaughter PreceptGiver</label>
+        <description>TODO</description>
+
+        <priorityResults>
+            <li>
+                <preceptDef>AnimalSlaughter_Prohibited</preceptDef>
+                <priority>-20</priority>
+                <description>Slaughtering animals is absolutely prohibited</description>
+            </li>
+            <li>
+                <preceptDef>AnimalSlaughter_Horrible</preceptDef>
+                <priority>-15</priority>
+                <description>To slaughter an animal is a horrible thing</description>
+            </li>
+            <li>
+                <preceptDef>AnimalSlaughter_Disapproved</preceptDef>
+                <priority>-10</priority>
+                <description>To slaughter an animal is an ugly thing</description>
+            </li>
+        </priorityResults>
+
+        <targetWorkGivers>
+			<li>Slaughter</li>
+			<li>HunterHunt</li>
+        </targetWorkGivers>
+
+    </Autonomy.PreceptGiverDef>
+
+</Defs>

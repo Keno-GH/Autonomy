@@ -309,6 +309,66 @@
 
     </Autonomy.PreceptGiverDef>
 
+    <Autonomy.PreceptGiverDef MayRequire="ludeon.rimworld.odyssey">
+
+        <defName>FishingPreceptGiver</defName>
+        <label>Fishing PreceptGiver</label>
+        <description>PreceptGiver for Fishing</description>
+
+        <priorityResults>
+            <li>
+                <preceptDef>Fishing_Prohibited</preceptDef>
+                <priority>-20</priority>
+                <description>Fishing is an immoral practice</description>
+            </li>
+            <li>
+                <preceptDef>Fishing_Disapproved</preceptDef>
+                <priority>-10</priority>
+                <description>Fishing is wrong</description>
+            </li>
+            <li>
+                <preceptDef>Fishing_Sacred</preceptDef>
+                <priority>10</priority>
+                <description>Fishing is a moral practice</description>
+            </li>
+        </priorityResults>
+
+        <targetWorkGivers>
+			<li>Fish</li>
+        </targetWorkGivers>
+
+    </Autonomy.PreceptGiverDef>
+
+    <Autonomy.PreceptGiverDef MayRequire="ludeon.rimworld.odyssey">
+
+        <defName>FishingPreceptGiver</defName>
+        <label>Fishing PreceptGiver</label>
+        <description>PreceptGiver for Fishing</description>
+
+        <priorityResults>
+            <li>
+                <preceptDef>Fishing_Prohibited</preceptDef>
+                <priority>-20</priority>
+                <description>Fishing is an immoral practice</description>
+            </li>
+            <li>
+                <preceptDef>Fishing_Disapproved</preceptDef>
+                <priority>-10</priority>
+                <description>Fishing is wrong</description>
+            </li>
+            <li>
+                <preceptDef>Fishing_Sacred</preceptDef>
+                <priority>10</priority>
+                <description>Fishing is a moral practice</description>
+            </li>
+        </priorityResults>
+
+        <targetWorkGivers>
+			<li>Fish</li>
+        </targetWorkGivers>
+
+    </Autonomy.PreceptGiverDef>
+
     <!-- Disabled, for some reason plant cutting covers tree cutting too :( -->
     <!--<Autonomy.PreceptGiverDef>
         <defName>TreeCuttingPrecept Giver</defName>

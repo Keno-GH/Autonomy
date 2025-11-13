@@ -40,4 +40,27 @@
         </filters>
     </Autonomy.InfoGiverDef>
 
+    <!-- Animal gather yield infogiver -->
+    <Autonomy.InfoGiverDef>
+        <defName>AnimalGatherYield</defName>
+        <label>Animal gather yield</label>
+        <description>Tracks each animal's gather yield individually to prioritize animals that produce more resources when gathering.</description>
+        <isLocalizable>false</isLocalizable>
+        <isIndividualizable>true</isIndividualizable>
+        <calculation>Avg</calculation>
+        <isUrgent>false</isUrgent>
+        <sourceType>pawnStat</sourceType>
+        <targetStat>AnimalGatherYield</targetStat>
+
+        <filters>
+			<include>
+				<li>player</li>
+			</include>
+			<exclude>
+				<li>dead</li>
+				<li>downed</li>
+			</exclude>
+		</filters>
+    </Autonomy.InfoGiverDef>
+
 </Defs>

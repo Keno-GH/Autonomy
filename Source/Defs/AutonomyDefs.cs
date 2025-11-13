@@ -766,6 +766,59 @@ namespace Autonomy
     }
 
     /// <summary>
+    /// Defines precept-based priority adjustments for work types
+    /// Maps specific precepts to priority modifiers
+    /// </summary>
+    public class PreceptGiverDef : Def
+    {
+        /// <summary>
+        /// List of precept-to-priority mappings
+        /// </summary>
+        public List<PreceptPriorityResult> priorityResults = new List<PreceptPriorityResult>();
+        
+        /// <summary>
+        /// Target WorkGiverDefs this precept giver affects
+        /// </summary>
+        public List<string> targetWorkGivers = new List<string>();
+
+        public override void ResolveReferences()
+        {
+            base.ResolveReferences();
+            
+            if (priorityResults.NullOrEmpty())
+            {
+                Log.Error($"PreceptGiverDef {defName} requires priorityResults");
+            }
+            
+            if (targetWorkGivers.NullOrEmpty())
+            {
+                Log.Error($"PreceptGiverDef {defName} requires targetWorkGivers");
+            }
+        }
+    }
+
+    /// <summary>
+    /// Maps a specific precept to a priority value
+    /// </summary>
+    public class PreceptPriorityResult
+    {
+        /// <summary>
+        /// DefName of the PreceptDef to check for
+        /// </summary>
+        public string preceptDef;
+        
+        /// <summary>
+        /// Priority adjustment when pawn has this precept
+        /// </summary>
+        public int priority = 0;
+        
+        /// <summary>
+        /// Description shown to player
+        /// </summary>
+        public string description = "";
+    }
+
+    /// <summary>
     /// Defines skill-based priority adjustments for work types
     /// Similar to PassionGiver but based on skill level instead of passion
     /// </summary>

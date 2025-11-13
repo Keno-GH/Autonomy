@@ -142,6 +142,8 @@ namespace Autonomy.Systems
             var skillResults = EvaluateSkillPriorityForWorkType(pawn, workType, usedPriorityGivers, allPawnsSnapshot);
             result.PriorityGiverResults.AddRange(skillResults);
 
+            // Note: Precept-based priorities are evaluated at WorkGiver level only to avoid duplication
+
             result.TotalPriority = result.WorkGiverSum + result.PriorityGiverResults.Sum(p => p.Priority);
             
             return result;
@@ -184,6 +186,10 @@ namespace Autonomy.Systems
                     Log.Error($"[Autonomy] Error evaluating WorkGiver PriorityGiver {priorityGiver.defName}: {e.Message}");
                 }
             }
+
+            // Add precept-based priority at WorkGiver level
+            var preceptResults = EvaluatePreceptPriorityForWorkGiver(pawn, workGiver, usedPriorityGivers);
+            result.PriorityGiverResults.AddRange(preceptResults);
 
             result.TotalPriority = result.PriorityGiverResults.Where(p => !p.IsDeduplication).Sum(p => p.Priority);
             
@@ -486,6 +492,72 @@ namespace Autonomy.Systems
             string description = selectedRange.description;
             
             return (priority, description);
+        }
+        
+        /// <summary>
+        /// Evaluate precept-based priority for a WorkGiver
+        /// </summary>
+        private List<PriorityGiverResult> EvaluatePreceptPriorityForWorkGiver(Pawn pawn, WorkGiverDef workGiver, HashSet<string> usedPriorityGivers)
+        {
+            var results = new List<PriorityGiverResult>();
+            
+            // Check if Ideology DLC is active
+            if (!ModsConfig.IdeologyActive)
+            {
+                return results;
+            }
+            
+            // Check if pawn has an ideo
+            if (pawn.Ideo == null)
+            {
+                return results;
+            }
+            
+            // Get all PreceptGivers
+            var allPreceptGivers = DefDatabase<PreceptGiverDef>.AllDefs;
+            
+            foreach (var preceptGiver in allPreceptGivers)
+            {
+                // Check if this workGiver is targeted by this PreceptGiver
+                if (!preceptGiver.targetWorkGivers.Contains(workGiver.defName))
+                {
+                    continue;
+                }
+                
+                // Check if pawn has any of the precepts in this PreceptGiver
+                foreach (var preceptResult in preceptGiver.priorityResults)
+                {
+                    // Check if pawn's ideo has this precept
+                    var matchingPrecept = pawn.Ideo.PreceptsListForReading.FirstOrDefault(p => p.def.defName == preceptResult.preceptDef);
+                    
+                    if (matchingPrecept != null)
+                    {
+                        // Create unique key for deduplication
+                        string preceptKey = $"Precept_{preceptGiver.defName}_{workGiver.defName}";
+                        bool isDeduplication = usedPriorityGivers.Contains(preceptKey);
+                        
+                        var priorityGiverResult = new PriorityGiverResult
+                        {
+                            PriorityGiver = null, // No direct PriorityGiver, this is precept-based
+                            Priority = preceptResult.priority,
+                            Description = preceptResult.description,
+                            IsDeduplication = isDeduplication
+                        };
+                        
+                        results.Add(priorityGiverResult);
+                        
+                        if (!isDeduplication)
+                        {
+                            usedPriorityGivers.Add(preceptKey);
+                        }
+                        
+                        // Only apply the first matching precept from this giver
+                        break;
+                    }
+                }
+            }
+            
+            return results;
         }
         
         /// <summary>

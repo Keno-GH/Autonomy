@@ -44,13 +44,59 @@
     <Autonomy.InfoGiverDef>
         <defName>AnimalGatherYield</defName>
         <label>Animal gather yield</label>
-        <description>Tracks each animal's gather yield individually to prioritize animals that produce more resources when gathering.</description>
+        <description>Tracks each pawn's gather yield individually and in total average</description>
         <isLocalizable>false</isLocalizable>
         <isIndividualizable>true</isIndividualizable>
         <calculation>Avg</calculation>
         <isUrgent>false</isUrgent>
         <sourceType>pawnStat</sourceType>
         <targetStat>AnimalGatherYield</targetStat>
+
+        <filters>
+			<include>
+				<li>player</li>
+			</include>
+			<exclude>
+				<li>dead</li>
+				<li>downed</li>
+			</exclude>
+		</filters>
+    </Autonomy.InfoGiverDef>
+
+    <!-- Taming chance infogiver -->
+    <Autonomy.InfoGiverDef>
+        <defName>AnimalGatherYield</defName>
+        <label>Taming chance</label>
+        <description>Tracks each pawn's taming chance individually and in total average.</description>
+        <isLocalizable>false</isLocalizable>
+        <isIndividualizable>true</isIndividualizable>
+        <calculation>Avg</calculation>
+        <isUrgent>false</isUrgent>
+        <sourceType>pawnStat</sourceType>
+        <targetStat>TameAnimalChance</targetStat>
+
+        <filters>
+			<include>
+				<li>player</li>
+			</include>
+			<exclude>
+				<li>dead</li>
+				<li>downed</li>
+			</exclude>
+		</filters>
+    </Autonomy.InfoGiverDef>
+
+    <!-- Training chance infogiver -->
+    <Autonomy.InfoGiverDef>
+        <defName>TrainAnimalChance</defName>
+        <label>Training chance</label>
+        <description>Tracks each pawn's training chance individually and in total average.</description>
+        <isLocalizable>false</isLocalizable>
+        <isIndividualizable>true</isIndividualizable>
+        <calculation>Avg</calculation>
+        <isUrgent>false</isUrgent>
+        <sourceType>pawnStat</sourceType>
+        <targetStat>TrainAnimalChance</targetStat>
 
         <filters>
 			<include>

@@ -136,7 +136,7 @@
     <Autonomy.PriorityGiverDef Name="AnimalGatherPriorityGiver_MilkShear">
         <defName>AnimalGather_MilkShear_PriorityGiver</defName>
         <label>Milk Shear priority</label>
-        <description>Prioritizes milking and shearing based on each animal's gather yield (normalized per-pawn). Pawns will prefer to milk/shear animals with higher relative yields.</description>
+        <description>Prioritized reanch work for pawns with better animal gather yeild.</description>
         <isUrgent>false</isUrgent>
 
         <conditions>
@@ -264,6 +264,276 @@
         <targetWorkGivers>
             <li>Milk</li>
             <li>Shear</li>
+        </targetWorkGivers>
+
+    </Autonomy.PriorityGiverDef>
+
+    <!-- Taming priority for Tame using TameAnimalChance infogiver -->
+    <Autonomy.PriorityGiverDef>
+        <defName>TamingPriorityBest</defName>
+        <label>Taming priority</label>
+        <description>Prioritizes taming for pawns with better taming chance.</description>
+        <isUrgent>false</isUrgent>
+
+        <conditions>
+            <li>
+                <type>infoGiver</type>
+                <infoDefName>TameAnimalChance</infoDefName>
+                <requestLocalizedData>false</requestLocalizedData>
+                <requestIndividualData>true</requestIndividualData>
+                <requestNormalizedDistance>true</requestNormalizedDistance>
+            </li>
+
+            <!-- Diligent colonists are more likely to do regular animal-care tasks -->
+            <li>
+                <type>personalityOffset</type>
+                <personalityDefName>Rimpsyche_Diligence</personalityDefName>
+                <personalityMultipliers>
+                    <li>
+                        <personalityRange>-1.0~-0.5</personalityRange>
+                        <multiplier>0.75</multiplier>
+                        <flat>-2</flat>
+                    </li>
+                    <li>
+                        <personalityRange>-0.49~0.0</personalityRange>
+                        <multiplier>0.9</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.01~0.5</personalityRange>
+                        <multiplier>1.1</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.51~1.0</personalityRange>
+                        <multiplier>1.25</multiplier>
+                        <flat>2</flat>
+                    </li>
+                </personalityMultipliers>
+            </li>
+
+            <!-- Organized colonists prefer systematic care (slightly boosts animal maintenance) -->
+            <li>
+                <type>personalityOffset</type>
+                <personalityDefName>Rimpsyche_Organization</personalityDefName>
+                <personalityMultipliers>
+                    <li>
+                        <personalityRange>-1.0~-0.5</personalityRange>
+                        <multiplier>0.8</multiplier>
+                        <flat>-1</flat>
+                    </li>
+                    <li>
+                        <personalityRange>-0.49~0.0</personalityRange>
+                        <multiplier>0.9</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.01~0.5</personalityRange>
+                        <multiplier>1.1</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.51~1.0</personalityRange>
+                        <multiplier>1.2</multiplier>
+                        <flat>1</flat>
+                    </li>
+                </personalityMultipliers>
+            </li>
+
+            <!-- Compassionate colonists are more likely to care for animals (milking/shearing) -->
+            <li>
+                <type>personalityOffset</type>
+                <personalityDefName>Rimpsyche_Compassion</personalityDefName>
+                <personalityMultipliers>
+                    <li>
+                        <personalityRange>-1.0~-0.5</personalityRange>
+                        <multiplier>0.8</multiplier>
+                        <flat>-1</flat>
+                    </li>
+                    <li>
+                        <personalityRange>-0.49~0.0</personalityRange>
+                        <multiplier>0.9</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.01~0.5</personalityRange>
+                        <multiplier>1.1</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.51~1.0</personalityRange>
+                        <multiplier>1.2</multiplier>
+                        <flat>1</flat>
+                    </li>
+                </personalityMultipliers>
+            </li>
+        </conditions>
+
+        <!-- Normalized stat-based ranges: -1.0..+1.0 mapped to priority levels -->
+        <priorityRanges>
+            <li>
+                <validRange>-1~-0.6</validRange>
+                <priority>-8~-7</priority>
+                <description>I am bad at taming</description>
+            </li>
+            <li>
+                <validRange>-0.6~-0.3</validRange>
+                <priority>-7~-3</priority>
+                <description>There are better people for this</description>
+            </li>
+            <li>
+                <validRange>-0.3~0.0</validRange>
+                <priority>-3~0</priority>
+                <description>I am not good at taming</description>
+            </li>
+            <li>
+                <validRange>0.0~0.3</validRange>
+                <priority>0~3</priority>
+                <description>I am good at taming</description>
+            </li>
+            <li>
+                <validRange>0.3~0.6</validRange>
+                <priority>3~5</priority>
+                <description>I am very good at taming</description>
+            </li>
+            <li>
+                <validRange>0.6~1.0</validRange>
+                <priority>5~6</priority>
+                <description>I am excellent at taming</description>
+            </li>
+        </priorityRanges>
+
+        <targetWorkGivers>
+            <li>Tame</li>
+        </targetWorkGivers>
+
+    </Autonomy.PriorityGiverDef>
+
+    <!-- Training priority for Train using TrainAnimalChance infogiver -->
+    <Autonomy.PriorityGiverDef>
+        <defName>TrainingPriorityBest</defName>
+        <label>Training priority</label>
+        <description>Prioritizes training for pawns with better training chance.</description>
+        <isUrgent>false</isUrgent>
+
+        <conditions>
+            <li>
+                <type>infoGiver</type>
+                <infoDefName>TrainAnimalChance</infoDefName>
+                <requestLocalizedData>false</requestLocalizedData>
+                <requestIndividualData>true</requestIndividualData>
+                <requestNormalizedDistance>true</requestNormalizedDistance>
+            </li>
+
+            <!-- Diligent colonists are more likely to do regular animal-care tasks -->
+            <li>
+                <type>personalityOffset</type>
+                <personalityDefName>Rimpsyche_Diligence</personalityDefName>
+                <personalityMultipliers>
+                    <li>
+                        <personalityRange>-1.0~-0.5</personalityRange>
+                        <multiplier>0.75</multiplier>
+                        <flat>-2</flat>
+                    </li>
+                    <li>
+                        <personalityRange>-0.49~0.0</personalityRange>
+                        <multiplier>0.9</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.01~0.5</personalityRange>
+                        <multiplier>1.1</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.51~1.0</personalityRange>
+                        <multiplier>1.25</multiplier>
+                        <flat>2</flat>
+                    </li>
+                </personalityMultipliers>
+            </li>
+
+            <!-- Organized colonists prefer systematic care (slightly boosts animal maintenance) -->
+            <li>
+                <type>personalityOffset</type>
+                <personalityDefName>Rimpsyche_Organization</personalityDefName>
+                <personalityMultipliers>
+                    <li>
+                        <personalityRange>-1.0~-0.5</personalityRange>
+                        <multiplier>0.8</multiplier>
+                        <flat>-1</flat>
+                    </li>
+                    <li>
+                        <personalityRange>-0.49~0.0</personalityRange>
+                        <multiplier>0.9</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.01~0.5</personalityRange>
+                        <multiplier>1.1</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.51~1.0</personalityRange>
+                        <multiplier>1.2</multiplier>
+                        <flat>1</flat>
+                    </li>
+                </personalityMultipliers>
+            </li>
+
+            <!-- Compassionate colonists are more likely to care for animals (milking/shearing) -->
+            <li>
+                <type>personalityOffset</type>
+                <personalityDefName>Rimpsyche_Compassion</personalityDefName>
+                <personalityMultipliers>
+                    <li>
+                        <personalityRange>-1.0~-0.5</personalityRange>
+                        <multiplier>0.8</multiplier>
+                        <flat>-1</flat>
+                    </li>
+                    <li>
+                        <personalityRange>-0.49~0.0</personalityRange>
+                        <multiplier>0.9</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.01~0.5</personalityRange>
+                        <multiplier>1.1</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.51~1.0</personalityRange>
+                        <multiplier>1.2</multiplier>
+                        <flat>1</flat>
+                    </li>
+                </personalityMultipliers>
+            </li>
+        </conditions>
+
+        <!-- Normalized stat-based ranges: -1.0..+1.0 mapped to priority levels -->
+        <priorityRanges>
+            <li>
+                <validRange>-1~-0.6</validRange>
+                <priority>-8~-7</priority>
+                <description>I am bad at training</description>
+            </li>
+            <li>
+                <validRange>-0.6~-0.3</validRange>
+                <priority>-7~-3</priority>
+                <description>There are better people for this</description>
+            </li>
+            <li>
+                <validRange>-0.3~0.0</validRange>
+                <priority>-3~0</priority>
+                <description>I am not good at training</description>
+            </li>
+            <li>
+                <validRange>0.0~0.3</validRange>
+                <priority>0~3</priority>
+                <description>I am good at training</description>
+            </li>
+            <li>
+                <validRange>0.3~0.6</validRange>
+                <priority>3~5</priority>
+                <description>I am very good at training</description>
+            </li>
+            <li>
+                <validRange>0.6~1.0</validRange>
+                <priority>5~6</priority>
+                <description>I am excellent at training</description>
+            </li>
+        </priorityRanges>
+
+        <targetWorkGivers>
+            <li>Train</li>
         </targetWorkGivers>
 
     </Autonomy.PriorityGiverDef>

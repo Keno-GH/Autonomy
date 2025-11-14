@@ -22,6 +22,29 @@
 		</filters>
 	</Autonomy.InfoGiverDef>
 
+	<!-- Hunting stealth infogiver -->
+	<Autonomy.InfoGiverDef>
+		<defName>HuntingStealthInfoGiver</defName>
+		<label>Hunting stealth</label>
+		<description>Tracks each pawn's hunting stealth so sneaky hunters volunteer first.</description>
+		<isLocalizable>false</isLocalizable>
+		<isIndividualizable>true</isIndividualizable>
+		<calculation>Avg</calculation>
+		<isUrgent>false</isUrgent>
+		<sourceType>pawnStat</sourceType>
+		<targetStat>HuntingStealth</targetStat>
+
+		<filters>
+			<include>
+				<li>player</li>
+			</include>
+			<exclude>
+				<li>dead</li>
+				<li>downed</li>
+			</exclude>
+		</filters>
+	</Autonomy.InfoGiverDef>
+
 	<!-- Injuries and diseases infogivers -->
 	<!-- Total bleed rate across colony, individualizable -->
 	<Autonomy.InfoGiverDef>

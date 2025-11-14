@@ -65,7 +65,7 @@
 
     <!-- Taming chance infogiver -->
     <Autonomy.InfoGiverDef>
-        <defName>AnimalGatherYield</defName>
+        <defName>TameAnimalChance</defName>
         <label>Taming chance</label>
         <description>Tracks each pawn's taming chance individually and in total average.</description>
         <isLocalizable>false</isLocalizable>

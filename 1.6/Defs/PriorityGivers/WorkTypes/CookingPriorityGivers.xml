@@ -1,0 +1,864 @@
+<Defs>
+
+    <!-- Cooking defName: DoBillsCook and DoBillsCookCampfire
+    Butchering defName: DoBillsButcherFlesh
+    Brewing defNames: DoBillsBrew and CookFillHopper-->
+
+    <!-- Cooking, Butchering priority based on individual food pawnNeed InfoGiver-->
+
+    <Autonomy.InfoGiverDef>
+        <defName>ColonistFoodNeedIndividualInfoGiver</defName>
+        <label>Personal hunger (colonists)</label>
+        <description>Tracks each colonist's food need individually so hungry pawns know when to cook or butcher.</description>
+        <isLocalizable>false</isLocalizable>
+        <isIndividualizable>true</isIndividualizable>
+        <calculation>Avg</calculation>
+        <isUrgent>true</isUrgent>
+        <sourceType>pawnNeed</sourceType>
+        <targetNeed>Food</targetNeed>
+
+        <filters>
+            <include>
+                <li>player</li>
+            </include>
+            <exclude>
+                <li>dead</li>
+                <li>downed</li>
+            </exclude>
+        </filters>
+    </Autonomy.InfoGiverDef>
+
+    <!-- Cooking, Butchering priority based on global avg food pawnNeed InfoGiver-->
+
+    <Autonomy.InfoGiverDef>
+        <defName>ColonyFoodNeedAverageInfoGiver</defName>
+        <label>Colony hunger average</label>
+        <description>Watches the average food need across colonists, guests, and prisoners to gauge mealtime urgency.</description>
+        <isLocalizable>false</isLocalizable>
+        <isIndividualizable>false</isIndividualizable>
+        <calculation>Avg</calculation>
+        <isUrgent>true</isUrgent>
+        <sourceType>pawnNeed</sourceType>
+        <targetNeed>Food</targetNeed>
+
+        <filters>
+            <include>
+                <li>player</li>
+                <li>guest</li>
+                <li>prisoner</li>
+            </include>
+            <exclude>
+                <li>dead</li>
+                <li>downed</li>
+            </exclude>
+        </filters>
+    </Autonomy.InfoGiverDef>
+
+    <!-- Cooking priority based on competitive FoodPoisonChance pawnStat InfoGiver
+    (Represents kitchen skill)
+    (Perception of self vs community)-->
+
+    <Autonomy.InfoGiverDef>
+        <defName>FoodPoisonChanceInfoGiver</defName>
+        <label>Food poison chance</label>
+        <description>Tracks each pawn's chance to avoid poisoning meals, letting skilled cooks step up.</description>
+        <isLocalizable>false</isLocalizable>
+        <isIndividualizable>true</isIndividualizable>
+        <calculation>Avg</calculation>
+        <isUrgent>false</isUrgent>
+        <sourceType>pawnStat</sourceType>
+        <targetStat>FoodPoisonChance</targetStat>
+
+        <filters>
+            <include>
+                <li>player</li>
+            </include>
+            <exclude>
+                <li>dead</li>
+                <li>downed</li>
+            </exclude>
+        </filters>
+    </Autonomy.InfoGiverDef>
+
+    <!-- Cooking priority based on flat FoodPoisonChance pawnStat InfoGiver
+    (Represents kitchen skill)
+    (Perception of self vs expectations)-->
+
+    <!-- Butchering priority based on competitive ButcheryFleshEfficiency pawnStat InfoGiver
+    (Represents butchering skill)
+    (Perception of self vs community)-->
+
+    <Autonomy.InfoGiverDef>
+        <defName>ButcheryFleshEfficiencyInfoGiver</defName>
+        <label>Butchery efficiency</label>
+        <description>Tracks each pawn's butchery flesh efficiency to decide who should work the tables.</description>
+        <isLocalizable>false</isLocalizable>
+        <isIndividualizable>true</isIndividualizable>
+        <calculation>Avg</calculation>
+        <isUrgent>false</isUrgent>
+        <sourceType>pawnStat</sourceType>
+        <targetStat>ButcheryFleshEfficiency</targetStat>
+
+        <filters>
+            <include>
+                <li>player</li>
+            </include>
+            <exclude>
+                <li>dead</li>
+                <li>downed</li>
+            </exclude>
+        </filters>
+    </Autonomy.InfoGiverDef>
+
+    <!-- Butchering priority based on flat ButcheryFleshEfficiency pawnStat InfoGiver
+    (Represents butchering skill)
+    (Perception of self vs expectations)-->
+
+    <!-- Brewing priority based on flat DrugCookingSpeed pawnStat InfoGiver
+    (Represents brewing skill)
+    (Perception of self vs expectations)-->
+
+    <Autonomy.InfoGiverDef>
+        <defName>DrugCookingSpeedInfoGiver</defName>
+        <label>Drug cooking speed</label>
+        <description>Tracks each pawn's brewing speed for beer, tea, and simple drugs.</description>
+        <isLocalizable>false</isLocalizable>
+        <isIndividualizable>true</isIndividualizable>
+        <calculation>Avg</calculation>
+        <isUrgent>false</isUrgent>
+        <sourceType>pawnStat</sourceType>
+        <targetStat>DrugCookingSpeed</targetStat>
+
+        <filters>
+            <include>
+                <li>player</li>
+            </include>
+            <exclude>
+                <li>dead</li>
+                <li>downed</li>
+            </exclude>
+        </filters>
+    </Autonomy.InfoGiverDef>
+
+    <!-- Priority Givers -->
+
+    <!-- Cooking priority: hungry pawn takes action -->
+    <Autonomy.PriorityGiverDef>
+        <defName>CookPersonalHungerPriorityGiver</defName>
+        <label>Cook when I'm hungry</label>
+        <description>I cook when my stomach growls.</description>
+        <isUrgent>true</isUrgent>
+
+        <conditions>
+            <li>
+                <type>infoGiver</type>
+                <infoDefName>ColonistFoodNeedIndividualInfoGiver</infoDefName>
+                <requestLocalizedData>false</requestLocalizedData>
+                <requestIndividualData>true</requestIndividualData>
+                <requestNormalizedDistance>false</requestNormalizedDistance>
+            </li>
+            <li>
+                <type>personalityOffset</type>
+                <personalityDefName>Rimpsyche_SelfInterest</personalityDefName>
+                <personalityMultipliers>
+                    <li>
+                        <personalityRange>-1.0~-0.5</personalityRange>
+                        <multiplier>0.8</multiplier>
+                        <flat>-2</flat>
+                    </li>
+                    <li>
+                        <personalityRange>-0.49~0.0</personalityRange>
+                        <multiplier>0.9</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.01~0.5</personalityRange>
+                        <multiplier>1.1</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.51~1.0</personalityRange>
+                        <multiplier>1.25</multiplier>
+                        <flat>2</flat>
+                    </li>
+                </personalityMultipliers>
+            </li>
+            <li>
+                <type>personalityOffset</type>
+                <personalityDefName>Rimpsyche_Diligence</personalityDefName>
+                <personalityMultipliers>
+                    <li>
+                        <personalityRange>-1.0~-0.5</personalityRange>
+                        <multiplier>0.75</multiplier>
+                        <flat>-2</flat>
+                    </li>
+                    <li>
+                        <personalityRange>-0.49~0.0</personalityRange>
+                        <multiplier>0.9</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.01~0.5</personalityRange>
+                        <multiplier>1.1</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.51~1.0</personalityRange>
+                        <multiplier>1.25</multiplier>
+                        <flat>2</flat>
+                    </li>
+                </personalityMultipliers>
+            </li>
+        </conditions>
+
+        <priorityRanges>
+            <li>
+                <validRange>0.01~0.14</validRange>
+                <priority>10~15</priority>
+                <description>I'm starving and need a meal fast</description>
+            </li>
+            <li>
+                <validRange>0.15~0.29</validRange>
+                <priority>7~10</priority>
+                <description>I'm very hungry and should cook</description>
+            </li>
+            <li>
+                <validRange>0.3~0.49</validRange>
+                <priority>3~7</priority>
+                <description>Starting to feel hungry</description>
+            </li>
+            <li>
+                <validRange>0.5~0.79</validRange>
+                <priority>0~3</priority>
+                <description>I could cook if needed</description>
+            </li>
+            <li>
+                <validRange>0.8~1.0</validRange>
+                <priority>0~0</priority>
+                <description>I'm full and don't feel like cooking</description>
+            </li>
+        </priorityRanges>
+
+        <targetWorkGivers>
+            <li>DoBillsCook</li>
+            <li>DoBillsCookCampfire</li>
+            <li>DoBillsButcherFlesh</li>
+        </targetWorkGivers>
+
+    </Autonomy.PriorityGiverDef>
+
+    <!-- Cooking priority: feed hungry colony -->
+    <Autonomy.PriorityGiverDef>
+        <defName>CookColonyHungerPriorityGiver</defName>
+        <label>Cook for hungry colony</label>
+        <description>I cook when the colony is running on empty.</description>
+        <isUrgent>true</isUrgent>
+
+        <conditions>
+            <li>
+                <type>infoGiver</type>
+                <infoDefName>ColonyFoodNeedAverageInfoGiver</infoDefName>
+                <requestLocalizedData>false</requestLocalizedData>
+                <requestIndividualData>false</requestIndividualData>
+                <requestNormalizedDistance>false</requestNormalizedDistance>
+            </li>
+            <li>
+                <type>personalityOffset</type>
+                <personalityDefName>Rimpsyche_Compassion</personalityDefName>
+                <personalityMultipliers>
+                    <li>
+                        <personalityRange>-1.0~-0.5</personalityRange>
+                        <multiplier>0.7</multiplier>
+                        <flat>-3</flat>
+                    </li>
+                    <li>
+                        <personalityRange>-0.49~0.0</personalityRange>
+                        <multiplier>0.85</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.01~0.5</personalityRange>
+                        <multiplier>1.15</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.51~1.0</personalityRange>
+                        <multiplier>1.3</multiplier>
+                        <flat>3</flat>
+                    </li>
+                </personalityMultipliers>
+            </li>
+            <li>
+                <type>personalityOffset</type>
+                <personalityDefName>Rimpsyche_Organization</personalityDefName>
+                <personalityMultipliers>
+                    <li>
+                        <personalityRange>-1.0~-0.5</personalityRange>
+                        <multiplier>0.8</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>-0.49~0.0</personalityRange>
+                        <multiplier>0.9</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.01~0.5</personalityRange>
+                        <multiplier>1.1</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.51~1.0</personalityRange>
+                        <multiplier>1.25</multiplier>
+                        <flat>2</flat>
+                    </li>
+                </personalityMultipliers>
+            </li>
+        </conditions>
+
+        <priorityRanges>
+            <li>
+                <validRange>0~0</validRange>
+                <priority>0</priority>
+                <description>No colonists needing meals</description>
+            </li>
+            <li>
+                <validRange>0.01~0.14</validRange>
+                <priority>11~15</priority>
+                <description>Everyone's starving, I must cook</description>
+            </li>
+            <li>
+                <validRange>0.15~0.29</validRange>
+                <priority>8~12</priority>
+                <description>The colony is very hungry</description>
+            </li>
+            <li>
+                <validRange>0.3~0.49</validRange>
+                <priority>4~8</priority>
+                <description>People are getting hungry</description>
+            </li>
+            <li>
+                <validRange>0.5~0.79</validRange>
+                <priority>0~4</priority>
+                <description>I can top off meal stocks</description>
+            </li>
+            <li>
+                <validRange>0.8~1.0</validRange>
+                <priority>-5~0</priority>
+                <description>Everyone's well-fed, no rush</description>
+            </li>
+        </priorityRanges>
+
+        <targetWorkGivers>
+            <li>DoBillsCook</li>
+            <li>DoBillsCookCampfire</li>
+            <li>DoBillsButcherFlesh</li>
+        </targetWorkGivers>
+
+    </Autonomy.PriorityGiverDef>
+
+    <!-- Cooking priority: normalized kitchen skill -->
+    <Autonomy.PriorityGiverDef>
+        <defName>CookRelativeFoodPoisonPriorityGiver</defName>
+        <label>Cook when I'm the safest</label>
+        <description>I cook when I'm less likely to poison meals.</description>
+        <isUrgent>false</isUrgent>
+
+        <conditions>
+            <li>
+                <type>infoGiver</type>
+                <infoDefName>FoodPoisonChanceInfoGiver</infoDefName>
+                <requestLocalizedData>false</requestLocalizedData>
+                <requestIndividualData>true</requestIndividualData>
+                <requestNormalizedDistance>true</requestNormalizedDistance>
+            </li>
+            <li>
+                <type>personalityOffset</type>
+                <personalityDefName>Rimpsyche_Confidence</personalityDefName>
+                <personalityMultipliers>
+                    <li>
+                        <personalityRange>-1.0~-0.5</personalityRange>
+                        <multiplier>0.8</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>-0.49~0.0</personalityRange>
+                        <multiplier>0.95</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.01~0.5</personalityRange>
+                        <multiplier>1.1</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.51~1.0</personalityRange>
+                        <multiplier>1.25</multiplier>
+                        <flat>2</flat>
+                    </li>
+                </personalityMultipliers>
+            </li>
+            <li>
+                <type>personalityOffset</type>
+                <personalityDefName>Rimpsyche_Diligence</personalityDefName>
+                <personalityMultipliers>
+                    <li>
+                        <personalityRange>-1.0~-0.5</personalityRange>
+                        <multiplier>0.75</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>-0.49~0.0</personalityRange>
+                        <multiplier>0.9</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.01~0.5</personalityRange>
+                        <multiplier>1.1</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.51~1.0</personalityRange>
+                        <multiplier>1.25</multiplier>
+                        <flat>2</flat>
+                    </li>
+                </personalityMultipliers>
+            </li>
+        </conditions>
+
+        <priorityRanges>
+            <li>
+                <validRange>-1~-0.6</validRange>
+                <priority>6~7</priority>
+                <description>I'm much safer than others at cooking</description>
+            </li>
+            <li>
+                <validRange>-0.6~-0.3</validRange>
+                <priority>5~6</priority>
+                <description>I'm safer than most cooks</description>
+            </li>
+            <li>
+                <validRange>-0.3~0.0</validRange>
+                <priority>2~5</priority>
+                <description>I'm safer than average at cooking</description>
+            </li>
+            <li>
+                <validRange>0.0~0.3</validRange>
+                <priority>-1~2</priority>
+                <description>I'm about average at avoiding contamination</description>
+            </li>
+            <li>
+                <validRange>0.3~0.6</validRange>
+                <priority>-4~-1</priority>
+                <description>I'm more likely to contaminate than average</description>
+            </li>
+            <li>
+                <validRange>0.6~1.0</validRange>
+                <priority>-8~-4</priority>
+                <description>I'm much more likely to contaminate meals than others</description>
+            </li>
+        </priorityRanges>
+
+        <targetWorkGivers>
+            <li>DoBillsCook</li>
+            <li>DoBillsCookCampfire</li>
+        </targetWorkGivers>
+
+    </Autonomy.PriorityGiverDef>
+
+    <!-- Cooking priority: absolute kitchen expectations -->
+    <Autonomy.PriorityGiverDef>
+        <defName>CookAbsoluteFoodPoisonPriorityGiver</defName>
+        <label>Cook when I'm careful</label>
+        <description>I cook if my poison chance is acceptable.</description>
+        <isUrgent>false</isUrgent>
+
+        <conditions>
+            <li>
+                <type>infoGiver</type>
+                <infoDefName>FoodPoisonChanceInfoGiver</infoDefName>
+                <requestLocalizedData>false</requestLocalizedData>
+                <requestIndividualData>true</requestIndividualData>
+                <requestNormalizedDistance>false</requestNormalizedDistance>
+            </li>
+            <li>
+                <type>personalityOffset</type>
+                <personalityDefName>Rimpsyche_Organization</personalityDefName>
+                <personalityMultipliers>
+                    <li>
+                        <personalityRange>-1.0~-0.5</personalityRange>
+                        <multiplier>0.8</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>-0.49~0.0</personalityRange>
+                        <multiplier>0.9</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.01~0.5</personalityRange>
+                        <multiplier>1.1</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.51~1.0</personalityRange>
+                        <multiplier>1.25</multiplier>
+                        <flat>2</flat>
+                    </li>
+                </personalityMultipliers>
+            </li>
+            <li>
+                <type>personalityOffset</type>
+                <personalityDefName>Rimpsyche_Passion</personalityDefName>
+                <personalityMultipliers>
+                    <li>
+                        <personalityRange>-1.0~-0.5</personalityRange>
+                        <multiplier>0.85</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>-0.49~0.0</personalityRange>
+                        <multiplier>0.95</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.01~0.5</personalityRange>
+                        <multiplier>1.1</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.51~1.0</personalityRange>
+                        <multiplier>1.2</multiplier>
+                        <flat>1</flat>
+                    </li>
+                </personalityMultipliers>
+            </li>
+        </conditions>
+
+        <priorityRanges>
+            <li>
+                <validRange>0~0.0015</validRange>
+                <priority>7~8</priority>
+                <description>I am an excellent cook</description>
+            </li>
+            <li>
+                <validRange>0.0015~0.005</validRange>
+                <priority>5~7</priority>
+                <description>I cook carefully</description>
+            </li>
+            <li>
+                <validRange>0.005~0.015</validRange>
+                <priority>3~5</priority>
+                <description>Acceptable, but I stay alert</description>
+            </li>
+            <li>
+                <validRange>0.015~0.03</validRange>
+                <priority>0~3</priority>
+                <description>I'll cook if needed</description>
+            </li>
+            <li>
+                <validRange>0.03~0.05</validRange>
+                <priority>-3~0</priority>
+                <description>I'd rather someone else cook</description>
+            </li>
+            <li>
+                <validRange>0.05~1.0</validRange>
+                <priority>-7~-3</priority>
+                <description>I'm a walking health hazard</description>
+            </li>
+        </priorityRanges>
+
+        <targetWorkGivers>
+            <li>DoBillsCook</li>
+            <li>DoBillsCookCampfire</li>
+        </targetWorkGivers>
+
+    </Autonomy.PriorityGiverDef>
+
+    <!-- Butchering priority: normalized efficiency -->
+    <Autonomy.PriorityGiverDef>
+        <defName>ButcherRelativeEfficiencyPriorityGiver</defName>
+        <label>Butcher when I'm the most efficient</label>
+        <description>I butcher when I waste the least meat.</description>
+        <isUrgent>false</isUrgent>
+
+        <conditions>
+            <li>
+                <type>infoGiver</type>
+                <infoDefName>ButcheryFleshEfficiencyInfoGiver</infoDefName>
+                <requestLocalizedData>false</requestLocalizedData>
+                <requestIndividualData>true</requestIndividualData>
+                <requestNormalizedDistance>true</requestNormalizedDistance>
+            </li>
+            <li>
+                <type>personalityOffset</type>
+                <personalityDefName>Rimpsyche_Diligence</personalityDefName>
+                <personalityMultipliers>
+                    <li>
+                        <personalityRange>-1.0~-0.5</personalityRange>
+                        <multiplier>0.75</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>-0.49~0.0</personalityRange>
+                        <multiplier>0.9</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.01~0.5</personalityRange>
+                        <multiplier>1.1</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.51~1.0</personalityRange>
+                        <multiplier>1.25</multiplier>
+                        <flat>2</flat>
+                    </li>
+                </personalityMultipliers>
+            </li>
+            <li>
+                <type>personalityOffset</type>
+                <personalityDefName>Rimpsyche_Competitiveness</personalityDefName>
+                <personalityMultipliers>
+                    <li>
+                        <personalityRange>-1.0~-0.5</personalityRange>
+                        <multiplier>0.8</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>-0.49~0.0</personalityRange>
+                        <multiplier>0.9</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.01~0.5</personalityRange>
+                        <multiplier>1.1</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.51~1.0</personalityRange>
+                        <multiplier>1.2</multiplier>
+                        <flat>1</flat>
+                    </li>
+                </personalityMultipliers>
+            </li>
+        </conditions>
+
+        <priorityRanges>
+            <li>
+                <validRange>-1~-0.6</validRange>
+                <priority>-10~-7</priority>
+                <description>I'm far worse than others at butchering</description>
+            </li>
+            <li>
+                <validRange>-0.6~-0.3</validRange>
+                <priority>-7~-3</priority>
+                <description>Others are better at butchering than me</description>
+            </li>
+            <li>
+                <validRange>-0.3~0.0</validRange>
+                <priority>-3~0</priority>
+                <description>I'm below average at butchering</description>
+            </li>
+            <li>
+                <validRange>0.0~0.3</validRange>
+                <priority>0~3</priority>
+                <description>I'm slightly better than average at butchering</description>
+            </li>
+            <li>
+                <validRange>0.3~0.6</validRange>
+                <priority>3~6</priority>
+                <description>I'm noticeably better than others at butchering</description>
+            </li>
+            <li>
+                <validRange>0.6~1.0</validRange>
+                <priority>6~6</priority>
+                <description>I'm among the best butchers in the colony</description>
+            </li>
+        </priorityRanges>
+
+        <targetWorkGivers>
+            <li>DoBillsButcherFlesh</li>
+        </targetWorkGivers>
+
+    </Autonomy.PriorityGiverDef>
+
+    <!-- Butchering priority: absolute efficiency expectations -->
+    <Autonomy.PriorityGiverDef>
+        <defName>ButcherAbsoluteEfficiencyPriorityGiver</defName>
+        <label>Butcher when I'm efficient</label>
+        <description>I butcher when my efficiency meets expectations.</description>
+        <isUrgent>false</isUrgent>
+
+        <conditions>
+            <li>
+                <type>infoGiver</type>
+                <infoDefName>ButcheryFleshEfficiencyInfoGiver</infoDefName>
+                <requestLocalizedData>false</requestLocalizedData>
+                <requestIndividualData>true</requestIndividualData>
+                <requestNormalizedDistance>false</requestNormalizedDistance>
+            </li>
+            <li>
+                <type>personalityOffset</type>
+                <personalityDefName>Rimpsyche_Competitiveness</personalityDefName>
+                <personalityMultipliers>
+                    <li>
+                        <personalityRange>-1.0~-0.5</personalityRange>
+                        <multiplier>0.8</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>-0.49~0.0</personalityRange>
+                        <multiplier>0.95</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.01~0.5</personalityRange>
+                        <multiplier>1.1</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.51~1.0</personalityRange>
+                        <multiplier>1.25</multiplier>
+                        <flat>2</flat>
+                    </li>
+                </personalityMultipliers>
+            </li>
+            <li>
+                <type>personalityOffset</type>
+                <personalityDefName>Rimpsyche_Tenacity</personalityDefName>
+                <personalityMultipliers>
+                    <li>
+                        <personalityRange>-1.0~-0.5</personalityRange>
+                        <multiplier>0.85</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>-0.49~0.0</personalityRange>
+                        <multiplier>0.95</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.01~0.5</personalityRange>
+                        <multiplier>1.1</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.51~1.0</personalityRange>
+                        <multiplier>1.2</multiplier>
+                        <flat>1</flat>
+                    </li>
+                </personalityMultipliers>
+            </li>
+        </conditions>
+
+        <priorityRanges>
+            <li>
+                <validRange>0~0.6</validRange>
+                <priority>-10~-7</priority>
+                <description>I ruin more meat than I save</description>
+            </li>
+            <li>
+                <validRange>0.6~0.8</validRange>
+                <priority>-7~-3</priority>
+                <description>Others should handle butchering</description>
+            </li>
+            <li>
+                <validRange>0.8~1.0</validRange>
+                <priority>-3~0</priority>
+                <description>I'll butcher if it's urgent</description>
+            </li>
+            <li>
+                <validRange>1.0~1.2</validRange>
+                <priority>0~3</priority>
+                <description>I'm fine at carving meat</description>
+            </li>
+            <li>
+                <validRange>1.2~1.4</validRange>
+                <priority>3~6</priority>
+                <description>I butcher efficiently</description>
+            </li>
+            <li>
+                <validRange>1.4~2.0</validRange>
+                <priority>6~10</priority>
+                <description>I leave almost no scraps</description>
+            </li>
+        </priorityRanges>
+
+        <targetWorkGivers>
+            <li>DoBillsButcherFlesh</li>
+        </targetWorkGivers>
+
+    </Autonomy.PriorityGiverDef>
+
+    <!-- Brewing priority: absolute brewing speed -->
+    <Autonomy.PriorityGiverDef>
+        <defName>BrewingDrugCookingSpeedPriorityGiver</defName>
+        <label>Brew when I'm fast</label>
+        <description>I brew drinks when I can keep the vats busy.</description>
+        <isUrgent>false</isUrgent>
+
+        <conditions>
+            <li>
+                <type>infoGiver</type>
+                <infoDefName>DrugCookingSpeedInfoGiver</infoDefName>
+                <requestLocalizedData>false</requestLocalizedData>
+                <requestIndividualData>true</requestIndividualData>
+                <requestNormalizedDistance>false</requestNormalizedDistance>
+            </li>
+            <li>
+                <type>personalityOffset</type>
+                <personalityDefName>Rimpsyche_Focus</personalityDefName>
+                <personalityMultipliers>
+                    <li>
+                        <personalityRange>-1.0~-0.5</personalityRange>
+                        <multiplier>0.8</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>-0.49~0.0</personalityRange>
+                        <multiplier>0.9</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.01~0.5</personalityRange>
+                        <multiplier>1.1</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.51~1.0</personalityRange>
+                        <multiplier>1.25</multiplier>
+                        <flat>2</flat>
+                    </li>
+                </personalityMultipliers>
+            </li>
+            <li>
+                <type>personalityOffset</type>
+                <personalityDefName>Rimpsyche_Organization</personalityDefName>
+                <personalityMultipliers>
+                    <li>
+                        <personalityRange>-1.0~-0.5</personalityRange>
+                        <multiplier>0.85</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>-0.49~0.0</personalityRange>
+                        <multiplier>0.95</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.01~0.5</personalityRange>
+                        <multiplier>1.1</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.51~1.0</personalityRange>
+                        <multiplier>1.25</multiplier>
+                        <flat>2</flat>
+                    </li>
+                </personalityMultipliers>
+            </li>
+        </conditions>
+
+        <priorityRanges>
+            <li>
+                <validRange>0.1~0.6</validRange>
+                <priority>-8~-4</priority>
+                <description>I'm too slow to bother brewing</description>
+            </li>
+            <li>
+                <validRange>0.6~0.9</validRange>
+                <priority>-3~0</priority>
+                <description>Brewing isn't my strength</description>
+            </li>
+            <li>
+                <validRange>0.9~1.1</validRange>
+                <priority>0~3</priority>
+                <description>I brew at a normal pace</description>
+            </li>
+            <li>
+                <validRange>1.1~1.3</validRange>
+                <priority>3~5</priority>
+                <description>I brew efficiently</description>
+            </li>
+            <li>
+                <validRange>1.3~1.6</validRange>
+                <priority>5~6</priority>
+                <description>I keep the brewing room busy</description>
+            </li>
+            <li>
+                <validRange>1.6~2.5</validRange>
+                <priority>6~7</priority>
+                <description>I churn out drinks rapidly</description>
+            </li>
+        </priorityRanges>
+
+        <targetWorkGivers>
+            <li>DoBillsBrew</li>
+            <li>CookFillHopper</li>
+        </targetWorkGivers>
+
+    </Autonomy.PriorityGiverDef>
+
+</Defs>

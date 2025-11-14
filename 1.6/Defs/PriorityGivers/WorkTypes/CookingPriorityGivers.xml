@@ -7,58 +7,6 @@
     <!-- Cooking, Butchering priority based on individual food pawnNeed InfoGiver-->
 
     <Autonomy.InfoGiverDef>
-        <defName>ColonistFoodNeedIndividualInfoGiver</defName>
-        <label>Personal hunger (colonists)</label>
-        <description>Tracks each colonist's food need individually so hungry pawns know when to cook or butcher.</description>
-        <isLocalizable>false</isLocalizable>
-        <isIndividualizable>true</isIndividualizable>
-        <calculation>Avg</calculation>
-        <isUrgent>true</isUrgent>
-        <sourceType>pawnNeed</sourceType>
-        <targetNeed>Food</targetNeed>
-
-        <filters>
-            <include>
-                <li>player</li>
-            </include>
-            <exclude>
-                <li>dead</li>
-                <li>downed</li>
-            </exclude>
-        </filters>
-    </Autonomy.InfoGiverDef>
-
-    <!-- Cooking, Butchering priority based on global avg food pawnNeed InfoGiver-->
-
-    <Autonomy.InfoGiverDef>
-        <defName>ColonyFoodNeedAverageInfoGiver</defName>
-        <label>Colony hunger average</label>
-        <description>Watches the average food need across colonists, guests, and prisoners to gauge mealtime urgency.</description>
-        <isLocalizable>false</isLocalizable>
-        <isIndividualizable>false</isIndividualizable>
-        <calculation>Avg</calculation>
-        <isUrgent>true</isUrgent>
-        <sourceType>pawnNeed</sourceType>
-        <targetNeed>Food</targetNeed>
-
-        <filters>
-            <include>
-                <li>player</li>
-                <li>guest</li>
-                <li>prisoner</li>
-            </include>
-            <exclude>
-                <li>dead</li>
-                <li>downed</li>
-            </exclude>
-        </filters>
-    </Autonomy.InfoGiverDef>
-
-    <!-- Cooking priority based on competitive FoodPoisonChance pawnStat InfoGiver
-    (Represents kitchen skill)
-    (Perception of self vs community)-->
-
-    <Autonomy.InfoGiverDef>
         <defName>FoodPoisonChanceInfoGiver</defName>
         <label>Food poison chance</label>
         <description>Tracks each pawn's chance to avoid poisoning meals, letting skilled cooks step up.</description>
@@ -79,14 +27,6 @@
             </exclude>
         </filters>
     </Autonomy.InfoGiverDef>
-
-    <!-- Cooking priority based on flat FoodPoisonChance pawnStat InfoGiver
-    (Represents kitchen skill)
-    (Perception of self vs expectations)-->
-
-    <!-- Butchering priority based on competitive ButcheryFleshEfficiency pawnStat InfoGiver
-    (Represents butchering skill)
-    (Perception of self vs community)-->
 
     <Autonomy.InfoGiverDef>
         <defName>ButcheryFleshEfficiencyInfoGiver</defName>
@@ -152,7 +92,7 @@
         <conditions>
             <li>
                 <type>infoGiver</type>
-                <infoDefName>ColonistFoodNeedIndividualInfoGiver</infoDefName>
+                <infoDefName>ColonistFoodNeedInfoGiver</infoDefName>
                 <requestLocalizedData>false</requestLocalizedData>
                 <requestIndividualData>true</requestIndividualData>
                 <requestNormalizedDistance>false</requestNormalizedDistance>
@@ -253,7 +193,7 @@
         <conditions>
             <li>
                 <type>infoGiver</type>
-                <infoDefName>ColonyFoodNeedAverageInfoGiver</infoDefName>
+                <infoDefName>ColonistFoodNeedInfoGiver</infoDefName>
                 <requestLocalizedData>false</requestLocalizedData>
                 <requestIndividualData>false</requestIndividualData>
                 <requestNormalizedDistance>false</requestNormalizedDistance>

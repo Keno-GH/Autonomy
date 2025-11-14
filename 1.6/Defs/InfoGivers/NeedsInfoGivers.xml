@@ -1,0 +1,27 @@
+<Defs>
+
+    <Autonomy.InfoGiverDef>
+        <defName>ColonistFoodNeedInfoGiver</defName>
+        <label>Personal hunger (colonists)</label>
+        <description>Tracks each colonist's food need individually so hungry pawns know when to cook or butcher.</description>
+        <isLocalizable>false</isLocalizable>
+        <isIndividualizable>true</isIndividualizable>
+        <calculation>Avg</calculation>
+        <isUrgent>true</isUrgent>
+        <sourceType>pawnNeed</sourceType>
+        <targetNeed>Food</targetNeed>
+
+        <filters>
+            <include>
+                <li>player</li>
+                <li>guest</li>
+                <li>prisoner</li>
+            </include>
+            <exclude>
+                <li>dead</li>
+                <li>downed</li>
+            </exclude>
+        </filters>
+    </Autonomy.InfoGiverDef>
+
+</Defs>

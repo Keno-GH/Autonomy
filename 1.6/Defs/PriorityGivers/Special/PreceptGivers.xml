@@ -240,7 +240,7 @@
         </priorityResults>
 
         <targetWorkGivers>
-			<li>ExecuteSlave</li>
+			<!-- <li>ExecuteSlave</li> -->
             <li>EnslavePrisoner</li>
             <li>SuppressSlave</li>
         </targetWorkGivers>

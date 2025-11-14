@@ -168,32 +168,32 @@
             <li>
                 <skillLevelRange>0</skillLevelRange>
                 <priority>-5</priority>
-                <description>I am the worst at this</description>
+                <description>I am the least skilled</description>
             </li>
             <li>
                 <skillLevelRange>1</skillLevelRange>
                 <priority>-5~0</priority>
-                <description>I am below average at this</description>
+                <description>I am below average at this skill</description>
             </li>
             <li>
                 <skillLevelRange>2</skillLevelRange>
                 <priority>0~5</priority>
-                <description>Others are better than me</description>
+                <description>Others have more skill</description>
             </li>
             <li>
                 <skillLevelRange>3</skillLevelRange>
                 <priority>5~10</priority>
-                <description>I am average at this</description>
+                <description>I am average at this skill</description>
             </li>
             <li>
                 <skillLevelRange>4</skillLevelRange>
                 <priority>10~15</priority>
-                <description>I am better than most at this</description>
+                <description>I have more skill than most</description>
             </li>
             <li>
                 <skillLevelRange>5</skillLevelRange>
                 <priority>15~15</priority>
-                <description>I am the best at this</description>
+                <description>I am the most skilled</description>
             </li>
         </priorityRanges>
 

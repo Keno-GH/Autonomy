@@ -52,10 +52,12 @@
                     <li>
                         <personalityRange>0.1~0.5</personalityRange>
                         <multiplier>1.5</multiplier>
+                        <flat>1</flat>
                     </li>
                     <li>
                         <personalityRange>0.51~1.0</personalityRange>
                         <multiplier>2</multiplier>
+                        <flat>2</flat>
                     </li>
                 </personalityMultipliers>
             </li>
@@ -119,10 +121,12 @@
                     <li>
                         <personalityRange>0.1~0.5</personalityRange>
                         <multiplier>1.5</multiplier>
+                        <flat>1</flat>
                     </li>
                     <li>
                         <personalityRange>0.51~1.0</personalityRange>
                         <multiplier>2</multiplier>
+                        <flat>3</flat>
                     </li>
                 </personalityMultipliers>
             </li>
@@ -217,10 +221,12 @@
                     <li>
                         <personalityRange>0.1~0.5</personalityRange>
                         <multiplier>1.5</multiplier>
+                        <flat>2</flat>
                     </li>
                     <li>
                         <personalityRange>0.51~1.0</personalityRange>
                         <multiplier>2</multiplier>
+                        <flat>3</flat>
                     </li>
                 </personalityMultipliers>
             </li>
@@ -228,7 +234,7 @@
 
         <priorityResult>
             <priority>9</priority>
-            <description>I was born for this</description>
+            <description>I am a natural</description>
         </priorityResult>
     </Autonomy.PassionGiverDef>
 
@@ -298,10 +304,12 @@
                     <li>
                         <personalityRange>0.1~0.5</personalityRange>
                         <multiplier>1.5</multiplier>
+                        <flat>2</flat>
                     </li>
                     <li>
                         <personalityRange>0.51~1.0</personalityRange>
                         <multiplier>2</multiplier>
+                        <flat>4</flat>
                     </li>
                 </personalityMultipliers>
             </li>
@@ -309,7 +317,7 @@
 
         <priorityResult>
             <priority>20</priority>
-            <description>I live for this</description>
+            <description>I want to do nothing else</description>
         </priorityResult>
     </Autonomy.PassionGiverDef>
 
@@ -365,10 +373,12 @@
                     <li>
                         <personalityRange>0.1~0.5</personalityRange>
                         <multiplier>1.5</multiplier>
+                        <flat>1</flat>
                     </li>
                     <li>
                         <personalityRange>0.51~1.0</personalityRange>
                         <multiplier>2</multiplier>
+                        <flat>2</flat>
                     </li>
                 </personalityMultipliers>
             </li>
@@ -417,10 +427,12 @@
                     <li>
                         <personalityRange>0.1~0.5</personalityRange>
                         <multiplier>1.5</multiplier>
+                        <flat>2</flat>
                     </li>
                     <li>
                         <personalityRange>0.51~1.0</personalityRange>
                         <multiplier>2</multiplier>
+                        <flat>3</flat>
                     </li>
                 </personalityMultipliers>
             </li>
@@ -510,10 +522,12 @@
                     <li>
                         <personalityRange>0.1~0.5</personalityRange>
                         <multiplier>1.5</multiplier>
+                        <flat>1</flat>
                     </li>
                     <li>
                         <personalityRange>0.51~1.0</personalityRange>
                         <multiplier>2</multiplier>
+                        <flat>2</flat>
                     </li>
                 </personalityMultipliers>
             </li>
@@ -576,10 +590,12 @@
                     <li>
                         <personalityRange>0.1~0.5</personalityRange>
                         <multiplier>1.5</multiplier>
+                        <flat>1</flat>
                     </li>
                     <li>
                         <personalityRange>0.51~1.0</personalityRange>
                         <multiplier>2</multiplier>
+                        <flat>2</flat>
                     </li>
                 </personalityMultipliers>
             </li>
@@ -642,10 +658,12 @@
                     <li>
                         <personalityRange>0.1~0.5</personalityRange>
                         <multiplier>1.5</multiplier>
+                        <flat>2</flat>
                     </li>
                     <li>
                         <personalityRange>0.51~1.0</personalityRange>
                         <multiplier>2</multiplier>
+                        <flat>3</flat>
                     </li>
                 </personalityMultipliers>
             </li>
@@ -667,7 +685,7 @@
 
         <priorityResult>
             <priority>15</priority>
-            <description>Night is the perfect time for this</description>
+            <description>Nighttime inspires me</description>
         </priorityResult>
     </Autonomy.PassionGiverDef>
 
@@ -736,10 +754,12 @@
                     <li>
                         <personalityRange>0.1~0.5</personalityRange>
                         <multiplier>1.5</multiplier>
+                        <flat>3</flat>
                     </li>
                     <li>
                         <personalityRange>0.51~1.0</personalityRange>
                         <multiplier>2</multiplier>
+                        <flat>5</flat>
                     </li>
                 </personalityMultipliers>
             </li>
@@ -747,7 +767,7 @@
 
         <priorityResult>
             <priority>20</priority>
-            <description>This is so great</description>
+            <description>I really want to do this</description>
         </priorityResult>
     </Autonomy.PassionGiverDef>
 
@@ -802,10 +822,12 @@
                     <li>
                         <personalityRange>0.1~0.5</personalityRange>
                         <multiplier>1.5</multiplier>
+                        <flat>1</flat>
                     </li>
                     <li>
                         <personalityRange>0.51~1.0</personalityRange>
                         <multiplier>2</multiplier>
+                        <flat>2</flat>
                     </li>
                 </personalityMultipliers>
             </li>
@@ -813,7 +835,7 @@
         
         <priorityResult>
             <priority>5</priority>
-            <description>I love to do this</description>
+            <description>I really like to do this</description>
         </priorityResult>
     </Autonomy.PassionGiverDef>
 
@@ -882,10 +904,12 @@
                     <li>
                         <personalityRange>0.1~0.5</personalityRange>
                         <multiplier>1.5</multiplier>
+                        <flat>1</flat>
                     </li>
                     <li>
                         <personalityRange>0.51~1.0</personalityRange>
                         <multiplier>2</multiplier>
+                        <flat>2</flat>
                     </li>
                 </personalityMultipliers>
             </li>
@@ -893,7 +917,7 @@
 
         <priorityResult>
             <priority>5</priority>
-            <description>I need to do this</description>
+            <description>I am obsessed with this</description>
         </priorityResult>
     </Autonomy.PassionGiverDef>
 
@@ -949,10 +973,12 @@
                     <li>
                         <personalityRange>0.1~0.5</personalityRange>
                         <multiplier>1.5</multiplier>
+                        <flat>1</flat>
                     </li>
                     <li>
                         <personalityRange>0.51~1.0</personalityRange>
                         <multiplier>2</multiplier>
+                        <flat>2</flat>
                     </li>
                 </personalityMultipliers>
             </li>
@@ -1029,10 +1055,12 @@
                     <li>
                         <personalityRange>0.1~0.5</personalityRange>
                         <multiplier>1.5</multiplier>
+                        <flat>3</flat>
                     </li>
                     <li>
                         <personalityRange>0.51~1.0</personalityRange>
                         <multiplier>2</multiplier>
+                        <flat>5</flat>
                     </li>
                 </personalityMultipliers>
             </li>
@@ -1068,7 +1096,7 @@
 
         <priorityResult>
             <priority>20</priority>
-            <description>I have to do this. It's now or never</description>
+            <description>I am inspired by my grudge</description>
         </priorityResult>
     </Autonomy.PassionGiverDef>
 
@@ -1137,10 +1165,12 @@
                     <li>
                         <personalityRange>0.1~0.5</personalityRange>
                         <multiplier>1.5</multiplier>
+                        <flat>2</flat>
                     </li>
                     <li>
                         <personalityRange>0.51~1.0</personalityRange>
                         <multiplier>2</multiplier>
+                        <flat>3</flat>
                     </li>
                 </personalityMultipliers>
             </li>
@@ -1148,7 +1178,7 @@
 
         <priorityResult>
             <priority>9</priority>
-            <description>It's wrong, but I want it anyways</description>
+            <description>I shouldn't, but I love to do this</description>
         </priorityResult>
     </Autonomy.PassionGiverDef>
 
@@ -1203,10 +1233,12 @@
                     <li>
                         <personalityRange>0.1~0.5</personalityRange>
                         <multiplier>1.5</multiplier>
+                        <flat>1</flat>
                     </li>
                     <li>
                         <personalityRange>0.51~1.0</personalityRange>
                         <multiplier>2</multiplier>
+                        <flat>2</flat>
                     </li>
                 </personalityMultipliers>
             </li>
@@ -1269,10 +1301,12 @@
                     <li>
                         <personalityRange>0.1~0.5</personalityRange>
                         <multiplier>1.5</multiplier>
+                        <flat>2</flat>
                     </li>
                     <li>
                         <personalityRange>0.51~1.0</personalityRange>
                         <multiplier>2</multiplier>
+                        <flat>3</flat>
                     </li>
                 </personalityMultipliers>
             </li>
@@ -1348,10 +1382,12 @@
                     <li>
                         <personalityRange>0.1~0.5</personalityRange>
                         <multiplier>1.5</multiplier>
+                        <flat>1</flat>
                     </li>
                     <li>
                         <personalityRange>0.51~1.0</personalityRange>
                         <multiplier>2</multiplier>
+                        <flat>2</flat>
                     </li>
                 </personalityMultipliers>
             </li>
@@ -1400,10 +1436,12 @@
                     <li>
                         <personalityRange>0.1~0.5</personalityRange>
                         <multiplier>1.5</multiplier>
+                        <flat>2</flat>
                     </li>
                     <li>
                         <personalityRange>0.51~1.0</personalityRange>
                         <multiplier>2</multiplier>
+                        <flat>3</flat>
                     </li>
                 </personalityMultipliers>
             </li>
@@ -1425,7 +1463,7 @@
 
         <priorityResult>
             <priority>9</priority>
-            <description>The blood flows</description>
+            <description>Blood inspires me</description>
         </priorityResult>
     </Autonomy.PassionGiverDef>
 
@@ -1479,10 +1517,12 @@
                     <li>
                         <personalityRange>0.1~0.5</personalityRange>
                         <multiplier>1.5</multiplier>
+                        <flat>1</flat>
                     </li>
                     <li>
                         <personalityRange>0.51~1.0</personalityRange>
                         <multiplier>2</multiplier>
+                        <flat>2</flat>
                     </li>
                 </personalityMultipliers>
             </li>
@@ -1531,10 +1571,12 @@
                     <li>
                         <personalityRange>0.1~0.5</personalityRange>
                         <multiplier>1.5</multiplier>
+                        <flat>2</flat>
                     </li>
                     <li>
                         <personalityRange>0.51~1.0</personalityRange>
                         <multiplier>2</multiplier>
+                        <flat>3</flat>
                     </li>
                 </personalityMultipliers>
             </li>
@@ -1610,10 +1652,12 @@
                     <li>
                         <personalityRange>0.1~0.5</personalityRange>
                         <multiplier>1.5</multiplier>
+                        <flat>1</flat>
                     </li>
                     <li>
                         <personalityRange>0.51~1.0</personalityRange>
                         <multiplier>2</multiplier>
+                        <flat>2</flat>
                     </li>
                 </personalityMultipliers>
             </li>
@@ -1662,10 +1706,12 @@
                     <li>
                         <personalityRange>0.1~0.5</personalityRange>
                         <multiplier>1.5</multiplier>
+                        <flat>1</flat>
                     </li>
                     <li>
                         <personalityRange>0.51~1.0</personalityRange>
                         <multiplier>2</multiplier>
+                        <flat>3</flat>
                     </li>
                 </personalityMultipliers>
             </li>

@@ -532,8 +532,9 @@ namespace Autonomy.Systems
                     
                     if (matchingPrecept != null)
                     {
-                        // Create unique key for deduplication
-                        string preceptKey = $"Precept_{preceptGiver.defName}_{workGiver.defName}";
+                        // Create unique key for deduplication - limit to once per WorkType to avoid stacking across WorkGivers
+                        string workTypeKey = workGiver.workType?.defName ?? workGiver.defName;
+                        string preceptKey = $"Precept_{preceptGiver.defName}_{workTypeKey}";
                         bool isDeduplication = usedPriorityGivers.Contains(preceptKey);
                         
                         var priorityGiverResult = new PriorityGiverResult

@@ -1,0 +1,197 @@
+<Defs>
+
+    <!-- Hunting priority: normalized hunting stealth -->
+    <Autonomy.PriorityGiverDef>
+        <defName>HuntRelativeStealthPriorityGiver</defName>
+        <label>Hunt when I'm stealthy</label>
+        <description>I volunteer to hunt when my stealth keeps prey calm.</description>
+        <isUrgent>false</isUrgent>
+
+        <conditions>
+            <li>
+                <type>infoGiver</type>
+                <infoDefName>HuntingStealthInfoGiver</infoDefName>
+                <requestLocalizedData>false</requestLocalizedData>
+                <requestIndividualData>true</requestIndividualData>
+                <requestNormalizedDistance>true</requestNormalizedDistance>
+            </li>
+            <li>
+                <type>personalityOffset</type>
+                <personalityDefName>Rimpsyche_Focus</personalityDefName>
+                <personalityMultipliers>
+                    <li>
+                        <personalityRange>-1.0~-0.5</personalityRange>
+                        <multiplier>0.75</multiplier>
+                        <flat>-2</flat>
+                    </li>
+                    <li>
+                        <personalityRange>-0.49~0.0</personalityRange>
+                        <multiplier>0.9</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.01~0.5</personalityRange>
+                        <multiplier>1.1</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.51~1.0</personalityRange>
+                        <multiplier>1.25</multiplier>
+                        <flat>2</flat>
+                    </li>
+                </personalityMultipliers>
+            </li>
+            <li>
+                <type>personalityOffset</type>
+                <personalityDefName>Rimpsyche_Discipline</personalityDefName>
+                <personalityMultipliers>
+                    <li>
+                        <personalityRange>-1.0~-0.5</personalityRange>
+                        <multiplier>0.8</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>-0.49~0.0</personalityRange>
+                        <multiplier>0.9</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.01~0.5</personalityRange>
+                        <multiplier>1.1</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.51~1.0</personalityRange>
+                        <multiplier>1.2</multiplier>
+                        <flat>2</flat>
+                    </li>
+                </personalityMultipliers>
+            </li>
+        </conditions>
+
+        <priorityRanges>
+            <li>
+                <validRange>-1~-0.5</validRange>
+                <priority>-5~-2</priority>
+                <description>I'm noisy and should let someone else hunt.</description>
+            </li>
+            <li>
+                <validRange>-0.5~0.0</validRange>
+                <priority>-2~1</priority>
+                <description>I can hunt if needed but I'm not ideal.</description>
+            </li>
+            <li>
+                <validRange>0.0~0.5</validRange>
+                <priority>1~6</priority>
+                <description>I'm reasonably stealthy for hunting.</description>
+            </li>
+            <li>
+                <validRange>0.5~1.0</validRange>
+                <priority>6~10</priority>
+                <description>I'm among our stealthiest hunters.</description>
+            </li>
+        </priorityRanges>
+
+        <targetWorkGivers>
+            <li>HunterHunt</li>
+        </targetWorkGivers>
+
+    </Autonomy.PriorityGiverDef>
+
+    <!-- Hunting priority: feed hungry colony by hunting -->
+    <Autonomy.PriorityGiverDef>
+        <defName>HuntColonyHungerPriorityGiver</defName>
+        <label>Hunt for hungry colony</label>
+        <description>I hunt when the colony's food stores run low.</description>
+        <isUrgent>true</isUrgent>
+
+        <conditions>
+            <li>
+                <type>infoGiver</type>
+                <infoDefName>ColonistFoodNeedInfoGiver</infoDefName>
+                <requestLocalizedData>false</requestLocalizedData>
+                <requestIndividualData>false</requestIndividualData>
+                <requestNormalizedDistance>false</requestNormalizedDistance>
+            </li>
+            <li>
+                <type>personalityOffset</type>
+                <personalityDefName>Rimpsyche_Compassion</personalityDefName>
+                <personalityMultipliers>
+                    <li>
+                        <personalityRange>-1.0~-0.5</personalityRange>
+                        <multiplier>0.7</multiplier>
+                        <flat>-3</flat>
+                    </li>
+                    <li>
+                        <personalityRange>-0.49~0.0</personalityRange>
+                        <multiplier>0.85</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.01~0.5</personalityRange>
+                        <multiplier>1.15</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.51~1.0</personalityRange>
+                        <multiplier>1.3</multiplier>
+                        <flat>3</flat>
+                    </li>
+                </personalityMultipliers>
+            </li>
+            <li>
+                <type>personalityOffset</type>
+                <personalityDefName>Rimpsyche_Diligence</personalityDefName>
+                <personalityMultipliers>
+                    <li>
+                        <personalityRange>-1.0~-0.5</personalityRange>
+                        <multiplier>0.75</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>-0.49~0.0</personalityRange>
+                        <multiplier>0.9</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.01~0.5</personalityRange>
+                        <multiplier>1.1</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.51~1.0</personalityRange>
+                        <multiplier>1.25</multiplier>
+                        <flat>2</flat>
+                    </li>
+                </personalityMultipliers>
+            </li>
+        </conditions>
+
+        <priorityRanges>
+            <li>
+                <validRange>0~0</validRange>
+                <priority>0</priority>
+                <description>No colonists need food right now.</description>
+            </li>
+            <li>
+                <validRange>0.01~0.14</validRange>
+                <priority>12</priority>
+                <description>The colony is starving—we need meat fast.</description>
+            </li>
+            <li>
+                <validRange>0.15~0.29</validRange>
+                <priority>8</priority>
+                <description>Colonists are very hungry.</description>
+            </li>
+            <li>
+                <validRange>0.3~0.49</validRange>
+                <priority>4</priority>
+                <description>People are getting hungry—time to hunt.</description>
+            </li>
+            <li>
+                <validRange>0.5~1.0</validRange>
+                <priority>0</priority>
+                <description>Bellies are full; hunting is optional.</description>
+            </li>
+        </priorityRanges>
+
+        <targetWorkGivers>
+            <li>HunterHunt</li>
+        </targetWorkGivers>
+
+    </Autonomy.PriorityGiverDef>
+
+    <!-- Note, a preceptGiver also modifies this worktype 
+    if animales are revered-->
+
+</Defs>

@@ -1,0 +1,383 @@
+<Defs>
+
+    <!-- Infogiver for PlantWorkSpeed stat, individualizable,
+    non urgent -->
+    <Autonomy.InfoGiverDef>
+        <defName>PlantWorkSpeedInfoGiver</defName>
+        <label>Plant work speed</label>
+        <description>Tracks each pawn's plant work speed so fast sowers can take the lead.</description>
+        <isLocalizable>false</isLocalizable>
+        <isIndividualizable>true</isIndividualizable>
+        <calculation>Avg</calculation>
+        <isUrgent>false</isUrgent>
+        <sourceType>pawnStat</sourceType>
+        <targetStat>PlantWorkSpeed</targetStat>
+
+        <filters>
+            <include>
+                <li>player</li>
+            </include>
+            <exclude>
+                <li>dead</li>
+                <li>downed</li>
+            </exclude>
+        </filters>
+    </Autonomy.InfoGiverDef>
+
+    <!-- Prioritygiver for workgiver GrowerSow using 
+    PlantWorkSpeed stat infoGiver with individualized
+    range, from 0.10 to 4.00, with a priorityresult
+    from -5 to 10, with 0 at range 1.00 -->
+    <Autonomy.PriorityGiverDef>
+        <defName>GrowerSowPlantWorkSpeedPriorityGiver</defName>
+        <label>Sow when I'm fast</label>
+        <description>I take sowing jobs when my hands can keep up with the fields.</description>
+        <isUrgent>false</isUrgent>
+
+        <conditions>
+            <li>
+                <type>infoGiver</type>
+                <infoDefName>PlantWorkSpeedInfoGiver</infoDefName>
+                <requestLocalizedData>false</requestLocalizedData>
+                <requestIndividualData>true</requestIndividualData>
+                <requestNormalizedDistance>false</requestNormalizedDistance>
+            </li>
+            <li>
+                <type>personalityOffset</type>
+                <personalityDefName>Rimpsyche_Diligence</personalityDefName>
+                <personalityMultipliers>
+                    <li>
+                        <personalityRange>-1.0~-0.5</personalityRange>
+                        <multiplier>0.75</multiplier>
+                        <flat>-3</flat>
+                    </li>
+                    <li>
+                        <personalityRange>-0.49~0.0</personalityRange>
+                        <multiplier>0.9</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.01~0.5</personalityRange>
+                        <multiplier>1.1</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.51~1.0</personalityRange>
+                        <multiplier>1.25</multiplier>
+                        <flat>2</flat>
+                    </li>
+                </personalityMultipliers>
+            </li>
+            <li>
+                <type>personalityOffset</type>
+                <personalityDefName>Rimpsyche_Organization</personalityDefName>
+                <personalityMultipliers>
+                    <li>
+                        <personalityRange>-1.0~-0.5</personalityRange>
+                        <multiplier>0.8</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>-0.49~0.0</personalityRange>
+                        <multiplier>0.9</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.01~0.5</personalityRange>
+                        <multiplier>1.1</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.51~1.0</personalityRange>
+                        <multiplier>1.25</multiplier>
+                        <flat>2</flat>
+                    </li>
+                </personalityMultipliers>
+            </li>
+        </conditions>
+
+        <priorityRanges>
+            <li>
+                <validRange>0~0.09</validRange>
+                <priority>-10~-7</priority>
+                <description>I can barely move buds into soil.</description>
+            </li>
+            <li>
+                <validRange>0.1~0.5</validRange>
+                <priority>-5~-2</priority>
+                <description>I am painfully slow at plant work.</description>
+            </li>
+            <li>
+                <validRange>0.51~0.89</validRange>
+                <priority>-2~0</priority>
+                <description>I am terribly slow at plant work.</description>
+            </li>
+            <li>
+                <validRange>0.9~1.1</validRange>
+                <priority>-1~1</priority>
+                <description>I'm about average at plant work.</description>
+            </li>
+            <li>
+                <validRange>1.11~1.5</validRange>
+                <priority>1~4</priority>
+                <description>I'm a dependable field worker.</description>
+            </li>
+            <li>
+                <validRange>1.51~2.5</validRange>
+                <priority>4~7</priority>
+                <description>I can cover a lot of ground quickly.</description>
+            </li>
+            <li>
+                <validRange>2.51~4.0</validRange>
+                <priority>7~10</priority>
+                <description>I'm lightning fast at plant work.</description>
+            </li>
+            <li>
+                <validRange>4.01~999</validRange>
+                <priority>10</priority>
+                <description>I'm unbelievably fast at plant work.</description>
+            </li>
+        </priorityRanges>
+
+        <targetWorkGivers>
+            <li>GrowerSow</li>
+            <li>PlantsCut</li>
+        </targetWorkGivers>
+
+    </Autonomy.PriorityGiverDef>
+
+    <!-- Infogiver for PlantHarvestYield stat,
+    avg and individualizable, non urgent -->
+    <Autonomy.InfoGiverDef>
+        <defName>PlantHarvestYieldInfoGiver</defName>
+        <label>Plant harvest yield</label>
+        <description>Tracks each pawn's ability to harvest mature crops with minimal waste.</description>
+        <isLocalizable>false</isLocalizable>
+        <isIndividualizable>true</isIndividualizable>
+        <calculation>Avg</calculation>
+        <isUrgent>false</isUrgent>
+        <sourceType>pawnStat</sourceType>
+        <targetStat>PlantHarvestYield</targetStat>
+
+        <filters>
+            <include>
+                <li>player</li>
+            </include>
+            <exclude>
+                <li>dead</li>
+                <li>downed</li>
+            </exclude>
+        </filters>
+    </Autonomy.InfoGiverDef>
+
+    <!-- Prioritygiver for workgiver GrowerHarvest using
+    PlantHarvestYield stat infoGiver with competitive
+    normalized range, from -1 to 1, with a priorityresult
+    from -5 to 10, with 0 at range 0 -->
+    <Autonomy.PriorityGiverDef>
+        <defName>GrowerHarvestYieldPriorityGiver</defName>
+        <label>Harvest when I'm precise</label>
+        <description>I harvest when I'm likely to bring in the fullest yields.</description>
+        <isUrgent>false</isUrgent>
+
+        <conditions>
+            <li>
+                <type>infoGiver</type>
+                <infoDefName>PlantHarvestYieldInfoGiver</infoDefName>
+                <requestLocalizedData>false</requestLocalizedData>
+                <requestIndividualData>true</requestIndividualData>
+                <requestNormalizedDistance>true</requestNormalizedDistance>
+            </li>
+            <li>
+                <type>personalityOffset</type>
+                <personalityDefName>Rimpsyche_Discipline</personalityDefName>
+                <personalityMultipliers>
+                    <li>
+                        <personalityRange>-1.0~-0.5</personalityRange>
+                        <multiplier>0.8</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>-0.49~0.0</personalityRange>
+                        <multiplier>0.9</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.01~0.5</personalityRange>
+                        <multiplier>1.1</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.51~1.0</personalityRange>
+                        <multiplier>1.2</multiplier>
+                        <flat>2</flat>
+                    </li>
+                </personalityMultipliers>
+            </li>
+            <li>
+                <type>personalityOffset</type>
+                <personalityDefName>Rimpsyche_Passion</personalityDefName>
+                <personalityMultipliers>
+                    <li>
+                        <personalityRange>-1.0~-0.5</personalityRange>
+                        <multiplier>0.78</multiplier>
+                        <flat>-2</flat>
+                    </li>
+                    <li>
+                        <personalityRange>-0.49~0.0</personalityRange>
+                        <multiplier>0.9</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.01~0.5</personalityRange>
+                        <multiplier>1.1</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.51~1.0</personalityRange>
+                        <multiplier>1.25</multiplier>
+                        <flat>2</flat>
+                    </li>
+                </personalityMultipliers>
+            </li>
+        </conditions>
+
+        <priorityRanges>
+            <li>
+                <validRange>-1~-0.6</validRange>
+                <priority>-5~-3</priority>
+                <description>I waste too many crops when harvesting.</description>
+            </li>
+            <li>
+                <validRange>-0.6~-0.3</validRange>
+                <priority>-3~-1</priority>
+                <description>I'm not the best option for harvesting.</description>
+            </li>
+            <li>
+                <validRange>-0.3~0.0</validRange>
+                <priority>-1~0</priority>
+                <description>I can harvest if needed.</description>
+            </li>
+            <li>
+                <validRange>0.0~0.3</validRange>
+                <priority>0~3</priority>
+                <description>I'm slightly above average at harvesting.</description>
+            </li>
+            <li>
+                <validRange>0.3~0.6</validRange>
+                <priority>3~7</priority>
+                <description>I reliably bring in big harvests.</description>
+            </li>
+            <li>
+                <validRange>0.6~1.0</validRange>
+                <priority>7~10</priority>
+                <description>I'm among the best at harvesting.</description>
+            </li>
+        </priorityRanges>
+
+        <targetWorkGivers>
+            <li>GrowerHarvest</li>
+            <li>PlantsCut</li>
+        </targetWorkGivers>
+
+    </Autonomy.PriorityGiverDef>
+
+    <!-- Prioritygiver for workgiver GrowerHarvest and GrowerSow
+    using ColonistFoodNeedInfoGiver with the global result
+    inspired in the result ranges of the prioritygiver
+    CookColonyHungerPriorityGiver -->
+    <Autonomy.PriorityGiverDef>
+        <defName>GrowColonyHungerPriorityGiver</defName>
+        <label>Grow food for hungry colony</label>
+        <description>I plant and harvest when the colony needs fresh meals.</description>
+        <isUrgent>true</isUrgent>
+
+        <conditions>
+            <li>
+                <type>infoGiver</type>
+                <infoDefName>ColonistFoodNeedInfoGiver</infoDefName>
+                <requestLocalizedData>false</requestLocalizedData>
+                <requestIndividualData>false</requestIndividualData>
+                <requestNormalizedDistance>false</requestNormalizedDistance>
+            </li>
+            <li>
+                <type>personalityOffset</type>
+                <personalityDefName>Rimpsyche_Compassion</personalityDefName>
+                <personalityMultipliers>
+                    <li>
+                        <personalityRange>-1.0~-0.5</personalityRange>
+                        <multiplier>0.7</multiplier>
+                        <flat>-3</flat>
+                    </li>
+                    <li>
+                        <personalityRange>-0.49~0.0</personalityRange>
+                        <multiplier>0.85</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.01~0.5</personalityRange>
+                        <multiplier>1.15</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.51~1.0</personalityRange>
+                        <multiplier>1.3</multiplier>
+                        <flat>3</flat>
+                    </li>
+                </personalityMultipliers>
+            </li>
+            <li>
+                <type>personalityOffset</type>
+                <personalityDefName>Rimpsyche_Diligence</personalityDefName>
+                <personalityMultipliers>
+                    <li>
+                        <personalityRange>-1.0~-0.5</personalityRange>
+                        <multiplier>0.75</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>-0.49~0.0</personalityRange>
+                        <multiplier>0.9</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.01~0.5</personalityRange>
+                        <multiplier>1.1</multiplier>
+                    </li>
+                    <li>
+                        <personalityRange>0.51~1.0</personalityRange>
+                        <multiplier>1.25</multiplier>
+                        <flat>2</flat>
+                    </li>
+                </personalityMultipliers>
+            </li>
+        </conditions>
+
+        <priorityRanges>
+            <li>
+                <validRange>0~0</validRange>
+                <priority>0</priority>
+                <description>No food needs to maintain.</description>
+            </li>
+            <li>
+                <validRange>0.01~0.14</validRange>
+                <priority>11~14</priority>
+                <description>Our people are starving.</description>
+            </li>
+            <li>
+                <validRange>0.15~0.29</validRange>
+                <priority>7~10</priority>
+                <description>People are very hungry.</description>
+            </li>
+            <li>
+                <validRange>0.3~0.49</validRange>
+                <priority>3~6</priority>
+                <description>The people are becoming hungry.</description>
+            </li>
+            <li>
+                <validRange>0.5~0.79</validRange>
+                <priority>0~2</priority>
+                <description>Food is decent but we can prep more.</description>
+            </li>
+            <li>
+                <validRange>0.8~1.0</validRange>
+                <priority>-3~0</priority>
+                <description>Everyone is fed so farming can wait.</description>
+            </li>
+        </priorityRanges>
+
+        <targetWorkGivers>
+            <li>GrowerSow</li>
+            <li>GrowerHarvest</li>
+            <li>PlantsCut</li>
+        </targetWorkGivers>
+
+    </Autonomy.PriorityGiverDef>
+
+</Defs>

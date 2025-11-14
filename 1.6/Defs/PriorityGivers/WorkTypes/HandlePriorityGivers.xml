@@ -231,12 +231,12 @@
         <priorityRanges>
             <li>
                 <validRange>-1~-0.6</validRange>
-                <priority>-10~-7</priority>
+                <priority>-6~-5</priority>
                 <description>I am bad at animal work</description>
             </li>
             <li>
                 <validRange>-0.6~-0.3</validRange>
-                <priority>-7~-3</priority>
+                <priority>-5~-3</priority>
                 <description>There are better people for this</description>
             </li>
             <li>
@@ -247,17 +247,17 @@
             <li>
                 <validRange>0.0~0.3</validRange>
                 <priority>0~3</priority>
-                <description>I am good at this</description>
+                <description>I am above average at ranching</description>
             </li>
             <li>
                 <validRange>0.3~0.6</validRange>
                 <priority>3~5</priority>
-                <description>I am very good at ranching</description>
+                <description>I am better than most at ranching</description>
             </li>
             <li>
                 <validRange>0.6~1.0</validRange>
-                <priority>5~10</priority>
-                <description>I am excellent at ranching</description>
+                <priority>5~6</priority>
+                <description>I am among the best at ranching</description>
             </li>
         </priorityRanges>
 
@@ -367,12 +367,12 @@
         <priorityRanges>
             <li>
                 <validRange>-1~-0.6</validRange>
-                <priority>-8~-7</priority>
-                <description>I am bad at taming</description>
+                <priority>-5~-4</priority>
+                <description>I am among the worst at taming</description>
             </li>
             <li>
                 <validRange>-0.6~-0.3</validRange>
-                <priority>-7~-3</priority>
+                <priority>-4~-3</priority>
                 <description>There are better people for this</description>
             </li>
             <li>
@@ -383,17 +383,17 @@
             <li>
                 <validRange>0.0~0.3</validRange>
                 <priority>0~3</priority>
-                <description>I am good at taming</description>
+                <description>I am above average at taming</description>
             </li>
             <li>
                 <validRange>0.3~0.6</validRange>
                 <priority>3~5</priority>
-                <description>I am very good at taming</description>
+                <description>I am better than most at taming</description>
             </li>
             <li>
                 <validRange>0.6~1.0</validRange>
                 <priority>5~6</priority>
-                <description>I am excellent at taming</description>
+                <description>I am among the best at taming</description>
             </li>
         </priorityRanges>
 
@@ -502,12 +502,12 @@
         <priorityRanges>
             <li>
                 <validRange>-1~-0.6</validRange>
-                <priority>-8~-7</priority>
-                <description>I am bad at training</description>
+                <priority>-6~-5</priority>
+                <description>I am among the worst at training</description>
             </li>
             <li>
                 <validRange>-0.6~-0.3</validRange>
-                <priority>-7~-3</priority>
+                <priority>-5~-3</priority>
                 <description>There are better people for this</description>
             </li>
             <li>
@@ -518,17 +518,17 @@
             <li>
                 <validRange>0.0~0.3</validRange>
                 <priority>0~3</priority>
-                <description>I am good at training</description>
+                <description>I am above average at training</description>
             </li>
             <li>
                 <validRange>0.3~0.6</validRange>
                 <priority>3~5</priority>
-                <description>I am very good at training</description>
+                <description>I am better than most at training</description>
             </li>
             <li>
                 <validRange>0.6~1.0</validRange>
                 <priority>5~6</priority>
-                <description>I am excellent at training</description>
+                <description>I am among the best at training</description>
             </li>
         </priorityRanges>
 

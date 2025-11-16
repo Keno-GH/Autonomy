@@ -161,32 +161,33 @@
             <li>
                 <validRange>0~0</validRange>
                 <priority>0</priority>
-                <description>No colonists need food right now.</description>
+                <description>No colonists need food right now</description>
             </li>
             <li>
                 <validRange>0.01~0.14</validRange>
                 <priority>12</priority>
-                <description>The colony is starving—we need meat fast.</description>
+                <description>The colony is starving</description>
             </li>
             <li>
                 <validRange>0.15~0.29</validRange>
                 <priority>8</priority>
-                <description>Colonists are very hungry.</description>
+                <description>Colonists are very hungry</description>
             </li>
             <li>
                 <validRange>0.3~0.49</validRange>
                 <priority>4</priority>
-                <description>People are getting hungry—time to hunt.</description>
+                <description>People are getting hungry</description>
             </li>
             <li>
                 <validRange>0.5~1.0</validRange>
                 <priority>0</priority>
-                <description>Bellies are full; hunting is optional.</description>
+                <description>Bellies are full</description>
             </li>
         </priorityRanges>
 
         <targetWorkGivers>
             <li>HunterHunt</li>
+            <li>Fish</li>
         </targetWorkGivers>
 
     </Autonomy.PriorityGiverDef>

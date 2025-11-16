@@ -3,8 +3,8 @@
     <!-- Childcare Priority Giver based on Negotiation Ability -->
     <Autonomy.PriorityGiverDef>
         <defName>ChildcareTeachingPriorityGiver</defName>
-        <label>Childcare teaching priority</label>
-        <description>Adjusts childcare teaching priorities based on each pawn's ability to communicate and their personality traits suited for working with children.</description>
+        <label>Teach Children by Negotiation Ability</label>
+        <description>Prioritizes childcare teaching workgivers based on competitive, normalized Negotiation Ability stat and personality traits suited for working with children.</description>
         <isUrgent>false</isUrgent>
 
         <conditions>

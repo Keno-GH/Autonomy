@@ -3,8 +3,8 @@
     <!-- Warden Priority Giver based on Negotiation Ability -->
     <Autonomy.PriorityGiverDef Name="NegotiationAbilityPriorityGiver">
         <defName>NegotiationAbilityPriorityGiver</defName>
-        <label>Negotiation ability priority</label>
-        <description>Adjusts warden/social priorities based on each pawn's negotiation ability compared to colony average.</description>
+        <label>Social Warden by Negotiation Ability</label>
+        <description>Prioritizes warden/social workgivers based on competitive, normalized Negotiation Ability stat.</description>
         <isUrgent>false</isUrgent>
 
         <conditions>
@@ -175,8 +175,8 @@
     <!-- Warden Priority Giver for Conversion based on Conversion Power -->
     <Autonomy.PriorityGiverDef Name="ConversionPowerPriorityGiver">
         <defName>ConversionPowerPriorityGiver</defName>
-        <label>Conversion power priority</label>
-        <description>Adjusts prisoner conversion priorities based on each pawn's conversion power and personality traits suited for ideological conversion.</description>
+        <label>Convert by Conversion Power</label>
+        <description>Prioritizes prisoner conversion based on competitive, normalized Conversion Power stat</description>
         <isUrgent>false</isUrgent>
 
         <conditions>
@@ -422,8 +422,8 @@
     <!-- Hungry Prisoners Priority Giver -->
     <Autonomy.PriorityGiverDef Name="HungryPrisonersPriorityGiver">
         <defName>HungryPrisonersPriorityGiver</defName>
-        <label>Hungry prisoners priority</label>
-        <description>Adjusts feeding priorities based on how hungry prisoners are (lower food need = higher priority).</description>
+        <label>Feed by Prisoner Hunger</label>
+        <description>Prioritizes prisoner feeding workgivers based on the average hunger level of all prisoners (lower values indicate hungrier prisoners).</description>
         <isUrgent>true</isUrgent>
 
         <conditions>

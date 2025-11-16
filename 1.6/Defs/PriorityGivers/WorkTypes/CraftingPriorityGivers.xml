@@ -35,8 +35,8 @@
     <!-- Prioritygiver referencing GeneralLaborSpeed without normalization -->
     <Autonomy.PriorityGiverDef>
         <defName>CraftingGeneralLaborSpeedPriorityGiver</defName>
-        <label>Craft when I'm quick</label>
-        <description>I jump on crafting benches when my pace keeps the queue flowing.</description>
+        <label>Crafting Priority By Competitive Labor Speed</label>
+        <description>Prioritizes crafting workgivers based on the competitive labor speed of pawns, without normalization, meaning that there is no "best" and "worst" crafter, just a range of speeds.</description>
         <isUrgent>false</isUrgent>
 
         <conditions>
@@ -125,37 +125,37 @@
             <li>
                 <validRange>-999~-2.0</validRange>
                 <priority>-5</priority>
-                <description>I am amongst the slowest crafters.</description>
+                <description>I am amongst the slowest crafters</description>
             </li>
             <li>
                 <validRange>-1.99~-1.0</validRange>
                 <priority>-4~-2</priority>
-                <description>I'm slower than almost every crafter here.</description>
+                <description>I'm slower than almost every crafter here</description>
             </li>
             <li>
                 <validRange>-0.99~-0.01</validRange>
                 <priority>-2~0</priority>
-                <description>Others are faster than me at crafting.</description>
+                <description>Others are faster than me at crafting</description>
             </li>
             <li>
                 <validRange>0~0</validRange>
                 <priority>0</priority>
-                <description>I'm an average crafter in terms of speed.</description>
+                <description>I'm an average crafter in terms of speed</description>
             </li>
             <li>
                 <validRange>0.01~0.99</validRange>
                 <priority>0~3</priority>
-                <description>I craft a bit faster than most.</description>
+                <description>I craft a bit faster than most</description>
             </li>
             <li>
                 <validRange>1.0~1.99</validRange>
                 <priority>3~7</priority>
-                <description>I outpace nearly everyone when projects stack up.</description>
+                <description>I outpace nearly everyone when projects stack up</description>
             </li>
             <li>
                 <validRange>2.0~999</validRange>
                 <priority>7~10</priority>
-                <description>Almost no one in the colony crafts faster than me.</description>
+                <description>Almost no one in the colony crafts faster than me</description>
             </li>
         </priorityRanges>
 

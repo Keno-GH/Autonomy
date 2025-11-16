@@ -85,8 +85,8 @@
     <!-- Cooking priority: hungry pawn takes action -->
     <Autonomy.PriorityGiverDef>
         <defName>CookPersonalHungerPriorityGiver</defName>
-        <label>Cook when I'm hungry</label>
-        <description>I cook when my stomach growls.</description>
+        <label>Cook by personal hunger</label>
+        <description>Prioritizes cooking based on the pawn's personal hunger level.</description>
         <isUrgent>true</isUrgent>
 
         <conditions>
@@ -186,8 +186,8 @@
     <!-- Cooking priority: feed hungry colony -->
     <Autonomy.PriorityGiverDef>
         <defName>CookColonyHungerPriorityGiver</defName>
-        <label>Cook for hungry colony</label>
-        <description>I cook when the colony is running on empty.</description>
+        <label>Cook by colony hunger</label>
+        <description>Prioritizes cooking based on the colony's overall hunger level.</description>
         <isUrgent>true</isUrgent>
 
         <conditions>
@@ -291,8 +291,8 @@
     <!-- Cooking priority: normalized kitchen skill -->
     <Autonomy.PriorityGiverDef>
         <defName>CookRelativeFoodPoisonPriorityGiver</defName>
-        <label>Cook when I'm the safest</label>
-        <description>I cook when I'm less likely to poison meals.</description>
+        <label>Cook by food poisoning risk</label>
+        <description>Prioritizes cooking when the pawn is less likely to poison meals.</description>
         <isUrgent>false</isUrgent>
 
         <conditions>
@@ -487,8 +487,8 @@
     <!-- Butchering priority: normalized efficiency -->
     <Autonomy.PriorityGiverDef>
         <defName>ButcherRelativeEfficiencyPriorityGiver</defName>
-        <label>Butcher when I'm the most efficient</label>
-        <description>I butcher when I waste the least meat.</description>
+        <label>Butcher by relative efficiency</label>
+        <description>Prioritizes butchering based on the competitive, normalized butcher efficiency of the pawn</description>
         <isUrgent>false</isUrgent>
 
         <conditions>
@@ -681,8 +681,8 @@
     <!-- Brewing priority: absolute brewing speed -->
     <Autonomy.PriorityGiverDef>
         <defName>BrewingDrugCookingSpeedPriorityGiver</defName>
-        <label>Brew when I'm fast</label>
-        <description>I brew drinks when I can keep the vats busy.</description>
+        <label>Brew by drug cooking speed</label>
+        <description>Prioritizes brewing based on the competitive drug cooking speed of the pawn.</description>
         <isUrgent>false</isUrgent>
 
         <conditions>

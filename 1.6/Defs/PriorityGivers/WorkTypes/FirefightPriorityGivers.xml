@@ -3,8 +3,8 @@
     <!-- Firefighting Average Movespeed Priority Giver -->
     <Autonomy.PriorityGiverDef>
         <defName>FirefightingMovespeedPriority</defName>
-        <label>Firefighting movespeed priority</label>
-        <description>Adjusts firefighting work priority based on pawn's movespeed</description>
+        <label>Firefighting by movespeed</label>
+        <description>Prioritizes firefighting based on competitive, normalized move speed.</description>
         <isUrgent>false</isUrgent>
         
         <conditions>
@@ -81,8 +81,8 @@
     <!-- Firefighting Urgent Priority Giver -->
     <Autonomy.PriorityGiverDef>
         <defName>FirefightingUrgentPriority</defName>
-        <label>Firefighting urgent priority</label>
-        <description>Increases firefighting priority when there are fires in the home area</description>
+        <label>Firefighting by fires in home area</label>
+        <description>Prioritizes firefighting based on the number of fires in the home area</description>
         <isUrgent>true</isUrgent>
         
         <conditions>
@@ -277,7 +277,7 @@
     <!-- Firefighting Pyrophobia Priority Giver -->
     <Autonomy.PriorityGiverDef>
         <defName>FirefightingPyrophobiaPriority</defName>
-        <label>Firefighting pyrophobia avoidance</label>
+        <label>Firefighting by pyrophobia avoidance</label>
         <description>Reduces firefighting priority for pawns with pyrophobia gene</description>
         <isUrgent>false</isUrgent>
         
@@ -402,8 +402,8 @@
     <!-- Firefighting Fire Weakness Priority Giver -->
     <Autonomy.PriorityGiverDef>
         <defName>FirefightingFireWeaknessPriority</defName>
-        <label>Firefighting fire resistance/weakness adjustment</label>
-        <description>Adjusts firefighting priority for pawns based on fire resistance or weakness genes (e.g., tinderskin, fire resistant)</description>
+        <label>Firefighting by fire resistance</label>
+        <description>Prioritizes firefighting based on fire resistance or weakness genes (e.g., tinderskin, fire resistant)</description>
         <isUrgent>false</isUrgent>
         
         <conditions>
@@ -578,8 +578,8 @@
     <!-- Flammability Priority Giver -->
     <Autonomy.PriorityGiverDef>
         <defName>FirefightingFlammabilityPriority</defName>
-        <label>Firefighting flammability adjustment</label>
-        <description>Adjusts firefighting priority for pawns based on their flammability</description>
+        <label>Firefighting by flammability</label>
+        <description>Prioritizes firefighting based on pawns' flammability</description>
         <isUrgent>false</isUrgent>
         
         <conditions>

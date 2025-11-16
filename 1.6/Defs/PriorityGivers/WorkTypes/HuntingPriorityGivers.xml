@@ -3,8 +3,8 @@
     <!-- Hunting priority: normalized hunting stealth -->
     <Autonomy.PriorityGiverDef>
         <defName>HuntRelativeStealthPriorityGiver</defName>
-        <label>Hunt when I'm stealthy</label>
-        <description>I volunteer to hunt when my stealth keeps prey calm.</description>
+        <label>Hunt by Hunting Stealth</label>
+        <description>Prioritizes hunting workgivers by competitive, normalized Hunting Stealth stat</description>
         <isUrgent>false</isUrgent>
 
         <conditions>
@@ -96,8 +96,8 @@
     <!-- Hunting priority: feed hungry colony by hunting -->
     <Autonomy.PriorityGiverDef>
         <defName>HuntColonyHungerPriorityGiver</defName>
-        <label>Hunt for hungry colony</label>
-        <description>I hunt when the colony's food stores run low.</description>
+        <label>Hunt by Colony Hunger</label>
+        <description>Prioritizes hunting workgivers based on the colony's overall hunger level</description>
         <isUrgent>true</isUrgent>
 
         <conditions>

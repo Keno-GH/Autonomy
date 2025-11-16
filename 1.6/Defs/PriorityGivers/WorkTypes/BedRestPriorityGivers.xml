@@ -61,7 +61,7 @@
 
     <Autonomy.PriorityGiverDef>
         <defName>PatientGiverImmunizationVSeverity</defName>
-        <label>Patient bed rest priority based on disease progress</label>
+        <label>Bedrest by Immunization vs Severity</label>
         <description>Assigns priority to bed rest based on the difference between effective immunity gain and effective severity gain for diseases. Positive values mean immunity is outpacing disease. Uses actual rates considering pawn stats, needs, bed quality, food, and tending.</description>
         <isUrgent>true</isUrgent>
 
@@ -266,8 +266,8 @@
 	<!-- PriorityGiver for bed recuperate depending on severity of illness -->
 	<Autonomy.PriorityGiverDef>
 		<defName>BedRestIllnessSeverityPriority</defName>
-		<label>Bed rest priority by total illness severity</label>
-		<description>Assigns priority to bed recuperation depending on the total severity of immunizable diseases affecting this pawn (uses individualized TotalColonyIllnessSeverity).</description>
+		<label>Bedrest by total illness severity</label>
+		<description>Prioritizes bed rest based on the total severity of immunizable diseases affecting this pawn.</description>
 		<isUrgent>true</isUrgent>
 
 		<conditions>

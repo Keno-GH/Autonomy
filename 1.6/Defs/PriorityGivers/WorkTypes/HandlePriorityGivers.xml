@@ -3,8 +3,8 @@
     <!-- Roaming Animals Priority Giver -->
     <Autonomy.PriorityGiverDef Name="RoamingAnimalsPriorityGiver">
         <defName>RoamingAnimalsPriorityGiver</defName>
-        <label>Roaming animals priority</label>
-        <description>Adjusts animal handling priorities based on the number of roaming unenclosed animals that need to be penned. Higher numbers of roaming animals increase urgency.</description>
+        <label>Handle by Roaming Animals</label>
+        <description>Prioritizes animal handling workgivers based on the number of roaming unenclosed animals that need to be penned. Higher numbers of roaming animals increase urgency.</description>
         <isUrgent>false</isUrgent>
 
         <conditions>
@@ -135,8 +135,8 @@
     <!-- Animal gather priority for Milk & Shear using AnimalGatherYield infogiver -->
     <Autonomy.PriorityGiverDef Name="AnimalGatherPriorityGiver_MilkShear">
         <defName>AnimalGather_MilkShear_PriorityGiver</defName>
-        <label>Milk Shear priority</label>
-        <description>Prioritized reanch work for pawns with better animal gather yeild.</description>
+        <label>Handle by Animal Gather Yield</label>
+        <description>Prioritizes milking and shearing workgivers based on competitive, normalized Animal Gather Yield stat</description>
         <isUrgent>false</isUrgent>
 
         <conditions>
@@ -271,8 +271,8 @@
     <!-- Taming priority for Tame using TameAnimalChance infogiver -->
     <Autonomy.PriorityGiverDef>
         <defName>TamingPriorityBest</defName>
-        <label>Taming priority</label>
-        <description>Prioritizes taming for pawns with better taming chance.</description>
+        <label>Tame by Taming Chance</label>
+        <description>Prioritizes taming workgivers based on competitive, normalized Taming Chance stat</description>
         <isUrgent>false</isUrgent>
 
         <conditions>
@@ -406,8 +406,8 @@
     <!-- Training priority for Train using TrainAnimalChance infogiver -->
     <Autonomy.PriorityGiverDef>
         <defName>TrainingPriorityBest</defName>
-        <label>Training priority</label>
-        <description>Prioritizes training for pawns with better training chance.</description>
+        <label>Train by Training Chance</label>
+        <description>Prioritizes training workgivers based on competitive, normalized Training Chance stat</description>
         <isUrgent>false</isUrgent>
 
         <conditions>

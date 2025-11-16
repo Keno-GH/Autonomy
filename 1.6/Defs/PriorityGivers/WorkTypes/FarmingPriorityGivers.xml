@@ -30,8 +30,8 @@
     from -5 to 10, with 0 at range 1.00 -->
     <Autonomy.PriorityGiverDef>
         <defName>GrowerSowPlantWorkSpeedPriorityGiver</defName>
-        <label>Sow when I'm fast</label>
-        <description>I take sowing jobs when my hands can keep up with the fields.</description>
+        <label>Sow by Plant Work Speed</label>
+        <description>Prioritizes sowing workgivers by competitive, individualized Plant Work Speed stat.</description>
         <isUrgent>false</isUrgent>
 
         <conditions>
@@ -171,8 +171,8 @@
     from -5 to 10, with 0 at range 0 -->
     <Autonomy.PriorityGiverDef>
         <defName>GrowerHarvestYieldPriorityGiver</defName>
-        <label>Harvest when I'm precise</label>
-        <description>I harvest when I'm likely to bring in the fullest yields.</description>
+        <label>Harvest by Plant Harvest Yield</label>
+        <description>Prioritizes harvesting workgivers by competitive, normalized Plant Harvest Yield stat.</description>
         <isUrgent>false</isUrgent>
 
         <conditions>
@@ -278,8 +278,8 @@
     CookColonyHungerPriorityGiver -->
     <Autonomy.PriorityGiverDef>
         <defName>GrowColonyHungerPriorityGiver</defName>
-        <label>Grow food for hungry colony</label>
-        <description>I plant and harvest when the colony needs fresh meals.</description>
+        <label>Farming when hungry colony</label>
+        <description>Prioritizes growing food based on the colony's overall hunger level.</description>
         <isUrgent>true</isUrgent>
 
         <conditions>
@@ -343,32 +343,32 @@
             <li>
                 <validRange>0~0</validRange>
                 <priority>0</priority>
-                <description>No food needs to maintain.</description>
+                <description>No food needs to maintain</description>
             </li>
             <li>
                 <validRange>0.01~0.14</validRange>
                 <priority>11~14</priority>
-                <description>Our people are starving.</description>
+                <description>Our people are starving</description>
             </li>
             <li>
                 <validRange>0.15~0.29</validRange>
                 <priority>7~10</priority>
-                <description>People are very hungry.</description>
+                <description>People are very hungry</description>
             </li>
             <li>
                 <validRange>0.3~0.49</validRange>
                 <priority>3~6</priority>
-                <description>The people are becoming hungry.</description>
+                <description>The people are becoming hungry</description>
             </li>
             <li>
                 <validRange>0.5~0.79</validRange>
                 <priority>0~2</priority>
-                <description>Food is decent but we can prep more.</description>
+                <description>Food is decent but we can prep more</description>
             </li>
             <li>
                 <validRange>0.8~1.0</validRange>
                 <priority>-3~0</priority>
-                <description>Everyone is fed so farming can wait.</description>
+                <description>Everyone is fed so farming can wait</description>
             </li>
         </priorityRanges>
 

@@ -3,8 +3,8 @@
 		 Keeps priorities low and generally positive for both slower and faster pawns. -->
 	<Autonomy.PriorityGiverDef>
 		<defName>MovespeedBasicPriorityGiver</defName>
-		<label>Basic movespeed priority</label>
-		<description>Simple priority based on movespeed; individualized with distance-from-global. Faster pawns get higher priority; slower pawns get slightly less, but values stay low and positive.</description>
+		<label>Basic Tasks by Movespeed</label>
+		<description>Prioritizes basic tasks based on competitive, normalized Movespeed stat</description>
 		<isUrgent>false</isUrgent>
 
 		<conditions>
@@ -19,7 +19,7 @@
 
 		<priorityRanges>
 			<li>
-				<validRange>-999~-0.01</validRange>
+				<validRange>-1~-0.01</validRange>
 				<priority>1~2</priority>
 				<description>Someone has to do basic tasks</description>
 			</li>
@@ -29,12 +29,12 @@
 				<description>Someone has to do basic tasks</description>
 			</li>
 			<li>
-				<validRange>0.01~1</validRange>
+				<validRange>0.01~0.5</validRange>
 				<priority>3~5</priority>
 				<description>Someone has to do basic tasks</description>
 			</li>
 			<li>
-				<validRange>1.01~999</validRange>
+				<validRange>0.51~1</validRange>
 				<priority>6~10</priority>
 				<description>Someone has to do basic tasks</description>
 			</li>

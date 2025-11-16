@@ -3,7 +3,7 @@
     <!-- Severity infection priority giver -->
     <Autonomy.PriorityGiverDef Name="SeverityInfectionChancePriority">
         <defName>SeverityInfectionChancePriority</defName>
-        <label>Severity infection chance priority</label>
+        <label>Bedrest by infection risk</label>
         <description>Increases priority for bed resting depending on the severity of infectable untended injuries</description>
         <isUrgent>true</isUrgent>
         
@@ -56,7 +56,7 @@
 
     <Autonomy.PriorityGiverDef ParentName="SeverityInfectionChancePriority">
         <defName>SeverityInfectionChancePrioritySelfTend</defName>
-        <label>Severity infection chance priority (self-tend)</label>
+        <label>Selftend by infection risk</label>
         <description>Increases priority for self-tending depending on the severity of infectable untended injuries, only for pawns with self-tend enabled</description>
 
         <conditions>
@@ -79,7 +79,7 @@
     <!-- Bleed rate priority giver -->
     <Autonomy.PriorityGiverDef Name="BleedRatePriorityGiver">
         <defName>BleedRatePriorityGiver</defName>
-        <label>Bleed rate priority giver</label>
+        <label>Bedrest by bleed rate</label>
         <description>Increases priority for bed resting depending on the severity of untreated bleeding injuries</description>
         <isUrgent>true</isUrgent>
         
@@ -130,7 +130,7 @@
 
     <Autonomy.PriorityGiverDef ParentName="BleedRatePriorityGiver">
         <defName>BleedRatePriorityGiverSelfTend</defName>
-        <label>Bleed rate priority giver (self-tend)</label>
+        <label>Selftend by bleed rate</label>
         <description>Increases priority for self-tending depending on the severity of untreated bleeding injuries, only for pawns with self-tend enabled</description>
 
         <conditions>
@@ -185,7 +185,7 @@
 
     <Autonomy.PriorityGiverDef Name="ImmunizableDiseasePriority">
         <defName>ImmunizableDiseasePriority</defName>
-        <label>Immunizable disease priority</label>
+        <label>Bedrest by immunizable diseases</label>
         <description>Increases priority for bed resting depending on the count of immunizable untended diseases (individualized)</description>
         <isUrgent>true</isUrgent>
 
@@ -231,7 +231,7 @@
 
     <Autonomy.PriorityGiverDef Name="NonBleedingInjuryPriorityGiver">
         <defName>NonBleedingInjuryPriorityGiver</defName>
-        <label>Non bleeding injury priority giver</label>
+        <label>Bedrest by non bleeding injuries</label>
         <description>Increases priority for bed resting depending on the severity of untreated non bleeding injuries</description>
         <isUrgent>true</isUrgent>
         
@@ -369,7 +369,7 @@
 
     <Autonomy.PriorityGiverDef ParentName="NonBleedingInjuryPriorityGiver">
         <defName>NonBleedingInjuryPriorityGiverSelfTend</defName>
-        <label>Non bleeding injury priority giver (self-tend)</label>
+        <label>Selftend by non bleeding injuries</label>
         <description>Increases priority for self-tending depending on the severity of untreated non bleeding injuries, only for pawns with self-tend enabled</description>
 
         <conditions>

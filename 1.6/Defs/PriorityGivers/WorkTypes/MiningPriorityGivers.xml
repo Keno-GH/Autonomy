@@ -29,8 +29,8 @@
     with 4 to 6 steps -->
     <Autonomy.PriorityGiverDef>
         <defName>MineDrillYieldPriorityGiver</defName>
-        <label>Mine when I'm precise</label>
-        <description>I take mining jobs when my strikes bring back ore.</description>
+        <label>Mine by Mining Yield</label>
+        <description>Prioritizes mining workgivers by competitive, normalized Mining Yield stat</description>
         <isUrgent>false</isUrgent>
 
         <conditions>
@@ -118,32 +118,32 @@
             <li>
                 <validRange>-1~-0.6</validRange>
                 <priority>-10~-6</priority>
-                <description>I'm the worst miner in the colony.</description>
+                <description>I'm the worst miner in the colony</description>
             </li>
             <li>
                 <validRange>-0.6~-0.3</validRange>
                 <priority>-6~-3</priority>
-                <description>I'm below average compared to other miners.</description>
+                <description>I'm below average compared to other miners</description>
             </li>
             <li>
                 <validRange>-0.3~0.0</validRange>
                 <priority>-3~0</priority>
-                <description>I'm about average compared to the colony's miners.</description>
+                <description>I'm about average compared to the colony's miners</description>
             </li>
             <li>
                 <validRange>0.0~0.3</validRange>
                 <priority>0~3</priority>
-                <description>I'm a bit better than average at mining.</description>
+                <description>I'm a bit better than average at mining</description>
             </li>
             <li>
                 <validRange>0.3~0.6</validRange>
                 <priority>3~7</priority>
-                <description>I'm above average compared to other miners.</description>
+                <description>I'm above average compared to other miners</description>
             </li>
             <li>
                 <validRange>0.6~1.0</validRange>
                 <priority>7~10</priority>
-                <description>I'm one of the best miners in the colony.</description>
+               <description>I'm one of the best miners in the colony</description>
             </li>
         </priorityRanges>
 

@@ -27,8 +27,8 @@
 	<!-- Construction Speed Priority Giver -->
 	<Autonomy.PriorityGiverDef>
 		<defName>ConstructionSpeedPriority</defName>
-		<label>Construction speed priority</label>
-		<description>Adjust construction priority based on construction speed vs colony average</description>
+		<label>Construction by Construction Speed</label>
+		<description>Prioritizes construction workgivers by competitive, non normalized Construction Speed stat</description>
 		<isUrgent>false</isUrgent>
 
 		<conditions>

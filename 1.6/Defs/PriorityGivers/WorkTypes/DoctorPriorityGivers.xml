@@ -10,8 +10,8 @@
     <!-- Total colony bleed rate priority giver -->
     <Autonomy.PriorityGiverDef>
         <defName>TotalColonyBleedRatePriorityGiver</defName>
-        <label>Total colony bleed rate priority</label>
-        <description>Adjusts medical priority based on the total bleed rate of all bleeding injuries in the colony.</description>
+        <label>Doctoring by total colony bleed rate</label>
+        <description>Prioritizes doctoring based on the total bleed rate of all bleeding injuries in the colony.</description>
         <isUrgent>true</isUrgent>
 
         <conditions>
@@ -85,8 +85,8 @@
     <!-- Total severity of non bleeding injuries priority giver -->
     <Autonomy.PriorityGiverDef>
         <defName>TotalColonyNonBleedingInjurySeverityPriorityGiver</defName>
-        <label>Total colony non bleeding injury severity priority</label>
-        <description>Adjusts medical priority based on the total severity of all non bleeding injuries in the colony.</description>
+        <label>Doctoring by total colony non-bleeding injury severity</label>
+        <description>Prioritizes doctoring based on the total severity of all non bleeding injuries in the colony.</description>
         <isUrgent>true</isUrgent>
 
         <conditions>
@@ -186,8 +186,8 @@
     <!-- Absolute Tend Quality Priority Giver -->
     <Autonomy.PriorityGiverDef>
 		<defName>AbsoluteTendQuality</defName>
-		<label>Absolute tend quality</label>
-		<description>Adjust tend priority based on absolute tend quality vs colony average</description>
+		<label>Doctoring by personal tend quality</label>
+		<description>Prioritizes doctoring based on the personal tend quality stat of the pawn</description>
 		<isUrgent>false</isUrgent>
         
 		<conditions>
@@ -288,8 +288,8 @@
     <!-- Relative Tend Quality Priority Giver -->
     <Autonomy.PriorityGiverDef>
 		<defName>RelativeTendQuality</defName>
-		<label>Relative tend quality</label>
-		<description>Adjust tend priority based on relative tend quality vs colony average</description>
+		<label>Doctoring by relative tend quality</label>
+		<description>Prioritizes doctoring based on the competitive, normalized tend quality average stat</description>
 		<isUrgent>false</isUrgent>
         
 		<conditions>
@@ -449,8 +449,8 @@
 
     <Autonomy.PriorityGiverDef>
 		<defName>MedicalSurgerySuccessChanceAverage</defName>
-		<label>Relative surgery success chance</label>
-		<description>Adjust surgery priority based on relative surgery success chance vs colony average</description>
+		<label>Surgery by surgery success chance</label>
+		<description>Prioritizes surgery based on the competitive, normalized surgery success chance average stat</description>
 		<isUrgent>false</isUrgent>
         
 		<conditions>
@@ -586,8 +586,8 @@
 	<!-- PriorityGiver for visiting sick pawns based on social impact -->
 	<Autonomy.PriorityGiverDef>
 		<defName>VisitSickPawnSocialImpactPriorityGiver</defName>
-		<label>Visit sick pawn (social impact)</label>
-		<description>Adjust visiting priority based on social impact info giver</description>
+		<label>Caring by social impact</label>
+		<description>Prioritizes visiting sick pawns based on social impact stat</description>
 		<isUrgent>false</isUrgent>
 
 		<conditions>
@@ -729,8 +729,8 @@
     <!-- PriorityGiver for rescuing (movespeed)-->
     <Autonomy.PriorityGiverDef>
 		<defName>RescuingMovespeed</defName>
-        <label>Rescuing (movespeed)</label>
-        <description>Adjust rescue priority based on a pawn's movespeed (how quickly they can carry a downed pawn).</description>
+        <label>Rescuing by movespeed</label>
+        <description>Prioritizes rescuing based on competitive, normalized move speed.</description>
 		<isUrgent>false</isUrgent>
 
 		<conditions>

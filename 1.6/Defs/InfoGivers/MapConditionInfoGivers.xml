@@ -1,0 +1,76 @@
+<Defs>
+    <!-- Current map temperature infoGiver -->
+	<Autonomy.InfoGiverDef>
+		<defName>MapTemperature</defName>
+		<label>Current map temperature</label>
+		<description>Tracks the current map temperature for personalized temperature priority</description>
+		<isLocalizable>false</isLocalizable>
+		<isIndividualizable>false</isIndividualizable>
+		<isUrgent>false</isUrgent>
+		<sourceType>mapCondition</sourceType>
+        
+        <targetValue>OutdoorTemp</targetValue> <!-- Devnote, this is in map.mapTemperature.OutdoorTemp -->
+
+	</Autonomy.InfoGiverDef>
+
+    <!-- Map weather movespeed multiplier -->
+	<Autonomy.InfoGiverDef>
+		<defName>WeatherMoveSpeedMultiplier</defName>
+		<label>Current map movespeed multiplier</label>
+		<description>Tracks the current map movespeed multiplier for personalized movement priority</description>
+		<isLocalizable>false</isLocalizable>
+		<isIndividualizable>false</isIndividualizable>
+		<isUrgent>false</isUrgent>
+		<sourceType>mapCondition</sourceType>
+        
+        <targetValue>CurMoveSpeedMultiplier</targetValue> <!-- Devnote, this is in map.weatherManager.CurMoveSpeedMultiplier -->
+
+	</Autonomy.InfoGiverDef>
+
+    <!-- Map weather accuracy multiplier -->
+	<Autonomy.InfoGiverDef>
+		<defName>WeatherAccuracyMultiplier</defName>
+		<label>Current map accuracy multiplier</label>
+		<description>Tracks the current map accuracy multiplier for personalized accuracy priority</description>
+		<isLocalizable>false</isLocalizable>
+		<isIndividualizable>false</isIndividualizable>
+		<isUrgent>false</isUrgent>
+		<sourceType>mapCondition</sourceType>
+        
+        <targetValue>CurWeatherAccuracyMultiplier</targetValue> <!-- Devnote, this is in map.weatherManager.CurWeatherAccuracyMultiplier -->
+
+	</Autonomy.InfoGiverDef>
+
+    <!-- Map condition check for toxic fallout (returns 1 for each condition, 0 otherwise) -->
+	<Autonomy.InfoGiverDef>
+		<defName>ToxicFallout</defName>
+		<label>Current map toxic fallout status</label>
+		<description>Tracks the current map toxic fallout status</description>
+		<isLocalizable>false</isLocalizable>
+		<isIndividualizable>false</isIndividualizable>
+		<isUrgent>false</isUrgent>
+		<sourceType>mapCondition</sourceType>
+        
+        <targetGameConditions> <!-- Devnote: treat this as an "or" logic for all the game conditions we seek -->
+            <li>ToxicFallout</li>
+        </targetGameConditions> <!-- Devnote: use map.gameConditionManager.ActiveConditions.Any(c => c.def == RimWorld.GameConditionDefOf.ToxicFallout) -->
+
+	</Autonomy.InfoGiverDef>
+
+    <!-- Map condition check for game conditions with pennedAnimalsSeekShelter (returns 1 for each matching condition, 0 otherwise) -->
+	<Autonomy.InfoGiverDef>
+		<defName>PennedAnimalsSeekShelter</defName>
+		<label>Current map penned animals seek shelter status</label>
+		<description>Tracks the current maps game conditions that contain the pennedAnimalsSeekShelter property. These usually mean its a condition where pawns should seek shelter, like toxic fallout</description>
+		<isLocalizable>false</isLocalizable>
+		<isIndividualizable>false</isIndividualizable>
+		<isUrgent>false</isUrgent>
+		<sourceType>mapCondition</sourceType>
+        
+        <targetGameConditionsWithProperties> <!-- Devnote: treat this as an "and" logic for all the properties we seek -->
+            <li>pennedAnimalsSeekShelter</li>
+        </targetGameConditionsWithProperties> <!-- Devnote: use map.gameConditionManager.ActiveConditions.Any(c => c.def.pennedAnimalsSeekShelter) -->
+        
+
+	</Autonomy.InfoGiverDef>
+</Defs>

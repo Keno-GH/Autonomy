@@ -46,4 +46,28 @@
 		</filters>
 	</Autonomy.InfoGiverDef>
 
+    <!-- Minimum comfortable temperature infoGiver -->
+	<Autonomy.InfoGiverDef>
+		<defName>MinimumComfortableTemperatureInfoGiver</defName>
+		<label>Minimum comfortable temperature</label>
+		<description>Tracks each pawn's minimum comfortable temperature individually for personalized temperature priority</description>
+		<isLocalizable>false</isLocalizable>
+		<isIndividualizable>true</isIndividualizable>
+		<calculation>Avg</calculation>
+		<isUrgent>false</isUrgent>
+		<sourceType>pawnStat</sourceType>
+		<targetStat>ComfyTemperatureMin</targetStat>
+        
+		<filters>
+			<include>
+				<li>player</li>
+			</include>
+			<exclude>
+				<li>dead</li>
+				<li>downed</li>
+			</exclude>
+		</filters>
+	</Autonomy.InfoGiverDef>
+
+
 </Defs>

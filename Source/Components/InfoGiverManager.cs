@@ -1357,27 +1357,178 @@ namespace Autonomy
 
         private float EvaluateMapCondition(InfoGiverDef def)
         {
-            if (def.conditions == null || def.conditions.Count == 0)
+            // New implementation: support targetValue, targetGameConditions, and targetGameConditionsWithProperties
+            
+            // Priority 1: Direct property access via targetValue
+            if (!def.targetValue.NullOrEmpty())
             {
-                Log.Warning($"[Autonomy] MapCondition InfoGiver {def.defName} missing conditions");
-                return 0f;
+                return GetMapPropertyValue(def.targetValue);
             }
             
-            var gameConditionManager = map.gameConditionManager;
-            if (gameConditionManager == null) return 0f;
-            
-            var values = new List<float>();
-            
-            foreach (var targetCondition in def.conditions)
+            // Priority 2: Check for specific game conditions (OR logic - any matching)
+            if (!def.targetGameConditions.NullOrEmpty())
             {
-                float conditionValue = GetMapConditionValue(gameConditionManager, targetCondition);
-                if (conditionValue > 0)
+                return CountActiveGameConditions(def.targetGameConditions);
+            }
+            
+            // Priority 3: Check for game conditions with specific properties (OR logic - any condition with ALL properties)
+            if (!def.targetGameConditionsWithProperties.NullOrEmpty())
+            {
+                return CountGameConditionsWithProperties(def.targetGameConditionsWithProperties);
+            }
+            
+            // Fallback: Old conditions system for backwards compatibility
+            if (def.conditions != null && def.conditions.Count > 0)
+            {
+                var gameConditionManager = map.gameConditionManager;
+                if (gameConditionManager == null) return 0f;
+                
+                var values = new List<float>();
+                
+                foreach (var targetCondition in def.conditions)
                 {
-                    values.Add(conditionValue);
+                    float conditionValue = GetMapConditionValue(gameConditionManager, targetCondition);
+                    if (conditionValue > 0)
+                    {
+                        values.Add(conditionValue);
+                    }
+                }
+                
+                return CalculateResult(values, def.calculation);
+            }
+            
+            Log.Warning($"[Autonomy] MapCondition InfoGiver {def.defName} has no valid configuration");
+            return 0f;
+        }
+        
+        /// <summary>
+        /// Get a property value from map, map.mapTemperature, map.weatherManager, etc.
+        /// </summary>
+        private float GetMapPropertyValue(string propertyPath)
+        {
+            if (map == null) return 0f;
+            
+            try
+            {
+                switch (propertyPath)
+                {
+                    // Map temperature properties
+                    case "OutdoorTemp":
+                        return map.mapTemperature?.OutdoorTemp ?? 0f;
+                    case "SeasonalTemp":
+                        return map.mapTemperature?.SeasonalTemp ?? 0f;
+                    
+                    // Weather manager properties
+                    case "CurMoveSpeedMultiplier":
+                        return map.weatherManager?.CurMoveSpeedMultiplier ?? 1f;
+                    case "CurWeatherAccuracyMultiplier":
+                        return map.weatherManager?.CurWeatherAccuracyMultiplier ?? 1f;
+                    case "RainRate":
+                        return map.weatherManager?.RainRate ?? 0f;
+                    case "SnowRate":
+                        return map.weatherManager?.SnowRate ?? 0f;
+                    
+                    default:
+                        Log.Warning($"[Autonomy] Unknown map property: {propertyPath}");
+                        return 0f;
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Error($"[Autonomy] Error accessing map property {propertyPath}: {ex.Message}");
+                return 0f;
+            }
+        }
+        
+        /// <summary>
+        /// Count how many of the specified game conditions are currently active (OR logic)
+        /// </summary>
+        private float CountActiveGameConditions(List<string> conditionDefNames)
+        {
+            if (map?.gameConditionManager == null) return 0f;
+            
+            int activeCount = 0;
+            
+            foreach (var defName in conditionDefNames)
+            {
+                var conditionDef = DefDatabase<GameConditionDef>.GetNamedSilentFail(defName);
+                if (conditionDef != null)
+                {
+                    var activeCondition = map.gameConditionManager.GetActiveCondition(conditionDef);
+                    if (activeCondition != null)
+                    {
+                        activeCount++;
+                    }
                 }
             }
             
-            return CalculateResult(values, def.calculation);
+            return activeCount;
+        }
+        
+        /// <summary>
+        /// Count game conditions that have ALL specified properties (OR logic on conditions, AND logic on properties)
+        /// </summary>
+        private float CountGameConditionsWithProperties(List<string> propertyNames)
+        {
+            if (map?.gameConditionManager == null) return 0f;
+            
+            var activeConditions = map.gameConditionManager.ActiveConditions;
+            if (activeConditions.NullOrEmpty()) return 0f;
+            
+            int matchingCount = 0;
+            
+            foreach (var condition in activeConditions)
+            {
+                if (condition?.def == null) continue;
+                
+                bool hasAllProperties = true;
+                
+                // Check if this condition's def has ALL the required properties
+                foreach (var propName in propertyNames)
+                {
+                    if (!GameConditionHasProperty(condition.def, propName))
+                    {
+                        hasAllProperties = false;
+                        break;
+                    }
+                }
+                
+                if (hasAllProperties)
+                {
+                    matchingCount++;
+                }
+            }
+            
+            return matchingCount;
+        }
+        
+        /// <summary>
+        /// Check if a GameConditionDef has a specific property using reflection
+        /// </summary>
+        private bool GameConditionHasProperty(GameConditionDef def, string propertyName)
+        {
+            if (def == null || propertyName.NullOrEmpty()) return false;
+            
+            try
+            {
+                var field = def.GetType().GetField(propertyName);
+                if (field != null && field.FieldType == typeof(bool))
+                {
+                    return (bool)field.GetValue(def);
+                }
+                
+                var property = def.GetType().GetProperty(propertyName);
+                if (property != null && property.PropertyType == typeof(bool))
+                {
+                    return (bool)property.GetValue(def);
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Warning($"[Autonomy] Error checking property {propertyName} on {def.defName}: {ex.Message}");
+            }
+            
+            return false;
         }
 
         private float GetMapConditionValue(GameConditionManager conditionManager, MapCondition targetCondition)
@@ -1422,11 +1573,15 @@ namespace Autonomy
             return baseValue;
         }
 
+        /// <summary>
+        /// DEPRECATED: Use mapCondition with targetValue instead
+        /// </summary>
         private float EvaluateWeather(InfoGiverDef def)
         {
+            Log.Warning($"[Autonomy] Weather InfoGiver {def.defName} uses deprecated sourceType 'weather'. Please use 'mapCondition' with 'targetValue' instead.");
+            
             if (def.weatherProperty.NullOrEmpty())
             {
-                Log.Warning($"[Autonomy] Weather InfoGiver {def.defName} missing weatherProperty");
                 return 0f;
             }
             
@@ -1442,6 +1597,9 @@ namespace Autonomy
             return CalculateResult(values, def.calculation);
         }
 
+        /// <summary>
+        /// DEPRECATED: Legacy weather value getter
+        /// </summary>
         private float GetWeatherValue(WeatherManager weatherManager, string weatherTarget)
         {
             switch (weatherTarget.ToLower())

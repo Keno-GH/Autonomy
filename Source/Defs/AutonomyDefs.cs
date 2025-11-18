@@ -109,13 +109,36 @@ namespace Autonomy
         
         /// <summary>
         /// Weather property for weather sourceType (moveSpeedMultiplier, accuracyMultiplier, etc.)
+        /// DEPRECATED - Use mapCondition with targetValue instead
         /// </summary>
         public string weatherProperty;
         
         /// <summary>
         /// Map conditions for mapCondition sourceType
+        /// DEPRECATED - Old condition system, kept for compatibility
         /// </summary>
         public List<MapCondition> conditions = new List<MapCondition>();
+        
+        /// <summary>
+        /// Target value for mapCondition sourceType - direct property access
+        /// Examples: "OutdoorTemp" (map.mapTemperature.OutdoorTemp), 
+        ///           "CurMoveSpeedMultiplier" (map.weatherManager.CurMoveSpeedMultiplier)
+        /// </summary>
+        public string targetValue;
+        
+        /// <summary>
+        /// Target game conditions by defName for mapCondition sourceType (OR logic)
+        /// Returns count of active matching conditions
+        /// Example: <li>ToxicFallout</li> checks if ToxicFallout is active
+        /// </summary>
+        public List<string> targetGameConditions = new List<string>();
+        
+        /// <summary>
+        /// Target game conditions by property for mapCondition sourceType (OR logic)
+        /// Returns count of active conditions that have ALL specified properties
+        /// Example: <li>pennedAnimalsSeekShelter</li> checks for conditions with this property
+        /// </summary>
+        public List<string> targetGameConditionsWithProperties = new List<string>();
         
         /// <summary>
         /// Target gene defNames for geneCount sourceType
@@ -221,9 +244,15 @@ namespace Autonomy
                         Log.Error($"InfoGiverDef {defName} with sourceType constructionCount requires either targetItems, targetCategories, or targetThingClasses");
                     break;
                     
+                case InfoSourceType.mapCondition:
+                    if (targetValue.NullOrEmpty() && targetGameConditions.NullOrEmpty() && 
+                        targetGameConditionsWithProperties.NullOrEmpty() && conditions.NullOrEmpty())
+                        Log.Error($"InfoGiverDef {defName} with sourceType mapCondition requires targetValue, targetGameConditions, targetGameConditionsWithProperties, or conditions");
+                    break;
+                    
                 case InfoSourceType.weather:
                     if (weatherProperty.NullOrEmpty())
-                        Log.Error($"InfoGiverDef {defName} with sourceType weather requires weatherProperty");
+                        Log.Warning($"InfoGiverDef {defName} with sourceType weather is DEPRECATED - use mapCondition with targetValue instead");
                     break;
                     
                 case InfoSourceType.geneCount:

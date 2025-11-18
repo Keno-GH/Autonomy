@@ -20,8 +20,8 @@ namespace Autonomy
         pawnCount,          // Count of pawns meeting criteria
         itemCount,          // Count of items/resources
         constructionCount,  // Count of construction projects
-        mapCondition,       // Map-level conditions and threats
-        weather,            // Weather conditions
+        mapCondition,       // Map-level conditions, weather, and threats (unified system)
+        weather,            // DEPRECATED - Use mapCondition with targetValue instead
         geneCount,          // Count of genes in individual pawns (always individualizable)
         hediffCount         // Count/measure hediffs in individual pawns (always individualizable)
     }

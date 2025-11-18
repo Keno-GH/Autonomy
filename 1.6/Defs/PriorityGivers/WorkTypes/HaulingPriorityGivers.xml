@@ -291,6 +291,59 @@
     </Autonomy.PriorityGiverDef>
 
 
-    <!-- Prioritygiver Refuel, using -->
+    <!-- Prioritygiver Refuel, using a calculation of the difference between the 
+    minimum comfortable temperature and the current map temperature. The higher
+    the difference, the more priority is given. -->
+    <Autonomy.PriorityGiverDef>
+        <defName>MinimumComfortableTemperatureDifference</defName>
+        <label>Minimum Comfortable Temperature Difference</label>
+        <description>Prioritizes refueling jobs when the temperature is below the average minimum comfortable temperature</description>
+        <isUrgent>true</isUrgent>
+
+        <conditions>
+			<li>
+				<type>calculation</type>
+				<infoDefName1>MinimumComfortableTemperatureInfoGiver</infoDefName1>
+				<infoDefName2>MapTemperature</infoDefName2>
+                <operation>sub</operation>
+				<requestLocalizedData>false</requestLocalizedData>
+				<requestIndividualData>false</requestIndividualData>
+				<requestDistanceFromGlobal>false</requestDistanceFromGlobal>
+			</li>
+        </conditions>
+
+        <priorityRanges>
+            <li>
+                <validRange>-999~0</validRange>
+                <priority>0</priority>
+                <description>It's warm outside so refueling is not urgent</description>
+            </li>
+            <li>
+                <validRange>0.01~5</validRange>
+                <priority>5</priority>
+                <description>It's cold outside</description>
+            </li>
+            <li>
+                <validRange>5.01~10</validRange>
+                <priority>10</priority>
+                <description>It's very cold outside</description>
+            </li>
+            <li>
+                <validRange>10.01~40</validRange>
+                <priority>15</priority>
+                <description>It's really cold outside</description>
+            </li>
+            <li>
+                <validRange>40.01~9999</validRange>
+                <priority>20</priority>
+                <description>It's really cold outside</description>
+            </li>
+        </priorityRanges>
+
+        <targetWorkGivers>
+            <li>Refuel</li>
+        </targetWorkGivers>
+
+    </Autonomy.PriorityGiverDef>
 
 </Defs>

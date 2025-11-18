@@ -18,6 +18,7 @@ namespace Autonomy
         private int ticksSinceLastUrgentUpdate = 0;
         private const int UPDATE_INTERVAL = 100; // Update every 100 ticks (~1.7 seconds) - for testing
         private const int URGENT_UPDATE_INTERVAL = 10; // Urgent updates every 10 ticks (~0.17 seconds) - for testing
+    private static readonly HashSet<string> loggedThingFilterWarnings = new HashSet<string>();
 
         public InfoGiverManager(Map map) : base(map)
         {
@@ -265,7 +266,7 @@ namespace Autonomy
 
         private float EvaluateItemCount(InfoGiverDef def)
         {
-            var items = new List<Thing>();
+            var items = new HashSet<Thing>();
             
             // Collect items based on targeting
             if (!def.targetItems.NullOrEmpty())
@@ -275,7 +276,7 @@ namespace Autonomy
                     var thingDef = DefDatabase<ThingDef>.GetNamedSilentFail(itemDefName);
                     if (thingDef != null)
                     {
-                        items.AddRange(map.listerThings.ThingsOfDef(thingDef));
+                        CollectThingsOfDef(items, thingDef);
                     }
                 }
             }
@@ -287,12 +288,9 @@ namespace Autonomy
                     var categoryDef = DefDatabase<ThingCategoryDef>.GetNamedSilentFail(categoryDefName);
                     if (categoryDef != null)
                     {
-                        var thingDefs = DefDatabase<ThingDef>.AllDefs.Where(td => 
-                            td.thingCategories != null && td.thingCategories.Contains(categoryDef));
-                        
-                        foreach (var thingDef in thingDefs)
+                        foreach (var thingDef in GetThingDefsForCategory(categoryDef))
                         {
-                            items.AddRange(map.listerThings.ThingsOfDef(thingDef));
+                            CollectThingsOfDef(items, thingDef);
                         }
                     }
                 }
@@ -311,16 +309,16 @@ namespace Autonomy
                     
                     foreach (var thingDef in thingDefs)
                     {
-                        items.AddRange(map.listerThings.ThingsOfDef(thingDef));
+                        CollectThingsOfDef(items, thingDef);
                     }
                 }
             }
 
             // Apply filters
-            items = ApplyItemFilters(items, def.filters);
+            var filteredItems = ApplyItemFilters(items.ToList(), def.filters);
 
             // Calculate result based on calculation type
-            var values = items.Select(item => (float)item.stackCount).ToList();
+            var values = filteredItems.Select(item => (float)item.stackCount).ToList();
             return CalculateResult(values, def.calculation);
         }
 
@@ -346,38 +344,303 @@ namespace Autonomy
             }
         }
 
+        private IEnumerable<ThingDef> GetThingDefsForCategory(ThingCategoryDef rootCategory)
+        {
+            if (rootCategory == null)
+            {
+                yield break;
+            }
+
+            var visitedCategories = new HashSet<ThingCategoryDef>();
+            var pending = new List<ThingCategoryDef> { rootCategory };
+
+            var yieldedDefs = new HashSet<ThingDef>();
+
+            while (pending.Count > 0)
+            {
+                int lastIndex = pending.Count - 1;
+                ThingCategoryDef current = pending[lastIndex];
+                pending.RemoveAt(lastIndex);
+                if (current == null || !visitedCategories.Add(current))
+                {
+                    continue;
+                }
+
+                if (!current.childThingDefs.NullOrEmpty())
+                {
+                    foreach (var thingDef in current.childThingDefs)
+                    {
+                        if (thingDef != null && yieldedDefs.Add(thingDef))
+                        {
+                            yield return thingDef;
+                        }
+                    }
+                }
+
+                if (!current.childCategories.NullOrEmpty())
+                {
+                    foreach (var child in current.childCategories)
+                    {
+                        if (child != null)
+                        {
+                            pending.Add(child);
+                        }
+                    }
+                }
+            }
+
+            // Fallback: include ThingDefs that explicitly reference the category in thingCategories
+            foreach (var thingDef in DefDatabase<ThingDef>.AllDefs)
+            {
+                if (thingDef?.thingCategories != null && thingDef.thingCategories.Contains(rootCategory) && yieldedDefs.Add(thingDef))
+                {
+                    yield return thingDef;
+                }
+            }
+        }
+
+        private void CollectThingsOfDef(HashSet<Thing> buffer, ThingDef thingDef)
+        {
+            if (buffer == null || thingDef == null || map?.listerThings == null)
+            {
+                return;
+            }
+
+            var thingsOnMap = map.listerThings.ThingsOfDef(thingDef);
+            if (!thingsOnMap.NullOrEmpty())
+            {
+                buffer.UnionWith(thingsOnMap);
+            }
+        }
+
         private List<Thing> ApplyItemFilters(List<Thing> items, InfoFilters filters)
         {
-            if (filters == null) return items;
+            if (filters == null || items == null)
+            {
+                return items;
+            }
 
             var filtered = items.AsEnumerable();
+            bool usingThingFilterGroups = !filters.includeThingFilters.NullOrEmpty() || !filters.excludeThingFilters.NullOrEmpty();
 
-            // Filter by stockpile only
-            if (filters.stockpileOnly)
+            if (usingThingFilterGroups)
             {
-                filtered = filtered.Where(item => 
+                if (!filters.includeThingFilters.NullOrEmpty())
                 {
-                    var zone = map.zoneManager.ZoneAt(item.Position) as Zone_Stockpile;
-                    return zone != null;
-                });
-            }
+                    filtered = filtered.Where(item => MatchesAnyThingFilterGroup(item, filters.includeThingFilters, defaultValueWhenNoGroups: true));
+                }
 
-            // Filter by home area only
-            if (filters.homeAreaOnly)
-            {
-                filtered = filtered.Where(item => 
+                if (!filters.excludeThingFilters.NullOrEmpty())
                 {
-                    return map.areaManager.Home[item.Position];
-                });
+                    filtered = filtered.Where(item => !MatchesAnyThingFilterGroup(item, filters.excludeThingFilters, defaultValueWhenNoGroups: false));
+                }
             }
-
-            // Filter out forbidden items
-            if (filters.excludeForbidden)
+            else
             {
-                filtered = filtered.Where(item => !item.IsForbidden(Faction.OfPlayer));
+                // Legacy boolean-based filters (backward compatibility)
+                if (filters.stockpileOnly)
+                {
+                    filtered = filtered.Where(ItemInStockpile);
+                }
+
+                if (filters.homeAreaOnly)
+                {
+                    filtered = filtered.Where(ItemInHomeArea);
+                }
+
+                if (filters.outsideRoomsOnly)
+                {
+                    filtered = filtered.Where(ItemIsOutside);
+                }
+
+                if (filters.excludeContained)
+                {
+                    filtered = filtered.Where(item => !ItemInContainer(item));
+                }
+
+                if (filters.excludeForbidden)
+                {
+                    filtered = filtered.Where(item => !item.IsForbidden(Faction.OfPlayer));
+                }
+
+                if (filters.requireDeteriorable)
+                {
+                    filtered = filtered.Where(ItemIsDeteriorable);
+                }
             }
 
             return filtered.ToList();
+        }
+
+        private bool MatchesAnyThingFilterGroup(Thing item, List<List<string>> groups, bool defaultValueWhenNoGroups)
+        {
+            if (groups.NullOrEmpty())
+            {
+                return defaultValueWhenNoGroups;
+            }
+
+            bool hasValidGroup = false;
+
+            foreach (var group in groups)
+            {
+                if (group.NullOrEmpty())
+                {
+                    continue;
+                }
+
+                hasValidGroup = true;
+
+                if (ThingMatchesFilterGroup(item, group))
+                {
+                    return true;
+                }
+            }
+
+            return hasValidGroup ? false : defaultValueWhenNoGroups;
+        }
+
+        private bool ThingMatchesFilterGroup(Thing item, List<string> tags)
+        {
+            if (tags.NullOrEmpty())
+            {
+                return true;
+            }
+
+            foreach (string tag in tags)
+            {
+                if (tag.NullOrEmpty())
+                {
+                    continue;
+                }
+
+                if (!ThingMatchesFilterTag(item, tag))
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        private bool ThingMatchesFilterTag(Thing item, string tag)
+        {
+            if (item == null || tag.NullOrEmpty())
+            {
+                return false;
+            }
+
+            string normalized = tag.Trim().ToLowerInvariant();
+
+            switch (normalized)
+            {
+                case "stockpile":
+                case "stockpileonly":
+                    return ItemInStockpile(item);
+
+                case "homearea":
+                case "inhomearea":
+                    return ItemInHomeArea(item);
+
+                case "nothomearea":
+                    return item.Spawned && !ItemInHomeArea(item);
+
+                case "outside":
+                case "outsiderooms":
+                case "outdoors":
+                    return ItemIsOutside(item);
+
+                case "inside":
+                case "indoors":
+                    return item.Spawned && !ItemIsOutside(item);
+
+                case "deteriorable":
+                case "candeteriorate":
+                    return ItemIsDeteriorable(item);
+
+                case "nondeteriorable":
+                    return !ItemIsDeteriorable(item);
+
+                case "forbidden":
+                    return item.IsForbidden(Faction.OfPlayer);
+
+                case "unforbidden":
+                    return !item.IsForbidden(Faction.OfPlayer);
+
+                case "incontainer":
+                case "contained":
+                case "instorage":
+                    return ItemInContainer(item);
+
+                case "notincontainer":
+                case "notcontained":
+                case "notinstorage":
+                    return !ItemInContainer(item);
+
+                default:
+                    if (loggedThingFilterWarnings.Add(normalized))
+                    {
+                        Log.Warning($"[Autonomy] Unknown thing filter tag '{tag}' referenced in InfoGiver filters.");
+                    }
+                    return false;
+            }
+        }
+
+        private bool ItemInStockpile(Thing item)
+        {
+            if (item == null || !item.Spawned)
+            {
+                return false;
+            }
+
+            return map.zoneManager.ZoneAt(item.Position) is Zone_Stockpile;
+        }
+
+        private bool ItemInHomeArea(Thing item)
+        {
+            if (item == null || !item.Spawned)
+            {
+                return false;
+            }
+
+            Area home = map.areaManager?.Home;
+            return home != null && home[item.Position];
+        }
+
+        private bool ItemIsOutside(Thing item)
+        {
+            if (item == null || !item.Spawned)
+            {
+                return false;
+            }
+
+            Room room = item.Position.GetRoom(map);
+            return room == null || room.PsychologicallyOutdoors || room.OpenRoofCount > 0;
+        }
+
+        private bool ItemInContainer(Thing item)
+        {
+            if (item == null)
+            {
+                return false;
+            }
+
+            if (!item.Spawned)
+            {
+                return true;
+            }
+
+            if (!(item.ParentHolder is Map))
+            {
+                return true;
+            }
+
+            return item.IsInAnyStorage();
+        }
+
+        private bool ItemIsDeteriorable(Thing item)
+        {
+            ThingDef thingDef = item?.def;
+            return thingDef != null && thingDef.useHitPoints && thingDef.CanEverDeteriorate && thingDef.statBases.Any(sb => sb.stat == StatDefOf.DeteriorationRate);
         }
 
         private float EvaluatePawnCount(InfoGiverDef def)

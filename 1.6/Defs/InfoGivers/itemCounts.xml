@@ -1,0 +1,96 @@
+<Defs>   
+   
+    <!-- Infogiver that counts the unforbidden things with a deterioration rate that are 
+    outside and not in a container -->
+
+    <Autonomy.InfoGiverDef>
+        <defName>OutsideDeteriorablesInfoGiver</defName>
+        <label>Deteriorating Items</label>
+        <description>Counts stacks of deteriorable, unforbidden items left outside in the open.</description>
+        <sourceType>itemCount</sourceType>
+        <calculation>Sum</calculation>
+        <isLocalizable>false</isLocalizable>
+        <isIndividualizable>false</isIndividualizable>
+
+        <targetCategories>
+            <li>Root</li>
+        </targetCategories>
+
+        <filters>
+            <includeThingFilters>
+                <li>
+                    <li>Deteriorable</li>
+                    <li>Outside</li>
+                </li>
+            </includeThingFilters>
+            <excludeThingFilters>
+                <li>
+                    <li>Forbidden</li>
+                </li>
+                <li>
+                    <li>InContainer</li>
+                </li>
+            </excludeThingFilters>
+        </filters>
+
+    </Autonomy.InfoGiverDef>
+
+    <!-- Fires in home area InfoGiver -->
+    <Autonomy.InfoGiverDef>
+        <defName>FiresInHomeArea</defName>
+        <label>Fires in home area</label>
+        <description>Counts the number of fires in the home area for urgent firefighting priority</description>
+        <isLocalizable>false</isLocalizable>
+        <isIndividualizable>false</isIndividualizable>
+        <calculation>Count</calculation>
+        <isUrgent>true</isUrgent>
+        <sourceType>itemCount</sourceType>
+        
+        <targetThingClasses>
+            <li>Fire</li>
+        </targetThingClasses>
+        
+        <!-- <filters>
+            <homeAreaOnly>true</homeAreaOnly>
+        </filters> -->
+
+        <filters>
+            <includeThingFilters>
+                <li>
+                    <li>HomeArea</li>
+                </li>
+            </includeThingFilters>
+        </filters>
+
+    </Autonomy.InfoGiverDef>
+
+        <!-- Filth Count InfoGiver -->
+    <Autonomy.InfoGiverDef>
+        <defName>CurrentRoomFilthCount</defName>
+        <label>Filth in current room</label>
+        <description>Tracks the amount of filth in each pawn's current room for personalized cleaning priority</description>
+        <isLocalizable>true</isLocalizable>
+        <isIndividualizable>false</isIndividualizable>
+        <calculation>Count</calculation>
+        <isUrgent>false</isUrgent>
+        <sourceType>itemCount</sourceType>
+        
+        <targetThingClasses>
+            <li>Filth</li>
+        </targetThingClasses>
+        
+        <!-- <filters>
+            <homeAreaOnly>true</homeAreaOnly>
+        </filters> -->
+
+        <filters>
+            <includeThingFilters>
+                <li>
+                    <li>HomeArea</li>
+                </li>
+            </includeThingFilters>
+        </filters>
+
+    </Autonomy.InfoGiverDef>
+
+</Defs>

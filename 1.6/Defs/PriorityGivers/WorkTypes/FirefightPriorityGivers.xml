@@ -58,25 +58,7 @@
         </targetWorkGivers>
     </Autonomy.PriorityGiverDef>
 
-    <!-- Fires in home area InfoGiver -->
-    <Autonomy.InfoGiverDef>
-        <defName>FiresInHomeArea</defName>
-        <label>Fires in home area</label>
-        <description>Counts the number of fires in the home area for urgent firefighting priority</description>
-        <isLocalizable>false</isLocalizable>
-        <isIndividualizable>false</isIndividualizable>
-        <calculation>Count</calculation>
-        <isUrgent>true</isUrgent>
-        <sourceType>itemCount</sourceType>
-        
-        <targetThingClasses>
-            <li>Fire</li>
-        </targetThingClasses>
-        
-        <filters>
-            <homeAreaOnly>true</homeAreaOnly>
-        </filters>
-    </Autonomy.InfoGiverDef>
+
 
     <!-- Firefighting Urgent Priority Giver -->
     <Autonomy.PriorityGiverDef>

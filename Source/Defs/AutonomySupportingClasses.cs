@@ -139,10 +139,15 @@ namespace Autonomy
         // Advanced hediff filtering
         public List<HediffFilter> hediffs = new List<HediffFilter>();
 
-        // Item filtering
+    // Item filtering
+    public List<List<string>> includeThingFilters = new List<List<string>>();
+    public List<List<string>> excludeThingFilters = new List<List<string>>();
         public bool stockpileOnly = false;
         public bool excludeForbidden = true;
         public bool homeAreaOnly = false;
+        public bool outsideRoomsOnly = false;
+        public bool requireDeteriorable = false;
+        public bool excludeContained = false;
 
         // Construction filtering
         public bool onlyDesignated = true;

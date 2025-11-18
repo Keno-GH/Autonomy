@@ -6,25 +6,7 @@
 
 
 
-    <!-- Filth Count InfoGiver -->
-    <Autonomy.InfoGiverDef>
-        <defName>CurrentRoomFilthCount</defName>
-        <label>Filth count in current room</label>
-        <description>Tracks the amount of filth in each pawn's current room for personalized cleaning priority</description>
-        <isLocalizable>true</isLocalizable>
-        <isIndividualizable>false</isIndividualizable>
-        <calculation>Count</calculation>
-        <isUrgent>false</isUrgent>
-        <sourceType>itemCount</sourceType>
-        
-        <targetThingClasses>
-            <li>Filth</li>
-        </targetThingClasses>
-        
-        <filters>
-            <homeAreaOnly>true</homeAreaOnly>
-        </filters>
-    </Autonomy.InfoGiverDef>
+
 
     <!-- Cleaning Priority Giver -->
     <Autonomy.PriorityGiverDef>

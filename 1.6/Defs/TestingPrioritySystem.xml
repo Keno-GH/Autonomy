@@ -9,7 +9,7 @@
 
 
     <!-- Cleaning Priority Giver -->
-    <Autonomy.PriorityGiverDef>
+<!--     <Autonomy.PriorityGiverDef>
         <defName>FilthCleaningPriority</defName>
         <label>Filth-based cleaning priority</label>
         <description>Adjusts cleaning priority based on filth count in pawn's current room</description>
@@ -52,7 +52,7 @@
             <li>CleanFilth</li>
         </targetWorkGivers>
 
-    </Autonomy.PriorityGiverDef>
+    </Autonomy.PriorityGiverDef> -->
 
     <!-- Construction Speed InfoGiver -->
 

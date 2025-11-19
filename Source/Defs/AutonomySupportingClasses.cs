@@ -142,14 +142,8 @@ namespace Autonomy
     // Item filtering
     public List<List<string>> includeThingFilters = new List<List<string>>();
     public List<List<string>> excludeThingFilters = new List<List<string>>();
-        public bool stockpileOnly = false;
-        public bool excludeForbidden = true;
-        public bool homeAreaOnly = false;
-        public bool outsideRoomsOnly = false;
-        public bool requireDeteriorable = false;
-        public bool excludeContained = false;
 
-        // Construction filtering
+        // Construction filtering (placeholder, they do nothing at the moment)
         public bool onlyDesignated = true;
         public bool excludeStarted = false;
     }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Verse;
 using RimWorld;
+using System.Reflection;
 
 namespace Autonomy
 {
@@ -435,39 +436,6 @@ namespace Autonomy
                     filtered = filtered.Where(item => !MatchesAnyThingFilterGroup(item, filters.excludeThingFilters, defaultValueWhenNoGroups: false));
                 }
             }
-            else
-            {
-                // Legacy boolean-based filters (backward compatibility)
-                if (filters.stockpileOnly)
-                {
-                    filtered = filtered.Where(ItemInStockpile);
-                }
-
-                if (filters.homeAreaOnly)
-                {
-                    filtered = filtered.Where(ItemInHomeArea);
-                }
-
-                if (filters.outsideRoomsOnly)
-                {
-                    filtered = filtered.Where(ItemIsOutside);
-                }
-
-                if (filters.excludeContained)
-                {
-                    filtered = filtered.Where(item => !ItemInContainer(item));
-                }
-
-                if (filters.excludeForbidden)
-                {
-                    filtered = filtered.Where(item => !item.IsForbidden(Faction.OfPlayer));
-                }
-
-                if (filters.requireDeteriorable)
-                {
-                    filtered = filtered.Where(ItemIsDeteriorable);
-                }
-            }
 
             return filtered.ToList();
         }
@@ -533,6 +501,7 @@ namespace Autonomy
 
             switch (normalized)
             {
+                case "instockpile":
                 case "stockpile":
                 case "stockpileonly":
                     return ItemInStockpile(item);
@@ -1207,6 +1176,10 @@ namespace Autonomy
                 Log.Warning($"[Autonomy] PawnNeed InfoGiver {def.defName} missing targetNeed");
                 return 0f;
             }
+            if (def.targetNeedValue.NullOrEmpty())
+            {
+                def.targetNeedValue = "curLevel"; // Default to current level if not specified
+            }
 
             var pawns = new List<Pawn>();
             
@@ -1221,7 +1194,7 @@ namespace Autonomy
             
             foreach (var pawn in pawns)
             {
-                float needValue = GetPawnNeedValue(pawn, def.targetNeed);
+                float needValue = GetPawnNeedValue(pawn, def.targetNeed, def.targetNeedValue);
                 if (needValue >= 0) // Only include valid need values
                 {
                     values.Add(needValue);
@@ -1231,10 +1204,10 @@ namespace Autonomy
             return CalculateResult(values, def.calculation);
         }
 
-        private float GetPawnNeedValue(Pawn pawn, string needName)
+        private float GetPawnNeedValue(Pawn pawn, string needName, string needValue = "curLevel")
         {
             if (pawn.needs == null) return -1f;
-            
+
             // Get the need def by name
             var needDef = DefDatabase<NeedDef>.GetNamedSilentFail(needName);
             if (needDef == null)
@@ -1242,13 +1215,58 @@ namespace Autonomy
                 Log.Warning($"[Autonomy] Unknown need: {needName}");
                 return -1f;
             }
-            
+
             // Get the need from the pawn
             var need = pawn.needs.TryGetNeed(needDef);
             if (need == null) return -1f;
-            
+
             // Return the need level (0.0 to 1.0)
-            return need.CurLevel;
+            return GetNeedValueByProperty(need, needValue);
+        }
+        
+        private float GetNeedValueByProperty(Need need, string property)
+        {
+            switch (property.ToLower())
+            {
+                case "curlevel":
+                case "currentlevel":
+                    return need.CurLevel;
+                case "curlevelpercentage":
+                    return need.CurLevelPercentage;
+                case "maxlevel":
+                case "maxlevelpercentage":
+                    return need.MaxLevel;
+                case "rate":
+                case "currentrate":
+                    if (need is Need_Food needFood)
+                    {
+                        return needFood.FoodFallPerTick * 60f * 2500f;
+                    }
+                    else if (need is Need_Rest needRest)
+                    {
+                        return needRest.RestFallPerTick * 60f * 2500f;
+                    }
+                    else if (need is Need_Joy needJoy)
+                    {
+                        return (float)(typeof(Need_Joy).GetProperty("FallPerInterval", BindingFlags.Instance | BindingFlags.NonPublic)?.GetValue(needJoy) ?? 0f) * 60f * 2500f;
+                    }
+                    else if (need is Need_Mood)
+                    {
+                        return 0; // Mood does not have a direct rate property
+                    }
+                    else
+                    {
+                        float fallPerDay = need.def?.fallPerDay ?? 0f;
+                        if (fallPerDay <= 0f)
+                        {
+                            return 0f; // No fall rate defined
+                        }
+                        return fallPerDay; // Generic fall rate per day, without modifiers
+                    }
+                default:
+                    Log.Warning($"[Autonomy] Unknown need value property: {property}");
+                    return -1f;
+            }
         }
 
         private float EvaluateConstructionCount(InfoGiverDef def)

@@ -86,11 +86,16 @@ namespace Autonomy
         /// Target stat for pawnStat sourceType
         /// </summary>
         public string targetStat;
-        
+
         /// <summary>
         /// Target need for pawnNeed sourceType
         /// </summary>
         public string targetNeed;
+
+        /// <summary>
+        /// Target need value for the need selected (e.g., "FoodFallPerTick" for Need_Food)
+        /// </summary>
+        public string targetNeedValue;
         
         /// <summary>
         /// Target items for itemCount sourceType (alternative to categories)

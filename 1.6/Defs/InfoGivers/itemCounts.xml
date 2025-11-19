@@ -49,11 +49,6 @@
         <targetThingClasses>
             <li>Fire</li>
         </targetThingClasses>
-        
-        <!-- <filters>
-            <homeAreaOnly>true</homeAreaOnly>
-        </filters> -->
-
         <filters>
             <includeThingFilters>
                 <li>
@@ -64,11 +59,11 @@
 
     </Autonomy.InfoGiverDef>
 
-        <!-- Filth Count InfoGiver -->
+    <!-- Filth Count InfoGiver -->
     <Autonomy.InfoGiverDef>
-        <defName>CurrentRoomFilthCount</defName>
-        <label>Filth in current room</label>
-        <description>Tracks the amount of filth in each pawn's current room for personalized cleaning priority</description>
+        <defName>FilthCount</defName>
+        <label>Filth in current home area</label>
+        <description>Tracks the amount of filth in the home area. Can be localizable for each pawn's current room.</description>
         <isLocalizable>true</isLocalizable>
         <isIndividualizable>false</isIndividualizable>
         <calculation>Count</calculation>
@@ -78,10 +73,6 @@
         <targetThingClasses>
             <li>Filth</li>
         </targetThingClasses>
-        
-        <!-- <filters>
-            <homeAreaOnly>true</homeAreaOnly>
-        </filters> -->
 
         <filters>
             <includeThingFilters>
@@ -93,4 +84,61 @@
 
     </Autonomy.InfoGiverDef>
 
+    <!-- Filth Count Indoors InfoGiver -->
+    <Autonomy.InfoGiverDef>
+        <defName>FilthCountIndoors</defName>
+        <label>Filth indoors</label>
+        <description>Tracks the amount of filth indoors.</description>
+        <isLocalizable>false</isLocalizable>
+        <isIndividualizable>false</isIndividualizable>
+        <calculation>Count</calculation>
+        <isUrgent>false</isUrgent>
+        <sourceType>itemCount</sourceType>
+        
+        <targetThingClasses>
+            <li>Filth</li>
+        </targetThingClasses>
+
+        <filters>
+            <includeThingFilters>
+                <li>
+                    <li>HomeArea</li>
+                </li>
+            </includeThingFilters>
+            <excludeThingFilters>
+                <li>
+                    <li>Outdoors</li>
+                </li>
+            </excludeThingFilters>
+        </filters>
+
+    </Autonomy.InfoGiverDef>
+
+    <!-- Raw food count -->
+    <Autonomy.InfoGiverDef>
+        <defName>RawFoodCount</defName>
+        <label>Raw food count</label>
+        <description>Tracks the total count of raw food items in the colony storage areas.</description>
+        <isLocalizable>false</isLocalizable>
+        <isIndividualizable>false</isIndividualizable>
+        <calculation>Sum</calculation>
+        <isUrgent>false</isUrgent>
+        <sourceType>itemCount</sourceType>
+        
+        <targetCategories>
+            <li>FoodRaw</li>
+        </targetCategories>
+
+        <filters>
+            <includeThingFilters>
+                <li>
+                    <li>InStorage</li>
+                </li>
+                <li>
+                    <li>inStockpile</li>
+                </li>
+            </includeThingFilters>
+        </filters>
+
+    </Autonomy.InfoGiverDef>
 </Defs>

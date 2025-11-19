@@ -24,4 +24,30 @@
         </filters>
     </Autonomy.InfoGiverDef>
 
+    <!-- Food need fall rate sum -->
+    <Autonomy.InfoGiverDef>
+        <defName>ColonistFoodNeedFallRate</defName>
+        <label>Food fall rate</label>
+        <description>Tracks the rate at which each colonist's food need is decreasing per day.</description>
+        <isLocalizable>false</isLocalizable>
+        <isIndividualizable>true</isIndividualizable>
+        <calculation>Sum</calculation>
+        <isUrgent>true</isUrgent>
+        <sourceType>pawnNeed</sourceType>
+        <targetNeed>Food</targetNeed>
+        <targetNeedValue>currentRate</targetNeedValue>
+
+        <filters>
+            <include>
+                <li>player</li>
+                <li>guest</li>
+                <li>prisoner</li>
+            </include>
+            <exclude>
+                <li>dead</li>
+                <li>downed</li>
+            </exclude>
+        </filters>
+    </Autonomy.InfoGiverDef>
+
 </Defs>

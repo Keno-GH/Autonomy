@@ -114,8 +114,8 @@
 
     </Autonomy.InfoGiverDef>
 
-    <!-- Raw food count -->
-    <Autonomy.InfoGiverDef>
+    <!-- Raw food count (unused)-->
+<!--     <Autonomy.InfoGiverDef>
         <defName>RawFoodCount</defName>
         <label>Raw food count</label>
         <description>Tracks the total count of raw food items in the colony storage areas.</description>
@@ -128,6 +128,36 @@
         <targetCategories>
             <li>FoodRaw</li>
         </targetCategories>
+
+        <filters>
+            <includeThingFilters>
+                <li>
+                    <li>InStorage</li>
+                </li>
+                <li>
+                    <li>inStockpile</li>
+                </li>
+            </includeThingFilters>
+        </filters>
+
+    </Autonomy.InfoGiverDef> -->
+
+    <!-- Total nutrition count -->
+    <Autonomy.InfoGiverDef>
+        <defName>StoredNutrition</defName>
+        <label>Stored nutrition</label>
+        <description>Tracks the total amount of nutrition stored in the colony storage areas.</description>
+        <isLocalizable>false</isLocalizable>
+        <isIndividualizable>false</isIndividualizable>
+        <calculation>Sum</calculation>
+        <isUrgent>false</isUrgent>
+        <sourceType>itemCount</sourceType>
+        
+        <targetCategories>
+            <li>Foods</li>
+        </targetCategories>
+
+        <targetItemProperty>nutrition</targetItemProperty>
 
         <filters>
             <includeThingFilters>

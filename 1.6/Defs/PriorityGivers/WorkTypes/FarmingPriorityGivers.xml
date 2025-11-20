@@ -277,7 +277,7 @@
     inspired in the result ranges of the prioritygiver
     CookColonyHungerPriorityGiver -->
     <Autonomy.PriorityGiverDef>
-        <defName>GrowColonyHungerPriorityGiver</defName>
+        <defName>GrowColonyHunger</defName>
         <label>Farming when hungry colony</label>
         <description>Prioritizes growing food based on the colony's overall hunger level.</description>
         <isUrgent>true</isUrgent>
@@ -285,7 +285,7 @@
         <conditions>
             <li>
                 <type>infoGiver</type>
-                <infoDefName>ColonistFoodNeedInfoGiver</infoDefName>
+                <infoDefName>ColonistFoodNeed</infoDefName>
                 <requestLocalizedData>false</requestLocalizedData>
                 <requestIndividualData>false</requestIndividualData>
                 <requestNormalizedDistance>false</requestNormalizedDistance>

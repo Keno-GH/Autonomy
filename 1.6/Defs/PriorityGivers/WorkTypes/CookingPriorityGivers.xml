@@ -7,7 +7,7 @@
     <!-- Cooking, Butchering priority based on individual food pawnNeed InfoGiver-->
 
     <Autonomy.InfoGiverDef>
-        <defName>FoodPoisonChanceInfoGiver</defName>
+        <defName>FoodPoisonChance</defName>
         <label>Food poison chance</label>
         <description>Tracks each pawn's chance to avoid poisoning meals, letting skilled cooks step up.</description>
         <isLocalizable>false</isLocalizable>
@@ -29,7 +29,7 @@
     </Autonomy.InfoGiverDef>
 
     <Autonomy.InfoGiverDef>
-        <defName>ButcheryFleshEfficiencyInfoGiver</defName>
+        <defName>ButcheryFleshEfficiency</defName>
         <label>Butchery efficiency</label>
         <description>Tracks each pawn's butchery flesh efficiency to decide who should work the tables.</description>
         <isLocalizable>false</isLocalizable>
@@ -59,7 +59,7 @@
     (Perception of self vs expectations)-->
 
     <Autonomy.InfoGiverDef>
-        <defName>DrugCookingSpeedInfoGiver</defName>
+        <defName>DrugCookingSpeed</defName>
         <label>Drug cooking speed</label>
         <description>Tracks each pawn's brewing speed for beer, tea, and simple drugs.</description>
         <isLocalizable>false</isLocalizable>
@@ -84,7 +84,7 @@
 
     <!-- Cooking priority: hungry pawn takes action -->
     <Autonomy.PriorityGiverDef>
-        <defName>CookPersonalHungerPriorityGiver</defName>
+        <defName>CookPersonalHunger</defName>
         <label>Cook by personal hunger</label>
         <description>Prioritizes cooking based on the pawn's personal hunger level.</description>
         <isUrgent>true</isUrgent>
@@ -92,7 +92,7 @@
         <conditions>
             <li>
                 <type>infoGiver</type>
-                <infoDefName>ColonistFoodNeedInfoGiver</infoDefName>
+                <infoDefName>ColonistFoodNeed</infoDefName>
                 <requestLocalizedData>false</requestLocalizedData>
                 <requestIndividualData>true</requestIndividualData>
                 <requestNormalizedDistance>false</requestNormalizedDistance>
@@ -185,7 +185,7 @@
 
     <!-- Cooking priority: feed hungry colony -->
     <Autonomy.PriorityGiverDef>
-        <defName>CookColonyHungerPriorityGiver</defName>
+        <defName>CookColonyHunger</defName>
         <label>Cook by colony hunger</label>
         <description>Prioritizes cooking based on the colony's overall hunger level.</description>
         <isUrgent>true</isUrgent>
@@ -193,7 +193,7 @@
         <conditions>
             <li>
                 <type>infoGiver</type>
-                <infoDefName>ColonistFoodNeedInfoGiver</infoDefName>
+                <infoDefName>ColonistFoodNeed</infoDefName>
                 <requestLocalizedData>false</requestLocalizedData>
                 <requestIndividualData>false</requestIndividualData>
                 <requestNormalizedDistance>false</requestNormalizedDistance>
@@ -290,7 +290,7 @@
 
     <!-- Cooking priority: normalized kitchen skill -->
     <Autonomy.PriorityGiverDef>
-        <defName>CookRelativeFoodPoisonPriorityGiver</defName>
+        <defName>CookRelativeFoodPoison</defName>
         <label>Cook by food poisoning risk</label>
         <description>Prioritizes cooking when the pawn is less likely to poison meals.</description>
         <isUrgent>false</isUrgent>
@@ -298,7 +298,7 @@
         <conditions>
             <li>
                 <type>infoGiver</type>
-                <infoDefName>FoodPoisonChanceInfoGiver</infoDefName>
+                <infoDefName>FoodPoisonChance</infoDefName>
                 <requestLocalizedData>false</requestLocalizedData>
                 <requestIndividualData>true</requestIndividualData>
                 <requestNormalizedDistance>true</requestNormalizedDistance>
@@ -383,7 +383,7 @@
 
     <!-- Cooking priority: absolute kitchen expectations -->
 <!--     <Autonomy.PriorityGiverDef>
-        <defName>CookAbsoluteFoodPoisonPriorityGiver</defName>
+        <defName>CookAbsoluteFoodPoison</defName>
         <label>Cook when I'm careful</label>
         <description>I cook if my poison chance is acceptable.</description>
         <isUrgent>false</isUrgent>
@@ -391,7 +391,7 @@
         <conditions>
             <li>
                 <type>infoGiver</type>
-                <infoDefName>FoodPoisonChanceInfoGiver</infoDefName>
+                <infoDefName>FoodPoisonChance</infoDefName>
                 <requestLocalizedData>false</requestLocalizedData>
                 <requestIndividualData>true</requestIndividualData>
                 <requestNormalizedDistance>false</requestNormalizedDistance>
@@ -486,7 +486,7 @@
 
     <!-- Butchering priority: normalized efficiency -->
     <Autonomy.PriorityGiverDef>
-        <defName>ButcherRelativeEfficiencyPriorityGiver</defName>
+        <defName>ButcherRelativeEfficiency</defName>
         <label>Butcher by relative efficiency</label>
         <description>Prioritizes butchering based on the competitive, normalized butcher efficiency of the pawn</description>
         <isUrgent>false</isUrgent>
@@ -494,7 +494,7 @@
         <conditions>
             <li>
                 <type>infoGiver</type>
-                <infoDefName>ButcheryFleshEfficiencyInfoGiver</infoDefName>
+                <infoDefName>ButcheryFleshEfficiency</infoDefName>
                 <requestLocalizedData>false</requestLocalizedData>
                 <requestIndividualData>true</requestIndividualData>
                 <requestNormalizedDistance>true</requestNormalizedDistance>
@@ -578,7 +578,7 @@
 
     <!-- Butchering priority: absolute efficiency expectations -->
 <!--     <Autonomy.PriorityGiverDef>
-        <defName>ButcherAbsoluteEfficiencyPriorityGiver</defName>
+        <defName>ButcherAbsoluteEfficiency</defName>
         <label>Butcher when I'm efficient</label>
         <description>I butcher when my efficiency meets expectations.</description>
         <isUrgent>false</isUrgent>
@@ -586,7 +586,7 @@
         <conditions>
             <li>
                 <type>infoGiver</type>
-                <infoDefName>ButcheryFleshEfficiencyInfoGiver</infoDefName>
+                <infoDefName>ButcheryFleshEfficiency</infoDefName>
                 <requestLocalizedData>false</requestLocalizedData>
                 <requestIndividualData>true</requestIndividualData>
                 <requestNormalizedDistance>false</requestNormalizedDistance>
@@ -680,7 +680,7 @@
 
     <!-- Brewing priority: absolute brewing speed -->
     <Autonomy.PriorityGiverDef>
-        <defName>BrewingDrugCookingSpeedPriorityGiver</defName>
+        <defName>BrewingDrugCookingSpeed</defName>
         <label>Brew by drug cooking speed</label>
         <description>Prioritizes brewing based on the competitive drug cooking speed of the pawn.</description>
         <isUrgent>false</isUrgent>
@@ -688,7 +688,7 @@
         <conditions>
             <li>
                 <type>infoGiver</type>
-                <infoDefName>DrugCookingSpeedInfoGiver</infoDefName>
+                <infoDefName>DrugCookingSpeed</infoDefName>
                 <requestLocalizedData>false</requestLocalizedData>
                 <requestIndividualData>true</requestIndividualData>
                 <requestNormalizedDistance>false</requestNormalizedDistance>

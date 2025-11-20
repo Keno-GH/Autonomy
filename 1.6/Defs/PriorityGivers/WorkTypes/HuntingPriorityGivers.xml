@@ -95,7 +95,7 @@
 
     <!-- Hunting priority: feed hungry colony by hunting -->
     <Autonomy.PriorityGiverDef>
-        <defName>HuntColonyHungerPriorityGiver</defName>
+        <defName>HuntColonyHunger</defName>
         <label>Hunt by Colony Hunger</label>
         <description>Prioritizes hunting workgivers based on the colony's overall hunger level</description>
         <isUrgent>true</isUrgent>
@@ -103,7 +103,7 @@
         <conditions>
             <li>
                 <type>infoGiver</type>
-                <infoDefName>ColonistFoodNeedInfoGiver</infoDefName>
+                <infoDefName>ColonistFoodNeed</infoDefName>
                 <requestLocalizedData>false</requestLocalizedData>
                 <requestIndividualData>false</requestIndividualData>
                 <requestNormalizedDistance>false</requestNormalizedDistance>

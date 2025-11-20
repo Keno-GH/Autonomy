@@ -318,8 +318,63 @@ namespace Autonomy
             // Apply filters
             var filteredItems = ApplyItemFilters(items.ToList(), def.filters);
 
-            // Calculate result based on calculation type
-            var values = filteredItems.Select(item => (float)item.stackCount).ToList();
+            // Extract values (e.g., stack counts)
+            string itemProperty = def.targetItemProperty ?? "stackCount";
+            List<float> values;
+
+            switch (itemProperty.ToLower())
+            {
+                case "stackcount":
+                case "count":
+                    values = filteredItems.Select(item => (float)item.stackCount).ToList();
+                    break;
+
+                case "marketvalue":
+                    values = filteredItems.Select(item => item.MarketValue * item.stackCount).ToList();
+                    break;
+
+                case "mass":
+                case "totalmass":
+                    values = filteredItems.Select(item => item.GetStatValue(StatDefOf.Mass) * item.stackCount).ToList();
+                    break;
+
+                case "nutrition":
+                    values = filteredItems.Select(item =>
+                    {
+                        if (item.def.IsNutritionGivingIngestible)
+                        {
+                            return item.GetStatValue(StatDefOf.Nutrition) * item.stackCount;
+                        }
+                        return 0f;
+                    }).ToList();
+                    break;
+
+                case "hitpoints":
+                case "totalhitpoints":
+                    values = filteredItems.Select(item => (float)item.HitPoints).ToList();
+                    break;
+
+                case "hitpointspercentage":
+                case "health":
+                case "hp":
+                    values = filteredItems.Select(item => item.MaxHitPoints > 0 ? (float)item.HitPoints / item.MaxHitPoints : 0f).ToList();
+                    break;
+
+                case "quality":
+                    values = filteredItems.Select(item => item.TryGetQuality(out QualityCategory qc) ? (float)qc : 0f).ToList();
+                    break;
+
+                case "deterioration":
+                case "deteriorationrate":
+                    values = filteredItems.Select(item => item.GetStatValue(StatDefOf.DeteriorationRate)).ToList();
+                    break;
+
+                default:
+                    Log.Warning($"[Autonomy] Unknown item property '{itemProperty}' for InfoGiver {def.defName}. Defaulting to stackCount.");
+                    values = filteredItems.Select(item => (float)item.stackCount).ToList();
+                    break;
+            }
+
             return CalculateResult(values, def.calculation);
         }
 

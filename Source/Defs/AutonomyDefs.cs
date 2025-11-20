@@ -106,11 +106,16 @@ namespace Autonomy
         /// Target ThingCategoryDefs for itemCount sourceType (better mod compatibility)
         /// </summary>
         public List<string> targetCategories = new List<string>();
-        
+
         /// <summary>
         /// Target ThingClass names for itemCount sourceType (e.g., "Filth" for all filth types)
         /// </summary>
         public List<string> targetThingClasses = new List<string>();
+        
+        /// <summary>
+        /// Target item propoerty for itemCount sourceType (e.g., "stackCount", "marketValue", etc.)
+        /// </summary>
+        public string targetItemProperty;
         
         /// <summary>
         /// Weather property for weather sourceType (moveSpeedMultiplier, accuracyMultiplier, etc.)

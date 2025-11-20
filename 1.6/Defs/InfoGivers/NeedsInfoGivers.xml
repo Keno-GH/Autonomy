@@ -1,7 +1,7 @@
 <Defs>
 
     <Autonomy.InfoGiverDef>
-        <defName>ColonistFoodNeedInfoGiver</defName>
+        <defName>ColonistFoodNeed</defName>
         <label>Personal hunger (colonists)</label>
         <description>Tracks each colonist's food need individually so hungry pawns know when to cook or butcher.</description>
         <isLocalizable>false</isLocalizable>

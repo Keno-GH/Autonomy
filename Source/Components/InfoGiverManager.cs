@@ -16,6 +16,17 @@ namespace Autonomy
         private Dictionary<string, LocationalData> locationalData = new Dictionary<string, LocationalData>();
         private Dictionary<string, IndividualData> individualData = new Dictionary<string, IndividualData>();
         
+        // Optimization fields
+        private class InfoGiverRuntimeData
+        {
+            public int stableUpdates;
+            public int skipInterval;
+            public int skippedUpdates;
+        }
+        private Dictionary<string, InfoGiverRuntimeData> runtimeData = new Dictionary<string, InfoGiverRuntimeData>();
+        private const int STABILITY_THRESHOLD = 3;
+        private const int MAX_SKIP_INTERVAL = 10;
+        
         // Staggered update fields
         private List<InfoGiverDef> urgentInfoGivers;
         private List<InfoGiverDef> normalInfoGivers;
@@ -192,8 +203,49 @@ namespace Autonomy
         {
             try
             {
+                // Get or create runtime data
+                if (!runtimeData.TryGetValue(infoGiver.defName, out var data))
+                {
+                    data = new InfoGiverRuntimeData();
+                    runtimeData[infoGiver.defName] = data;
+                }
+
+                // Check if we should skip
+                if (data.skippedUpdates < data.skipInterval)
+                {
+                    data.skippedUpdates++;
+                    return;
+                }
+                
+                // Reset skipped counter and evaluate
+                data.skippedUpdates = 0;
                 float result = EvaluateInfoGiver(infoGiver);
-                lastResults[infoGiver.defName] = result;
+                
+                // Check for change
+                float lastResult = 0f;
+                lastResults.TryGetValue(infoGiver.defName, out lastResult);
+                
+                if (Math.Abs(result - lastResult) < 0.001f)
+                {
+                    // Result is stable
+                    data.stableUpdates++;
+                    
+                    // If stable for enough updates, increase skip interval
+                    if (data.stableUpdates >= STABILITY_THRESHOLD)
+                    {
+                        if (data.skipInterval < MAX_SKIP_INTERVAL)
+                        {
+                            data.skipInterval++;
+                        }
+                    }
+                }
+                else
+                {
+                    // Result changed
+                    data.stableUpdates = 0;
+                    data.skipInterval = 0;
+                    lastResults[infoGiver.defName] = result;
+                }
             }
             catch (Exception e)
             {
@@ -1738,8 +1790,6 @@ namespace Autonomy
             
             // Start with all pawns on the map
             var allPawns = map.mapPawns.AllPawns;
-            
-            // Apply basic pawn type filters
             pawns = ApplyPawnTypeFilters(allPawns, def.filters);
             
             // Get gene counts from qualified pawns

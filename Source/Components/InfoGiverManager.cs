@@ -15,10 +15,17 @@ namespace Autonomy
         private Dictionary<string, float> lastResults = new Dictionary<string, float>();
         private Dictionary<string, LocationalData> locationalData = new Dictionary<string, LocationalData>();
         private Dictionary<string, IndividualData> individualData = new Dictionary<string, IndividualData>();
-        private int ticksSinceLastUpdate = 0;
-        private int ticksSinceLastUrgentUpdate = 0;
-        private const int UPDATE_INTERVAL = 100; // Update every 100 ticks (~1.7 seconds) - for testing
-        private const int URGENT_UPDATE_INTERVAL = 10; // Urgent updates every 10 ticks (~0.17 seconds) - for testing
+        
+        // Staggered update fields
+        private List<InfoGiverDef> urgentInfoGivers;
+        private List<InfoGiverDef> normalInfoGivers;
+        private int urgentIndex = 0;
+        private int normalIndex = 0;
+        private float urgentAccumulator = 0f;
+        private float normalAccumulator = 0f;
+
+        private const int UPDATE_INTERVAL = 100; // Update every 100 ticks (~1.7 seconds)
+        private const int URGENT_UPDATE_INTERVAL = 10; // Urgent updates every 10 ticks (~0.17 seconds)
     private static readonly HashSet<string> loggedThingFilterWarnings = new HashSet<string>();
 
         public InfoGiverManager(Map map) : base(map)
@@ -126,64 +133,71 @@ namespace Autonomy
         {
             base.MapComponentTick();
             
-            ticksSinceLastUpdate++;
-            ticksSinceLastUrgentUpdate++;
-            
-            // Check urgent InfoGivers every 400 ticks
-            if (ticksSinceLastUrgentUpdate >= URGENT_UPDATE_INTERVAL)
+            // Initialize lists if needed
+            if (urgentInfoGivers == null || normalInfoGivers == null)
             {
-                ticksSinceLastUrgentUpdate = 0;
-                EvaluateUrgentInfoGivers();
+                CacheInfoGivers();
             }
-            
-            // Check all InfoGivers every 2000 ticks
-            if (ticksSinceLastUpdate >= UPDATE_INTERVAL)
+
+            // Process Urgent InfoGivers
+            if (urgentInfoGivers.Count > 0)
             {
-                ticksSinceLastUpdate = 0;
-                EvaluateAllInfoGivers();
+                ProcessStaggered(urgentInfoGivers, ref urgentIndex, ref urgentAccumulator, URGENT_UPDATE_INTERVAL);
+            }
+
+            // Process Normal InfoGivers
+            if (normalInfoGivers.Count > 0)
+            {
+                ProcessStaggered(normalInfoGivers, ref normalIndex, ref normalAccumulator, UPDATE_INTERVAL);
             }
         }
 
-        private void EvaluateUrgentInfoGivers()
+        private void CacheInfoGivers()
         {
-            var infoGivers = DefDatabase<InfoGiverDef>.AllDefs.Where(ig => ig.isUrgent);
+            urgentInfoGivers = new List<InfoGiverDef>();
+            normalInfoGivers = new List<InfoGiverDef>();
             
-            foreach (var infoGiver in infoGivers)
+            foreach (var def in DefDatabase<InfoGiverDef>.AllDefs)
             {
-                try
-                {
-                    float result = EvaluateInfoGiver(infoGiver);
-                    lastResults[infoGiver.defName] = result;
-                    
-                    // InfoGiver logging disabled - now logging PriorityGivers instead
-                    // Log.Message($"[Autonomy-Urgent] {infoGiver.label}: {result:F2}");
-                }
-                catch (Exception e)
-                {
-                    Log.Error($"[Autonomy] Error evaluating urgent InfoGiver {infoGiver.defName}: {e.Message}");
-                }
+                if (def.isUrgent)
+                    urgentInfoGivers.Add(def);
+                else
+                    normalInfoGivers.Add(def);
             }
         }
 
-        private void EvaluateAllInfoGivers()
+        private void ProcessStaggered(List<InfoGiverDef> givers, ref int index, ref float accumulator, int interval)
         {
-            var infoGivers = DefDatabase<InfoGiverDef>.AllDefs;
+            // Calculate how many items we need to process per tick to cover the whole list within the interval
+            float itemsPerTick = (float)givers.Count / interval;
             
-            foreach (var infoGiver in infoGivers)
+            // Add to accumulator
+            accumulator += itemsPerTick;
+            
+            // Process items while accumulator >= 1
+            while (accumulator >= 1f)
             {
-                try
-                {
-                    float result = EvaluateInfoGiver(infoGiver);
-                    lastResults[infoGiver.defName] = result;
-                    
-                    // InfoGiver logging disabled - now logging PriorityGivers instead
-                    // string prefix = infoGiver.isUrgent ? "[Autonomy-Urgent]" : "[Autonomy]";
-                    // Log.Message($"{prefix} {infoGiver.label}: {result:F2} ({infoGiver.description})");
-                }
-                catch (Exception e)
-                {
-                    Log.Error($"[Autonomy] Error evaluating InfoGiver {infoGiver.defName}: {e.Message}");
-                }
+                accumulator -= 1f;
+                
+                if (index >= givers.Count) index = 0;
+                
+                var infoGiver = givers[index];
+                ProcessInfoGiver(infoGiver);
+                
+                index++;
+            }
+        }
+
+        private void ProcessInfoGiver(InfoGiverDef infoGiver)
+        {
+            try
+            {
+                float result = EvaluateInfoGiver(infoGiver);
+                lastResults[infoGiver.defName] = result;
+            }
+            catch (Exception e)
+            {
+                Log.Error($"[Autonomy] Error evaluating InfoGiver {infoGiver.defName}: {e.Message}");
             }
         }
 

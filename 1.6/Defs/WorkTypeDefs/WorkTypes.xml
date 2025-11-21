@@ -1,0 +1,161 @@
+<Defs>
+
+    <!-- We are adding some new worktypes to separate the vanilla ones. This way,
+    priorityGivers that target one specific WorkGiver can be more precise and work better. -->
+
+    <!-- Butchering -->
+    <WorkTypeDef>
+        <defName>AutonomyButchering</defName>
+        <labelShort>butcher</labelShort>
+        <pawnLabel>Butcher</pawnLabel>
+        <gerundLabel>butchering</gerundLabel>
+        <description>Butcher meat.</description>
+        <verb>Butcher</verb>
+        <naturalPriority>990</naturalPriority>
+        <relevantSkills>
+            <li>Cooking</li>
+        </relevantSkills>
+        <workTags>
+            <li>Cooking</li>
+            <li>ManualSkilled</li>
+            <li>Commoner</li>
+            <li>AllWork</li>
+        </workTags>
+    </WorkTypeDef>
+
+    <!-- Butchering -->
+    <WorkTypeDef>
+        <defName>AutonomyBrewing</defName>
+        <labelShort>brewer</labelShort>
+        <pawnLabel>Brewer</pawnLabel>
+        <gerundLabel>brewing</gerundLabel>
+        <description>Brewing beverages.</description>
+        <verb>Brew</verb>
+        <naturalPriority>990</naturalPriority>
+        <relevantSkills>
+            <li>Cooking</li>
+        </relevantSkills>
+        <workTags>
+            <li>Cooking</li>
+            <li>ManualSkilled</li>
+            <li>Commoner</li>
+            <li>AllWork</li>
+        </workTags>
+    </WorkTypeDef>
+
+    <!-- Taming and Training -->
+    <WorkTypeDef>
+        <defName>AutonomyTrainer</defName>
+        <labelShort>train</labelShort>
+        <pawnLabel>Animal trainer</pawnLabel>
+        <gerundLabel>training animals</gerundLabel>
+        <description>Tame and train animals.</description>
+        <verb>Train</verb>
+        <naturalPriority>1040</naturalPriority>
+        <relevantSkills>
+            <li>Animals</li>
+        </relevantSkills>
+        <workTags>
+            <li>Animals</li>
+            <li>Commoner</li>
+            <li>AllWork</li>
+        </workTags>
+    </WorkTypeDef>
+
+    <!-- Slaughtering -->
+    <WorkTypeDef>
+        <defName>AutonomySlaughter</defName>
+        <labelShort>slaughter</labelShort>
+        <pawnLabel>Slaughterer</pawnLabel>
+        <gerundLabel>slaughtering animals</gerundLabel>
+        <description>Slaughter animals for meat and other resources.</description>
+        <verb>Slaughter</verb>
+        <naturalPriority>1040</naturalPriority>
+        <relevantSkills>
+            <li>Animals</li>
+        </relevantSkills>
+        <workTags>
+            <li>Animals</li>
+            <li>Commoner</li>
+            <li>AllWork</li>
+        </workTags>
+    </WorkTypeDef>
+
+    <!-- Slaver -->
+    <WorkTypeDef>
+        <defName>AutonomySlaver</defName>
+        <labelShort>slaver</labelShort>
+        <pawnLabel>Slaver</pawnLabel>
+        <gerundLabel>managing slaves</gerundLabel>
+        <description>Manage, suppress and control slaves.</description>
+        <verb>Slave management</verb>
+        <naturalPriority>1110</naturalPriority>
+        <requireCapableColonist>true</requireCapableColonist>
+        <disabledForSlaves>true</disabledForSlaves>
+        <relevantSkills>
+            <li>Social</li>
+        </relevantSkills>
+        <workTags>
+            <li>Social</li>
+            <li>AllWork</li>
+        </workTags>
+    </WorkTypeDef>
+
+    <!-- Selftend -->
+    <WorkTypeDef>
+        <defName>AutonomySelfTend</defName>
+        <labelShort>self-tend</labelShort>
+        <pawnLabel>Self-tender</pawnLabel>
+        <gerundLabel>self-tending</gerundLabel>
+        <description>Self-tenders will care for themselves.</description>
+        <verb>Care for</verb>
+        <naturalPriority>1310</naturalPriority>
+        <relevantSkills>
+            <li>Medicine</li>
+        </relevantSkills>
+        <workTags>
+            <li>Caring</li>
+            <li>Commoner</li>
+            <li>AllWork</li>
+        </workTags>
+    </WorkTypeDef>
+
+    <!-- Visit sick people / "nursing" in a coloquial term -->
+    <WorkTypeDef>
+        <defName>AutonomyVisit</defName>
+        <labelShort>Visit sick</labelShort>
+        <pawnLabel>Nurse</pawnLabel>
+        <gerundLabel>visiting sick</gerundLabel>
+        <description>Feed, talk and check up on recuperating patients.</description>
+        <verb>Check up</verb>
+        <naturalPriority>1290</naturalPriority>
+        <relevantSkills>
+            <li>Social</li>
+        </relevantSkills>
+        <workTags>
+            <li>Caring</li>
+            <li>Commoner</li>
+            <li>AllWork</li>
+        </workTags>
+    </WorkTypeDef>
+
+    <!-- Surgery -->
+    <WorkTypeDef>
+        <defName>AutonomySurgeon</defName>
+        <labelShort>Surgery</labelShort>
+        <pawnLabel>Surgeon</pawnLabel>
+        <gerundLabel>performing surgery</gerundLabel>
+        <description>Perform surgery on patients.</description>
+        <verb>Operate</verb>
+        <naturalPriority>1280</naturalPriority>
+        <relevantSkills>
+            <li>Medicine</li>
+        </relevantSkills>
+        <workTags>
+            <li>Caring</li>
+            <li>Commoner</li>
+            <li>AllWork</li>
+        </workTags>
+    </WorkTypeDef>
+
+</Defs>

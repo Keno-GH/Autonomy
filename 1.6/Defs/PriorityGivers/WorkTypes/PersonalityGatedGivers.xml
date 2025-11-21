@@ -16,7 +16,7 @@
     <Autonomy.PriorityGiverDef>
         <defName>FoodSecurity</defName>
         <label>Food Security</label>
-        <description>Prioritizes food production (cooking, growing, butchering) based on the number of days of food remaining in storage.</description>
+        <description>Prioritizes food production (cooking, growing, butchering, etc) based on the number of days of food remaining in storage.</description>
         <isUrgent>true</isUrgent>
 
         <conditions>

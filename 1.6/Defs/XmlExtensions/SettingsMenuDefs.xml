@@ -1,0 +1,96 @@
+<Defs>
+
+    <XmlExtensions.SettingsMenuDef>
+        <modId>keno.autonomy</modId>
+        <label>Autonomy</label>
+        <settings>
+            <li Class="XmlExtensions.Setting.CollapsibleSettings">
+                <label>Worktype settings</label>
+                <tooltip>Setup the worktypes added by this mod</tooltip>
+                <settings>
+                    <li Class="XmlExtensions.Setting.Group">
+                        <padLeft>24</padLeft>
+                        <settings>
+                            <li Class="XmlExtensions.Setting.Text">
+                                <text>Worktype settings require restart to apply. They are savegame safe.</text>
+                            </li>
+                            <li Class="XmlExtensions.Setting.Text">
+                                <text>Disabling these is discouraged. However, the mod will adapt to Worktype changes. This mod aims it's logic at the workgivers themselves, not the worktypes.</text>
+                            </li>
+                            <li Class="XmlExtensions.Setting.Group">
+                                <padRight>480</padRight>
+                                <settings>
+                                    <li Class="XmlExtensions.Setting.Gap" />
+                                    <li Class="XmlExtensions.Setting.Text">
+                                        <text>Cooking jobs.</text>
+                                    </li>
+                                    <li Class="XmlExtensions.Setting.Checkbox">
+                                        <key>ToggleAutonomyButchering</key>
+                                        <label>Toggle butcher</label>
+                                        <defaultValue>true</defaultValue>
+                                        <tooltip>Separated since while they share the cooking skill, butchering is very different from cooking at a stove.</tooltip>
+                                    </li>
+                                    <li Class="XmlExtensions.Setting.Checkbox">
+                                        <key>ToggleAutonomyBrewing</key>
+                                        <label>Toggle brewer</label>
+                                        <defaultValue>true</defaultValue>
+                                        <tooltip>Separated since while they share the cooking skill, brewing has different personality implications and urgency than cooking and butchering.</tooltip>
+                                    </li>
+                                    <li Class="XmlExtensions.Setting.Gap" />
+                                    <li Class="XmlExtensions.Setting.Text">
+                                        <text>Handling jobs.</text>
+                                    </li>
+                                    <li Class="XmlExtensions.Setting.Checkbox">
+                                        <key>ToggleAutonomyTrainer</key>
+                                        <label>Toggle trainer</label>
+                                        <defaultValue>true</defaultValue>
+                                        <tooltip>Training and taming use different personality offsets than ranching jobs.</tooltip>
+                                    </li>
+                                    <li Class="XmlExtensions.Setting.Checkbox">
+                                        <key>ToggleAutonomySlaughter</key>
+                                        <label>Toggle slaughter</label>
+                                        <defaultValue>true</defaultValue>
+                                        <tooltip>Slaughtering uses different personality offsets than ranching jobs. Vegans exist!</tooltip>
+                                    </li>
+                                    <li Class="XmlExtensions.Setting.Gap" />
+                                    <li Class="XmlExtensions.Setting.Text">
+                                        <text>Warding jobs.</text>
+                                    </li>
+                                    <li Class="XmlExtensions.Setting.Checkbox">
+                                        <key>ToggleAutonomySlaver</key>
+                                        <label>Toggle slaver (requires Ideology)</label>
+                                        <defaultValue>true</defaultValue>
+                                        <tooltip>Managing slave jobs have both unique personality offsets AND ideological differences from Warding.</tooltip>
+                                    </li>
+                                    <li Class="XmlExtensions.Setting.Gap" />
+                                    <li Class="XmlExtensions.Setting.Text">
+                                        <text>Doctoring jobs.</text>
+                                    </li>
+                                    <li Class="XmlExtensions.Setting.Checkbox">
+                                        <key>ToggleAutonomySelfTend</key>
+                                        <label>Toggle self tend</label>
+                                        <defaultValue>true</defaultValue>
+                                        <tooltip>Self tend uses different personality offsets than other medical jobs.</tooltip>
+                                    </li>
+                                    <li Class="XmlExtensions.Setting.Checkbox">
+                                        <key>ToggleAutonomyVisit</key>
+                                        <label>Toggle visit sick</label>
+                                        <defaultValue>true</defaultValue>
+                                        <tooltip>Visit sick is about checking up, feeding and cheering up recovering patients. It has a different skill, personality offsets and priorities than doctoring.</tooltip>
+                                    </li>
+                                    <li Class="XmlExtensions.Setting.Checkbox">
+                                        <key>ToggleAutonomySurgeon</key>
+                                        <label>Toggle surgeon</label>
+                                        <defaultValue>true</defaultValue>
+                                        <tooltip>Surgery is different from tending the sick and injured, and therefore it has different personality offsets.</tooltip>
+                                    </li>
+                                </settings>
+                            </li>
+                        </settings>
+                    </li>
+                </settings>
+            </li>
+        </settings>
+    </XmlExtensions.SettingsMenuDef>
+
+</Defs>

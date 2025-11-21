@@ -1,3 +1,187 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Patch>
+
+    <Operation Class="XmlExtensions.OptionalPatch">
+        <modId>keno.autonomy</modId>
+        <key>ToggleAutonomyButchering</key>
+        <defaultValue>true</defaultValue>
+        <caseTrue>
+            <Operation Class="XmlExtensions.PatchOperationAddOrReplace">
+                <xpath>Defs/WorkGiverDef[defName="DoBillsButcherFlesh"]</xpath>
+                <value>
+                    <workType>AutonomyButchering</workType>
+                </value>
+            </Operation>
+        </caseTrue>
+        <caseFalse>
+            <Operation Class="XmlExtensions.PatchOperationAttributeAdd">
+                <xpath>Defs/WorkTypeDef[defName="AutonomyButchering"]</xpath>
+                <attribute>Abstract</attribute>
+                <value>True</value>
+            </Operation>
+        </caseFalse>
+    </Operation>
+
+    <Operation Class="XmlExtensions.OptionalPatch">
+        <modId>keno.autonomy</modId>
+        <key>ToggleAutonomyBrewing</key>
+        <defaultValue>true</defaultValue>
+        <caseTrue>
+            <Operation Class="XmlExtensions.PatchOperationAddOrReplace">
+                <xpath>Defs/WorkGiverDef[defName="DoBillsBrew"]</xpath>
+                <value>
+                    <workType>AutonomyBrewing</workType>
+                </value>
+            </Operation>
+        </caseTrue>
+        <caseFalse>
+            <Operation Class="XmlExtensions.PatchOperationAttributeAdd">
+                <xpath>Defs/WorkTypeDef[defName="AutonomyBrewing"]</xpath>
+                <attribute>Abstract</attribute>
+                <value>True</value>
+            </Operation>
+        </caseFalse>
+    </Operation>
+
+    <Operation Class="XmlExtensions.OptionalPatch">
+        <modId>keno.autonomy</modId>
+        <key>ToggleAutonomyTrainer</key>
+        <defaultValue>true</defaultValue>
+        <caseTrue>
+            <Operation Class="XmlExtensions.PatchOperationAddOrReplace">
+                <xpath>Defs/WorkGiverDef[defName="Train" or defName="Tame"]</xpath>
+                <value>
+                    <workType>AutonomyTrainer</workType>
+                </value>
+            </Operation>
+        </caseTrue>
+        <caseFalse>
+            <Operation Class="XmlExtensions.PatchOperationAttributeAdd">
+                <xpath>Defs/WorkTypeDef[defName="AutonomyTrainer"]</xpath>
+                <attribute>Abstract</attribute>
+                <value>True</value>
+            </Operation>
+        </caseFalse>
+    </Operation>
+
+    <Operation Class="XmlExtensions.OptionalPatch">
+        <modId>keno.autonomy</modId>
+        <key>ToggleAutonomySlaughter</key>
+        <defaultValue>true</defaultValue>
+        <caseTrue>
+            <Operation Class="XmlExtensions.PatchOperationAddOrReplace">
+                <xpath>Defs/WorkGiverDef[defName="Slaughter"]</xpath>
+                <value>
+                    <workType>AutonomySlaughter</workType>
+                </value>
+            </Operation>
+        </caseTrue>
+        <caseFalse>
+            <Operation Class="XmlExtensions.PatchOperationAttributeAdd">
+                <xpath>Defs/WorkTypeDef[defName="AutonomySlaughter"]</xpath>
+                <attribute>Abstract</attribute>
+                <value>True</value>
+            </Operation>
+        </caseFalse>
+    </Operation>
+
+    <Operation Class="XmlExtensions.OptionalPatch">
+        <modId>keno.autonomy</modId>
+        <key>ToggleAutonomySlaver</key>
+        <defaultValue>true</defaultValue>
+        <caseTrue>
+            <Operation Class="XmlExtensions.FindMod">
+                <mods>
+                    <li>Ideology</li>
+                </mods>
+                <caseTrue>
+                    <Operation Class="XmlExtensions.PatchOperationAddOrReplace">
+                        <xpath>Defs/WorkGiverDef[defName="ExecuteSlave" or defName="EnslavePrisoner" or defName="ImprisonSlave" or defName="SuppressSlave"]</xpath>
+                        <value>
+                            <workType>AutonomySlaver</workType>
+                        </value>
+                    </Operation>
+                </caseTrue>
+                <caseFalse>
+                    <Operation Class="XmlExtensions.PatchOperationAttributeAdd">
+                        <xpath>Defs/WorkTypeDef[defName="AutonomySlaver"]</xpath>
+                        <attribute>Abstract</attribute>
+                        <value>True</value>
+                    </Operation>
+                </caseFalse>
+            </Operation>
+        </caseTrue>
+        <caseFalse>
+            <Operation Class="XmlExtensions.PatchOperationAttributeAdd">
+                <xpath>Defs/WorkTypeDef[defName="AutonomySlaver"]</xpath>
+                <attribute>Abstract</attribute>
+                <value>True</value>
+            </Operation>
+        </caseFalse>
+    </Operation>
+
+    <Operation Class="XmlExtensions.OptionalPatch">
+        <modId>keno.autonomy</modId>
+        <key>ToggleAutonomySelfTend</key>
+        <defaultValue>true</defaultValue>
+        <caseTrue>
+            <Operation Class="XmlExtensions.PatchOperationAddOrReplace">
+                <xpath>Defs/WorkGiverDef[defName="DoctorTendToSelf" or defName="DoctorTendToSelfEmergency"]</xpath>
+                <value>
+                    <workType>AutonomySelfTend</workType>
+                </value>
+            </Operation>
+        </caseTrue>
+        <caseFalse>
+            <Operation Class="XmlExtensions.PatchOperationAttributeAdd">
+                <xpath>Defs/WorkTypeDef[defName="AutonomySelfTend"]</xpath>
+                <attribute>Abstract</attribute>
+                <value>True</value>
+            </Operation>
+        </caseFalse>
+    </Operation>
+
+    <Operation Class="XmlExtensions.OptionalPatch">
+        <modId>keno.autonomy</modId>
+        <key>ToggleAutonomyVisit</key>
+        <defaultValue>true</defaultValue>
+        <caseTrue>
+            <Operation Class="XmlExtensions.PatchOperationAddOrReplace">
+                <xpath>Defs/WorkGiverDef[defName="DoctorFeedHumanlikes" or defName="DoctorFeedAnimals" or defName="VisitSickPawn"]</xpath>
+                <value>
+                    <workType>AutonomyVisit</workType>
+                </value>
+            </Operation>
+        </caseTrue>
+        <caseFalse>
+            <Operation Class="XmlExtensions.PatchOperationAttributeAdd">
+                <xpath>Defs/WorkTypeDef[defName="AutonomyVisit"]</xpath>
+                <attribute>Abstract</attribute>
+                <value>True</value>
+            </Operation>
+        </caseFalse>
+    </Operation>
+
+    <Operation Class="XmlExtensions.OptionalPatch">
+        <modId>keno.autonomy</modId>
+        <key>ToggleAutonomySurgeon</key>
+        <defaultValue>true</defaultValue>
+        <caseTrue>
+            <Operation Class="XmlExtensions.PatchOperationAddOrReplace">
+                <xpath>Defs/WorkGiverDef[defName="TakeToBedToOperate" or defName="DoBillsMedicalAnimalOperation" or defName="DoBillsMedicalHumanOperation"]</xpath>
+                <value>
+                    <workType>AutonomySurgeon</workType>
+                </value>
+            </Operation>
+        </caseTrue>
+        <caseFalse>
+            <Operation Class="XmlExtensions.PatchOperationAttributeAdd">
+                <xpath>Defs/WorkTypeDef[defName="AutonomySurgeon"]</xpath>
+                <attribute>Abstract</attribute>
+                <value>True</value>
+            </Operation>
+        </caseFalse>
+    </Operation>
+
+
 </Patch>

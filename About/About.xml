@@ -14,6 +14,18 @@
 			<steamWorkshopUrl>steam://url/CommunityFilePage/2009463077</steamWorkshopUrl>
 			<downloadUrl>https://github.com/pardeike/HarmonyRimWorld/releases/latest</downloadUrl>
 		</li>
+		<li>
+			<packageId>maux36.rimpsyche</packageId>
+			<displayName>Rimpsyche - Personality Core</displayName>
+			<steamWorkshopUrl>steam://url/CommunityFilePage/3535112473</steamWorkshopUrl>
+			<downloadUrl>https://github.com/jagerguy36/Rimpsyche/releases/latest</downloadUrl>
+		</li>
+		<li>
+			<packageId>imranfish.xmlextensions</packageId>
+			<displayName>XML Extensions</displayName>
+			<steamWorkshopUrl>steam://url/CommunityFilePage/2574315206</steamWorkshopUrl>
+			<downloadUrl>https://github.com/15adhami/XmlExtensions/releases/latest</downloadUrl>
+		</li>
 	</modDependencies>
 
 	<incompatibleWith>

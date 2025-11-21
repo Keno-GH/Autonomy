@@ -16,6 +16,19 @@ namespace Autonomy
         private InfoGiverManager infoGiverManager;
         private Autonomy.Systems.WorkPriorityAssignmentSystem workPrioritySystem;
         
+        // Optimization fields
+        private class PriorityRuntimeData
+        {
+            public int lastPriority;
+            public int stableUpdates;
+            public int skipInterval;
+            public int skippedUpdates;
+        }
+        
+        private Dictionary<string, Dictionary<int, PriorityRuntimeData>> runtimeData = new Dictionary<string, Dictionary<int, PriorityRuntimeData>>();
+        private const int STABILITY_THRESHOLD = 3;
+        private const int MAX_SKIP_INTERVAL = 10;
+        
         // Tick tracking for evaluation frequency
         private int ticksSinceLastUpdate = 0;
         private int ticksSinceLastUrgentUpdate = 0;
@@ -134,8 +147,55 @@ namespace Autonomy
         /// </summary>
         public int EvaluatePriorityGiverForPawn(PriorityGiverDef def, Pawn pawn)
         {
+            // Get or create pawn dictionary
+            if (!runtimeData.TryGetValue(def.defName, out var pawnData))
+            {
+                pawnData = new Dictionary<int, PriorityRuntimeData>();
+                runtimeData[def.defName] = pawnData;
+            }
+
+            // Get or create runtime data for pawn
+            if (!pawnData.TryGetValue(pawn.thingIDNumber, out var data))
+            {
+                data = new PriorityRuntimeData();
+                pawnData[pawn.thingIDNumber] = data;
+            }
+
+            // Check if we should skip
+            if (data.skippedUpdates < data.skipInterval)
+            {
+                data.skippedUpdates++;
+                return data.lastPriority;
+            }
+
+            // Reset skipped counter
+            data.skippedUpdates = 0;
+
+            // Calculate new result
             var result = EvaluatePriorityGiverForPawnWithDescription(def, pawn);
-            return result.priority;
+            int newPriority = result.priority;
+
+            // Check for stability
+            if (newPriority == data.lastPriority)
+            {
+                data.stableUpdates++;
+                if (data.stableUpdates >= STABILITY_THRESHOLD)
+                {
+                    if (data.skipInterval < MAX_SKIP_INTERVAL)
+                    {
+                        data.skipInterval++;
+                    }
+                }
+            }
+            else
+            {
+                // Result changed
+                data.stableUpdates = 0;
+                data.skipInterval = 0;
+                data.lastPriority = newPriority;
+            }
+
+            return newPriority;
         }
 
         /// <summary>

@@ -189,6 +189,37 @@ namespace Autonomy
 
         private float EvaluateInfoGiver(InfoGiverDef def)
         {
+            // Optimization: For individualized InfoGivers, collect data once and derive global result
+            if (def.isIndividualizable && CanBeIndividualized(def.sourceType))
+            {
+                CollectIndividualizedData(def);
+                if (individualData.TryGetValue(def.defName, out IndividualData indData))
+                {
+                    // If also localizable, collect localized data too
+                    if (def.isLocalizable && CanBeLocalized(def.sourceType))
+                    {
+                        CollectLocalizedData(def);
+                        // Ensure localized data has the global value
+                        if (locationalData.TryGetValue(def.defName, out LocationalData locData))
+                        {
+                            locData.globalValue = indData.globalValue;
+                        }
+                    }
+                    return indData.globalValue;
+                }
+            }
+            
+            // Optimization: For localized InfoGivers (PawnCount, ConstructionCount), collect data once
+            // Note: ItemCount is excluded for now as CollectLocalizedItemData needs updates to support all properties
+            if (def.isLocalizable && (def.sourceType == InfoSourceType.pawnCount || def.sourceType == InfoSourceType.constructionCount))
+            {
+                CollectLocalizedData(def);
+                if (locationalData.TryGetValue(def.defName, out LocationalData locData))
+                {
+                    return locData.globalValue;
+                }
+            }
+
             float result = 0f;
             
             switch (def.sourceType)
@@ -234,16 +265,23 @@ namespace Autonomy
                     return 0f;
             }
             
-            // Handle localized and individualized data collection for applicable source types
+            // Handle localized data collection for applicable source types that weren't handled by optimization
             if (def.isLocalizable && CanBeLocalized(def.sourceType))
             {
-                CollectLocalizedData(def);
+                // Only collect if we haven't already (PawnCount/ConstructionCount handled above)
+                if (def.sourceType != InfoSourceType.pawnCount && def.sourceType != InfoSourceType.constructionCount)
+                {
+                    CollectLocalizedData(def);
+                }
+                
+                // Update global value in localized data
+                if (locationalData.TryGetValue(def.defName, out LocationalData locData))
+                {
+                    locData.globalValue = result;
+                }
             }
             
-            if (def.isIndividualizable && CanBeIndividualized(def.sourceType))
-            {
-                CollectIndividualizedData(def);
-            }
+            // Individualized data is already handled at the start of the method
             
             return result;
         }
@@ -2356,8 +2394,6 @@ namespace Autonomy
                     CollectLocalizedConstructionData(def, locData);
                     break;
             }
-            
-            locData.globalValue = lastResults.TryGetValue(def.defName, out float globalVal) ? globalVal : 0f;
         }
 
         /// <summary>
@@ -2480,6 +2516,10 @@ namespace Autonomy
                 pawns = ApplyHediffFilters(pawns, def.filters.hediffs);
             }
             
+            // Calculate global value
+            var globalValues = pawns.Select(p => 1f).ToList();
+            locData.globalValue = CalculateResult(globalValues, def.calculation);
+            
             // Group by room and calculate values, ignoring "None" rooms
             var roomGroups = pawns.GroupBy(pawn => 
             {
@@ -2506,6 +2546,30 @@ namespace Autonomy
             var constructionItems = allThings
                 .Where(t => t is Blueprint_Build || t is Frame)
                 .ToList();
+            
+            var globalValues = new List<float>();
+            var itemValues = new Dictionary<Thing, float>();
+
+            foreach (var item in constructionItems)
+            {
+                float val = 0f;
+                if (item is Blueprint_Build blueprint)
+                {
+                    val = CountConstructionMaterials(blueprint, def);
+                }
+                else if (item is Frame frame)
+                {
+                    val = CountFrameMaterials(frame, def);
+                }
+                
+                if (val > 0)
+                {
+                    globalValues.Add(val);
+                    itemValues[item] = val;
+                }
+            }
+            
+            locData.globalValue = CalculateResult(globalValues, def.calculation);
                 
             // Group by room and calculate values, ignoring "None" rooms
             var roomGroups = constructionItems.GroupBy(item => 
@@ -2525,15 +2589,9 @@ namespace Autonomy
                 
                 foreach (var item in roomItems)
                 {
-                    if (item is Blueprint_Build blueprint)
+                    if (itemValues.TryGetValue(item, out float val))
                     {
-                        float materialCount = CountConstructionMaterials(blueprint, def);
-                        if (materialCount > 0) values.Add(materialCount);
-                    }
-                    else if (item is Frame frame)
-                    {
-                        float materialCount = CountFrameMaterials(frame, def);
-                        if (materialCount > 0) values.Add(materialCount);
+                        values.Add(val);
                     }
                 }
                 

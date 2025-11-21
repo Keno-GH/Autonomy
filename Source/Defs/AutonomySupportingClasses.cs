@@ -539,6 +539,9 @@ namespace Autonomy
                 case CalculationType.Count:
                     globalValue = values.Count;
                     break;
+                case CalculationType.Flat:
+                    globalValue = values.FirstOrDefault();
+                    break;
                 default:
                     globalValue = values.Average();
                     break;

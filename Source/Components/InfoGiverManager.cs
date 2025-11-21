@@ -252,8 +252,6 @@ namespace Autonomy
             {
                 Log.Error($"[Autonomy] Error evaluating InfoGiver {infoGiver.defName}: {e.Message}");
             }
-            
-            return sb.ToString();
         }
 
         private float EvaluateInfoGiver(InfoGiverDef def)

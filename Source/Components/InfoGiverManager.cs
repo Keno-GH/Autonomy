@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using Verse;
 using RimWorld;
 using System.Reflection;
@@ -15,11 +16,16 @@ namespace Autonomy
         private Dictionary<string, float> lastResults = new Dictionary<string, float>();
         private Dictionary<string, LocationalData> locationalData = new Dictionary<string, LocationalData>();
         private Dictionary<string, IndividualData> individualData = new Dictionary<string, IndividualData>();
-        private int ticksSinceLastUpdate = 0;
-        private int ticksSinceLastUrgentUpdate = 0;
-        private const int UPDATE_INTERVAL = 100; // Update every 100 ticks (~1.7 seconds) - for testing
-        private const int URGENT_UPDATE_INTERVAL = 10; // Urgent updates every 10 ticks (~0.17 seconds) - for testing
-    private static readonly HashSet<string> loggedThingFilterWarnings = new HashSet<string>();
+        
+        // Caching and time-slicing fields
+        private List<List<InfoGiverDef>> cachedRegularGroups;
+        private List<List<InfoGiverDef>> cachedUrgentGroups;
+        private int currentRegularGroupIndex = 0;
+        private int currentUrgentGroupIndex = 0;
+        
+        private const int UPDATE_INTERVAL = 100; // Target update interval for regular info givers
+        private const int URGENT_UPDATE_INTERVAL = 10; // Target update interval for urgent info givers
+        private static readonly HashSet<string> loggedThingFilterWarnings = new HashSet<string>();
 
         public InfoGiverManager(Map map) : base(map)
         {
@@ -126,65 +132,222 @@ namespace Autonomy
         {
             base.MapComponentTick();
             
-            ticksSinceLastUpdate++;
-            ticksSinceLastUrgentUpdate++;
-            
-            // Check urgent InfoGivers every 400 ticks
-            if (ticksSinceLastUrgentUpdate >= URGENT_UPDATE_INTERVAL)
+            // Initialize caches if needed
+            if (cachedRegularGroups == null)
             {
-                ticksSinceLastUrgentUpdate = 0;
-                EvaluateUrgentInfoGivers();
+                var allDefs = DefDatabase<InfoGiverDef>.AllDefsListForReading;
+                cachedUrgentGroups = GroupInfoGivers(allDefs.Where(ig => ig.isUrgent).ToList());
+                cachedRegularGroups = GroupInfoGivers(allDefs.Where(ig => !ig.isUrgent).ToList());
             }
             
-            // Check all InfoGivers every 2000 ticks
-            if (ticksSinceLastUpdate >= UPDATE_INTERVAL)
+            // Process Urgent InfoGivers (staggered by group)
+            if (cachedUrgentGroups.Count > 0)
             {
-                ticksSinceLastUpdate = 0;
-                EvaluateAllInfoGivers();
-            }
-        }
-
-        private void EvaluateUrgentInfoGivers()
-        {
-            var infoGivers = DefDatabase<InfoGiverDef>.AllDefs.Where(ig => ig.isUrgent);
-            
-            foreach (var infoGiver in infoGivers)
-            {
-                try
+                // Calculate batch size to ensure we cycle through all urgent groups within the interval
+                int batchSize = Math.Max(1, (int)Math.Ceiling((double)cachedUrgentGroups.Count / URGENT_UPDATE_INTERVAL));
+                
+                for (int i = 0; i < batchSize; i++)
                 {
-                    float result = EvaluateInfoGiver(infoGiver);
-                    lastResults[infoGiver.defName] = result;
-                    
-                    // InfoGiver logging disabled - now logging PriorityGivers instead
-                    // Log.Message($"[Autonomy-Urgent] {infoGiver.label}: {result:F2}");
+                    currentUrgentGroupIndex = (currentUrgentGroupIndex + 1) % cachedUrgentGroups.Count;
+                    var group = cachedUrgentGroups[currentUrgentGroupIndex];
+                    EvaluateInfoGiverGroup(group);
                 }
-                catch (Exception e)
+            }
+            
+            // Process Regular InfoGivers (staggered by group)
+            if (cachedRegularGroups.Count > 0)
+            {
+                // Calculate batch size to ensure we cycle through all regular groups within the interval
+                int batchSize = Math.Max(1, (int)Math.Ceiling((double)cachedRegularGroups.Count / UPDATE_INTERVAL));
+                
+                for (int i = 0; i < batchSize; i++)
                 {
-                    Log.Error($"[Autonomy] Error evaluating urgent InfoGiver {infoGiver.defName}: {e.Message}");
+                    currentRegularGroupIndex = (currentRegularGroupIndex + 1) % cachedRegularGroups.Count;
+                    var group = cachedRegularGroups[currentRegularGroupIndex];
+                    EvaluateInfoGiverGroup(group);
                 }
             }
         }
 
-        private void EvaluateAllInfoGivers()
+        private void EvaluateInfoGiverGroup(List<InfoGiverDef> group)
         {
-            var infoGivers = DefDatabase<InfoGiverDef>.AllDefs;
-            
-            foreach (var infoGiver in infoGivers)
+            if (group.NullOrEmpty()) return;
+
+            // If group has only one item, or it's not a pawn-based group, evaluate individually
+            // (Non-pawn based groups are always size 1 currently)
+            if (group.Count == 1 || !IsPawnBased(group[0]))
             {
-                try
+                foreach (var def in group)
                 {
-                    float result = EvaluateInfoGiver(infoGiver);
-                    lastResults[infoGiver.defName] = result;
-                    
-                    // InfoGiver logging disabled - now logging PriorityGivers instead
-                    // string prefix = infoGiver.isUrgent ? "[Autonomy-Urgent]" : "[Autonomy]";
-                    // Log.Message($"{prefix} {infoGiver.label}: {result:F2} ({infoGiver.description})");
+                    float result = EvaluateInfoGiver(def);
+                    lastResults[def.defName] = result;
                 }
-                catch (Exception e)
+                return;
+            }
+
+            // Evaluate combined pawn group
+            EvaluatePawnInfoGiverGroup(group);
+        }
+
+        private void EvaluatePawnInfoGiverGroup(List<InfoGiverDef> group)
+        {
+            // Assume all defs in group have same filters (guaranteed by GroupInfoGivers)
+            var firstDef = group[0];
+            
+            // 1. Get filtered pawns
+            var pawns = new List<Pawn>();
+            var allPawns = map.mapPawns.AllPawns;
+            pawns = ApplyPawnTypeFilters(allPawns, firstDef.filters);
+            
+            if (firstDef.filters?.hediffs != null && firstDef.filters.hediffs.Count > 0)
+            {
+                pawns = ApplyHediffFilters(pawns, firstDef.filters.hediffs);
+            }
+            
+            // 2. Initialize data structures for each def
+            foreach(var def in group)
+            {
+                if (def.isIndividualizable && CanBeIndividualized(def.sourceType))
                 {
-                    Log.Error($"[Autonomy] Error evaluating InfoGiver {infoGiver.defName}: {e.Message}");
+                     if (!individualData.ContainsKey(def.defName))
+                        individualData[def.defName] = new IndividualData();
+                     
+                     var indData = individualData[def.defName];
+                     indData.pawnValues.Clear();
+                     indData.calculationType = def.calculation;
                 }
             }
+            
+            // 3. Iterate pawns and collect data
+            foreach(var pawn in pawns)
+            {
+                foreach(var def in group)
+                {
+                    if (def.sourceType == InfoSourceType.pawnStat)
+                    {
+                        float val = GetPawnStatValue(pawn, def.targetStat);
+                        if (val >= 0) individualData[def.defName].SetPawnValue(pawn, val);
+                    }
+                    else if (def.sourceType == InfoSourceType.pawnNeed)
+                    {
+                        float val = GetPawnNeedValue(pawn, def.targetNeed);
+                        if (val >= 0) individualData[def.defName].SetPawnValue(pawn, val);
+                    }
+                    else if (def.sourceType == InfoSourceType.geneCount)
+                    {
+                        float val = GetPawnGeneCount(pawn, def);
+                        individualData[def.defName].SetPawnValue(pawn, val);
+                    }
+                    else if (def.sourceType == InfoSourceType.hediffCount)
+                    {
+                        float val = GetPawnHediffValue(pawn, def);
+                        individualData[def.defName].SetPawnValue(pawn, val);
+                    }
+                }
+            }
+            
+            // 4. Finalize results
+            foreach(var def in group)
+            {
+                if (def.isIndividualizable)
+                {
+                    var indData = individualData[def.defName];
+                    indData.RecalculateGlobalValue();
+                    
+                    // Handle localization if needed (copy global value)
+                    if (def.isLocalizable && CanBeLocalized(def.sourceType))
+                    {
+                         CollectLocalizedData(def);
+                         if (locationalData.TryGetValue(def.defName, out LocationalData locData))
+                         {
+                             locData.globalValue = indData.globalValue;
+                         }
+                    }
+                    
+                    lastResults[def.defName] = indData.globalValue;
+                }
+            }
+        }
+
+        private List<List<InfoGiverDef>> GroupInfoGivers(List<InfoGiverDef> defs)
+        {
+            var groups = new List<List<InfoGiverDef>>();
+            var pawnBased = new Dictionary<string, List<InfoGiverDef>>();
+            
+            foreach (var def in defs)
+            {
+                if (IsPawnBased(def))
+                {
+                    string signature = GetPawnFilterSignature(def);
+                    if (!pawnBased.ContainsKey(signature))
+                    {
+                        pawnBased[signature] = new List<InfoGiverDef>();
+                    }
+                    pawnBased[signature].Add(def);
+                }
+                else
+                {
+                    // Non-pawn based are treated as single groups
+                    groups.Add(new List<InfoGiverDef> { def });
+                }
+            }
+            
+            // Add pawn groups
+            foreach (var list in pawnBased.Values)
+            {
+                groups.Add(list);
+            }
+            
+            return groups;
+        }
+
+        private bool IsPawnBased(InfoGiverDef def)
+        {
+            // Only group individualized types for now as they share the same structure
+            return def.isIndividualizable && CanBeIndividualized(def.sourceType);
+        }
+
+        private string GetPawnFilterSignature(InfoGiverDef def)
+        {
+            if (def.filters == null) return "null";
+            var f = def.filters;
+            var sb = new StringBuilder();
+            
+            // PawnFilters
+            if (f.pawnFilters != null)
+            {
+                foreach(var pf in f.pawnFilters)
+                {
+                    sb.Append($"pf:{pf.race}|{pf.faction}|{string.Join(",", pf.status)};");
+                }
+            }
+            
+            // ExcludePawnFilters
+            if (f.excludePawnFilters != null)
+            {
+                foreach(var pf in f.excludePawnFilters)
+                {
+                    sb.Append($"epf:{pf.race}|{pf.faction}|{string.Join(",", pf.status)};");
+                }
+            }
+            
+            // Include/Exclude strings
+            if (f.include != null) sb.Append($"inc:{string.Join(",", f.include)};");
+            if (f.exclude != null) sb.Append($"exc:{string.Join(",", f.exclude)};");
+            
+            // CapableOf
+            if (f.capableOf != null) sb.Append($"cap:{string.Join(",", f.capableOf)};");
+            
+            // Hediffs
+            if (f.hediffs != null)
+            {
+                foreach(var hf in f.hediffs)
+                {
+                    sb.Append($"hf:{hf.hediffClass}|{hf.severity}|{hf.severityRange};");
+                }
+            }
+            
+            return sb.ToString();
         }
 
         private float EvaluateInfoGiver(InfoGiverDef def)
@@ -1366,11 +1529,10 @@ namespace Autonomy
         {
             var values = new List<float>();
             
-            // Get all blueprints and frames on the map
-            var allThings = map.listerThings.AllThings;
-            var constructionItems = allThings
-                .Where(t => t is Blueprint_Build || t is Frame)
-                .ToList();
+            // Get all blueprints and frames on the map using optimized group queries
+            var constructionItems = new List<Thing>();
+            constructionItems.AddRange(map.listerThings.ThingsInGroup(ThingRequestGroup.Blueprint));
+            constructionItems.AddRange(map.listerThings.ThingsInGroup(ThingRequestGroup.BuildingFrame));
                 
             if (!constructionItems.Any())
             {
@@ -1762,8 +1924,6 @@ namespace Autonomy
             
             // Start with all pawns on the map
             var allPawns = map.mapPawns.AllPawns;
-            
-            // Apply basic pawn type filters
             pawns = ApplyPawnTypeFilters(allPawns, def.filters);
             
             // Get gene counts from qualified pawns
@@ -2542,10 +2702,10 @@ namespace Autonomy
 
         private void CollectLocalizedConstructionData(InfoGiverDef def, LocationalData locData)
         {
-            var allThings = map.listerThings.AllThings;
-            var constructionItems = allThings
-                .Where(t => t is Blueprint_Build || t is Frame)
-                .ToList();
+            // Get all blueprints and frames on the map using optimized group queries
+            var constructionItems = new List<Thing>();
+            constructionItems.AddRange(map.listerThings.ThingsInGroup(ThingRequestGroup.Blueprint));
+            constructionItems.AddRange(map.listerThings.ThingsInGroup(ThingRequestGroup.BuildingFrame));
             
             var globalValues = new List<float>();
             var itemValues = new Dictionary<Thing, float>();

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+    <!-- Pause Autonomy Column -->
+    <Keno_PauseAutonomy_HeaderTip>Pause autonomy considerations for this pawn</Keno_PauseAutonomy_HeaderTip>
+    
+    <!-- Menu Options -->
+    <Keno_PauseAutonomy_Unpause>Unpause</Keno_PauseAutonomy_Unpause>
+    <Keno_PauseAutonomy_Pause3Hours>3 hours</Keno_PauseAutonomy_Pause3Hours>
+    <Keno_PauseAutonomy_Pause8Hours>8 hours</Keno_PauseAutonomy_Pause8Hours>
+    <Keno_PauseAutonomy_Pause24Hours>24 hours</Keno_PauseAutonomy_Pause24Hours>
+    <Keno_PauseAutonomy_Pause3Days>3 days</Keno_PauseAutonomy_Pause3Days>
+    <Keno_PauseAutonomy_PauseForever>Forever</Keno_PauseAutonomy_PauseForever>
+    
+    <!-- Tooltips -->
+    <Keno_PauseAutonomy_Tooltip>Pause autonomy considerations for this pawn. This can make some pawns unhappy.</Keno_PauseAutonomy_Tooltip>
+    <Keno_PauseAutonomy_TooltipPaused>Pause autonomy considerations for this pawn. This can make some pawns unhappy.\n\nCurrently paused - {0} left.</Keno_PauseAutonomy_TooltipPaused>
+    
+    <!-- Time Display -->
+    <Keno_PauseAutonomy_TimeForever>Forever</Keno_PauseAutonomy_TimeForever>
+    <Keno_PauseAutonomy_TimeExpired>Expired</Keno_PauseAutonomy_TimeExpired>
+    <Keno_PauseAutonomy_TimeLessThanHour>&lt; 1h</Keno_PauseAutonomy_TimeLessThanHour>
+    <Keno_PauseAutonomy_TimeDaysHours>{0}d {1}h</Keno_PauseAutonomy_TimeDaysHours>
+    <Keno_PauseAutonomy_TimeHours>{0}h</Keno_PauseAutonomy_TimeHours>
+</LanguageData>

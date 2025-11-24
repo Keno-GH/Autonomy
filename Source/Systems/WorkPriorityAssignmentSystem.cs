@@ -49,8 +49,17 @@ namespace Autonomy.Systems
             // IMPORTANT: This snapshot is passed down to ensure consistent pawn lists throughout calculation
             var pawns = map.mapPawns.FreeColonistsSpawned.ToList();
             
+            // Get pause tracker to skip paused pawns
+            var pauseTracker = Current.Game?.GetComponent<PawnAutonomyPauseTracker>();
+            
             foreach (var pawn in pawns)
             {
+                // Skip paused pawns - they keep their manual priorities
+                if (pauseTracker?.IsPaused(pawn) == true)
+                {
+                    continue;
+                }
+                
                 try
                 {
                     CalculateAndApplyPriorityForPawn(pawn, pawns);

@@ -1,0 +1,19 @@
+<Defs>
+    <!-- <PawnColumnDef>
+        <defName>HostilityResponse</defName>
+        <headerIcon>UI/Icons/PawnHostility</headerIcon>
+        <workerClass>PawnColumnWorker_HostilityResponse</workerClass>
+        <headerTip>Hostility response</headerTip>
+        <sortable>true</sortable>
+    </PawnColumnDef> --> <!-- For reference only. This is the base we want to make this button with
+    . Hostility response, when clicked, shows a floating list of three options: Ignore, Flee, Attack
+    (Attack only shows for non pacifists pawns). We want something similar. When clicked, this will show
+    a floating list with 3 hours, 8 hours, 24 hours, 3 days, forever. -->
+    <PawnColumnDef>
+        <defName>Keno_PauseAutonomy</defName> <!-- Unique defName to avoid conflicts -->
+        <headerIcon>UI/Icons/autonomyIcon</headerIcon> <!-- Custom icon for the button, not created yet -->
+        <workerClass>Keno.PawnColumnWorker_PauseAutonomy</workerClass> <!-- Custom worker class to handle the button logic -->
+        <headerTip>Pause autonomy considerations for this pawn</headerTip> <!-- Tooltip for the button header in the column -->
+        <sortable>true</sortable>
+    </PawnColumnDef>
+</Defs>

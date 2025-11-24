@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+    <!-- Add pause autonomy button column to Work tab -->
+    <Operation Class="PatchOperationSequence">
+        <operations>
+            <!-- Insert the pause autonomy column after CopyPasteWorkPriorities -->
+            <li Class="PatchOperationInsert">
+                <xpath>Defs/PawnTableDef[defName="Work"]/columns/li[text()="Xenotype"]</xpath>
+                <order>Append</order>
+                <value>
+                    <li>Keno_PauseAutonomy</li>
+                </value>
+            </li>
+        </operations>
+    </Operation>
+</Patch>

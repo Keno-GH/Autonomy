@@ -22,6 +22,7 @@ Autonomy is designed to make colonists feel more alive. Colonists respond to a c
 ### **Optional DLC Support**
 - **Ideology** - Precept-based work preferences and ideological priorities
 - **Biotech** - Gene-based priority modifiers (future enhancement)
+- **Odyssey** - Fishing
 
 ## ✨ **Key Features**
 
@@ -134,9 +135,7 @@ This mod has **substantially completed Phase 1** with core systems fully impleme
 
 ### 🔮 **Future Enhancements**
 - Advanced player feedback and notification systems
-- Community-contributed priority configurations
 - Additional priority levels for finer-grained control
-- Video tutorials and enhanced documentation
 
 ## 🏗️ **Architecture**
 
@@ -173,28 +172,10 @@ InfoGiver Manager → PriorityGiver Manager → WorkPriority Assignment → Auto
 
 ## 📖 **Documentation for Modders**
 
-### Core Documentation
-- **[XML Reference Guide](XML_REFERENCE.md)** – Complete reference for all XML definitions and advanced features
-- **[Architecture Documentation](ARCHITECTURE.md)** – System design and implementation concepts
-- **[Source Code README](Source/README.md)** – Component structure and data flow pipeline
-
-### Feature-Specific Guides
-- **[Calculation Conditions](CALCULATION_CONDITION_IMPLEMENTATION.md)** – Perform math operations between InfoGivers
-  - [Quick Reference](CALCULATION_CONDITION_QUICK_REFERENCE.md)
-- **[Filter Conditions](FILTER_CONDITION_IMPLEMENTATION.md)** – Advanced pawn filtering system
-  - [Implementation Summary](FILTER_IMPLEMENTATION_SUMMARY.md)
-  - [Quick Reference](FILTER_QUICK_REFERENCE.md)
-  - [Pawn Filter System](PAWN_FILTER_SYSTEM.md)
-- **[Hediff System](HEDIFF_SYSTEM_IMPLEMENTATION.md)** – Complex health condition filtering
-  - [Effective Properties](EFFECTIVE_HEDIFF_PROPERTIES.md)
-- **[Gene System](GENE_SYSTEM_IMPLEMENTATION.md)** – Genetic trait integration (Biotech DLC)
-- **[Damage Factors](DAMAGE_FACTOR_IMPLEMENTATION.md)** – Damage calculation and assessment
-- **[Personality System](PERSONALITY_SYSTEM.md)** – RimPsyche integration and trait-based priorities
+- Work In Process
 
 ### Development Resources
 - **[Contributing Guidelines](CONTRIBUTING.md)** – How to contribute to the project
-- **[Improvements Summary](IMPROVEMENTS_SUMMARY.md)** – Recent enhancements and system improvements
-- **[Development Roadmap](TODO.md)** – Future plans and progress tracking
 
 ## 🤝 **Contributing**
 
@@ -290,14 +271,13 @@ More examples available in our [XML Reference Guide](XML_REFERENCE.md).
 ## 📄 **License**
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-Basically, do whatever you want with it, let other's do the same.
+Basically, do whatever you want with it and let other's do the same.
 
 ## 👏 **Acknowledgments**
 
 - **RimWorld Community** for inspiration and feedback
-- **Harmony Library** for making advanced modding possible
-- **Template Mod Contributors** for the initial framework
-- **Beta Testers** who help make this mod stable and balanced
+- **Maux - Rimpsyche** for letting me use their mod as base for the personality modifiers
+- **Imranfish - XML Extensions**
 
 ---
 

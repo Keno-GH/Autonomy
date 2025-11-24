@@ -26,15 +26,15 @@ Autonomy is designed to make colonists feel more alive. Colonists respond to a c
 ## ✨ **Key Features**
 
 ### 🧠 **Intelligent Decision Making**
-- **Dynamic Priority Calculation**: Colonists evaluate colony conditions and adjust priorities in real-time with 200+ predefined priority rules
+- **Dynamic Priority Calculation**: Colonists evaluate colony conditions and adjust priorities in real-time with 100+ predefined priority rules
 - **Personality Integration**: Personality from [RimPsyche](https://github.com/jagerguy36/Rimpsyche) PersonalityDefs influences work prioritization through multipliers
 - **Passion-Based Priorities**: Skills and passions (including VSE and Alpha Skills) affect work preferences with proper mod hierarchy support
-- **Contextual Awareness**: Weather, threats, resources, and colony needs all factor into decisions through 35+ InfoGivers
+- **Contextual Awareness**: Weather, threats, resources, and colony needs all factor into decisions through 26 InfoGivers
 - **Ideology Support**: Precepts and ideological beliefs influence work preferences (requires Ideology DLC)
 
 ### 🔧 **Modular XML System**
-- **PriorityGiverDefs**: Define how colony conditions translate to work priority adjustments - 200+ definitions covering all work types
-- **InfoGiverDefs**: Modular data collection from various game systems - 35+ definitions for comprehensive colony monitoring
+- **PriorityGiverDefs**: Define how colony conditions translate to work priority adjustments - 100+ definitions covering all work types
+- **InfoGiverDefs**: Modular data collection from various game systems - 26 definitions for comprehensive colony monitoring
 - **Easy Customization**: All logic defined through XML for easy modification and mod compatibility
 - **Settings Integration**: Configure optional work types through in-game settings menu (XML Extensions)
 
@@ -55,7 +55,7 @@ Autonomy is designed to make colonists feel more alive. Colonists respond to a c
 
 ## 📋 **Current Development Status**
 
-This mod has **completed Phase 1** and core systems are fully functional. See our [Development Roadmap](TODO.md) for detailed progress.
+This mod has **substantially completed Phase 1** with core systems fully implemented and functional. Many Phase 2 features are also complete. See our [Development Roadmap](TODO.md) for detailed progress (note: TODO.md may not reflect latest progress).
 
 ### ✅ **Completed Features**
 
@@ -67,14 +67,14 @@ This mod has **completed Phase 1** and core systems are fully functional. See ou
 - [x] Mod compatibility framework
 
 #### **Phase 1 - Core Implementation**
-- [x] **InfoGiver Manager** - Fully functional data collection system with 35+ InfoGivers
+- [x] **InfoGiver Manager** - Fully functional data collection system with 26 InfoGivers
   - Item counts (meals, medicine, resources)
   - Map conditions (threats, weather, temperature)
   - Medical tracking (injuries, diseases, immunity races)
   - Animal management (bonded, trainable, hungry)
   - Social and needs monitoring
   - Pawn statistics and capabilities
-- [x] **PriorityGiver Manager** - Complete priority calculation system with 200+ PriorityGivers
+- [x] **PriorityGiver Manager** - Complete priority calculation system with 100+ PriorityGivers
   - All 18 vanilla work types covered
   - Personality-based priority adjustments (RimPsyche integration)
   - Passion and skill-based priorities
@@ -122,11 +122,11 @@ InfoGiver Manager → PriorityGiver Manager → WorkPriority Assignment → Auto
 ```
 
 1. **InfoGiver Manager**: Gathers colony statistics, resource counts, threats, weather, pawn states
-   - 35+ InfoGiver definitions
+   - 26 InfoGiver definitions
    - Optimized with intelligent caching and staggered updates
    - Supports individualized (per-pawn) and localized (per-location) data
 2. **PriorityGiver Manager**: Evaluates individual pawn contexts against colony conditions
-   - 200+ PriorityGiver definitions covering all work types
+   - 100+ PriorityGiver definitions covering all work types
    - Personality, skill, and passion modifiers
    - Ideology and precept integration
 3. **WorkPriority Assignment**: Aggregates priorities and ranks work types
@@ -181,7 +181,7 @@ See our [Contributing Guidelines](CONTRIBUTING.md) for details on how to get inv
 
 ## 📊 **Examples**
 
-The mod includes **200+ PriorityGiver definitions** and **35+ InfoGiver definitions** covering all aspects of colony management. Here are a few examples:
+The mod includes **100+ PriorityGiver definitions** and **26 InfoGiver definitions** covering all aspects of colony management. Here are a few examples:
 
 ### **Emergency Medical Response**
 ```xml

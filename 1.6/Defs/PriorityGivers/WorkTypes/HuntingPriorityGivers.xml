@@ -77,12 +77,12 @@
             </li>
             <li>
                 <validRange>0.0~0.5</validRange>
-                <priority>1~6</priority>
+                <priority>1~3</priority>
                 <description>I'm reasonably stealthy for hunting.</description>
             </li>
             <li>
                 <validRange>0.5~1.0</validRange>
-                <priority>6~10</priority>
+                <priority>4~5</priority>
                 <description>I'm among our stealthiest hunters.</description>
             </li>
         </priorityRanges>

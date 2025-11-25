@@ -155,12 +155,12 @@
             </li>
             <li> 
                 <validRange>0.3~0.6</validRange>
-                <priority>3~5</priority>
+                <priority>3~4</priority>
                 <description>I'm skilled at prisoner management</description>
             </li>
             <li>
-                <validRange>0.6~1.0</validRange>
-                <priority>5~10</priority>
+                <validRange>0.6~1.0</validRange> 
+                <priority>4~4</priority>
                 <description>I excel at recruiting and suppressing prisoners</description>
             </li>
         </priorityRanges>
@@ -380,12 +380,12 @@
             </li>
             <li> 
                 <validRange>0.3~0.6</validRange>
-                <priority>3~5</priority>
+                <priority>3~4</priority>
                 <description>I'm effective at converting prisoners</description>
             </li>
             <li>
                 <validRange>0.6~1.0</validRange>
-                <priority>5~10</priority>
+                <priority>4~4</priority>
                 <description>I excel at bringing prisoners to our cause</description>
             </li>
         </priorityRanges>

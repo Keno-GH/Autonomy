@@ -560,12 +560,12 @@
             </li>
             <li>
                 <validRange>0.3~0.6</validRange>
-                <priority>3~6</priority>
+                <priority>3~4</priority>
                 <description>I'm noticeably better than others at butchering</description>
             </li>
             <li>
                 <validRange>0.6~1.0</validRange>
-                <priority>6~6</priority>
+                <priority>4~4</priority>
                 <description>I'm among the best butchers in the colony</description>
             </li>
         </priorityRanges>

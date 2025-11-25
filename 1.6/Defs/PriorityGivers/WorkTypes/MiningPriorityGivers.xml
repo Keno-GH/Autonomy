@@ -118,7 +118,7 @@
             <li>
                 <validRange>-1~-0.6</validRange>
                 <priority>-10~-6</priority>
-                <description>I'm the worst miner in the colony</description>
+                <description>I'm among the worst miners</description>
             </li>
             <li>
                 <validRange>-0.6~-0.3</validRange>
@@ -128,7 +128,7 @@
             <li>
                 <validRange>-0.3~0.0</validRange>
                 <priority>-3~0</priority>
-                <description>I'm about average compared to the colony's miners</description>
+                <description>I'm about average compared to the rest</description>
             </li>
             <li>
                 <validRange>0.0~0.3</validRange>
@@ -137,13 +137,13 @@
             </li>
             <li>
                 <validRange>0.3~0.6</validRange>
-                <priority>3~7</priority>
+                <priority>3~4</priority>
                 <description>I'm above average compared to other miners</description>
             </li>
             <li>
                 <validRange>0.6~1.0</validRange>
-                <priority>7~10</priority>
-               <description>I'm one of the best miners in the colony</description>
+                <priority>4~4</priority>
+               <description>I'm one of the best miners around</description>
             </li>
         </priorityRanges>
 

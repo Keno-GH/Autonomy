@@ -251,12 +251,12 @@
             </li>
             <li>
                 <validRange>0.3~0.6</validRange>
-                <priority>3~5</priority>
+                <priority>3~4</priority>
                 <description>I am better than most at ranching</description>
             </li>
             <li>
                 <validRange>0.6~1.0</validRange>
-                <priority>5~6</priority>
+                <priority>4~4</priority>
                 <description>I am among the best at ranching</description>
             </li>
         </priorityRanges>
@@ -387,12 +387,12 @@
             </li>
             <li>
                 <validRange>0.3~0.6</validRange>
-                <priority>3~5</priority>
+                <priority>3~4</priority>
                 <description>I am better than most at taming</description>
             </li>
             <li>
                 <validRange>0.6~1.0</validRange>
-                <priority>5~6</priority>
+                <priority>4~6</priority>
                 <description>I am among the best at taming</description>
             </li>
         </priorityRanges>
@@ -522,12 +522,12 @@
             </li>
             <li>
                 <validRange>0.3~0.6</validRange>
-                <priority>3~5</priority>
+                <priority>3~4</priority>
                 <description>I am better than most at training</description>
             </li>
             <li>
                 <validRange>0.6~1.0</validRange>
-                <priority>5~6</priority>
+                <priority>4~4</priority>
                 <description>I am among the best at training</description>
             </li>
         </priorityRanges>

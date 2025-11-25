@@ -185,7 +185,7 @@
             </li>
             <li>
                 <validRange>0.6~1.0</validRange>
-                <priority>5~10</priority>
+                <priority>5~5</priority>
                 <description>I have a natural way with children</description>
             </li>
         </priorityRanges>

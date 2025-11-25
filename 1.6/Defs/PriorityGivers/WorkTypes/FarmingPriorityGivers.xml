@@ -255,12 +255,12 @@
             </li>
             <li>
                 <validRange>0.3~0.6</validRange>
-                <priority>3~7</priority>
+                <priority>3~4</priority>
                 <description>I reliably bring in big harvests.</description>
             </li>
             <li>
                 <validRange>0.6~1.0</validRange>
-                <priority>7~10</priority>
+                <priority>4~4</priority>
                 <description>I'm among the best at harvesting.</description>
             </li>
         </priorityRanges>

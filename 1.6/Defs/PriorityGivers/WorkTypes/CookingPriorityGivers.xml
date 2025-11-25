@@ -166,12 +166,12 @@
             <li>
                 <validRange>0.5~0.79</validRange>
                 <priority>0~0</priority>
-                <description>I am not hungry</description>
+                <description>I am not hungry for now</description>
             </li>
             <li>
                 <validRange>0.8~1.0</validRange>
                 <priority>0~0</priority>
-                <description>I'm full and don't feel like cooking</description>
+                <description>I'm full for now</description>
             </li>
         </priorityRanges>
 
@@ -354,8 +354,8 @@
         <priorityRanges>
             <li>
                 <validRange>-1~0.0</validRange>
-                <priority>-1~-1</priority>
-                <description>I don't feel confident at cooking</description>
+                <priority>0~0</priority>
+                <description>I know my way around a kitchen</description>
             </li>
             <li>
                 <validRange>0.0~0.3</validRange>

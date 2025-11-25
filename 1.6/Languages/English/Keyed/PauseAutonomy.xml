@@ -5,11 +5,11 @@
     
     <!-- Menu Options -->
     <Keno_PauseAutonomy_Unpause>Unpause</Keno_PauseAutonomy_Unpause>
-    <Keno_PauseAutonomy_Pause3Hours>3 hours</Keno_PauseAutonomy_Pause3Hours>
-    <Keno_PauseAutonomy_Pause8Hours>8 hours</Keno_PauseAutonomy_Pause8Hours>
-    <Keno_PauseAutonomy_Pause24Hours>24 hours</Keno_PauseAutonomy_Pause24Hours>
-    <Keno_PauseAutonomy_Pause3Days>3 days</Keno_PauseAutonomy_Pause3Days>
-    <Keno_PauseAutonomy_PauseForever>Forever</Keno_PauseAutonomy_PauseForever>
+    <Keno_PauseAutonomy_Pause3Hours>Pause 3 hours</Keno_PauseAutonomy_Pause3Hours>
+    <Keno_PauseAutonomy_Pause8Hours>Pause 8 hours</Keno_PauseAutonomy_Pause8Hours>
+    <Keno_PauseAutonomy_Pause24Hours>Pause 24 hours</Keno_PauseAutonomy_Pause24Hours>
+    <Keno_PauseAutonomy_Pause3Days>Pause 3 days</Keno_PauseAutonomy_Pause3Days>
+    <Keno_PauseAutonomy_PauseForever>Pause forever</Keno_PauseAutonomy_PauseForever>
     
     <!-- Tooltips -->
     <Keno_PauseAutonomy_Tooltip>Pause autonomy considerations for this pawn. This can make some pawns unhappy.</Keno_PauseAutonomy_Tooltip>

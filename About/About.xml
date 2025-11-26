@@ -28,9 +28,9 @@
 		</li>
 	</modDependencies>
 
-	<incompatibleWith>
-		<!-- <li>username.modname</li> -->
-	</incompatibleWith>
+	<loadAfter>
+		<li>yefreitor.recreationworktype</li>
+	</loadAfter>
 
 	<description>Autonomy allows colonists to control their own work priorities and schedules, giving them more independence in managing their tasks.</description>
 </ModMetaData>

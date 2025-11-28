@@ -1,31 +1,48 @@
 <Defs>
-    <!-- Initial file, WIP. This requires thoughtsdefs and comps -->
-    <!--  Issue  -->
+    <!-- Issue Definition -->
     <IssueDef>
         <defName>Keno_Autonomy</defName>
         <label>autonomy</label>
         <iconPath>UI/Issues/WorkDrive</iconPath>
     </IssueDef>
-    <!--  Precepts  -->
+    
+    <!-- Precept: Unnecessary (Collectivist) -->
+    <!-- Prefers to let others decide, mood buff when paused, dislikes seeing others with autonomy -->
     <PreceptDef>
         <defName>Keno_NoAutonomy</defName>
         <issue>Keno_Autonomy</issue>
-        <label>unecessary</label>
-        <description>To focus in one's perception of what's better is unecessary, but acceptable in the lack of authority. To force someone to manage themselves is wrong.</description>
+        <label>unnecessary</label>
+        <description>To focus in one's perception of what's better is unnecessary, but acceptable in the lack of authority. To force someone to manage themselves is wrong.</description>
         <impact>Low</impact>
         <displayOrderInImpact>100</displayOrderInImpact>
         <associatedMemes>
             <li>Collectivist</li>
         </associatedMemes>
+        <comps>
+            <!-- +1 mood when autonomy is paused -->
+            <li Class="PreceptComp_SituationalThought">
+                <thought>Keno_AutonomyPaused_Unnecessary</thought>
+            </li>
+            <!-- -5 opinion of others with autonomy enabled -->
+            <li Class="PreceptComp_SituationalThought">
+                <thought>Keno_AutonomyWanted_Social_Unnecessary</thought>
+            </li>
+        </comps>
     </PreceptDef>
+    
+    <!-- Precept: Neutral -->
+    <!-- No thoughts or opinions about autonomy -->
     <PreceptDef>
         <defName>Keno_StandardAutonomy</defName>
         <issue>Keno_Autonomy</issue>
         <label>neutral</label>
-        <description>The work must be done wether it is tasked by someone else or myself.</description>
+        <description>The work must be done whether it is tasked by someone else or myself.</description>
         <impact>Low</impact>
         <displayOrderInImpact>90</displayOrderInImpact>
     </PreceptDef>
+    
+    <!-- Precept: Wanted (Individualist) -->
+    <!-- Values autonomy, mood debuff when paused, dislikes seeing others without autonomy -->
     <PreceptDef>
         <defName>Keno_AutonomyWanted</defName>
         <issue>Keno_Autonomy</issue>
@@ -36,5 +53,93 @@
         <associatedMemes>
             <li>Individualist</li>
         </associatedMemes>
+        <comps>
+            <!-- Mood debuff when autonomy is paused (stages based on duration) -->
+            <li Class="PreceptComp_SituationalThought">
+                <thought>Keno_AutonomyPaused_Wanted</thought>
+            </li>
+            <!-- -5 opinion of others with autonomy disabled -->
+            <li Class="PreceptComp_SituationalThought">
+                <thought>Keno_AutonomyDisabled_Social_Wanted</thought>
+            </li>
+        </comps>
     </PreceptDef>
+
+    <!-- Thought Defs for Precepts -->
+    
+    <!-- Wanted Precept: Mood debuff when autonomy is paused -->
+    <ThoughtDef>
+        <defName>Keno_AutonomyPaused_Wanted</defName>
+        <workerClass>Autonomy.ThoughtWorker_Precept_AutonomyWanted</workerClass>
+        <validWhileDespawned>true</validWhileDespawned>
+        <stages>
+            <!-- Stage 0: Less than 8 hours -->
+            <li>
+                <label>autonomy paused (brief)</label>
+                <description>Someone is making decisions for me. It's a bit frustrating, but I can handle it for now.</description>
+                <baseMoodEffect>-3</baseMoodEffect>
+            </li>
+            <!-- Stage 1: 8-24 hours -->
+            <li>
+                <label>autonomy paused (hours)</label>
+                <description>I've been unable to decide my own work for a while now. It's getting tiresome.</description>
+                <baseMoodEffect>-6</baseMoodEffect>
+            </li>
+            <!-- Stage 2: 1-3 days -->
+            <li>
+                <label>autonomy paused (days)</label>
+                <description>It's been days since I could choose my own tasks. I feel like a puppet.</description>
+                <baseMoodEffect>-10</baseMoodEffect>
+            </li>
+            <!-- Stage 3: 3+ days -->
+            <li>
+                <label>autonomy paused (extended)</label>
+                <description>I've lost all say in what I do. My will means nothing here.</description>
+                <baseMoodEffect>-15</baseMoodEffect>
+            </li>
+        </stages>
+    </ThoughtDef>
+    
+    <!-- Wanted Precept: Opinion of others with autonomy disabled -->
+    <ThoughtDef>
+        <defName>Keno_AutonomyDisabled_Social_Wanted</defName>
+        <workerClass>Autonomy.ThoughtWorker_Precept_AutonomyWanted_Social</workerClass>
+        <socialThoughtAffectingMood>true</socialThoughtAffectingMood>
+        <stages>
+            <li>
+                <label>lets others decide for them</label>
+                <description>They shouldn't let others decide for them.</description>
+                <baseOpinionOffset>-5</baseOpinionOffset>
+            </li>
+        </stages>
+    </ThoughtDef>
+    
+    <!-- Unnecessary Precept: Mood buff when autonomy is paused -->
+    <ThoughtDef>
+        <defName>Keno_AutonomyPaused_Unnecessary</defName>
+        <workerClass>Autonomy.ThoughtWorker_Precept_AutonomyUnnecessary</workerClass>
+        <validWhileDespawned>true</validWhileDespawned>
+        <stages>
+            <li>
+                <label>guided by others</label>
+                <description>I prefer to let others decide what I am best suited for.</description>
+                <baseMoodEffect>1</baseMoodEffect>
+            </li>
+        </stages>
+    </ThoughtDef>
+    
+    <!-- Unnecessary Precept: Opinion of others with autonomy enabled -->
+    <ThoughtDef>
+        <defName>Keno_AutonomyWanted_Social_Unnecessary</defName>
+        <workerClass>Autonomy.ThoughtWorker_Precept_AutonomyUnnecessary_Social</workerClass>
+        <socialThoughtAffectingMood>true</socialThoughtAffectingMood>
+        <stages>
+            <li>
+                <label>forces self-management</label>
+                <description>They shouldn't force people to manage themselves.</description>
+                <baseOpinionOffset>-5</baseOpinionOffset>
+            </li>
+        </stages>
+    </ThoughtDef>
+    
 </Defs>

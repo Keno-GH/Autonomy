@@ -130,6 +130,40 @@ namespace Autonomy
 
             return expirationTick == int.MaxValue;
         }
+        
+        /// <summary>
+        /// Get the thought stage based on how long the pawn has been paused.
+        /// Stage 0: Less than 8 hours
+        /// Stage 1: 8-24 hours
+        /// Stage 2: 1-3 days
+        /// Stage 3: 3+ days or forever
+        /// </summary>
+        public int GetPauseThoughtStage(Pawn pawn)
+        {
+            // Forever pause = max stage (3+ days equivalent)
+            if (IsForeverPause(pawn))
+            {
+                return 3;
+            }
+
+            // Get actual paused duration in ticks
+            int pausedTicks = GetPausedDurationTicks(pawn);
+            
+            if (pausedTicks >= PAUSE_3_DAYS)
+            {
+                return 3;
+            }
+            else if (pausedTicks >= PAUSE_24_HOURS)
+            {
+                return 2;
+            }
+            else if (pausedTicks >= PAUSE_8_HOURS)
+            {
+                return 1;
+            }
+            
+            return 0;
+        }
 
         /// <summary>
         /// Get formatted remaining time string for tooltip display

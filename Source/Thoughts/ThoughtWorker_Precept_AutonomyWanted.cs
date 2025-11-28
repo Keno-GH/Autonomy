@@ -45,41 +45,9 @@ namespace Autonomy
                 return ThoughtState.Inactive;
             }
 
-            // Calculate stage based on pause duration
-            int stage = GetPauseStage(p, tracker);
+            // Calculate stage based on pause duration using shared method
+            int stage = tracker.GetPauseThoughtStage(p);
             return ThoughtState.ActiveAtStage(stage);
-        }
-
-        private int GetPauseStage(Pawn p, PawnAutonomyPauseTracker tracker)
-        {
-            // Forever pause = max stage (3+ days equivalent)
-            if (tracker.IsForeverPause(p))
-            {
-                return 3;
-            }
-
-            // Get actual paused duration in ticks
-            int pausedTicks = tracker.GetPausedDurationTicks(p);
-            
-            // Stage 0: Less than 8 hours (-3 mood)
-            // Stage 1: 8-24 hours (-6 mood)
-            // Stage 2: 1-3 days (-10 mood)
-            // Stage 3: 3+ days or forever (-15 mood)
-            
-            if (pausedTicks >= PawnAutonomyPauseTracker.PAUSE_3_DAYS)
-            {
-                return 3;
-            }
-            else if (pausedTicks >= PawnAutonomyPauseTracker.PAUSE_24_HOURS)
-            {
-                return 2;
-            }
-            else if (pausedTicks >= PawnAutonomyPauseTracker.PAUSE_8_HOURS)
-            {
-                return 1;
-            }
-            
-            return 0;
         }
     }
 }

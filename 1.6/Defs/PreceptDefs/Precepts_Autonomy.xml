@@ -1,0 +1,40 @@
+<Defs>
+    <!-- Initial file, WIP. This requires thoughtsdefs and comps -->
+    <!--  Issue  -->
+    <IssueDef>
+        <defName>Keno_Autonomy</defName>
+        <label>autonomy</label>
+        <iconPath>UI/Issues/WorkDrive</iconPath>
+    </IssueDef>
+    <!--  Precepts  -->
+    <PreceptDef>
+        <defName>Keno_NoAutonomy</defName>
+        <issue>Keno_Autonomy</issue>
+        <label>unecessary</label>
+        <description>To focus in one's perception of what's better is unecessary, but acceptable in the lack of authority. To force someone to manage themselves is wrong.</description>
+        <impact>Low</impact>
+        <displayOrderInImpact>100</displayOrderInImpact>
+        <associatedMemes>
+            <li>Collectivist</li>
+        </associatedMemes>
+    </PreceptDef>
+    <PreceptDef>
+        <defName>Keno_StandardAutonomy</defName>
+        <issue>Keno_Autonomy</issue>
+        <label>neutral</label>
+        <description>The work must be done wether it is tasked by someone else or myself.</description>
+        <impact>Low</impact>
+        <displayOrderInImpact>90</displayOrderInImpact>
+    </PreceptDef>
+    <PreceptDef>
+        <defName>Keno_AutonomyWanted</defName>
+        <issue>Keno_Autonomy</issue>
+        <label>wanted</label>
+        <description>Free people should be able to decide how to manage themselves. To force someone to follow orders is wrong.</description>
+        <impact>Medium</impact>
+        <displayOrderInImpact>80</displayOrderInImpact>
+        <associatedMemes>
+            <li>Individualist</li>
+        </associatedMemes>
+    </PreceptDef>
+</Defs>

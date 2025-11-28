@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+    <!-- Unnecessary Precept (Collectivist) -->
+    <Keno_NoAutonomy.label>unnecessary</Keno_NoAutonomy.label>
+    <Keno_NoAutonomy.description>To focus in one's perception of what's better is unnecessary, but acceptable in the lack of authority. To force someone to manage themselves is wrong.</Keno_NoAutonomy.description>
+    
+    <!-- Neutral Precept -->
+    <Keno_StandardAutonomy.label>neutral</Keno_StandardAutonomy.label>
+    <Keno_StandardAutonomy.description>The work must be done whether it is tasked by someone else or myself.</Keno_StandardAutonomy.description>
+    
+    <!-- Wanted Precept (Individualist) -->
+    <Keno_AutonomyWanted.label>wanted</Keno_AutonomyWanted.label>
+    <Keno_AutonomyWanted.description>Free people should be able to decide how to manage themselves. To force someone to follow orders is wrong.</Keno_AutonomyWanted.description>
+</LanguageData>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+    <!-- Non-Ideology Autonomy Paused Thought -->
+    <Keno_AutonomyPaused.stages.0.label>autonomy paused (brief)</Keno_AutonomyPaused.stages.0.label>
+    <Keno_AutonomyPaused.stages.0.description>Someone is making decisions for me. It's a bit frustrating, but I can handle it for now.</Keno_AutonomyPaused.stages.0.description>
+    <Keno_AutonomyPaused.stages.1.label>autonomy paused (hours)</Keno_AutonomyPaused.stages.1.label>
+    <Keno_AutonomyPaused.stages.1.description>I've been unable to decide my own work for a while now. It's getting tiresome.</Keno_AutonomyPaused.stages.1.description>
+    <Keno_AutonomyPaused.stages.2.label>autonomy paused (days)</Keno_AutonomyPaused.stages.2.label>
+    <Keno_AutonomyPaused.stages.2.description>It's been days since I could choose my own tasks. I feel like a puppet.</Keno_AutonomyPaused.stages.2.description>
+    <Keno_AutonomyPaused.stages.3.label>autonomy paused (extended)</Keno_AutonomyPaused.stages.3.label>
+    <Keno_AutonomyPaused.stages.3.description>I've lost all say in what I do. My will means nothing here.</Keno_AutonomyPaused.stages.3.description>
+    
+    <!-- Wanted Precept: Mood debuff when autonomy is paused -->
+    <Keno_AutonomyPaused_Wanted.stages.0.label>autonomy paused (brief)</Keno_AutonomyPaused_Wanted.stages.0.label>
+    <Keno_AutonomyPaused_Wanted.stages.0.description>Someone is making decisions for me. It's a bit frustrating, but I can handle it for now.</Keno_AutonomyPaused_Wanted.stages.0.description>
+    <Keno_AutonomyPaused_Wanted.stages.1.label>autonomy paused (hours)</Keno_AutonomyPaused_Wanted.stages.1.label>
+    <Keno_AutonomyPaused_Wanted.stages.1.description>I've been unable to decide my own work for a while now. It's getting tiresome.</Keno_AutonomyPaused_Wanted.stages.1.description>
+    <Keno_AutonomyPaused_Wanted.stages.2.label>autonomy paused (days)</Keno_AutonomyPaused_Wanted.stages.2.label>
+    <Keno_AutonomyPaused_Wanted.stages.2.description>It's been days since I could choose my own tasks. I feel like a puppet.</Keno_AutonomyPaused_Wanted.stages.2.description>
+    <Keno_AutonomyPaused_Wanted.stages.3.label>autonomy paused (extended)</Keno_AutonomyPaused_Wanted.stages.3.label>
+    <Keno_AutonomyPaused_Wanted.stages.3.description>I've lost all say in what I do. My will means nothing here.</Keno_AutonomyPaused_Wanted.stages.3.description>
+    
+    <!-- Wanted Precept: Opinion of others with autonomy disabled -->
+    <Keno_AutonomyDisabled_Social_Wanted.stages.0.label>lets others decide for them</Keno_AutonomyDisabled_Social_Wanted.stages.0.label>
+    <Keno_AutonomyDisabled_Social_Wanted.stages.0.description>They shouldn't let others decide for them.</Keno_AutonomyDisabled_Social_Wanted.stages.0.description>
+    
+    <!-- Unnecessary Precept: Mood buff when autonomy is paused -->
+    <Keno_AutonomyPaused_Unnecessary.stages.0.label>guided by others</Keno_AutonomyPaused_Unnecessary.stages.0.label>
+    <Keno_AutonomyPaused_Unnecessary.stages.0.description>I prefer to let others decide what I am best suited for.</Keno_AutonomyPaused_Unnecessary.stages.0.description>
+    
+    <!-- Unnecessary Precept: Opinion of others with autonomy enabled -->
+    <Keno_AutonomyWanted_Social_Unnecessary.stages.0.label>forces self-management</Keno_AutonomyWanted_Social_Unnecessary.stages.0.label>
+    <Keno_AutonomyWanted_Social_Unnecessary.stages.0.description>They shouldn't force people to manage themselves.</Keno_AutonomyWanted_Social_Unnecessary.stages.0.description>
+</LanguageData>

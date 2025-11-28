@@ -1,5 +1,36 @@
 <Defs>
 
-    
+    <!-- Situational thought when autonomy is paused (non-Ideology version) -->
+    <ThoughtDef>
+        <defName>Keno_AutonomyPaused</defName>
+        <workerClass>Autonomy.ThoughtWorker_AutonomyPaused</workerClass>
+        <validWhileDespawned>true</validWhileDespawned>
+        <stages>
+            <!-- Stage 0: Less than 8 hours -->
+            <li>
+                <label>autonomy paused (brief)</label>
+                <description>Someone is making decisions for me. It's a bit frustrating, but I can handle it for now.</description>
+                <baseMoodEffect>-3</baseMoodEffect>
+            </li>
+            <!-- Stage 1: 8-24 hours -->
+            <li>
+                <label>autonomy paused (hours)</label>
+                <description>I've been unable to decide my own work for a while now. It's getting tiresome.</description>
+                <baseMoodEffect>-6</baseMoodEffect>
+            </li>
+            <!-- Stage 2: 1-3 days -->
+            <li>
+                <label>autonomy paused (days)</label>
+                <description>It's been days since I could choose my own tasks. I feel like a puppet.</description>
+                <baseMoodEffect>-10</baseMoodEffect>
+            </li>
+            <!-- Stage 3: 3+ days -->
+            <li>
+                <label>autonomy paused (extended)</label>
+                <description>I've lost all say in what I do. My will means nothing here.</description>
+                <baseMoodEffect>-15</baseMoodEffect>
+            </li>
+        </stages>
+    </ThoughtDef>
 
 </Defs>

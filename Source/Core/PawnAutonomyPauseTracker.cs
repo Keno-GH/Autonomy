@@ -13,6 +13,9 @@ namespace Autonomy
     {
         // Pawn ID -> tick when pause expires (int.MaxValue for forever)
         private Dictionary<int, int> pausedUntilTick = new Dictionary<int, int>();
+        
+        // Pawn ID -> tick when pause started (for calculating total pause duration)
+        private Dictionary<int, int> pauseStartTick = new Dictionary<int, int>();
 
         // Time duration constants (in ticks)
         public static readonly int PAUSE_3_HOURS = 2500 * 3;  // TicksPerHour * 3
@@ -60,6 +63,9 @@ namespace Autonomy
                 return;
             }
 
+            // Track when the pause started
+            pauseStartTick[pawn.thingIDNumber] = Find.TickManager.TicksGame;
+
             if (durationTicks == PAUSE_FOREVER)
             {
                 pausedUntilTick[pawn.thingIDNumber] = int.MaxValue;
@@ -81,6 +87,82 @@ namespace Autonomy
             }
 
             pausedUntilTick.Remove(pawn.thingIDNumber);
+            pauseStartTick.Remove(pawn.thingIDNumber);
+        }
+        
+        /// <summary>
+        /// Get the number of ticks the pawn has been paused for (for thought calculations)
+        /// </summary>
+        public int GetPausedDurationTicks(Pawn pawn)
+        {
+            if (pawn?.thingIDNumber == null)
+            {
+                return 0;
+            }
+
+            if (!pauseStartTick.TryGetValue(pawn.thingIDNumber, out int startTick))
+            {
+                return 0;
+            }
+
+            if (!IsPaused(pawn))
+            {
+                return 0;
+            }
+
+            return Find.TickManager.TicksGame - startTick;
+        }
+        
+        /// <summary>
+        /// Check if the pawn has a forever pause
+        /// </summary>
+        public bool IsForeverPause(Pawn pawn)
+        {
+            if (pawn?.thingIDNumber == null)
+            {
+                return false;
+            }
+
+            if (!pausedUntilTick.TryGetValue(pawn.thingIDNumber, out int expirationTick))
+            {
+                return false;
+            }
+
+            return expirationTick == int.MaxValue;
+        }
+        
+        /// <summary>
+        /// Get the thought stage based on how long the pawn has been paused.
+        /// Stage 0: Less than 8 hours
+        /// Stage 1: 8-24 hours
+        /// Stage 2: 1-3 days
+        /// Stage 3: 3+ days or forever
+        /// </summary>
+        public int GetPauseThoughtStage(Pawn pawn)
+        {
+            // Forever pause = max stage (3+ days equivalent)
+            if (IsForeverPause(pawn))
+            {
+                return 3;
+            }
+
+            // Get actual paused duration in ticks
+            int pausedTicks = GetPausedDurationTicks(pawn);
+            
+            if (pausedTicks >= PAUSE_3_DAYS)
+            {
+                return 3;
+            }
+            else if (pausedTicks >= PAUSE_24_HOURS)
+            {
+                return 2;
+            }
+            else if (pausedTicks >= PAUSE_8_HOURS)
+            {
+                return 1;
+            }
+            
+            return 0;
         }
 
         /// <summary>
@@ -166,6 +248,7 @@ namespace Autonomy
             foreach (int pawnId in toRemove)
             {
                 pausedUntilTick.Remove(pawnId);
+                pauseStartTick.Remove(pawnId);
             }
         }
 
@@ -176,11 +259,19 @@ namespace Autonomy
         {
             base.ExposeData();
             Scribe_Collections.Look(ref pausedUntilTick, "pausedUntilTick", LookMode.Value, LookMode.Value);
+            Scribe_Collections.Look(ref pauseStartTick, "pauseStartTick", LookMode.Value, LookMode.Value);
 
-            // Initialize dictionary if loading failed
-            if (Scribe.mode == LoadSaveMode.LoadingVars && pausedUntilTick == null)
+            // Initialize dictionaries if loading failed
+            if (Scribe.mode == LoadSaveMode.LoadingVars)
             {
-                pausedUntilTick = new Dictionary<int, int>();
+                if (pausedUntilTick == null)
+                {
+                    pausedUntilTick = new Dictionary<int, int>();
+                }
+                if (pauseStartTick == null)
+                {
+                    pauseStartTick = new Dictionary<int, int>();
+                }
             }
         }
     }
